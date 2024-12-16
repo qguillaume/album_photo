@@ -1,0 +1,32 @@
+/* 
+ * Fichier : reset.scss
+ * Ce fichier est utilisé pour réinitialiser certains styles par défaut des navigateurs,
+ * afin de créer une base cohérente et uniforme entre les différents navigateurs.
+ * Il "réinitialise" ou "normalise" le comportement des éléments HTML pour éviter les surprises.
+ */
+
+/* Réinitialisation du margin et du padding de tous les éléments */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;  /* Cela permet de contrôler plus facilement la taille des éléments */
+}
+
+/* Suppression du style par défaut des liens */
+a {
+  text-decoration: none;  /* Enlève le soulignement par défaut des liens */
+  color: inherit;  /* Les liens héritent de la couleur du texte environnant */
+}
+
+/* Suppression de la marge et du padding pour les éléments de formulaire */
+input, textarea, select, button {
+  margin: 0;
+  padding: 0;
+  font-family: inherit;  /* Utilise la même police que celle du reste du site */
+  font-size: inherit;    /* Assure une taille de police cohérente */
+}
+
+/* Réinitialisation des éléments de la liste */
+ul, ol {
+  list-style: none;  /* Enlève les puces des listes */
+}

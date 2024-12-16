@@ -1,0 +1,32 @@
+/* 
+ * Fichier : mixins.scss
+ * Ce fichier contient des mixins réutilisables qui permettent d'appliquer rapidement des styles
+ * courants avec des paramètres dynamiques. Les mixins sont comme des fonctions CSS.
+ */
+
+/* Mixin pour les coins arrondis */
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;  /* Pour les anciens navigateurs */
+  -moz-border-radius: $radius;     /* Pour Firefox */
+  border-radius: $radius;          /* Pour les navigateurs modernes */
+}
+
+/* Mixin pour la boîte d'ombre (shadow) */
+@mixin box-shadow($shadow) {
+  -webkit-box-shadow: $shadow;  /* Pour les anciens navigateurs */
+  -moz-box-shadow: $shadow;     /* Pour Firefox */
+  box-shadow: $shadow;          /* Pour les navigateurs modernes */
+}
+
+/* Utilisation d'un mixin pour un bouton avec une couleur de fond */
+@mixin button($bg-color) {
+  background-color: $bg-color;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;  /* Coins arrondis pour les boutons */
+  &:hover {
+    background-color: darken($bg-color, 10%);  /* Le bouton devient plus foncé au survol */
+  }
+}

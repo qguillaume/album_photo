@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Filesystem\Filesystem;
 use App\Entity\Photo;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Form\PhotoType;
 
 class PhotoController extends AbstractController
 {
@@ -24,27 +25,40 @@ class PhotoController extends AbstractController
             'photos' => $photos,
         ]);
     }
-    public function upload(Request $request, EntityManagerInterface $em)
+    public function upload(Request $request, EntityManagerInterface $em): Response
     {
         $photo = new Photo();
+        $form = $this->createForm(PhotoType::class, $photo);
 
-        // Supposons que le formulaire ait un champ "file"
-        $file = $request->files->get('file');
+        $form->handleRequest($request);
 
-        if ($file instanceof UploadedFile) {
-            // Définir un chemin pour enregistrer le fichier (par exemple dans "uploads/photos")
-            $filename = uniqid() . '.' . $file->guessExtension();
-            $file->move($this->getParameter('uploads_directory'), $filename);
+        // Validation du formulaire
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                // Gestion du fichier uploadé
+                $file = $form->get('file')->getData();
+                if ($file) {
+                    $filename = uniqid() . '.' . $file->guessExtension();
+                    $file->move($this->getParameter('photos_directory'), $filename);
 
-            // Mettre à jour les propriétés de l'entité
-            $photo->setFilePath('uploads/photos/' . $filename);
-            $photo->setTitle('Nom de la photo'); // Exemple, tu devrais probablement récupérer ce nom depuis le formulaire
+                    // Met à jour l'entité Photo avec le chemin du fichier
+                    $photo->setFilePath($filename);
+                    $em->persist($photo);
+                    $em->flush();
 
-            // Sauvegarder dans la base de données
-            $em->persist($photo);
-            $em->flush();
+                    // Redirige vers la liste des photos après succès
+                    return $this->redirectToRoute('photo_index');
+                }
+            } else {
+                // En cas de validation échouée, afficher les erreurs sur la vue actuelle
+                $this->addFlash('error', 'Une erreur est survenue lors de l\'upload de votre photo.');
+            }
         }
 
-        return $this->redirectToRoute('photo_index');
+        // Retourne la vue si le formulaire n'est pas soumis ou invalide
+        return $this->render('photo/upload.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
+
 }

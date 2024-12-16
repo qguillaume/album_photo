@@ -1,0 +1,20 @@
+// src/styles/components/footer.scss
+@use "../base/variables" as *;
+
+footer {
+    background-color: $primary-color;
+    color: white;
+    padding: $space-sm $space-md;
+    text-align: center;
+  
+    p {
+      font-size: 0.9rem;
+      margin-top: $space-xs;
+    }
+  
+    a {
+      color: white;
+      text-decoration: underline;
+    }
+  }
+  

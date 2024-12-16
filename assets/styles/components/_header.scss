@@ -1,0 +1,30 @@
+// src/styles/components/header.scss
+
+@use "../base/variables" as *; // Assure-toi que les variables sont chargées avant leur utilisation
+
+header {
+    background-color: $header-bg-color;
+    color: white;
+    padding: $space-sm $space-md;
+    text-align: center;
+    
+    h1 {
+      font-size: $font-size-heading;
+    }
+  
+    nav {
+      margin-top: $space-sm;
+      
+      a {
+        color: white;
+        padding: $space-xs $space-sm;
+        margin: 0 $space-sm;
+        transition: background-color 0.3s ease;
+  
+        &:hover {
+          background-color: $primary-color;
+        }
+      }
+    }
+  }
+  

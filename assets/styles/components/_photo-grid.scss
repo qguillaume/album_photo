@@ -1,0 +1,34 @@
+/* 
+ * Fichier : photo-grid.scss
+ * Ce fichier contient le style pour la grille des photos, 
+ * y compris la mise en page en utilisant CSS Grid et les 
+ * styles spécifiques aux images dans la grille.
+ */
+
+/* Container pour les photos : Utilisation de CSS Grid */
+.photo-grid {
+  display: grid;  /* Active le mode Grid pour cet élément */
+  grid-template-columns: repeat(3, 1fr);  /* Déclare une grille avec 3 colonnes de même taille */
+  gap: 16px;  /* Espacement de 16px entre chaque élément de la grille */
+  padding: 16px;  /* Espacement autour de la grille (marge intérieure) */
+}
+
+/* 
+ * Style des images dans la grille : 
+ * Assure que les images ont une taille uniforme et s'ajustent correctement dans les cellules de la grille.
+ */
+.photo-grid img {
+  width: 100%;  /* Les images prennent toute la largeur de la cellule de la grille */
+  height: auto;  /* Laisse l'image garder son ratio d'aspect sans déformation */
+  border-radius: 8px;  /* Ajoute un arrondi léger aux coins des images */
+  object-fit: cover;  /* Permet aux images de couvrir toute la cellule sans être déformées (peut couper l'image si nécessaire) */
+}
+
+/* 
+ * Style des éléments de la liste (li) : 
+ * Les éléments de la liste doivent être nettoyés de leur style par défaut 
+ * (comme les puces de liste), pour un meilleur contrôle visuel.
+ */
+.photo-grid li {
+  list-style: none;  /* Supprime les puces des éléments de la liste */
+}

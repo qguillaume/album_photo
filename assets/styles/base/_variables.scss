@@ -1,0 +1,21 @@
+/* 
+ * Fichier : variables.scss
+ * Ce fichier contient des variables globales pour définir des couleurs, des espacements, des polices, etc.
+ * Utiliser des variables permet de centraliser les modifications de style et de rendre le projet plus facile à maintenir.
+ */
+
+/* Définition des couleurs principales */
+$primary-color: #3498db;  /* Bleu clair pour les éléments principaux */
+$secondary-color: #2ecc71;  /* Vert clair pour les accents */
+$background-color: #f4f4f4;  /* Gris clair pour le fond général */
+$header-bg-color: #333;  // définis la couleur de fond du header
+
+/* Définition de la taille de police */
+$font-size-base: 16px;  /* Taille de base de la police */
+$font-size-heading: 2rem;  /* Taille de police pour les titres */
+
+/* Définition des espacements */
+$space-xs: 8px;  /* Espacement de 8px pour les petits éléments */
+$space-sm: 16px;  /* Espacement de 16px pour les éléments plus grands */
+$space-md: 32px;  /* Espacement de 32px pour les éléments principaux */
+$space-lg: 64px;  /* Espacement de 64px pour les éléments très grands */
