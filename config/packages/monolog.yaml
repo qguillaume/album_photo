@@ -1,0 +1,11 @@
+monolog:
+    channels: ['doctrine']
+    handlers:
+        main:
+            type: stream
+            path: "php://stdout"
+            level: debug
+        doctrine:
+            type: stream
+            path: "%kernel.logs_dir%/doctrine.log"
+            level: debug

@@ -1,0 +1,11 @@
+<h1>Album Photo</h1>
+<ul>
+    {% for photo in photos %}
+        <li>
+            <img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}">
+            <p>{{ photo.title }}</p>
+        </li>
+    {% else %}
+        <li>No photos found.</li>
+    {% endfor %}
+</ul>

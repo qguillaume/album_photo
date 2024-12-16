@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Télécharger une Photo{% endblock %}
+
+{% block body %}
+    <h1>Télécharger une Photo</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.title) }}
+        {{ form_row(form.file) }}
+        <button type="submit">Télécharger</button>
+    {{ form_end(form) }}
+{% endblock %}
