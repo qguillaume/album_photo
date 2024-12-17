@@ -1,3 +1,6 @@
+portfolio_home:
+    path: /
+    controller: App\Controller\PortFolioController::index
 hello_world:
     path: /hello_world
     controller: App\Controller\HelloWorldController::index
@@ -13,3 +16,7 @@ photo_upload:
 album:
     path: /photo/album
     controller: App\Controller\AlbumController::index
+
+Reference:
+    path: /reference
+    controller: App\Controller\ReferenceController::index

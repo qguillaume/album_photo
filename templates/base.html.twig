@@ -4,22 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Album Photo</title>
-
+    {{ encore_entry_link_tags('app-ts') }}
     {# Inclure le fichier CSS compilé par Webpack #}
     <link rel="stylesheet" href="{{ asset('build/app.css') }}">
 </head>
 <body>
-    <header>
-        <h1>Mon Album Photo</h1>
-        <!-- Autres éléments de ton header -->
+    <div id="root"></div>
+    <header class="header">
+        <h1>Bienvenue</h1>
+        <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
     </header>
+
 
     <main>
         {% block body %}{% endblock %}
     </main>
-
+    
     <footer>
-        <p>&copy; 2024 Mon Album Photo</p>
+        <p>&copy; 2024 Mon Album Photo</p>{{ encore_entry_script_tags('app-ts') }}
     </footer>
+    <script src="{{ asset('build/app-ts.js') }}"></script>
 </body>
 </html>

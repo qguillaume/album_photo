@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Référentiel CSS</title>
+    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.css" rel="stylesheet" />
+</head>
+<body>
+    <header class="header">
+        <h1>Référentiel CSS : Boîtes et Positions</h1>
+    </header>
+
+    <main class="main">
+        <!-- Zone de prévisualisation -->
+        <section class="preview">
+            <h2>Prévisualisation</h2>
+            <div class="box red-box">Carré rouge</div>
+            <div class="box blue-box">Rectangle bleu</div>
+            <div class="box circle yellow-circle">Cercle jaune</div>
+            <div class="box shadow-box">Boîte avec ombre</div>
+            <div class="box positioned-box">Position absolue</div>
+        </section>
+
+        <!-- Zone de code avec coloration -->
+        <section class="code-section">
+            <h2>Code source</h2>
+            <!-- Code HTML -->
+            <h3>HTML</h3>
+            <pre><code class="language-html">
+                {{ '<div class="box red-box">Carré rouge</div>'|escape('html') }}
+                {{ '<div class="box blue-box">Rectangle bleu</div>'|escape('html') }}
+            </code></pre>
+
+            <!-- Code CSS -->
+            <h3>CSS</h3>
+            <pre><code class="language-css">
+.red-box {
+  width: 100px;
+  height: 100px;
+  background-color: #e74c3c;
+}
+
+.blue-box {
+  width: 200px;
+  height: 100px;
+  background-color: #3498db;
+}
+            </code></pre>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>© 2024 - Référentiel CSS</p>
+    </footer>
+
+    {% block javascripts %}
+        <script src="{{ asset('build/app-js.js') }}"></script> <!-- Webpack JS -->
+    {% endblock %}
+
+    <!-- Charger Prism.js à partir d'un CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.js"></script>
+
+    <!-- Script pour appliquer la coloration syntaxique -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll(); // Applique la coloration syntaxique
+            } else {
+                console.error("Prism.js n'est pas chargé correctement.");
+            }
+        });
+    </script>
+</body>
+</html>

@@ -5,6 +5,8 @@
  * Il "réinitialise" ou "normalise" le comportement des éléments HTML pour éviter les surprises.
  */
 
+@use "./variables" as *;
+
 /* Réinitialisation du margin et du padding de tous les éléments */
 * {
   margin: 0;

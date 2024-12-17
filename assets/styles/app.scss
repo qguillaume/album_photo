@@ -2,7 +2,8 @@
 @use "base/variables" as *;
 @use "base/mixins" as *;
 @use "base/reset" as *;
-
+@use "base/boxes" as *;
+@use "base/buttons" as *; 
 // Import des composants
 @use "components/photo-grid" as *;
 @use "components/header" as *;

@@ -1,0 +1,61 @@
+@use "./variables" as *;
+@use "./mixins" as *;
+
+// Styles des boîtes
+.box {
+    margin: 10px auto;
+    padding: 10px;
+    text-align: center;
+    color: #fff;
+    border: 2px solid #fff;
+    display: inline-block;
+    transition: all 0.3s ease; // Animation globale
+  
+    // Carré rouge avec effet hover
+    &.red-box {
+      width: 100px;
+      height: 100px;
+      background-color: $red-color;
+      @include hover-effect($red-color);
+    }
+  
+    // Rectangle bleu avec effet hover
+    &.blue-box {
+      width: 200px;
+      height: 100px;
+      background-color: $blue-color;
+      @include hover-effect($blue-color);
+    }
+  
+    // Cercle jaune
+    &.circle {
+      border-radius: 50%;
+      &.yellow-circle {
+        width: 100px;
+        height: 100px;
+        background-color: $yellow-color;
+        @include hover-effect($yellow-color);
+      }
+    }
+  
+    // Boîte avec ombre
+    &.shadow-box {
+      width: 150px;
+      height: 150px;
+      background-color: $purple-color;
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+      @include hover-effect($purple-color);
+    }
+  
+    // Position absolue
+    &.positioned-box {
+      width: 100px;
+      height: 100px;
+      background-color: $green-color;
+      position: absolute;
+      top: 50px;
+      left: 50px;
+      z-index: 10;
+      @include hover-effect($green-color);
+    }
+  }

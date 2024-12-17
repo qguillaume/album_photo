@@ -3,6 +3,7 @@
  * Ce fichier contient des mixins réutilisables qui permettent d'appliquer rapidement des styles
  * courants avec des paramètres dynamiques. Les mixins sont comme des fonctions CSS.
  */
+ @use "sass:color";
 
 /* Mixin pour les coins arrondis */
 @mixin border-radius($radius) {
@@ -27,6 +28,15 @@
   cursor: pointer;
   border-radius: 4px;  /* Coins arrondis pour les boutons */
   &:hover {
-    background-color: darken($bg-color, 10%);  /* Le bouton devient plus foncé au survol */
+    background-color: color.adjust($bg-color, $lightness: -10%); /* Le bouton devient plus foncé au survol */
+  }
+}
+
+// Mixin pour hover avec une transition fluide
+@mixin hover-effect($color) {
+  transition: all 0.3s ease;
+  &:hover {
+    transform: scale(1.1); // Légère croissance
+    background-color: color.adjust($color, $lightness: -10%); /* Couleur légèrement foncée */
   }
 }
