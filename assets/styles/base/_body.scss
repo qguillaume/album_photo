@@ -1,0 +1,13 @@
+// src/styles/base/_body.scss
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 100px;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;  // Permet au main de prendre toute la place restante
+}

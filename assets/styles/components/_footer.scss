@@ -1,4 +1,4 @@
-// src/styles/components/footer.scss
+// src/styles/components/_footer.scss
 @use "../base/variables" as *;
 
 footer {
@@ -6,15 +6,15 @@ footer {
     color: white;
     padding: $space-sm $space-md;
     text-align: center;
-  
+    margin-top: auto;  /* Pousse le footer en bas */
+    
     p {
       font-size: 0.9rem;
       margin-top: $space-xs;
     }
-  
+
     a {
       color: white;
       text-decoration: underline;
     }
-  }
-  
+}

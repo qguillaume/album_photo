@@ -1,19 +1,10 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Portfolio</title>
-</head>
-<body>
-    <header>
-        <h1>Bienvenue sur mon Portfolio</h1>
-    </header>
-    <main>
-        <ul>
-            {% for section, link in sections %}
-                <li><a href="{{ link }}">{{ section }}</a></li>
-            {% endfor %}
-        </ul>
-    </main>
-</body>
-</html>
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Bienvenue sur mon Portfolio</h1>
+    <ul>
+        {% for section, link in sections %}
+            <li><a href="{{ link }}">{{ section }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -17,6 +17,6 @@ album:
     path: /photo/album
     controller: App\Controller\AlbumController::index
 
-Reference:
+reference:
     path: /reference
     controller: App\Controller\ReferenceController::index

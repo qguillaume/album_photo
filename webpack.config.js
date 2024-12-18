@@ -10,9 +10,6 @@ Encore
   // Ajouter une entrée SCSS principale
   .addStyleEntry("app", "./assets/styles/app.scss")
 
-  // Ajouter une entrée JS principale
-  .addEntry("app-js", "./assets/js/app.js")
-
   // Point d'entrée principal (typescript)
   .addEntry("app-ts", "./assets/ts/app.tsx")
 

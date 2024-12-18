@@ -1,28 +1,37 @@
+{# base.html.twig #}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Album Photo</title>
-    {{ encore_entry_link_tags('app-ts') }}
-    {# Inclure le fichier CSS compilé par Webpack #}
+    <title>{% block title %}Mon Album Photo{% endblock %}</title>
+    {{ encore_entry_link_tags('app-ts') }} <!-- Assure-toi que ceci charge les bons fichiers CSS/JS générés par Webpack -->
     <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+    
+    {% block head %}{% endblock %}
 </head>
-<body>
-    <div id="root"></div>
-    <header class="header">
-        <h1>Bienvenue</h1>
-        <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
-    </header>
+<body class="dark-background">
 
+    <header class="header">
+        <h1>Bienvenue sur mon portfolio</h1>
+        <nav>
+            <div class="menu">
+                <a href="{{ path('portfolio_home') }}" class="{% if app.request.attributes.get('_route') == 'portfolio_home' %}active{% endif %}">Accueil</a>
+                <a href="{{ path('photo_index') }}" class="{% if app.request.attributes.get('_route') == 'photo_index' %}active{% endif %}">Photos</a>
+                <a href="{{ path('reference') }}" class="{% if app.request.attributes.get('_route') == 'reference' %}active{% endif %}">Références</a>
+            </div>
+        </nav>
+    </header>
 
     <main>
         {% block body %}{% endblock %}
     </main>
-    
+
     <footer>
-        <p>&copy; 2024 Mon Album Photo</p>{{ encore_entry_script_tags('app-ts') }}
+        <p>&copy; 2024 Mon Album Photo</p>
     </footer>
-    <script src="{{ asset('build/app-ts.js') }}"></script>
+
+    {{ encore_entry_script_tags('app-ts') }} <!-- Chargement correct du fichier JavaScript via Webpack -->
+    {% block javascripts %}{% endblock %}
 </body>
 </html>

@@ -4,6 +4,7 @@
 @use "base/reset" as *;
 @use "base/boxes" as *;
 @use "base/buttons" as *; 
+@use "base/body" as *; 
 // Import des composants
 @use "components/photo-grid" as *;
 @use "components/header" as *;
