@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Photos de l'album : {{ album.getNomAlbum() }}</h1>
+
+<div class="photos-container">
+    {% for photo in photos %}
+        <div class="photo">
+            <img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" class="photo-thumbnail">
+            <p>{{ photo.title }}</p>
+        </div>
+    {% else %}
+        <p>Aucune photo dans cet album.</p>
+    {% endfor %}
+</div>
+
+<style>
+.photos-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+.photo {
+    text-align: center;
+    width: 150px;
+}
+.photo img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+.photo p {
+    margin-top: 8px;
+    font-size: 14px;
+}
+</style>
+{% endblock %}

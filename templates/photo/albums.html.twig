@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Albums</h1>
+<div class="albums-container">
+    {% for album in albums %}
+        <div class="album">
+            <a href="{{ path('photos_by_album', { id: album.getId() }) }}">
+                <img src="{{ asset('images/folder-icon.png') }}" alt="Dossier" class="album-icon">
+                <p>{{ album.getNomAlbum() }}</p>
+            </a>
+        </div>
+    {% else %}
+        <p>Aucun album trouvé.</p>
+    {% endfor %}
+</div>
+
+<style>
+.albums-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+.album {
+    text-align: center;
+    width: 150px;
+}
+.album img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+.album p {
+    margin-top: 8px;
+    font-size: 16px;
+}
+</style>
+{% endblock %}

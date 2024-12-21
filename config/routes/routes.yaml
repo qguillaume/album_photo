@@ -5,9 +5,9 @@ hello_world:
     path: /hello_world
     controller: App\Controller\HelloWorldController::index
 
-photo_index:
-    path: /photos
-    controller: App\Controller\PhotoController::index
+# photo_index:
+#     path: /photos
+#     controller: App\Controller\PhotoController::index
 
 photo_upload:
     path: /photo/upload
@@ -20,3 +20,11 @@ album:
 reference:
     path: /reference
     controller: App\Controller\ReferenceController::index
+
+photo_albums:
+    path: /photos
+    controller: App\Controller\PhotoController::albums
+
+photos_by_album:
+    path: /album/{id}
+    controller: App\Controller\PhotoController::photosByAlbum

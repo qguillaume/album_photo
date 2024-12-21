@@ -79,4 +79,22 @@ class Photo
 
         return $this;
     }
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Album", inversedBy="photos")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private ?Album $album = null;
+
+    public function getAlbum(): ?Album
+    {
+        return $this->album;
+    }
+
+    public function setAlbum(?Album $album): self
+    {
+        $this->album = $album;
+
+        return $this;
+    }
 }
