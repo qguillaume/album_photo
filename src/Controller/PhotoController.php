@@ -77,7 +77,7 @@ class PhotoController extends AbstractController
                     $em->flush();
 
                     // Redirige vers la liste des photos après succès
-                    return $this->redirectToRoute('photo_index');
+                    return $this->redirectToRoute('photo_albums');
                 }
             } else {
                 // En cas de validation échouée, afficher les erreurs sur la vue actuelle

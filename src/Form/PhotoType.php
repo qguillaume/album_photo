@@ -4,6 +4,8 @@
 namespace App\Form;
 
 use App\Entity\Photo;
+use App\Entity\Album; // Import de l'entité Album
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -19,7 +21,7 @@ class PhotoType extends AbstractType
             ->add('file', FileType::class, [
                 'label' => 'Photo (JPEG, PNG)',
                 'mapped' => false, // Ne lie pas ce champ à l'entité
-                'required' => false,
+                'required' => true,
                 'constraints' => [
                     new \Symfony\Component\Validator\Constraints\File([
                         'maxSize' => '8M',
@@ -28,7 +30,12 @@ class PhotoType extends AbstractType
                     ])
                 ],
             ])
-        ;
+            ->add('album', EntityType::class, [
+                'class' => Album::class, // Spécifie l'entité Album
+                'choice_label' => 'nom_album', // Attribut affiché dans la liste déroulante
+                'placeholder' => 'Sélectionnez un album', // Valeur par défaut
+                'required' => true, // Rend ce champ obligatoire
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
