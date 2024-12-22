@@ -14,12 +14,28 @@ $blue-color: #3498db;
 $yellow-color: #f1c40f;
 $green-color: #2ecc71;
 $purple-color: #9b59b6;
+$orange-color: #ffa500;
+
+/* Définition des couleurs hover */
+$primary-color-hover: darken($primary-color, 10%);
+$secondary-color-hover: darken($secondary-color, 10%);
+$red-color-hover: darken($red-color, 10%);
+$blue-color-hover: darken($blue-color, 10%);
+$yellow-color-hover: darken($yellow-color, 10%);
+$green-color-hover: darken($green-color, 10%);
+$purple-color-hover: darken($purple-color, 10%);
+$orange-color-hover: darken($orange-color, 10%);
 
 $color-light-bg: #ffffff; // Couleur de fond claire
 $color-light-text: #000000; // Texte sombre pour le mode clair
-
 $color-dark-bg: #1e1e1e; // Couleur de fond sombre
 $color-dark-text: #f5f5f5; // Texte clair pour le mode sombre
+
+/* Définition des couleurs hover pour les modes clair et sombre */
+$color-light-bg-hover: darken($color-light-bg, 5%);
+$color-light-text-hover: lighten($color-light-text, 20%);
+$color-dark-bg-hover: lighten($color-dark-bg, 5%);
+$color-dark-text-hover: darken($color-dark-text, 20%);
 
 /* Définition de la taille de police */
 $font-size-base: 16px;  /* Taille de base de la police */

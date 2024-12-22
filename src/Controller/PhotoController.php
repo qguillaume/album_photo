@@ -122,4 +122,34 @@ class PhotoController extends AbstractController
         return new JsonResponse(['message' => 'Album supprimé avec succès']);
     }
 
+    // Renommer une photo
+    public function renamePhoto(Request $request, EntityManagerInterface $em, int $id): JsonResponse
+    {
+        $photo = $em->getRepository(Photo::class)->find($id);
+
+        if (!$photo) {
+            return new JsonResponse(['message' => 'Photo non trouvée'], 404);
+        }
+
+        $data = json_decode($request->getContent(), true);
+        $photo->setTitle($data['name']);
+        $em->flush();
+
+        return new JsonResponse(['message' => 'Photo renommée avec succès']);
+    }
+
+    // Supprimer une photo
+    public function deletePhoto(EntityManagerInterface $em, int $id): JsonResponse
+    {
+        $photo = $em->getRepository(Photo::class)->find($id);
+
+        if (!$photo) {
+            return new JsonResponse(['message' => 'Photo non trouvée'], 404);
+        }
+
+        $em->remove($photo);
+        $em->flush();
+
+        return new JsonResponse(['message' => 'Photo supprimée avec succès']);
+    }
 }

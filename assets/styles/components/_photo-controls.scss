@@ -1,0 +1,44 @@
+@use "../base/variables" as *;
+
+.photo-controls {
+    margin-top: 10px;
+  
+    button {
+      margin-right: 5px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background-color: $primary-color; // Couleur par défaut
+      color: white;
+  
+      &:hover {
+        background-color: $primary-color-hover; // Hover
+      }
+  
+      &.btn-delete {
+        background-color: $orange-color; // Couleur orangée par défaut pour "btn-delete"
+  
+        &:hover {
+          background-color: $orange-color-hover; // Effet hover pour "btn-delete"
+        }
+      }
+  
+      &.btn-rename {
+        background-color: $secondary-color; // Couleur spécifique à "btn-rename"
+  
+        &:hover {
+          background-color: $secondary-color-hover; // Effet hover pour "btn-rename"
+        }
+      }
+
+      &.btn-view {
+        background-color: $primary-color; // Couleur spécifique à "btn-rename"
+  
+        &:hover {
+          background-color: $primary-color-hover; // Effet hover pour "btn-rename"
+        }
+      }
+    }
+  }
+  

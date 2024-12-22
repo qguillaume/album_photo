@@ -8,30 +8,15 @@
         <div class="photo">
             <img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" class="photo-thumbnail">
             <p>{{ photo.title }}</p>
+            <!-- Conteneur React pour modifier/supprimer -->
+            <div id="photo-controls-{{ photo.id }}" data-photo-id="{{ photo.id }}" data-photo-title="{{ photo.title }}" data-photo-url="{{ asset('uploads/photos/' ~ photo.filePath) }}"></div>
         </div>
     {% else %}
         <p>Aucune photo dans cet album.</p>
     {% endfor %}
 </div>
+{% endblock %}
 
-<style>
-.photos-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-}
-.photo {
-    text-align: center;
-    width: 150px;
-}
-.photo img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-}
-.photo p {
-    margin-top: 8px;
-    font-size: 14px;
-}
-</style>
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
 {% endblock %}

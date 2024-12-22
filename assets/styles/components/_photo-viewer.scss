@@ -1,0 +1,65 @@
+/* Conteneur de toutes les photos */
+.photos-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  /* Chaque photo dans l'album */
+  .photo {
+    text-align: center;
+    width: 150px;
+  }
+  
+  /* L'image dans chaque photo */
+  .photo img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+  }
+  
+  /* Titre de la photo */
+  .photo p {
+    margin-top: 8px;
+    font-size: 14px;
+  }
+  
+  /* Photo Viewer Overlay */
+  .photo-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8); /* Fond sombre */
+    display: flex;
+    justify-content: center; /* Centrer horizontalement */
+    align-items: center; /* Centrer verticalement */
+    z-index: 1000;
+    cursor: pointer;
+    width: 100%;   /* Assurer que l'overlay prend toute la largeur de l'écran */
+    height: 100%;  /* Assurer que l'overlay prend toute la hauteur de l'écran */
+  }
+  
+  /* Classe pour l'image en plein écran */
+  .photo-overlay .photo-fullscreen {
+    width: 100vw;  /* Prendre 100% de la largeur de la fenêtre */
+    height: 100vh; /* Prendre 100% de la hauteur de la fenêtre */
+    object-fit: cover; /* L'image occupe tout l'espace sans déformer */
+    border: none;
+    box-sizing: border-box; /* Eviter que le padding et la bordure perturbent la taille */
+  }
+  
+  /* Titre de la photo */
+  .photo-overlay h2 {
+    color: white;
+    text-align: center;
+    font-size: 2rem;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: Arial, sans-serif;
+    z-index: 1010; /* Assurer que le titre est au-dessus de l'image */
+  }
+  

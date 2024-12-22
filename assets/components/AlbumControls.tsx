@@ -7,44 +7,28 @@ interface AlbumControlsProps {
   onDelete: (albumId: number) => void;
 }
 
-const AlbumControls: React.FC<AlbumControlsProps> = ({
-  albumId,
-  albumName,
-  onRename,
-  onDelete,
-}) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [newName, setNewName] = useState(albumName);
-
+const AlbumControls: React.FC<AlbumControlsProps> = ({ albumId, albumName, onRename, onDelete }) => {
   const handleRename = () => {
-    onRename(albumId, newName);
-    setIsEditing(false);
+    const newName = prompt(`Renommer l'album "${albumName}" :`, albumName);
+    if (newName && newName.trim() !== "") {
+      onRename(albumId, newName);
+    }
   };
 
   const handleDelete = () => {
-    if (window.confirm(`Êtes-vous sûr de vouloir supprimer l'album "${albumName}" ?`)) {
+    if (confirm(`Voulez-vous vraiment supprimer l'album "${albumName}" ?`)) {
       onDelete(albumId);
     }
   };
 
   return (
     <div className="album-controls">
-      {isEditing ? (
-        <div>
-          <input
-            type="text"
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-          />
-          <button onClick={handleRename}>Confirmer</button>
-          <button onClick={() => setIsEditing(false)}>Annuler</button>
-        </div>
-      ) : (
-        <div>
-          <button onClick={() => setIsEditing(true)}>Modifier</button>
-          <button onClick={handleDelete}>Supprimer</button>
-        </div>
-      )}
+      <button className="btn-rename" onClick={handleRename}>
+        ✏️
+      </button>
+      <button className="btn-delete" onClick={handleDelete}>
+        ❌
+      </button>
     </div>
   );
 };
