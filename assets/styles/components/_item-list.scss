@@ -1,0 +1,88 @@
+.item-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  
+    .item {
+      position: relative;
+      width: 150px;
+      text-align: center;
+  
+      .item-image {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+        transition: transform 0.3s ease; // Animation hover
+      }
+  
+      p {
+        margin-top: 8px;
+        font-size: 14px;
+      }
+  
+      &:hover {
+        .item-image {
+          transform: scale(1.1); // Agrandir légèrement au survol
+        }
+      }
+  
+      .actions {
+        margin-top: 8px;
+  
+        button {
+          margin: 4px;
+          padding: 8px;
+          border: none;
+          cursor: pointer;
+          border-radius: 4px;
+          font-size: 14px;
+          transition: background-color 0.3s ease;
+  
+          &.edit-button {
+            background-color: #4caf50;
+            color: white;
+  
+            &:hover {
+              background-color: #45a049; // Vert plus foncé
+            }
+          }
+  
+          &.delete-button {
+            background-color: #f44336;
+            color: white;
+  
+            &:hover {
+              background-color: #e53935; // Rouge plus foncé
+            }
+          }
+        }
+      }
+  
+      .icon {
+        position: absolute;
+        top: 10%;
+        right: 10%;
+        font-size: 24px;
+        opacity: 0;
+        transform: scale(0);
+        transition: all 0.3s ease;
+  
+        &.edit-icon {
+          color: #4caf50;
+        }
+  
+        &.delete-icon {
+          color: #f44336;
+        }
+      }
+  
+      &.selected {
+        .icon {
+          opacity: 1;
+          transform: scale(1); // Affiche l'icône
+        }
+      }
+    }
+  }
+  

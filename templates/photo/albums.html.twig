@@ -6,11 +6,12 @@
     {% for album in albums %}
         <div class="album">
             <a href="{{ path('photos_by_album', { id: album.id }) }}">
-                {# Vérifier si album.imagePath est null, sinon utiliser 'folder-icon.png' comme image par défaut #}
-                <img src="{{ album.imagePath is not null ? asset('uploads/albums/' ~ ( album.imagePath)) : asset('images/folder-icon.png') }}" 
+                <img src="{{ album.imagePath is not null ? asset('uploads/albums/' ~ album.imagePath) : asset('images/folder-icon.png') }}" 
                      alt="Dossier" class="album-icon">
                 <p>{{ album.nomAlbum }}</p>
             </a>
+            <!-- Conteneur React pour modifier/supprimer -->
+            <div id="album-controls-{{ album.id }}" data-album-id="{{ album.id }}" data-album-name="{{ album.nomAlbum }}"></div>
         </div>
     {% else %}
         <p>Aucun album trouvé.</p>
@@ -37,4 +38,8 @@
     font-size: 16px;
 }
 </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
 {% endblock %}
