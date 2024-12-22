@@ -40,3 +40,33 @@
     background-color: color.adjust($color, $lightness: -10%); /* Couleur légèrement foncée */
   }
 }
+
+@mixin bounce-hover($duration: 0.8s) {
+  transition: transform 0.3s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    animation: bounce $duration;
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Appliquer aux albums et photos */
+.album {
+  @include bounce-hover(0.5s);
+}
+
+.photo {
+  @include bounce-hover(0.5s);
+}

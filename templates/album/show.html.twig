@@ -1,0 +1,6 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ album.getNomAlbum() }}</h1>
+    <img src="{{ asset('uploads/albums/' ~ album.imagePath) }}" alt="{{ album.getNomAlbum() }}" class="album-image">
+{% endblock %}

@@ -5,9 +5,11 @@
 <div class="albums-container">
     {% for album in albums %}
         <div class="album">
-            <a href="{{ path('photos_by_album', { id: album.getId() }) }}">
-                <img src="{{ asset('images/folder-icon.png') }}" alt="Dossier" class="album-icon">
-                <p>{{ album.getNomAlbum() }}</p>
+            <a href="{{ path('photos_by_album', { id: album.id }) }}">
+                {# Vérifier si album.imagePath est null, sinon utiliser 'folder-icon.png' comme image par défaut #}
+                <img src="{{ album.imagePath is not null ? asset('uploads/albums/' ~ ( album.imagePath)) : asset('images/folder-icon.png') }}" 
+                     alt="Dossier" class="album-icon">
+                <p>{{ album.nomAlbum }}</p>
             </a>
         </div>
     {% else %}

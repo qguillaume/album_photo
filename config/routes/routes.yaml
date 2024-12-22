@@ -28,3 +28,13 @@ photo_albums:
 photos_by_album:
     path: /album/{id}
     controller: App\Controller\PhotoController::photosByAlbum
+    requirements:
+        id: '\d+'  # Cela indique que l'ID doit être un entier  
+
+album_new:
+    path: /album/new
+    controller: App\Controller\AlbumController::new
+
+album_show:
+    path: /album_show/{id}
+    controller: App\Controller\AlbumController::show

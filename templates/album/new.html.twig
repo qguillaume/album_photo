@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Créer un nouvel album</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.nomAlbum) }}  <!-- Champ pour le nom de l'album -->
+        <button class="btn btn-primary">Créer l'album</button>
+    {{ form_end(form) }}
+{% endblock %}

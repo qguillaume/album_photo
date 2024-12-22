@@ -6,6 +6,7 @@
 @use "base/buttons" as *; 
 @use "base/body" as *; 
 // Import des composants
+@use "components/menu" as *;
 @use "components/photo-grid" as *;
 @use "components/header" as *;
 @use "components/footer" as *;

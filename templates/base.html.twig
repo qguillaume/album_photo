@@ -17,7 +17,13 @@
         <nav>
             <div class="menu">
                 <a href="{{ path('portfolio_home') }}" class="{% if app.request.attributes.get('_route') == 'portfolio_home' %}active{% endif %}">Accueil</a>
-                <a href="{{ path('photo_albums') }}" class="{% if app.request.attributes.get('_route') == 'photo_albums' %}active{% endif %}">Photos</a>
+                <div class="dropdown">
+                    <a href="{{ path('photo_albums') }}" class="{% if app.request.attributes.get('_route') == 'photo_albums' %}active{% endif %}">Photos</a>
+                    <div class="dropdown-content">
+                        <a href="{{ path('album_new') }}">Créer un album</a>
+                        <a href="{{ path('photo_upload') }}">Télécharger une photo</a>
+                    </div>
+                </div>
                 <a href="{{ path('reference') }}" class="{% if app.request.attributes.get('_route') == 'reference' %}active{% endif %}">Références</a>
             </div>
         </nav>

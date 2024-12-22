@@ -1,0 +1,57 @@
+@use "../base/variables" as *;
+
+$active-color: #ffffff;
+$hover-color: #dddddd;
+$menu-item-height: 40px;
+
+.menu {
+  display: flex;
+  gap: 20px;
+
+  a {
+    text-decoration: none;
+    color: #999;
+    padding: 10px;
+    display: inline-block;
+
+    &.active {
+      font-weight: bold;
+      color: $active-color;
+    }
+
+    &:hover {
+      color: $active-color;
+    }
+  }
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: $primary-color;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    top: $menu-item-height; // Align the dropdown content under the menu item
+
+    a {
+      color: #ffffff;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+
+      &:hover {
+        background-color: $hover-color;
+        color: $primary-color;
+      }
+    }
+  }
+
+  &:hover .dropdown-content {
+    display: block;
+  }
+}
