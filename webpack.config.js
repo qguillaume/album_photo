@@ -1,4 +1,7 @@
 const Encore = require("@symfony/webpack-encore");
+const dotenv = require("dotenv");
+dotenv.config(); // Charge les variables d'environnement depuis le fichier .env
+const webpack = require("webpack");
 
 Encore
   // Répertoire de sortie des fichiers compilés
@@ -27,6 +30,15 @@ Encore
   .enableVersioning(Encore.isProduction())
 
   // Activer la prise en charge de Symfony
-  .enableSingleRuntimeChunk();
+  .enableSingleRuntimeChunk()
+
+  // Ajouter DefinePlugin pour injecter les variables d'environnement dans le code JS
+  .addPlugin(
+    new webpack.DefinePlugin({
+      "process.env.REACT_APP_API_URL": JSON.stringify(
+        process.env.REACT_APP_API_URL
+      ),
+    })
+  );
 
 module.exports = Encore.getWebpackConfig();

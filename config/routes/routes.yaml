@@ -38,3 +38,11 @@ album_new:
 album_show:
     path: /album_show/{id}
     controller: App\Controller\AlbumController::show
+
+rename_album:
+  path: /albums/rename/{id}
+  controller: App\Controller\PhotoController::renameAlbum
+
+delete_album:
+  path: /albums/delete/{id}
+  controller: App\Controller\PhotoController::deleteAlbum

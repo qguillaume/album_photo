@@ -50,15 +50,57 @@ document.addEventListener("DOMContentLoaded", () => {
         <AlbumControls
           albumId={parseInt(albumId, 10)}
           albumName={albumName}
+
           onRename={(id, newName) => {
+            console.log("API URL renom:", process.env.REACT_APP_API_URL);  // Ajouté pour vérifier la valeur
             console.log(`Renommage : Album ID ${id} -> Nouveau nom : "${newName}"`);
-            // Logique d'appel à l'API ou rechargement de la page après renommage
-            alert(`Album renommé en : "${newName}"`);
+          
+            fetch(`${process.env.REACT_APP_API_URL}/albums/rename/${albumId}`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ name: newName }),
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Erreur lors du renommage de l'album");
+                }
+                return response.json();
+              })
+              .then((data) => {
+                console.log("Succès :", data);
+                alert(`Album renommé en : "${newName}"`);
+                window.location.reload(); // Recharge la page pour voir les changements
+              })
+              .catch((error) => {
+                console.error("Erreur :", error);
+                alert("Une erreur s'est produite lors du renommage.");
+              });
           }}
+
           onDelete={(id) => {
+            console.log("API URL suppress:", process.env.REACT_APP_API_URL);  // Ajouté pour vérifier la valeur
             console.log(`Suppression : Album ID ${id}`);
-            // Logique d'appel à l'API ou rechargement de la page après suppression
-            alert(`Album supprimé (ID : ${id})`);
+
+            fetch(`${process.env.REACT_APP_API_URL}/albums/delete/${albumId}`, {
+                method: "DELETE",
+            })
+                .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Erreur lors de la suppression de l'album");
+                }
+                return response.json();
+                })
+                .then((data) => {
+                console.log("Succès :", data);
+                alert(`Album supprimé avec succès`);
+                window.location.reload(); // Recharge la page pour voir les changements
+                })
+                .catch((error) => {
+                console.error("Erreur :", error);
+                alert("Une erreur s'est produite lors de la suppression.");
+                });
           }}
         />
       );
