@@ -1,0 +1,43 @@
+security:
+    # Encoders: Cette section est utilisée pour la gestion des mots de passe. Symfony 5+ utilise des "password_hashers".
+    password_hashers:
+        App\Entity\User:
+            algorithm: bcrypt
+            cost: 12
+
+    # Configure les firewalls
+    firewalls:
+        # Le firewall "main" est utilisé pour l'authentification
+        main:
+            anonymous: true  # Permet les utilisateurs non authentifiés (visiteurs)
+            # Permet l'authentification par formulaire
+            form_login:
+                login_path: login  # chemin de la page de connexion
+                check_path: login  # le chemin qui va recevoir la requête de soumission du formulaire
+                username_parameter: _username  # Paramètre d'authentification
+                password_parameter: _password  # Paramètre de mot de passe
+            # Permet l'accès aux pages protégées après connexion
+            logout:
+                path: logout  # chemin pour se déconnecter
+                target: /
+    # Fournisseur d'utilisateurs (qui permet de charger un utilisateur à partir de la base de données)
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: username
+
+    # Contrôleurs de sécurité pour les utilisateurs
+    access_control:
+        # Les utilisateurs non authentifiés peuvent accéder à ces pages
+        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/logout$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/photos$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/reference$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+
+        # Les utilisateurs connectés seulement peuvent accéder aux pages suivantes :
+        - { path: ^/dashboard$, roles: ROLE_USER }
+        - { path: ^/test-password$, roles: ROLE_USER }
+        - { path: ^/album/new$, roles: ROLE_USER }
+        - { path: ^/photo/upload$, roles: ROLE_USER }

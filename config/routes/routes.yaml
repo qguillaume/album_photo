@@ -47,3 +47,15 @@ rename_photos:
 delete_photo:
   path: /photo/delete/{id}
   controller: App\Controller\PhotoController::deletePhoto
+
+login:
+  path: /login
+  controller: App\Controller\SecurityController::login
+
+logout:
+  path: /logout
+  controller: App\Controller\SecurityController::logout
+
+test_password:
+  path: /test-password
+  controller: App\Controller\SecurityController::testPassword

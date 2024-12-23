@@ -25,6 +25,24 @@
                     </div>
                 </div>
                 <a href="{{ path('reference') }}" class="{% if app.request.attributes.get('_route') == 'reference' %}active{% endif %}">Références</a>
+
+                {% if app.user %}
+                    <div class="dropdown">
+                        <a href="#" 
+                        class="{% if app.request.attributes.get('_route') == 'logout' %}active{% endif %}">
+                            Bienvenue, {{ app.user.username }} !
+                        </a>
+                        <div class="dropdown-content">
+                            <a href="{{ path('dashboard') }}">Dashboard</a>
+                            <a href="{{ path('logout') }}">Se déconnecter</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{{ path('login') }}" 
+                    class="{% if app.request.attributes.get('_route') == 'login' %}active{% endif %}">
+                        Se connecter
+                    </a>
+                {% endif %}
             </div>
         </nav>
     </header>
