@@ -50,7 +50,6 @@ class AlbumController extends AbstractController
                 $defaultPhoto->setTitle('Image par défaut');
                 $defaultPhoto->setFilePath('default-album.png'); // Nom du fichier générique
                 $defaultPhoto->setAlbum($album);
-                $defaultPhoto->setDefault(true);
 
                 $em->persist($defaultPhoto);
             }

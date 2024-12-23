@@ -37,15 +37,6 @@ class PhotoController extends AbstractController
             throw $this->createNotFoundException('Album non trouvé');
         }
 
-        /*$defaultPhoto = null;
-        // Chercher la photo par défaut dans cet album
-        foreach ($album->getPhotos() as $photo) {
-            if ($photo->isDefault()) {
-                $defaultPhoto = $photo;
-                break;
-            }
-        }*/
-
         // Retourner la vue Twig avec les photos de l'album
         return $this->render('photo/photos_by_album.html.twig', [
             'album' => $album,
