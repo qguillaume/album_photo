@@ -6,10 +6,6 @@ hello_world:
     path: /hello_world
     controller: App\Controller\HelloWorldController::index
 
-# photo_index:
-#     path: /photos
-#     controller: App\Controller\PhotoController::index
-
 photo_upload:
     path: /photo/upload
     controller: App\Controller\PhotoController::upload
@@ -35,10 +31,6 @@ photos_by_album:
 album_new:
     path: /album/new
     controller: App\Controller\AlbumController::new
-
-album_show:
-    path: /album_show/{id}
-    controller: App\Controller\AlbumController::show
 
 rename_album:
   path: /albums/rename/{id}

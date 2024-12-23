@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 use App\Entity\Album;
+use App\Entity\Photo;
 use App\Form\AlbumType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -37,34 +38,30 @@ class AlbumController extends AbstractController
                 $album->setImagePath($newFilename);
             } else {
                 // Utiliser l'image par défaut si aucune image n'est fournie
-                $album->setImagePath(null);
+                $album->setImagePath('default-photo.png');  // Photo par défaut en tant que chemin de fichier
             }
 
             // Persister l'album dans la base de données
             $em->persist($album);
+
+            // Ajouter une photo par défaut si l'album n'a pas de photo
+            if (!$album->getPhotos()->count()) {
+                $defaultPhoto = new Photo();
+                $defaultPhoto->setTitle('Image par défaut');
+                $defaultPhoto->setFilePath('default-album.png'); // Nom du fichier générique
+                $defaultPhoto->setAlbum($album);
+                $defaultPhoto->setDefault(true);
+
+                $em->persist($defaultPhoto);
+            }
+
             $em->flush();
 
-            return $this->redirectToRoute('album_show', ['id' => $album->getId()]);
+            return $this->redirectToRoute('photo_albums');
         }
 
         return $this->render('album/new.html.twig', [
             'form' => $form->createView(),
-        ]);
-    }
-
-    public function show(int $id, EntityManagerInterface $em): Response
-    {
-        // Récupérer l'album par son ID
-        $album = $em->getRepository(Album::class)->find($id);
-
-        // Si l'album n'existe pas, renvoyer une page 404
-        if (!$album) {
-            throw $this->createNotFoundException('L\'album n\'existe pas.');
-        }
-
-        // Rendre la vue avec les informations de l'album
-        return $this->render('album/show.html.twig', [
-            'album' => $album
         ]);
     }
 }

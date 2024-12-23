@@ -3,7 +3,19 @@
 {% block body %}
 <h1>Photos de l'album : {{ album.getNomAlbum() }}</h1>
 
+{# Affiche l'image par défaut avec un lien vers la liste des albums #}
+<div class="default-photo">
+    
+</div>
+
 <div class="photos-container">
+    <div class="photo">
+        <a href="{{ path('photo_albums') }}">
+        <img src="{{ asset('images/default-photo.png') }}" 
+                alt="Retour à la liste des albums">
+        </a>
+        <p>Retour aux albums</p>
+    </div>
     {% for photo in photos %}
         <div class="photo">
             <img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" class="photo-thumbnail">
