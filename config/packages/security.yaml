@@ -34,10 +34,10 @@ security:
         - { path: ^/logout$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/photos$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/reference$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-
+        
         # Les utilisateurs connectés seulement peuvent accéder aux pages suivantes :
-        - { path: ^/dashboard$, roles: ROLE_USER }
-        - { path: ^/test-password$, roles: ROLE_USER }
-        - { path: ^/album/new$, roles: ROLE_USER }
-        - { path: ^/photo/upload$, roles: ROLE_USER }
+        - { path: ^/reference$, roles: ROLE_USER }
+        - { path: ^/dashboard$, roles: ROLE_ADMIN }
+        - { path: ^/test-password$, roles: ROLE_ADMIN }
+        - { path: ^/album/new$, roles: ROLE_ADMIN }
+        - { path: ^/photo/upload$, roles: ROLE_ADMIN }

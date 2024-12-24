@@ -20,8 +20,11 @@
         <div class="photo">
             <img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" class="photo-thumbnail">
             <p>{{ photo.title }}</p>
-            <!-- Conteneur React pour modifier/supprimer -->
-            <div id="photo-controls-{{ photo.id }}" data-photo-id="{{ photo.id }}" data-photo-title="{{ photo.title }}" data-photo-url="{{ asset('uploads/photos/' ~ photo.filePath) }}"></div>
+
+            {% if is_granted('ROLE_ADMIN') %}
+                <!-- Conteneur React pour modifier/supprimer -->
+                <div id="photo-controls-{{ photo.id }}" data-photo-id="{{ photo.id }}" data-photo-title="{{ photo.title }}" data-photo-url="{{ asset('uploads/photos/' ~ photo.filePath) }}"></div>
+            {% endif %}
         </div>
     {% else %}
         <p>Aucune photo dans cet album.</p>

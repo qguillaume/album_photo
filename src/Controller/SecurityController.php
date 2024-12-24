@@ -49,7 +49,7 @@ class SecurityController extends AbstractController
     public function testPassword(Request $request): Response
     {
         // Récupère l'utilisateur avec son nom d'utilisateur
-        $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['username' => 'guillaume']);
+        $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['username' => 'Guillaume']);
 
         // Récupérer le mot de passe en clair que tu veux tester
         $plainPassword = $request->query->get('password'); // Par exemple, /test-password?password=monmotdepasse
@@ -79,7 +79,7 @@ class SecurityController extends AbstractController
     public function generatePassword(): Response
     {
         // Générer un mot de passe avec bcrypt (12 rounds)
-        $hashedPassword = password_hash('pikachu84STORM', PASSWORD_BCRYPT);
+        $hashedPassword = password_hash('toto', PASSWORD_BCRYPT);
 
         // Affiche le mot de passe haché
         return new Response('Mot de passe haché : ' . $hashedPassword);

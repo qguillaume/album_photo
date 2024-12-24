@@ -42,9 +42,28 @@ class User implements UserInterface
         return $this->password;
     }
 
+    /**
+     * @ORM\Column(type="json")
+     */
+    private array $roles = [];
+
+    // Getter
     public function getRoles(): array
     {
-        return ['ROLE_USER']; // Tu peux ajouter d'autres rôles ici
+        $roles = $this->roles;
+
+        // Chaque utilisateur a au moins ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    // Setter
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 
     public function eraseCredentials()

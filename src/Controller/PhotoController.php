@@ -93,6 +93,9 @@ class PhotoController extends AbstractController
     }
 
     // Renommer un album
+    /*
+     * @IsGranted({"ROLE_ADMIN"})
+     */
     public function renameAlbum(Request $request, EntityManagerInterface $em, int $id): JsonResponse
     {
         $album = $em->getRepository(Album::class)->find($id);
@@ -109,6 +112,9 @@ class PhotoController extends AbstractController
     }
 
     // Supprimer un album
+    /*
+     * @IsGranted({"ROLE_ADMIN"})
+     */
     public function deleteAlbum(EntityManagerInterface $em, int $id): JsonResponse
     {
         $album = $em->getRepository(Album::class)->find($id);
@@ -124,6 +130,9 @@ class PhotoController extends AbstractController
     }
 
     // Renommer une photo
+    /*
+     * @IsGranted({"ROLE_ADMIN"})
+     */
     public function renamePhoto(Request $request, EntityManagerInterface $em, int $id): JsonResponse
     {
         $photo = $em->getRepository(Photo::class)->find($id);
@@ -140,6 +149,9 @@ class PhotoController extends AbstractController
     }
 
     // Supprimer une photo
+    /*
+     * @IsGranted({"ROLE_ADMIN"})
+     */
     public function deletePhoto(EntityManagerInterface $em, int $id): JsonResponse
     {
         $photo = $em->getRepository(Photo::class)->find($id);

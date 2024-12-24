@@ -19,12 +19,17 @@
                 <a href="{{ path('portfolio_home') }}" class="{% if app.request.attributes.get('_route') == 'portfolio_home' %}active{% endif %}">Accueil</a>
                 <div class="dropdown">
                     <a href="{{ path('photo_albums') }}" class="{% if app.request.attributes.get('_route') == 'photo_albums' %}active{% endif %}">Photos</a>
-                    <div class="dropdown-content">
-                        <a href="{{ path('album_new') }}">Créer un album</a>
-                        <a href="{{ path('photo_upload') }}">Télécharger une photo</a>
-                    </div>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <div class="dropdown-content">
+                            <a href="{{ path('album_new') }}">Créer un album</a>
+                            <a href="{{ path('photo_upload') }}">Télécharger une photo</a>
+                        </div>
+                    {% endif %}
                 </div>
-                <a href="{{ path('reference') }}" class="{% if app.request.attributes.get('_route') == 'reference' %}active{% endif %}">Références</a>
+                
+                {% if app.user %}
+                    <a href="{{ path('reference') }}" class="{% if app.request.attributes.get('_route') == 'reference' %}active{% endif %}">Références</a>
+                {% endif %}
 
                 {% if app.user %}
                     <div class="dropdown">
@@ -33,7 +38,9 @@
                             Bienvenue, {{ app.user.username }} !
                         </a>
                         <div class="dropdown-content">
-                            <a href="{{ path('dashboard') }}">Dashboard</a>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('dashboard') }}">Dashboard</a>
+                            {% endif %}
                             <a href="{{ path('logout') }}">Se déconnecter</a>
                         </div>
                     </div>

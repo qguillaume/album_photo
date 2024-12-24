@@ -15,6 +15,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AlbumController extends AbstractController
 {
+    /*
+     * @IsGranted({"ROLE_ADMIN"})
+     */
     public function new(Request $request, EntityManagerInterface $em): Response
     {
         $album = new Album();
