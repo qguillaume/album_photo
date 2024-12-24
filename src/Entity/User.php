@@ -10,6 +10,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface
 {
+
+    public function __construct()
+    {
+        $this->roles = ['ROLE_USER']; // Rôle par défaut
+    }
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -26,6 +32,11 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private $email;
 
     public function getId(): ?int
     {
@@ -58,6 +69,18 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
     /**
      * @ORM\Column(type="json")
      */
@@ -68,7 +91,7 @@ class User implements UserInterface
     {
         $roles = $this->roles;
 
-        // Chaque utilisateur a au moins ROLE_USER
+        // Chaque utilisateur a au moins ROLE_USER (cela n'ajoute pas ROLE_USER dans les rôles mais les users auront quand même le role)
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
