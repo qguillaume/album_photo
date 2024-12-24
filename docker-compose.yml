@@ -1,6 +1,14 @@
 version: '3.7'
 
 services:
+  mailhog:
+      image: mailhog/mailhog
+      container_name: symfony_mailhog
+      ports:
+        - "8025:8025" # Interface web
+      networks:
+        - mon_album_photo_symfony_network
+
   # Service PHP avec FPM
   php:
     image: php:7.4-fpm
@@ -14,6 +22,7 @@ services:
       - mon_album_photo_symfony_network  # Utilisation du même réseau
     depends_on:
       - database
+      - mailhog
 
   # Service Nginx
   nginx:

@@ -14,14 +14,14 @@ final class Version20241221234648 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        // Cette méthode est utilisée pour appliquer les changements
-        $this->addSql('ALTER TABLE album ADD image_path VARCHAR(255) DEFAULT NULL');
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->addSql('CREATE TABLE album (id INT AUTO_INCREMENT NOT NULL, nom_album VARCHAR(255) NOT NULL, image_path VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
     }
 
     public function down(Schema $schema): void
     {
         // Cette méthode est utilisée pour annuler les changements si nécessaire
-        $this->addSql('ALTER TABLE album DROP image_path');
+        $this->addSql('DROP TABLE album');
     }
 
 }
