@@ -5,30 +5,23 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
 
 class ErrorController extends AbstractController
 {
-    /**
-     * Cette méthode va gérer les erreurs 404 (et autres erreurs HTTP)
-     * Si l'utilisateur est connecté, il est redirigé vers l'accueil.
-     * Sinon, il est redirigé vers la page de login.
-     *
-     * @Route("/error", name="error_page")
-     */
-    public function showError(Security $security): RedirectResponse
+    public function showError()
     {
-        // Vérifie si l'utilisateur est connecté
-        $user = $security->getUser();
+        // On vérifie si l'exception est une erreur 404 ou 403
+        $exception = $this->get('request_stack')->getCurrentRequest()->get('exception');
 
-        if ($user) {
-            // Si l'utilisateur est connecté, redirige vers l'accueil
-            return $this->redirectToRoute('portfolio_home');
+        if ($exception instanceof NotFoundHttpException || $exception instanceof AccessDeniedHttpException) {
+            // Afficher une page d'erreur générique pour 404 ou 403
+            return $this->render('error/error.html.twig');
         }
 
-        // Si l'utilisateur n'est pas connecté, redirige vers la page de connexion
-        return $this->redirectToRoute('login');
+        return new Response('', Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }

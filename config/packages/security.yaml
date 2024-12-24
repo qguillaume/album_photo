@@ -1,41 +1,41 @@
 security:
-    # Encoders: Cette section est utilisée pour la gestion des mots de passe. Symfony 5+ utilise des "password_hashers".
+    # Configuration des encoders pour les mots de passe
     password_hashers:
         App\Entity\User:
             algorithm: bcrypt
             cost: 12
 
-    # Configure les firewalls
+    # Configuration des firewalls
     firewalls:
         # Le firewall "main" est utilisé pour l'authentification
         main:
-            anonymous: true  # Permet les utilisateurs non authentifiés (visiteurs)
-            # Permet l'authentification par formulaire
+            anonymous: true  # Permet aux utilisateurs non authentifiés d'accéder
             form_login:
                 login_path: login  # chemin de la page de connexion
-                check_path: login  # le chemin qui va recevoir la requête de soumission du formulaire
+                check_path: login  # chemin pour soumettre le formulaire
                 username_parameter: _username  # Paramètre d'authentification
                 password_parameter: _password  # Paramètre de mot de passe
-            # Permet l'accès aux pages protégées après connexion
+                default_target_path: portfolio_home  # Redirige vers la page d'accueil après connexion
             logout:
                 path: logout  # chemin pour se déconnecter
-                target: /
-    # Fournisseur d'utilisateurs (qui permet de charger un utilisateur à partir de la base de données)
+                target: /  # Redirige après déconnexion vers la page d'accueil
+    # Fournisseur d'utilisateurs
     providers:
         app_user_provider:
             entity:
                 class: App\Entity\User
                 property: username
 
-    # Contrôleurs de sécurité pour les utilisateurs
+    # Contrôles d'accès pour les utilisateurs
     access_control:
         # Les utilisateurs non authentifiés peuvent accéder à ces pages
+        - { path: ^/register$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/logout$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/photos$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         
-        # Les utilisateurs connectés seulement peuvent accéder aux pages suivantes :
+        # Les utilisateurs connectés seulement peuvent accéder à ces pages suivantes :
         - { path: ^/reference$, roles: ROLE_USER }
         - { path: ^/dashboard$, roles: ROLE_ADMIN }
         - { path: ^/test-password$, roles: ROLE_ADMIN }

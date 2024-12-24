@@ -49,6 +49,10 @@
                     class="{% if app.request.attributes.get('_route') == 'login' %}active{% endif %}">
                         Se connecter
                     </a>
+                    <a href="{{ path('register') }}" 
+                    class="{% if app.request.attributes.get('_route') == 'register' %}active{% endif %}">
+                        S'inscrire
+                    </a>
                 {% endif %}
             </div>
         </nav>

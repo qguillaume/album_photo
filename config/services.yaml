@@ -28,5 +28,6 @@ services:
         tags:
             - { name: 'controller.service_arguments' }
 
-framework:
-    error_controller: 'App\Controller\ErrorController::showError'
+# Pensez à décommenter pour la prod
+# framework:
+#     error_controller: 'App\Controller\ErrorController::showError'

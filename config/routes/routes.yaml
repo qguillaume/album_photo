@@ -59,3 +59,11 @@ logout:
 test_password:
   path: /test-password
   controller: App\Controller\SecurityController::testPassword
+
+register:
+  path: /register
+  controller: App\Controller\RegistrationController::register
+
+error_page:
+  path: /error
+  controller: App\Controller\ErrorController::showError
