@@ -21,12 +21,12 @@ a {
 }
 
 /* Suppression de la marge et du padding pour les éléments de formulaire */
-input, textarea, select, button {
+/*input, textarea, select, button {
   margin: 0;
   padding: 0;
-  font-family: inherit;  /* Utilise la même police que celle du reste du site */
-  font-size: inherit;    /* Assure une taille de police cohérente */
-}
+  font-family: inherit;  /* Utilise la même police que celle du reste du site * /
+  font-size: inherit;    /* Assure une taille de police cohérente * /
+}*/
 
 /* Réinitialisation des éléments de la liste */
 ul, ol {

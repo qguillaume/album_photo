@@ -1,0 +1,48 @@
+@use "../base/variables" as *; /* Importation des variables globales (comme les couleurs, etc.) si nécessaire */
+
+/* Conteneur principal qui contient l'image et le texte */
+.presentation-container {
+    display: flex; /* Utilisation de Flexbox pour disposer l'image et le texte sur une seule ligne */
+    justify-content: flex-start; /* Aligne les éléments à gauche, sans les étirer sur toute la largeur */
+    align-items: flex-start; /* Aligne les éléments en haut du conteneur */
+    
+    max-width: 100%; /* Assure que le conteneur prend toute la largeur disponible de son parent */
+    margin: 20px auto; /* Centrer le conteneur horizontalement avec un peu d'espace autour (20px en haut/bas) */
+    padding: 0 60px; /* Ajoute de l'espace intérieur de chaque côté du conteneur (60px à gauche et à droite) */
+    gap: 250px; /* Définit un espacement fixe de 250px entre les éléments enfants (photo et texte) */
+    /* gap est une manière moderne et propre de gérer l'espacement entre les éléments dans un conteneur flex */
+
+    /* Conteneur de l'image */
+    .photo_presentation {
+        /* Initialement, l'image est décalée à gauche en dehors du conteneur */
+        // transform: translateX(-100%);
+        // opacity: 0; /* L'image commence invisible */
+        // transition: transform 1s ease-out, opacity 1s ease-out; /* Définir la durée et le type de transition */
+        img {
+            display: block; /* Supprime les marges par défaut des images (les images sont inline par défaut) */
+            max-width: none; /* Ne modifie pas la taille de l'image (elle conserve sa taille d'origine) */
+            border-radius: 8px; /* Applique des coins arrondis à l'image */
+        }
+    }
+
+    /* Conteneur du texte */
+    .texte {
+        // transform: translateX(100%);
+        // opacity: 0;
+        // transition: transform 1s ease-out, opacity 1s ease-out;
+
+        text-align: left; /* Aligne le texte à gauche (en cas d'alignement nécessaire) */
+        font-family: Arial, sans-serif; /* Définition de la police du texte */
+        font-size: 16px; /* Taille du texte */
+        line-height: 1.6; /* Hauteur de ligne (espacement vertical entre les lignes de texte) */
+        color: white; /* Couleur du texte en blanc */
+
+        h2 {
+            font-size: 24px; /* Taille du titre (h2) */
+            margin-bottom: 10px; /* Espacement sous le titre */
+            color: $primary-color; /* Utilisation de la variable pour la couleur du titre (définie dans variables.scss) */
+        }
+    }
+
+    
+}

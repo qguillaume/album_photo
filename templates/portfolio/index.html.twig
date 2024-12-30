@@ -1,10 +1,34 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h2>Bienvenue sur mon site, cliquez sur le lien de votre choix</h2>
-    <ul>
-        {% for section, link in sections %}
-            <li><a href="{{ link }}">{{ section }}</a></li>
-        {% endfor %}
-    </ul>
+    <div class="presentation-container">
+        <div class="photo_presentation">
+            <img src="{{ asset('images/photo_presentation.jpg') }}" alt="Photo de présentation">
+        </div>
+        <div class="texte">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam bibendum in felis non laoreet. 
+                Aenean gravida, tortor non ornare tincidunt, tellus felis consectetur lacus, a finibus ipsum tellus sit amet dui. 
+                Pellentesque condimentum condimentum diam, malesuada malesuada nisl maximus in. Aliquam et elit quis turpis tincidunt fringilla. 
+                Curabitur condimentum orci et pharetra lacinia. In ut libero venenatis, aliquam justo quis, mattis nisl. Aliquam commodo metus a mi semper molestie.
+                Proin efficitur scelerisque malesuada. Sed ut lorem lectus. Duis facilisis dui vitae lacinia accumsan. 
+                Aliquam vestibulum orci sit amet augue condimentum, in mattis lacus congue.
+            </p>
+            <p>
+                Proin aliquam purus porttitor commodo vulputate. Nam lacinia placerat dolor, nec congue lacus ullamcorper nec. 
+                Nullam faucibus, quam congue iaculis dictum, enim nibh luctus eros, in tempus libero enim non neque. 
+                Pellentesque semper risus nec ligula commodo hendrerit. Quisque felis urna, efficitur at risus eget, tempor finibus ex. 
+                Aliquam nec dictum lorem. Praesent gravida nisi quis nibh eleifend, quis accumsan lorem blandit. Donec nunc sapien, tincidunt sit amet porttitor ac, molestie in magna. 
+                In efficitur, nulla quis scelerisque dignissim, ante libero porttitor tortor, sed egestas sem est a quam. Proin commodo interdum risus.
+            </p>
+            <p>
+                Vestibulum posuere accumsan mi rutrum aliquam. Mauris eget sodales turpis. In sagittis tortor quis libero volutpat, vitae efficitur justo pharetra. 
+                Ut consequat tortor ac maximus lobortis. Ut ut interdum sapien. Quisque ac tortor consequat, porta orci quis, ullamcorper ante. 
+                Integer elementum odio libero, tempor tincidunt nunc efficitur sagittis. Interdum et malesuada fames ac ante ipsum primis in faucibus. 
+                In hac habitasse platea dictumst. Nulla malesuada mauris sit amet risus congue accumsan. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. 
+                Cras placerat leo id consequat semper. Morbi ullamcorper vitae orci ac consequat. Donec porttitor sollicitudin metus, sed aliquam est lobortis vel. 
+                Phasellus quis lorem nunc. Suspendisse mauris arcu, placerat vitae lectus hendrerit, sollicitudin congue ipsum.
+            </p>
+        </div>
+    </div>
 {% endblock %}

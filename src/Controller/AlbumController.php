@@ -41,7 +41,7 @@ class AlbumController extends AbstractController
                 $album->setImagePath($newFilename);
             } else {
                 // Utiliser l'image par défaut si aucune image n'est fournie
-                $album->setImagePath('default-photo.png');  // Photo par défaut en tant que chemin de fichier
+                $album->setImagePath(NULL);
             }
 
             // Persister l'album dans la base de données
