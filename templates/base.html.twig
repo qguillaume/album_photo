@@ -7,13 +7,14 @@
     <title>{% block title %}Mon Album Photo{% endblock %}</title>
     {{ encore_entry_link_tags('app-ts') }} <!-- Assure-toi que ceci charge les bons fichiers CSS/JS générés par Webpack -->
     <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+    <link rel="icon" href="{{ asset('images/favicon.png') }}" type="image/png">
     
     {% block head %}{% endblock %}
 </head>
 <body class="dark-background">
 
     <header class="header">
-        <h1>Bienvenue sur mon portfolio</h1>
+        <img src="{{ asset('images/logoGQ.png') }}" alt="logo GQ">
         <nav>
             <div class="menu">
                 <a href="{{ path('portfolio_home') }}" class="{% if app.request.attributes.get('_route') == 'portfolio_home' %}active{% endif %}">Accueil</a>
@@ -58,12 +59,27 @@
         </nav>
     </header>
 
-    <main>
-        {% block body %}{% endblock %}
-    </main>
+    <div class="main-content-wrapper">
+        <div class="main-content">
+            <main>
+                {% block body %}{% endblock %}
+            </main>
+        </div>
+    </div>
 
     <footer>
-        <p>&copy; 2024 Mon Album Photo</p>
+        <p>Copyright 2024 - Guillaume Quesnel</p>
+        <div class="social-icons">
+            <a href="https://www.instagram.com/globeinyourhand" target="_blank">
+                <img src="{{ asset('images/logo_instagram.png') }}" alt="Instagram" class="social-icon">
+            </a>
+            <a href="https://www.linkedin.com/in/guillaume-quesnel-a567352aa/" target="_blank">
+                <img src="{{ asset('images/logo_linkedin.png') }}" alt="LinkedIn" class="social-icon">
+            </a>
+            <a href="https://github.com/qguillaume" target="_blank">
+                <img src="{{ asset('images/logo_github.png') }}" alt="GitHub" class="social-icon">
+            </a>
+        </div>
     </footer>
 
     {{ encore_entry_script_tags('app-ts') }} <!-- Chargement correct du fichier JavaScript via Webpack -->

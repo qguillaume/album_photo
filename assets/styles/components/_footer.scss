@@ -2,19 +2,55 @@
 @use "../base/variables" as *;
 
 footer {
-    background-color: $primary-color;
-    color: white;
-    padding: $space-sm $space-md;
-    text-align: center;
-    margin-top: auto;  /* Pousse le footer en bas */
-    
-    p {
-      font-size: 0.9rem;
-      margin-top: $space-xs;
-    }
+  background-color: $secondary-color; /* Définir la couleur de fond du footer à partir de la variable $secondary-color */
+  color: white; /* Le texte du footer sera blanc */
+  padding: $space-sm $space-md; /* Ajoute un padding interne, avec des valeurs définies dans les variables $space-sm et $space-md pour la hauteur et la largeur */
+  text-align: center; /* Aligne le texte au centre (utile pour le copyright) */
+  margin-top: auto; /* Pousse le footer en bas de la page en utilisant la propriété flexbox */
+  width: 100%; /* Assure que le footer occupe toute la largeur de la page */
+  box-sizing: border-box; /* Inclut le padding et les bordures dans la largeur totale de l'élément */
+  position: relative; /* Position relative pour pouvoir utiliser certaines propriétés CSS comme "absolute" si nécessaire pour des éléments internes */
+}
 
-    a {
-      color: white;
-      text-decoration: underline;
-    }
+p {
+  font-size: 0.9rem; /* Taille de la police pour le texte du copyright */
+  margin-top: $space-xs; /* Espace au-dessus du texte du copyright */
+}
+
+a {
+  color: white; /* Les liens dans le footer seront en blanc */
+  text-decoration: underline; /* Souligne les liens */
+}
+
+.social-icons {
+  margin-top: 10px; /* Espace entre le texte du copyright et les icônes */
+  display: flex; /* Utilise Flexbox pour aligner les icônes horizontalement */
+  justify-content: center; /* Centre les icônes horizontalement */
+  gap: 15px; /* Espace de 15px entre chaque icône */
+}
+
+.social-icon {
+  display: inline-block; /* Les icônes sont en ligne mais peuvent être stylisées comme des blocs */
+  width: 40px; /* Taille fixe de l'icône à 40px */
+  height: 40px; /* Hauteur fixe de l'icône à 40px */
+  background-color: white; /* Fond blanc autour de chaque icône */
+  border-radius: 50%; /* Rend chaque icône ronde */
+  padding: 5px; /* Espace autour de l'image pour que l'icône "respire" à l'intérieur du cercle */
+  transition: transform 0.3s ease-in-out; /* Déclare une transition fluide sur l'élément qui sera activée lorsque l'élément sera survolé */
+  overflow: hidden; /* Empêche les éléments enfants (les images) de dépasser du cercle */
+}
+
+.social-icon img {
+  width: 100%; /* L'image prendra 100% de la largeur de son conteneur, qui est de 40px */
+  height: 100%; /* L'image prendra 100% de la hauteur de son conteneur, qui est également de 40px */
+  object-fit: contain; /* L'image gardera ses proportions sans être déformée */
+  transition: transform 0.3s ease-in-out; /* Applique la même transition à l'image elle-même, pour que l'animation soit fluide */
+}
+
+.social-icon img:hover {
+  transform: scale(1.2); /* Agrandit l'image de 20% au survol */
+}
+
+.social-icon:hover {
+  transform: scale(1.1); /* Agrandit légèrement le conteneur (la "cercle" de l'icône) au survol */
 }

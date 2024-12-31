@@ -1,13 +1,19 @@
 // src/styles/base/_body.scss
 
 html, body {
-    height: 100%;
-    margin: 0;
-    padding: 100px;
-    display: flex;
-    flex-direction: column;
+    height: 100%; /* L'élément html et le body occupent toute la hauteur de la page */
+    margin: 0; /* Retire toute marge par défaut autour du body */
+    padding: 0; /* Retire tout le padding par défaut autour du body */
+    display: flex; /* Utilise Flexbox pour la mise en page du body */
+    flex-direction: column; /* Aligne les éléments enfants (comme header, main, footer) dans une direction verticale (colonne) */
+}
+
+.main-content-wrapper {
+    flex: 1;
+    padding: 150px 200px 0 200px; /* Padding appliqué uniquement au contenu principal */
+    box-sizing: border-box;
 }
 
 main {
-    flex: 1;  // Permet au main de prendre toute la place restante
+    padding: 0;
 }
