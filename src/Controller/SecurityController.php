@@ -5,6 +5,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\LoginFormType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,24 +25,51 @@ class SecurityController extends AbstractController
         $this->passwordHasher = $passwordHasher;
     }
 
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
     {
+        //dd($request->request->all());
         // Récupère les erreurs de connexion (si présentes)
         $error = $authenticationUtils->getLastAuthenticationError();
         // Récupère le dernier nom d'utilisateur soumis (pour préremplir le champ)
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        // Log de l'erreur pour le débogage
-        if ($error) {
-            dump($error);
+        // Créer un objet User vide
+        $user = new User();
+        $user->setUsername($lastUsername);  // On préremplir avec le dernier nom d'utilisateur
+
+        // Créer le formulaire de connexion en liant l'entité User
+        $form = $this->createForm(LoginFormType::class, $user, [
+            'method' => 'POST'
+        ]);
+
+        // Si le formulaire est soumis et valide
+        $form->handleRequest($request);
+
+        //dd($form->getData());  // Pour inspecter les données du formulaire
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Recherche utilisateur dans la base de données
+            $userRepository = $this->getDoctrine()->getRepository(User::class);
+            $user = $userRepository->findOneBy(['username' => $form->get('login_form[username]')->getData()]);// Faire bien attention à cette ligne
+
+            if ($user && $this->passwordHasher->isPasswordValid($user, $form->get('password')->getData())) {
+                // Authentification réussie
+                return $this->redirectToRoute('portfolio_home');
+            }
+
+            // Si l'utilisateur ou le mot de passe est incorrect
+            $error = 'Nom d\'utilisateur ou mot de passe incorrect.';
         }
 
         // Afficher la page de connexion
         return $this->render('security/login.html.twig', [
-            'last_username' => $lastUsername,
+            'loginForm' => $form->createView(),
             'error' => $error,
+            'last_username' => $lastUsername,
         ]);
     }
+
+
 
     /**
      * Endpoint pour tester un mot de passe avec son hashage.

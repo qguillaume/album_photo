@@ -13,8 +13,8 @@ security:
             form_login:
                 login_path: login  # chemin de la page de connexion
                 check_path: login  # chemin pour soumettre le formulaire
-                username_parameter: _username  # Paramètre d'authentification
-                password_parameter: _password  # Paramètre de mot de passe
+                username_parameter: login_form[username]
+                password_parameter: login_form[password]
                 default_target_path: portfolio_home  # Redirige vers la page d'accueil après connexion
             logout:
                 path: logout  # chemin pour se déconnecter

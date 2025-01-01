@@ -1,16 +1,18 @@
 /* _buttons.scss */
-
-/* Styles généraux pour le bouton */
-/*#theme-toggle {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: transparent;
-    border: 2px solid #000;
-    cursor: pointer;
-    color: inherit;
-    transition: background-color 0.3s ease, color 0.3s ease;
+@use "./variables" as *;
+/*
+button[type="submit"] {
+    background-color: $secondary-color; /* Vert pour les boutons * /
+    color: white; /* Texte blanc * /
+    border: none; /* Supprime les bordures * /
+    padding: 0.5rem 1rem; /* Espacement interne * /
+    cursor: pointer; /* Change le curseur * /
+    border-radius: 5px; /* Angle arrondi * /
+    font-size: 1rem; /* Taille de police standard * /
+    transition: background-color 0.3s; /* Animation fluide * /
 }
 
-#theme-toggle:hover {
-    background-color: #f1f1f1;
+button[type="submit"]:hover {
+    background-color: $secondary-color-hover; /* Couleur verte plus foncée * /
 }*/
+

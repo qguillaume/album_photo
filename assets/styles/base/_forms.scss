@@ -1,0 +1,31 @@
+@use "./variables" as *;
+
+form input[type="text"], 
+form input[type="email"], 
+form input[type="password"], 
+form input[type="submit"], 
+form button {
+    width: 50%; /* Largeur réduite */
+    margin-bottom: 1rem; /* Espacement vertical */
+    padding: 0.5rem; /* Espacement interne */
+    border: 1px solid #ccc; /* Bordure grise */
+    border-radius: 5px; /* Angles arrondis */
+    font-size: 1rem; /* Taille du texte */
+    transition: background-color 0.3s; /* Animation au hover */
+    display: inline-block; /* Supprime le blocage pour empêcher le centrage */
+}
+
+form input[type="submit"],
+form button {
+    background-color: $secondary-color; /* Fond vert pour les boutons */
+    color: white; /* Texte blanc */
+    border: none; /* Supprime la bordure */
+    cursor: pointer; /* Pointeur */
+    width: auto; /* Ajuste automatiquement à la taille du contenu */
+    padding: 0.5rem 1rem; /* Ajuste l'espacement pour un bouton simple */
+}
+
+form input[type="submit"]:hover,
+form button:hover {
+    background-color: $secondary-color-hover; /* Fond vert plus sombre au survol */
+}

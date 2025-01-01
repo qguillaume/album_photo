@@ -1,26 +1,18 @@
-{# templates/security/login.html.twig #}
-
 {% extends 'base.html.twig' %}
 
-{% block body %}
-<h2>Se connecter</h2>
+{% block title %}Connexion{% endblock %}
 
-<form action="{{ path('login') }}" method="post">
-    <div>
-        <label for="username">Nom d'utilisateur</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}" required>
-    </div>
-    <div>
-        <label for="password">Mot de passe</label>
-        <input type="password" id="password" name="_password" required>
-    </div>
-    
+{% block body %}
+    <h2>Se connecter</h2>
+
+    {# Symfony Form start - on remplace le formulaire HTML simple par le formulaire Symfony #}
+    {{ form_start(loginForm) }}
+        {{ form_row(loginForm.username) }}
+        {{ form_row(loginForm.password) }}
+        {{ form_row(loginForm.login) }}
+    {{ form_end(loginForm) }}
+
     {% if error %}
-        <div class="error">
-            <p>Nom d'utilisateur ou mot de passe incorrect.</p>
-        </div>
+        <div class="error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
-    
-    <button type="submit">Se connecter</button>
-</form>
 {% endblock %}

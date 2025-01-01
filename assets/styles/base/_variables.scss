@@ -15,6 +15,7 @@ $yellow-color: #f1c40f;
 $green-color: #2ecc71;
 $purple-color: #9b59b6;
 $orange-color: #ffa500;
+$input-color: #c3c3c3;
 
 /* Définition des couleurs hover */
 $primary-color-hover: darken($primary-color, 10%);
@@ -25,6 +26,7 @@ $yellow-color-hover: darken($yellow-color, 10%);
 $green-color-hover: darken($green-color, 10%);
 $purple-color-hover: darken($purple-color, 10%);
 $orange-color-hover: darken($orange-color, 10%);
+$input-color-hover: darken($input-color, 10%);
 
 $color-light-bg: #ffffff; // Couleur de fond claire
 $color-light-text: #000000; // Texte sombre pour le mode clair

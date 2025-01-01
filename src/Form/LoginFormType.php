@@ -13,30 +13,28 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RegistrationFormType extends AbstractType
+class LoginFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        // Lier les champs username et password à l'entité User
         $builder
             ->add('username', TextType::class, [
                 'attr' => ['placeholder' => 'Nom d\'utilisateur'],
                 'label' => false, // Désactive l'affichage du label
             ])
-            ->add('email', EmailType::class, [
-                'attr' => ['placeholder' => 'Adresse email'],
-                'label' => false,
-            ])
             ->add('password', PasswordType::class, [
                 'attr' => ['placeholder' => 'Mot de passe'],
                 'label' => false,
             ])
-            ->add('register', SubmitType::class, [
-                'label' => 'S\'inscrire',
+            ->add('login', SubmitType::class, [
+                'label' => 'Se connecter',
             ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
+        // Ici, on lie bien à l'entité User
         $resolver->setDefaults([
             'data_class' => User::class,
         ]);
