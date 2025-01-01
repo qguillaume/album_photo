@@ -12,10 +12,16 @@
     {% block head %}{% endblock %}
 </head>
 <body class="dark-background">
-
+{% dump app.request.locale %}
     <header class="header">
         <img src="{{ asset('images/logoGQ.png') }}" alt="logo GQ">
         <nav>
+            <form method="get" action="{{ path('change_locale') }}">
+                <select name="locale" onchange="this.form.submit()">
+                    <option value="fr" {{ app.request.locale == 'fr' ? 'selected' : '' }}>Français</option>
+                    <option value="en" {{ app.request.locale == 'en' ? 'selected' : '' }}>English</option>
+                </select>
+            </form>
             <div class="menu">
                 <a href="{{ path('portfolio_home') }}" class="{% if app.request.attributes.get('_route') == 'portfolio_home' %}active{% endif %}">Accueil</a>
                 <div class="dropdown">

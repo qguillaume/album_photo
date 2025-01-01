@@ -67,3 +67,11 @@ register:
 error_page:
   path: /error
   controller: App\Controller\ErrorController::showError
+
+change_locale:
+  path: /change_locale
+  controller: App\Controller\LocaleController::changeLocale
+
+test_translation:
+  path: /test_translation
+  controller: App\Controller\LocaleController::testTranslation
