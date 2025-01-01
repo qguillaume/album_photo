@@ -32,3 +32,11 @@ yarn-error.log
 /.env
 /.env.dev
 /.env.test
+
+!/public/images/fr.png
+!/public/images/gb.png
+!/public/images/logo_github.png
+!/public/images/logo_instagram.png
+!/public/images/logo_linkedin.png
+!/public/images/default-photo.png
+!/public/images/folder-icon.png

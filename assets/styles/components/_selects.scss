@@ -1,0 +1,72 @@
+@use "../base/variables" as *;
+
+.custom-select {
+    position: relative;
+    display: inline-block;
+    width: 60px; /* Largeur du composant principal */
+    padding-top: 4px; /* à revoir */
+
+    .selected-option {
+        padding: 5px;
+        background-color: $header-bg-color;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 30px;
+        text-align: center;
+
+        img.flag-icon {
+            width: 20px;
+            height: 15px;
+        }
+    }
+
+    .options {
+        position: absolute;
+        top: 100%; /* Directement sous l'élément principal */
+        left: 0;
+        width: 100%;
+        background-color: $header-bg-color;
+        border: 1px solid #ccc;
+        border-radius: 0 0 5px 5px; /* Coins inférieurs arrondis */
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: none;
+        z-index: 10;
+
+        li {
+            display: block;
+            height: 30px; /* Hauteur uniforme pour chaque option */
+            line-height: 30px; /* Alignement vertical du contenu */
+            text-align: center; /* Alignement horizontal du contenu */
+            cursor: pointer;
+
+            a {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%; /* Remplit toute la hauteur de l'option */
+                width: 100%; /* Remplit toute la largeur de l'option */
+                text-decoration: none; /* Supprime la décoration des liens */
+                color: inherit; /* Hérite de la couleur du texte parent */
+            }
+
+            &:hover {
+                background-color: $primary-color-hover; /* Fond bleu sur hover */
+            }
+
+            img.flag-icon {
+                width: 20px;
+                height: 15px;
+            }
+        }
+    }
+
+    &:hover .options {
+        display: block;
+    }
+}

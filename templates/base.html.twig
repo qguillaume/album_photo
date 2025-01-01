@@ -16,12 +16,6 @@
     <header class="header">
         <img src="{{ asset('images/logoGQ.png') }}" alt="logo GQ">
         <nav>
-            <form method="get" action="{{ path('change_locale') }}">
-                <select name="locale" onchange="this.form.submit()">
-                    <option value="fr" {{ app.request.locale == 'fr' ? 'selected' : '' }}>Français</option>
-                    <option value="en" {{ app.request.locale == 'en' ? 'selected' : '' }}>English</option>
-                </select>
-            </form>
             <div class="menu">
                 <a href="{{ path('portfolio_home') }}" class="{% if app.request.attributes.get('_route') == 'portfolio_home' %}active{% endif %}">Accueil</a>
                 <div class="dropdown">
@@ -61,6 +55,34 @@
                         S'inscrire
                     </a>
                 {% endif %}
+
+                <form method="get" action="{{ path('change_locale') }}">
+                    <div class="custom-select">
+                        <div class="selected-option">
+                            {% if app.request.locale == 'fr' %}
+                                <img src="{{ asset('images/fr.png') }}" alt="Français" class="flag-icon" />
+                            {% else %}
+                                <img src="{{ asset('images/gb.png') }}" alt="English" class="flag-icon" />
+                            {% endif %}
+                        </div>
+                        <ul class="options">
+                            {% if app.request.locale != 'fr' %}
+                                <li>
+                                    <a href="{{ path('change_locale', {'locale': 'fr'}) }}">
+                                        <img src="{{ asset('images/fr.png') }}" alt="Français" class="flag-icon" />
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if app.request.locale != 'en' %}
+                                <li>
+                                    <a href="{{ path('change_locale', {'locale': 'en'}) }}">
+                                        <img src="{{ asset('images/gb.png') }}" alt="English" class="flag-icon" />
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </form>
             </div>
         </nav>
     </header>
