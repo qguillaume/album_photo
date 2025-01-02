@@ -75,3 +75,7 @@ change_locale:
 test_translation:
   path: /test_translation
   controller: App\Controller\LocaleController::testTranslation
+
+dashboard:
+  path: /dashboard
+  controller: App\Controller\DashboardController::index

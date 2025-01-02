@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import AlbumControls from "../components/AlbumControls";
 import PhotoControls from "../components/PhotoControls"; // Importation de PhotoControls
 import PhotoViewer from "../components/PhotoViewer";
+import { Photo } from "./types";
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Chargement des conteneurs React...");
@@ -94,4 +95,53 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Données manquantes pour la photo :", el);
     }
   });
+
+  // Ajout du tableau pour les photos
+  const PhotosTable = () => {
+    const [photos, setPhotos] = useState<Photo[]>([]);
+
+    useEffect(() => {
+      // Remplace cette URL par l'API de ton projet
+      fetch(`${process.env.REACT_APP_API_URL}/photos`)
+        .then((response) => response.json())
+        .then((data) => {
+          setPhotos(data);
+        })
+        .catch((error) => {
+          console.error("Erreur lors de la récupération des photos:", error);
+        });
+    }, []);
+
+    return (
+      <div>
+        <h2>Liste des Photos</h2>
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <thead>
+            <tr>
+              <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "left" }}>ID</th>
+              <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "left" }}>Titre</th>
+              <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "left" }}>Nombre de Likes</th>
+              <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "left" }}>Album</th>
+            </tr>
+          </thead>
+          <tbody>
+            {photos.map((photo) => (
+              <tr key={photo.id}>
+                <td style={{ border: "1px solid #ddd", padding: "8px" }}>{photo.id}</td>
+                <td style={{ border: "1px solid #ddd", padding: "8px" }}>{photo.title}</td>
+                <td style={{ border: "1px solid #ddd", padding: "8px" }}>{photo.likesCount}</td>
+                <td style={{ border: "1px solid #ddd", padding: "8px" }}>{photo.album}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
+  // Rendre le tableau des photos dans le DOM
+  const photosTableElement = document.getElementById("photos-table");
+  if (photosTableElement) {
+    ReactDOM.createRoot(photosTableElement).render(<PhotosTable />);
+  }
 });

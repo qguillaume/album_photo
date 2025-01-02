@@ -5,18 +5,22 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\AlbumRepository;
+use App\Repository\PhotoRepository;
 
 class DashboardController extends AbstractController
 {
-    /**
-     * @Route("/dashboard", name="dashboard")
-     */
-    public function index(): Response
+    public function index(AlbumRepository $albumRepository, PhotoRepository $photoRepository): Response
     {
         // Cette page est protégée, donc l'utilisateur doit être connecté
         $this->denyAccessUnlessGranted('ROLE_USER');
-
-        return $this->render('dashboard/index.html.twig');
+        $albums = $albumRepository->findAll();  // Récupère tous les albums
+        $photos = $photoRepository->findAll();  // Récupère toutes les photos
+        $topLikedPhotos = $photoRepository->findTopLikedPhotos(); // Les photos avec le plus de likes
+        return $this->render('dashboard/index.html.twig', [
+            'albums' => $albums,
+            'photos' => $photos,
+            'topLikedPhotos' => $topLikedPhotos,
+        ]);
     }
 }

@@ -5,13 +5,15 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Entity\Photo;
 use App\Entity\Album;
 use App\Entity\Like;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\PhotoType;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Repository\PhotoRepository;
+use Symfony\Component\Routing\Annotation\Route;
+
 
 class PhotoController extends AbstractController
 {
@@ -141,5 +143,29 @@ class PhotoController extends AbstractController
         $entityManager->flush();
 
         return new JsonResponse(['likes' => $photo->getLikesCount()]);
+    }
+
+    /**
+     * @Route("/photos", name="photos_list", methods={"GET"})
+     */
+    public function listPhotos(PhotoRepository $photoRepository): JsonResponse
+    {
+        // Récupérer toutes les photos
+        $photos = $photoRepository->findAll();
+
+        // Convertir les photos en un tableau JSON
+        $photosData = [];
+        foreach ($photos as $photo) {
+            $photosData[] = [
+                'id' => $photo->getId(),
+                'title' => $photo->getTitle(),
+                'filePath' => $photo->getFilePath(),
+                'album' => $photo->getAlbum() ? $photo->getAlbum()->getNomAlbum() : 'Sans album',
+                'likesCount' => $photo->getLikesCount(),
+            ];
+        }
+
+        // Retourner une réponse JSON
+        return new JsonResponse($photosData);
     }
 }

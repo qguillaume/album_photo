@@ -1,5 +1,30 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Dashboard{% endblock %}
+
 {% block body %}
-    <h2>Dashboard</h2>
+<h1>Dashboard</h1>
+
+<h2>Albums</h2>
+<ul>
+    {% for album in albums %}
+        <li>{{ album.getNomAlbum() }} ({{ album.photos|length }} photos)</li>
+    {% endfor %}
+</ul>
+
+<h2>Photos</h2>
+<ul>
+    {% for photo in photos %}
+        <li>{{ photo.title }} - Likes: {{ photo.getLikesCount() }}</li>
+    {% endfor %}
+</ul>
+
+<h2>Top Photos par Likes</h2>
+<ul>
+    {% for photo in topLikedPhotos %}
+        <li>{{ photo.title }} - {{ photo.getLikesCount() }} likes</li>
+    {% endfor %}
+</ul>
+
+<div id="photos-table"></div>
 {% endblock %}
