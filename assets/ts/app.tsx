@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
-import AlbumControls from "../components/AlbumControls"; // Importation du composant pour les albums
-import PhotoControls from "../components/PhotoControls"; // Importation du composant pour les photos
-import PhotoViewer from "../components/PhotoViewer"; // Importation du composant pour afficher la photo en grand
+import AlbumControls from "../components/AlbumControls";
+import PhotoControls from "../components/PhotoControls"; // Importation de PhotoControls
+import PhotoViewer from "../components/PhotoViewer";
 
-// Fonction principale pour initialiser React sur chaque conteneur généré par Twig
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Chargement des conteneurs React...");
 
@@ -21,54 +20,26 @@ document.addEventListener("DOMContentLoaded", () => {
           albumId={parseInt(albumId, 10)}
           albumName={albumName}
           onRename={(id, newName) => {
-            console.log("API URL renom:", process.env.REACT_APP_API_URL);
             console.log(`Renommage : Album ID ${id} -> Nouveau nom : "${newName}"`);
 
-            fetch(`${process.env.REACT_APP_API_URL}/albums/rename/${albumId}`, {
+            fetch(`${process.env.REACT_APP_API_URL}/albums/rename/${id}`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({ name: newName }),
             })
-              .then((response) => {
-                if (!response.ok) {
-                  throw new Error("Erreur lors du renommage de l'album");
-                }
-                return response.json();
-              })
-              .then((data) => {
-                console.log("Succès :", data);
-                alert(`Album renommé en : "${newName}"`);
-                window.location.reload(); // Recharge la page pour voir les changements
-              })
-              .catch((error) => {
-                console.error("Erreur :", error);
-                alert("Une erreur s'est produite lors du renommage.");
-              });
+              .then((response) => response.json())
+              .then(() => alert(`Album renommé en : "${newName}"`))
+              .catch(() => alert("Erreur lors du renommage de l'album."));
           }}
           onDelete={(id) => {
-            console.log("API URL suppress:", process.env.REACT_APP_API_URL);
-            console.log(`Suppression : Album ID ${id}`);
-
-            fetch(`${process.env.REACT_APP_API_URL}/albums/delete/${albumId}`, {
-              method: "DELETE",
-            })
-              .then((response) => {
-                if (!response.ok) {
-                  throw new Error("Erreur lors de la suppression de l'album");
-                }
-                return response.json();
+            fetch(`${process.env.REACT_APP_API_URL}/albums/delete/${id}`, { method: "DELETE" })
+              .then(() => {
+                alert("Album supprimé avec succès");
+                el.remove();
               })
-              .then((data) => {
-                console.log("Succès :", data);
-                alert(`Album supprimé avec succès`);
-                window.location.reload(); // Recharge la page pour voir les changements
-              })
-              .catch((error) => {
-                console.error("Erreur :", error);
-                alert("Une erreur s'est produite lors de la suppression.");
-              });
+              .catch(() => alert("Erreur lors de la suppression de l'album."));
           }}
         />
       );
@@ -81,7 +52,13 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("[id^='photo-controls-']").forEach((el) => {
     const photoId = el.getAttribute("data-photo-id");
     const photoTitle = el.getAttribute("data-photo-title");
-    const photoUrl = el.getAttribute("data-photo-url"); // Récupération de l'URL de la photo
+    const photoUrl = el.getAttribute("data-photo-url");
+    const initialLikesCount = parseInt(el.getAttribute("data-initial-likes") || "0", 10);
+
+    const onLike = (id: number) => {
+      console.log(`Photo ${id} aimée!`);
+      // Gérer la logique ici si tu veux mettre à jour l'état des likes dans le parent
+    };
 
     if (photoId && photoTitle && photoUrl) {
       console.log(`Initialisation React : Photo ${photoTitle} (ID: ${photoId})`);
@@ -91,57 +68,26 @@ document.addEventListener("DOMContentLoaded", () => {
           photoId={parseInt(photoId, 10)}
           photoTitle={photoTitle}
           photoUrl={photoUrl}
-          onView={(id) => {}}
+          initialLikesCount={initialLikesCount}
+          onView={() => {}}
           onRename={(id, newName) => {
-            console.log("API URL renom:", process.env.REACT_APP_API_URL);
-            console.log(`Renommage : Photo ID ${id} -> Nouveau nom : "${newName}"`);
-
-            fetch(`${process.env.REACT_APP_API_URL}/photo/rename/${photoId}`, {
+            fetch(`${process.env.REACT_APP_API_URL}/photo/rename/${id}`, {
               method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ name: newName }),
             })
-              .then((response) => {
-                if (!response.ok) {
-                  throw new Error("Erreur lors du renommage de la photo");
-                }
-                return response.json();
-              })
-              .then((data) => {
-                console.log("Succès :", data);
-                alert(`Photo renommée en : "${newName}"`);
-                window.location.reload(); // Recharge la page pour voir les changements
-              })
-              .catch((error) => {
-                console.error("Erreur :", error);
-                alert("Une erreur s'est produite lors du renommage.");
-              });
+              .then(() => alert(`Photo renommée en : "${newName}"`))
+              .catch(() => alert("Erreur lors du renommage de la photo."));
           }}
           onDelete={(id) => {
-            console.log("API URL suppress:", process.env.REACT_APP_API_URL);
-            console.log(`Suppression : Photo ID ${id}`);
-
-            fetch(`${process.env.REACT_APP_API_URL}/photo/delete/${photoId}`, {
-              method: "DELETE",
-            })
-              .then((response) => {
-                if (!response.ok) {
-                  throw new Error("Erreur lors de la suppression de la photo");
-                }
-                return response.json();
+            fetch(`${process.env.REACT_APP_API_URL}/photo/delete/${id}`, { method: "DELETE" })
+              .then(() => {
+                alert("Photo supprimée avec succès");
+                el.remove();
               })
-              .then((data) => {
-                console.log("Succès :", data);
-                alert(`Photo supprimée avec succès`);
-                window.location.reload(); // Recharge la page pour voir les changements
-              })
-              .catch((error) => {
-                console.error("Erreur :", error);
-                alert("Une erreur s'est produite lors de la suppression.");
-              });
+              .catch(() => alert("Erreur lors de la suppression de la photo."));
           }}
+          onLike={onLike} // Passer la fonction `onLike`
         />
       );
     } else {

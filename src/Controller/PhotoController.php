@@ -1,6 +1,5 @@
 <?php
 
-// src/Controller/PhotoController.php
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -9,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Entity\Photo;
 use App\Entity\Album;
+use App\Entity\Like;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\PhotoType;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -41,7 +41,6 @@ class PhotoController extends AbstractController
         return $this->render('photo/photos_by_album.html.twig', [
             'album' => $album,
             'photos' => $album->getPhotos(),
-            //'defaultPhoto' => $defaultPhoto,  // Passer la photo par défaut ici
         ]);
     }
 
@@ -56,6 +55,7 @@ class PhotoController extends AbstractController
             'photos' => $photos,
         ]);
     }
+
     public function upload(Request $request, EntityManagerInterface $em): Response
     {
         $photo = new Photo();
@@ -63,76 +63,28 @@ class PhotoController extends AbstractController
 
         $form->handleRequest($request);
 
-        // Validation du formulaire
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                // Gestion du fichier uploadé
-                $file = $form->get('file')->getData();
-                if ($file) {
-                    $filename = uniqid() . '.' . $file->guessExtension();
-                    $file->move($this->getParameter('photos_directory'), $filename);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form->get('file')->getData();
+            if ($file) {
+                $filename = uniqid() . '.' . $file->guessExtension();
+                $file->move($this->getParameter('photos_directory'), $filename);
 
-                    // Met à jour l'entité Photo avec le chemin du fichier
-                    $photo->setFilePath($filename);
-                    $em->persist($photo);
-                    $em->flush();
+                $photo->setFilePath($filename);
+                $em->persist($photo);
+                $em->flush();
 
-                    // Redirige vers la liste des photos après succès
-                    return $this->redirectToRoute('photo_albums');
-                }
-            } else {
-                // En cas de validation échouée, afficher les erreurs sur la vue actuelle
-                $this->addFlash('error', 'Une erreur est survenue lors de l\'upload de votre photo.');
+                return $this->redirectToRoute('photo_albums');
             }
+        } else {
+            $this->addFlash('error', 'Une erreur est survenue lors de l\'upload de votre photo.');
         }
 
-        // Retourne la vue si le formulaire n'est pas soumis ou invalide
         return $this->render('photo/upload.html.twig', [
             'form' => $form->createView(),
         ]);
     }
 
-    // Renommer un album
-    /*
-     * @IsGranted({"ROLE_ADMIN"})
-     */
-    public function renameAlbum(Request $request, EntityManagerInterface $em, int $id): JsonResponse
-    {
-        $album = $em->getRepository(Album::class)->find($id);
-
-        if (!$album) {
-            return new JsonResponse(['message' => 'Album non trouvé'], 404);
-        }
-
-        $data = json_decode($request->getContent(), true);
-        $album->setNomAlbum($data['name']);
-        $em->flush();
-
-        return new JsonResponse(['message' => 'Album renommé avec succès']);
-    }
-
-    // Supprimer un album
-    /*
-     * @IsGranted({"ROLE_ADMIN"})
-     */
-    public function deleteAlbum(EntityManagerInterface $em, int $id): JsonResponse
-    {
-        $album = $em->getRepository(Album::class)->find($id);
-
-        if (!$album) {
-            return new JsonResponse(['message' => 'Album non trouvé'], 404);
-        }
-
-        $em->remove($album);
-        $em->flush();
-
-        return new JsonResponse(['message' => 'Album supprimé avec succès']);
-    }
-
     // Renommer une photo
-    /*
-     * @IsGranted({"ROLE_ADMIN"})
-     */
     public function renamePhoto(Request $request, EntityManagerInterface $em, int $id): JsonResponse
     {
         $photo = $em->getRepository(Photo::class)->find($id);
@@ -149,9 +101,6 @@ class PhotoController extends AbstractController
     }
 
     // Supprimer une photo
-    /*
-     * @IsGranted({"ROLE_ADMIN"})
-     */
     public function deletePhoto(EntityManagerInterface $em, int $id): JsonResponse
     {
         $photo = $em->getRepository(Photo::class)->find($id);
@@ -164,5 +113,33 @@ class PhotoController extends AbstractController
         $em->flush();
 
         return new JsonResponse(['message' => 'Photo supprimée avec succès']);
+    }
+
+    // Route pour gérer les likes
+    public function like(Photo $photo, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return new JsonResponse(['error' => 'Vous devez être connecté pour liker une photo.'], 400);
+        }
+
+        $existingLike = $entityManager->getRepository(Like::class)->findOneBy([
+            'user' => $user,
+            'photo' => $photo,
+        ]);
+
+        if ($existingLike) {
+            return new JsonResponse(['error' => 'Vous avez déjà liké cette photo.'], 400);
+        }
+
+        $like = new Like();
+        $like->setUser($user);
+        $like->setPhoto($photo);
+        $like->setCreatedAt(new \DateTime());
+
+        $entityManager->persist($like);
+        $entityManager->flush();
+
+        return new JsonResponse(['likes' => $photo->getLikesCount()]);
     }
 }

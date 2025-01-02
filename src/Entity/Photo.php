@@ -1,8 +1,9 @@
 <?php
 
-// src/Entity/Photo.php
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -36,7 +37,21 @@ class Photo
      */
     private $filePath; // Nouvelle propriété pour stocker le chemin du fichier
 
-    // Getters et setters...
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Album", inversedBy="photos")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private ?Album $album = null;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Like::class, mappedBy="photo", orphanRemoval=true)
+     */
+    private Collection $likes;
+
+    public function __construct()
+    {
+        $this->likes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -80,12 +95,6 @@ class Photo
         return $this;
     }
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Album", inversedBy="photos")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private ?Album $album = null;
-
     public function getAlbum(): ?Album
     {
         return $this->album;
@@ -96,5 +105,40 @@ class Photo
         $this->album = $album;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Like[]
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(Like $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+            $like->setPhoto($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(Like $like): self
+    {
+        if ($this->likes->removeElement($like)) {
+            // Si la relation est cassée, définissez la propriété photo de l'objet Like à null
+            if ($like->getPhoto() === $this) {
+                $like->setPhoto(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getLikesCount(): int
+    {
+        return $this->likes->count();
     }
 }

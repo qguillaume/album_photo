@@ -5,25 +5,30 @@
 
 {# Affiche l'image par défaut avec un lien vers la liste des albums #}
 <div class="default-photo">
-    
+    <!-- Il peut être utile d'afficher une photo par défaut ici si nécessaire -->
 </div>
 
 <div class="photos-container">
     <div class="photo">
         <a href="{{ path('photo_albums') }}">
-        <img src="{{ asset('images/default-photo.png') }}" 
-                alt="Retour à la liste des albums">
+            <img src="{{ asset('images/default-photo.png') }}" alt="Retour à la liste des albums">
         </a>
         <p>Retour aux albums</p>
     </div>
+
     {% for photo in photos %}
         <div class="photo">
             <img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" class="photo-thumbnail">
             <p>{{ photo.title }}</p>
 
-            {% if is_granted('ROLE_ADMIN') %}
-                <!-- Conteneur React pour modifier/supprimer -->
-                <div id="photo-controls-{{ photo.id }}" data-photo-id="{{ photo.id }}" data-photo-title="{{ photo.title }}" data-photo-url="{{ asset('uploads/photos/' ~ photo.filePath) }}"></div>
+            {% if is_granted('ROLE_USER') %}
+                <!-- Conteneur React pour les autres contrôles -->
+                <div id="photo-controls-{{ photo.id }}" 
+                     data-photo-id="{{ photo.id }}" 
+                     data-photo-title="{{ photo.title }}" 
+                     data-photo-url="{{ asset('uploads/photos/' ~ photo.filePath) }}"
+                     data-initial-likes="{{ photo.likesCount }}">
+                </div>
             {% endif %}
         </div>
     {% else %}
