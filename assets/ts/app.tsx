@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const [photos, setPhotos] = useState<Photo[]>([]);
 
     useEffect(() => {
-      fetch(`${process.env.REACT_APP_API_URL}/photos`)
+      fetch(`${process.env.REACT_APP_API_URL}/photos_list`)
         .then((response) => response.json())
         .then((data) => {
           setPhotos(data);

@@ -146,7 +146,7 @@ class PhotoController extends AbstractController
     }
 
     /**
-     * @Route("/photos", name="photos_list", methods={"GET"})
+     * @Route("/photos_list", name="photos_list", methods={"GET"})
      */
     public function listPhotos(PhotoRepository $photoRepository): JsonResponse
     {
