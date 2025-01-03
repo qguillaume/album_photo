@@ -1,13 +1,16 @@
-// Import des styles de base
+// Styles globaux et utilitaires
 @use "base/variables" as *;
 @use "base/mixins" as *;
 @use "base/reset" as *;
+
+// Styles spécifiques
 @use "base/boxes" as *;
-@use "base/buttons" as *; 
+@use "base/buttons" as *;
 @use "base/body" as *;
 @use "base/inputs" as *;
 @use "base/forms" as *;
-// Import des composants
+
+// Composants
 @use "components/album-controls" as *;
 @use "components/photo-controls" as *;
 @use "components/item-list" as *;
@@ -18,3 +21,4 @@
 @use "components/photo-viewer" as *;
 @use "components/presentation" as *;
 @use "components/selects" as *;
+@use "components/dashboard" as *;

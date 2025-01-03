@@ -6,14 +6,14 @@ input {
     border: 1px solid #ced4da; /* Couleur grise douce pour le contour */
     border-radius: 5px; /* Angle légèrement arrondi */
     font-size: 1rem; /* Police lisible */
-    color: #495057; /* Couleur du texte */
+    color: #c3c3c3; /* Couleur du texte */
     background-color: $input-color; /* Fond légèrement gris */
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Effet d'ombre interne */
     transition: border-color 0.3s, box-shadow 0.3s; /* Animation fluide sur le focus */
 }
 
 input:focus {
-    border-color: #80bdff; /* Couleur bleue pour l'accent */
+    border-color: $yellow-color; /* Couleur bleue pour l'accent */
     outline: none; /* Supprime le contour par défaut */
-    box-shadow: 0 0 5px rgba(128, 189, 255, 0.5); /* Ombre bleue subtile */
+    box-shadow: 0 0 5px rgba(255, 253, 128, 0.815); /* Ombre jaune subtile */
 }

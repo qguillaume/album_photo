@@ -12,19 +12,5 @@
     {% endfor %}
 </ul>
 
-<h2>Photos</h2>
-<ul>
-    {% for photo in photos %}
-        <li>{{ photo.title }} - Likes: {{ photo.getLikesCount() }}</li>
-    {% endfor %}
-</ul>
-
-<h2>Top Photos par Likes</h2>
-<ul>
-    {% for photo in topLikedPhotos %}
-        <li>{{ photo.title }} - {{ photo.getLikesCount() }} likes</li>
-    {% endfor %}
-</ul>
-
 <div id="photos-table"></div>
 {% endblock %}

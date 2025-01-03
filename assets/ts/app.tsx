@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import AlbumControls from "../components/AlbumControls";
-import PhotoControls from "../components/PhotoControls"; // Importation de PhotoControls
-import PhotoViewer from "../components/PhotoViewer";
+import PhotoControls from "../components/PhotoControls";
+import PhotoTable from "../components/PhotoTable";
 import { Photo } from "./types";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -14,15 +14,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const albumName = el.getAttribute("data-album-name");
 
     if (albumId && albumName) {
-      console.log(`Initialisation React : Album ${albumName} (ID: ${albumId})`);
-
       ReactDOM.createRoot(el).render(
         <AlbumControls
           albumId={parseInt(albumId, 10)}
           albumName={albumName}
           onRename={(id, newName) => {
-            console.log(`Renommage : Album ID ${id} -> Nouveau nom : "${newName}"`);
-
             fetch(`${process.env.REACT_APP_API_URL}/albums/rename/${id}`, {
               method: "POST",
               headers: {
@@ -58,7 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const onLike = (id: number) => {
       console.log(`Photo ${id} aimée!`);
-      // Gérer la logique ici si tu veux mettre à jour l'état des likes dans le parent
     };
 
     if (photoId && photoTitle && photoUrl) {
@@ -101,7 +96,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const [photos, setPhotos] = useState<Photo[]>([]);
 
     useEffect(() => {
-      // Remplace cette URL par l'API de ton projet
       fetch(`${process.env.REACT_APP_API_URL}/photos`)
         .then((response) => response.json())
         .then((data) => {
@@ -114,27 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     return (
       <div>
-        <h2>Liste des Photos</h2>
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
-          <thead>
-            <tr>
-              <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "left" }}>ID</th>
-              <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "left" }}>Titre</th>
-              <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "left" }}>Nombre de Likes</th>
-              <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "left" }}>Album</th>
-            </tr>
-          </thead>
-          <tbody>
-            {photos.map((photo) => (
-              <tr key={photo.id}>
-                <td style={{ border: "1px solid #ddd", padding: "8px" }}>{photo.id}</td>
-                <td style={{ border: "1px solid #ddd", padding: "8px" }}>{photo.title}</td>
-                <td style={{ border: "1px solid #ddd", padding: "8px" }}>{photo.likesCount}</td>
-                <td style={{ border: "1px solid #ddd", padding: "8px" }}>{photo.album}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <PhotoTable photos={photos} onPhotosUpdate={setPhotos} />
       </div>
     );
   };

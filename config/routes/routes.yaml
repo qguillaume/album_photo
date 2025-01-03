@@ -40,7 +40,7 @@ delete_album:
   path: /albums/delete/{id}
   controller: App\Controller\PhotoController::deleteAlbum
 
-rename_photos:
+rename_photo:
   path: /photo/rename/{id}
   controller: App\Controller\PhotoController::renamePhoto
 
