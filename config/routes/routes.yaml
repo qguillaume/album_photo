@@ -79,3 +79,7 @@ test_translation:
 dashboard:
   path: /dashboard
   controller: App\Controller\DashboardController::index
+
+contact:
+  path: /contact
+  controller: App\Controller\ContactController::index

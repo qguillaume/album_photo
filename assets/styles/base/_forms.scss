@@ -2,17 +2,23 @@
 
 form input[type="text"], 
 form input[type="email"], 
+form textarea,
 form input[type="password"], 
 form input[type="submit"], 
 form button {
-    width: 50%; /* Largeur réduite */
+    width: 50%; /* Largeur uniforme */
     margin-bottom: 1rem; /* Espacement vertical */
     padding: 0.5rem; /* Espacement interne */
     border: 1px solid #ccc; /* Bordure grise */
     border-radius: 5px; /* Angles arrondis */
     font-size: 1rem; /* Taille du texte */
     transition: background-color 0.3s; /* Animation au hover */
-    display: inline-block; /* Supprime le blocage pour empêcher le centrage */
+    display: block; /* Assure l'alignement vertical */
+}
+
+form textarea {
+    resize: vertical; /* Permet uniquement un redimensionnement vertical */
+    height: 100px; /* Hauteur par défaut */
 }
 
 form input[type="submit"],
@@ -20,7 +26,7 @@ form button {
     background-color: $secondary-color; /* Fond vert pour les boutons */
     color: white; /* Texte blanc */
     border: none; /* Supprime la bordure */
-    cursor: pointer; /* Pointeur */
+    cursor: pointer; /* Pointeur au survol */
     width: auto; /* Ajuste automatiquement à la taille du contenu */
     padding: 0.5rem 1rem; /* Ajuste l'espacement pour un bouton simple */
 }
@@ -28,4 +34,37 @@ form button {
 form input[type="submit"]:hover,
 form button:hover {
     background-color: $secondary-color-hover; /* Fond vert plus sombre au survol */
+}
+
+.form-error {
+    background-color: #f8d7da; /* Rouge clair */
+    color: #721c24; /* Texte rouge foncé */
+    border: 1px solid #f5c6cb; /* Bordure rouge clair */
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+
+    p {
+        margin: 0 0 10px 0;
+        font-weight: bold;
+    }
+
+    ul {
+        margin: 0;
+        padding-left: 20px;
+
+        li {
+            margin-bottom: 5px;
+        }
+    }
+}
+
+.flash-success {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-weight: bold;
 }

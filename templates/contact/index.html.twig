@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact{% endblock %}
+
+{% block body %}
+    <h2>Formulaire de contact</h2>
+
+    {# Affichage des messages de succès #}
+    {% for message in app.flashes('success') %}
+        <div class="flash-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% if error == 1 %}
+        <div class="form-error">
+            {{ form_errors(contactForm.name) }}
+            {{ form_errors(contactForm.email) }}
+            {{ form_errors(contactForm.message) }}
+        </div>
+    {% endif %}
+
+    {{ form_start(contactForm) }}
+    
+    {# Champs du formulaire avec placeholders uniquement #}
+    <div class="form-group">
+        {{ form_widget(contactForm.name, {'attr': {'class': 'form-control'}}) }}
+        
+    </div>
+    <div class="form-group">
+        {{ form_widget(contactForm.email, {'attr': {'class': 'form-control'}}) }}
+        
+    </div>
+    <div class="form-group">
+        {{ form_widget(contactForm.message, {'attr': {'class': 'form-control'}}) }}
+        
+    </div>
+    <div class="form-group">
+        {{ form_widget(contactForm.send, {'attr': {'class': 'btn'}}) }}
+    </div>
+
+    {{ form_end(contactForm) }}
+{% endblock %}

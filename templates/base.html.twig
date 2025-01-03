@@ -31,6 +31,8 @@
                     <a href="{{ path('reference') }}" class="{% if app.request.attributes.get('_route') == 'reference' %}active{% endif %}">Références</a>
                 {% endif %}
 
+                <a href="{{ path('contact') }}" class="{% if app.request.attributes.get('_route') == 'contact' %}active{% endif %}">Contact</a>
+
                 {% if app.user %}
                     <div class="dropdown">
                         <a href="#" 
