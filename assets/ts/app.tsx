@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import AlbumControls from "../components/AlbumControls";
 import PhotoControls from "../components/PhotoControls";
 import PhotoTable from "../components/PhotoTable";
-import { Photo } from "./types";
+import { Photo, Album } from "./types";
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Chargement des conteneurs React...");
@@ -94,24 +94,74 @@ document.addEventListener("DOMContentLoaded", () => {
   // Ajout du tableau pour les photos
   const PhotosTable = () => {
     const [photos, setPhotos] = useState<Photo[]>([]);
-
+    const [albums, setAlbums] = useState<Album[]>([]);
+  
+    // Chargement initial des photos et des albums
     useEffect(() => {
       fetch(`${process.env.REACT_APP_API_URL}/photos_list`)
         .then((response) => response.json())
         .then((data) => {
+          console.log("Photos chargées :", data);
           setPhotos(data);
         })
         .catch((error) => {
           console.error("Erreur lors de la récupération des photos:", error);
         });
+  
+      fetch(`${process.env.REACT_APP_API_URL}/albums_list`)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Albums chargés :", data);
+          setAlbums(data);
+        })
+        .catch((error) => {
+          console.error("Erreur lors de la récupération des albums:", error);
+        });
     }, []);
-
+  
+    // Fonction pour gérer la suppression d'une photo
+    const handleDelete = (id: number, albumId: number) => {
+      console.log("Suppression demandée pour la photo ID:", id, "Album ID:", albumId);
+      if (window.confirm("Êtes-vous sûr de vouloir supprimer cette photo ?")) {
+        fetch(`${process.env.REACT_APP_API_URL}/photo/delete/${id}`, { method: "DELETE" })
+          .then((response) => {
+            if (response.ok) {
+              // Mettre à jour la liste des photos après suppression
+              setPhotos(photos.filter((photo) => photo.id !== id));
+  
+              // Mettre à jour l'album en retirant la photo supprimée
+              const updatedAlbums = albums.map((album) => {
+                if (album.id === albumId) {
+                  const updatedAlbum = {
+                    ...album,
+                    photos: album.photos.filter((photo) => photo.id !== id),
+                  };
+                  return updatedAlbum;
+                }
+                return album;
+              });
+              setAlbums(updatedAlbums);
+              alert("Photo supprimée !");
+            } else {
+              alert("Erreur lors de la suppression.");
+            }
+          })
+          .catch((error) => console.error("Erreur lors de la suppression de la photo :", error));
+      }
+    };
+  
     return (
       <div>
-        <PhotoTable photos={photos} onPhotosUpdate={setPhotos} />
+        <PhotoTable
+          photos={photos}
+          albums={albums}
+          onPhotosUpdate={setPhotos}
+          onAlbumsUpdate={setAlbums}
+        />
       </div>
     );
   };
+  
 
   // Rendre le tableau des photos dans le DOM
   const photosTableElement = document.getElementById("photos-table");

@@ -71,4 +71,31 @@ class Album
         $this->imagePath = $imagePath;
         return $this;
     }
+
+    /**
+     * @ORM\Column(type="integer", options={"default": 0})
+     */
+    private $photoCount = 0;
+
+    public function getPhotoCount(): ?int
+    {
+        return $this->photoCount;
+    }
+
+    public function setPhotoCount(int $photoCount): self
+    {
+        $this->photoCount = $photoCount;
+
+        return $this;
+    }
+
+    public function addPhoto(Photo $photo): self
+    {
+        if (!$this->photos->contains($photo)) {
+            $this->photos[] = $photo;
+            $photo->setAlbum($this);
+        }
+
+        return $this;
+    }
 }

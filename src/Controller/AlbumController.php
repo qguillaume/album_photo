@@ -12,9 +12,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\AlbumRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AlbumController extends AbstractController
 {
+
+    private $albumRepository;
+
+    public function __construct(AlbumRepository $albumRepository)
+    {
+        $this->albumRepository = $albumRepository;
+    }
+
     /*
      * @IsGranted({"ROLE_ADMIN"})
      */
@@ -65,5 +75,33 @@ class AlbumController extends AbstractController
         return $this->render('album/new.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/albums_list", name="albums_list", methods={"GET"})
+     */
+    public function list()
+    {
+        // Récupérer tous les albums depuis la base de données
+        $albums = $this->albumRepository->findAll();
+
+        // Convertir les albums en tableau associatif ou en un tableau d'objets
+        $albumsData = [];
+        foreach ($albums as $album) {
+            $albumsData[] = [
+                'id' => $album->getId(),
+                'nom' => $album->getNomAlbum(),
+                'photos' => array_map(function ($photo) {
+                    return [
+                        'id' => $photo->getId(),
+                        'title' => $photo->getTitle(),
+                        // Ajoute les autres attributs de la photo si nécessaire
+                    ];
+                }, $album->getPhotos()->toArray()),  // Assure-toi que getPhotos() retourne un tableau ou une collection
+            ];
+        }
+
+        // Retourner la réponse JSON avec les albums
+        return new JsonResponse($albumsData);
     }
 }

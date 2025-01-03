@@ -72,6 +72,18 @@ class PhotoController extends AbstractController
                 $file->move($this->getParameter('photos_directory'), $filename);
 
                 $photo->setFilePath($filename);
+
+                // Récupérer l'album sélectionné dans le formulaire
+                $album = $photo->getAlbum();
+
+                if ($album) {
+                    // Associer la photo à l'album
+                    $album->addPhoto($photo);
+
+                    // Mettre à jour le compteur de photos
+                    $album->setPhotoCount($album->getPhotoCount() + 1);
+                }
+
                 $em->persist($photo);
                 $em->flush();
 
@@ -85,6 +97,7 @@ class PhotoController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
 
     // Renommer une photo
     public function renamePhoto(Request $request, EntityManagerInterface $em, int $id): JsonResponse
@@ -111,11 +124,20 @@ class PhotoController extends AbstractController
             return new JsonResponse(['message' => 'Photo non trouvée'], 404);
         }
 
+        // Récupérer l'album associé à la photo
+        $album = $photo->getAlbum(); // Suppose qu'il y a une relation bidirectionnelle entre Photo et Album
         $em->remove($photo);
         $em->flush();
 
+        // Mettre à jour le compteur photoCount si l'album existe
+        if ($album) {
+            $album->setPhotoCount(count($album->getPhotos())); // Compte les photos restantes
+            $em->flush();
+        }
+
         return new JsonResponse(['message' => 'Photo supprimée avec succès']);
     }
+
 
     // Route pour gérer les likes
     public function like(Photo $photo, EntityManagerInterface $entityManager): JsonResponse

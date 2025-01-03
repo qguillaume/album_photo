@@ -8,7 +8,7 @@
 <h2>Albums</h2>
 <ul>
     {% for album in albums %}
-        <li>{{ album.getNomAlbum() }} ({{ album.photos|length }} photos)</li>
+        <li>{{ album.getNomAlbum() }} ({{ albumPhotosCount[album.id] }} photos)</li>
     {% endfor %}
 </ul>
 

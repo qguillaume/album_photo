@@ -17,10 +17,18 @@ class DashboardController extends AbstractController
         $albums = $albumRepository->findAll();  // Récupère tous les albums
         $photos = $photoRepository->findAll();  // Récupère toutes les photos
         $topLikedPhotos = $photoRepository->findTopLikedPhotos(); // Les photos avec le plus de likes
+
+        // Calcul du nombre de photos par album
+        $albumPhotosCount = [];
+        foreach ($albums as $album) {
+            $albumPhotosCount[$album->getId()] = count($album->getPhotos());
+        }
+
         return $this->render('dashboard/index.html.twig', [
             'albums' => $albums,
             'photos' => $photos,
             'topLikedPhotos' => $topLikedPhotos,
+            'albumPhotosCount' => $albumPhotosCount, // Ajouter cette donnée au rendu
         ]);
     }
 }
