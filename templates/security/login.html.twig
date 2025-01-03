@@ -3,9 +3,8 @@
 {% block title %}Connexion{% endblock %}
 
 {% block body %}
-    <h2>Se connecter</h2>
+    <h2>{{ 'connexion'|trans }}</h2>
 
-    {# Symfony Form start - on remplace le formulaire HTML simple par le formulaire Symfony #}
     {{ form_start(loginForm) }}
         {{ form_row(loginForm.username) }}
         {{ form_row(loginForm.password) }}

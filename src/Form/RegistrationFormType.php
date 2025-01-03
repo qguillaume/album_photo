@@ -19,19 +19,19 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
-                'attr' => ['placeholder' => 'Nom d\'utilisateur'],
+                'attr' => ['placeholder' => 'username'],
                 'label' => false, // Désactive l'affichage du label
             ])
             ->add('email', EmailType::class, [
-                'attr' => ['placeholder' => 'Adresse email'],
+                'attr' => ['placeholder' => 'email'],
                 'label' => false,
             ])
             ->add('password', PasswordType::class, [
-                'attr' => ['placeholder' => 'Mot de passe'],
+                'attr' => ['placeholder' => 'password'],
                 'label' => false,
             ])
             ->add('register', SubmitType::class, [
-                'label' => 'S\'inscrire',
+                'label' => 'inscription',
             ]);
     }
 

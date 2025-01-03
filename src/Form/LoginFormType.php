@@ -20,15 +20,15 @@ class LoginFormType extends AbstractType
         // Lier les champs username et password à l'entité User
         $builder
             ->add('username', TextType::class, [
-                'attr' => ['placeholder' => 'Nom d\'utilisateur'],
+                'attr' => ['placeholder' => 'username'],
                 'label' => false, // Désactive l'affichage du label
             ])
             ->add('password', PasswordType::class, [
-                'attr' => ['placeholder' => 'Mot de passe'],
+                'attr' => ['placeholder' => 'password'],
                 'label' => false,
             ])
             ->add('login', SubmitType::class, [
-                'label' => 'Se connecter',
+                'label' => 'connexion',
             ]);
     }
 
