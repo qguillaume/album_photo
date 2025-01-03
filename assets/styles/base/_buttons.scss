@@ -1,18 +1,31 @@
 /* _buttons.scss */
 @use "./variables" as *;
-/*
-button[type="submit"] {
-    background-color: $secondary-color; /* Vert pour les boutons * /
-    color: white; /* Texte blanc * /
-    border: none; /* Supprime les bordures * /
-    padding: 0.5rem 1rem; /* Espacement interne * /
-    cursor: pointer; /* Change le curseur * /
-    border-radius: 5px; /* Angle arrondi * /
-    font-size: 1rem; /* Taille de police standard * /
-    transition: background-color 0.3s; /* Animation fluide * /
-}
 
-button[type="submit"]:hover {
-    background-color: $secondary-color-hover; /* Couleur verte plus foncée * /
-}*/
-
+/* Style pour le bouton "Accepter" */
+.cookie-consent .accept-button {
+    background-color: $green-color;
+    color: black;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: $secondary-color-hover;
+    }
+  }
+  
+/* Style pour le bouton "Refuser" */
+.cookie-consent .decline-button {
+    background-color: $red-color;
+    color: blue;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: $red-color-hover;
+    }
+  }
+  

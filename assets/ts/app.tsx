@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import CookieConsent from 'react-cookie-consent';
 import ReactDOM from "react-dom/client";
 import AlbumControls from "../components/AlbumControls";
 import PhotoControls from "../components/PhotoControls";
@@ -95,16 +96,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const PhotosTable = () => {
     const [photos, setPhotos] = useState<Photo[]>([]);
     const [albums, setAlbums] = useState<Album[]>([]);
-  
+
     useEffect(() => {
       // Récupérer les données injectées de Twig
       const albumsFromTwig = window.albumsData || [];
       const photosFromTwig = window.photosData || [];
-  
+
       // Initialiser l'état avec les données passées
       setAlbums(albumsFromTwig);
       setPhotos(photosFromTwig);
     }, []);
+    
     // Chargement initial des photos et des albums
     useEffect(() => {
       fetch(`${process.env.REACT_APP_API_URL}/photos_list`)
@@ -116,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch((error) => {
           console.error("Erreur lors de la récupération des photos:", error);
         });
-  
+
       fetch(`${process.env.REACT_APP_API_URL}/albums_list`)
         .then((response) => response.json())
         .then((data) => {
@@ -127,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
           console.error("Erreur lors de la récupération des albums:", error);
         });
     }, []);
-  
+
     // Fonction pour gérer la suppression d'une photo
     const handleDelete = (id: number, albumId: number) => {
       console.log("Suppression demandée pour la photo ID:", id, "Album ID:", albumId);
@@ -138,10 +140,10 @@ document.addEventListener("DOMContentLoaded", () => {
               // Log de l'état avant la suppression
               console.log("Avant suppression - Photos :", photos);
               console.log("Avant suppression - Albums :", albums);
-    
+
               // Mettre à jour la liste des photos après suppression
               setPhotos((prevPhotos) => prevPhotos.filter((photo) => photo.id !== id));
-    
+
               // Mettre à jour l'album en retirant la photo supprimée
               setAlbums((prevAlbums) =>
                 prevAlbums.map((album) =>
@@ -153,11 +155,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     : album
                 )
               );
-    
+
               // Log de l'état après la suppression
               console.log("Après suppression - Photos :", photos);
               console.log("Après suppression - Albums :", albums);
-    
+
               alert("Photo supprimée !");
             } else {
               alert("Erreur lors de la suppression.");
@@ -171,7 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("Albums après mise à jour dans PhotosTable :", albums);
       console.log("Photos après mise à jour dans PhotosTable :", photos);
     }, [albums, photos]); // Réagir aux mises à jour des albums et des photos
-  
+
     return (
       <div>
         <PhotoTable
@@ -183,11 +185,48 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     );
   };
-  
 
   // Rendre le tableau des photos dans le DOM
   const photosTableElement = document.getElementById("photos-table");
   if (photosTableElement) {
     ReactDOM.createRoot(photosTableElement).render(<PhotosTable />);
   }
+
+  // Ajout du bandeau de consentement des cookies
+  ReactDOM.createRoot(document.getElementById("cookie-consent")!).render(
+    <CookieConsent
+      location="bottom"
+      buttonText="Accepter"
+      cookieName="user-consent"
+      onAccept={() => console.log("Consentement accepté")}
+      onDecline={() => console.log("Consentement refusé")}
+      enableDeclineButton // Active le bouton "Refuser"
+      declineButtonText="Refuser"
+      style={{ background: "#2B373B" }}
+      buttonStyle={{
+        color: "#fff",
+        fontSize: "13px",
+        backgroundColor: "#2ecc71",
+        borderRadius: "5px",
+        padding: "10px 20px",
+      }}
+      declineButtonStyle={{
+        color: "#fff",
+        fontSize: "13px",
+        backgroundColor: "#e74c3c",
+        borderRadius: "5px",
+        padding: "10px 20px",
+      }}
+      contentStyle={{
+        fontSize: "14px",
+        color: "#fff",
+      }}
+      
+      expires={365}
+      overlay={true}
+    >
+      Nous utilisons des cookies pour améliorer votre expérience. En continuant à naviguer, vous acceptez notre{" "}
+      <a href="/politique-de-cookies" style={{ color: "#fff" }}>politique de cookies</a>.
+    </CookieConsent>
+  );
 });
