@@ -96,6 +96,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const [photos, setPhotos] = useState<Photo[]>([]);
     const [albums, setAlbums] = useState<Album[]>([]);
   
+    useEffect(() => {
+      // Récupérer les données injectées de Twig
+      const albumsFromTwig = window.albumsData || [];
+      const photosFromTwig = window.photosData || [];
+  
+      // Initialiser l'état avec les données passées
+      setAlbums(albumsFromTwig);
+      setPhotos(photosFromTwig);
+    }, []);
     // Chargement initial des photos et des albums
     useEffect(() => {
       fetch(`${process.env.REACT_APP_API_URL}/photos_list`)
@@ -126,9 +135,13 @@ document.addEventListener("DOMContentLoaded", () => {
         fetch(`${process.env.REACT_APP_API_URL}/photo/delete/${id}`, { method: "DELETE" })
           .then((response) => {
             if (response.ok) {
+              // Log de l'état avant la suppression
+              console.log("Avant suppression - Photos :", photos);
+              console.log("Avant suppression - Albums :", albums);
+    
               // Mettre à jour la liste des photos après suppression
               setPhotos((prevPhotos) => prevPhotos.filter((photo) => photo.id !== id));
-  
+    
               // Mettre à jour l'album en retirant la photo supprimée
               setAlbums((prevAlbums) =>
                 prevAlbums.map((album) =>
@@ -140,6 +153,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     : album
                 )
               );
+    
+              // Log de l'état après la suppression
+              console.log("Après suppression - Photos :", photos);
+              console.log("Après suppression - Albums :", albums);
+    
               alert("Photo supprimée !");
             } else {
               alert("Erreur lors de la suppression.");
@@ -148,6 +166,11 @@ document.addEventListener("DOMContentLoaded", () => {
           .catch((error) => console.error("Erreur lors de la suppression de la photo :", error));
       }
     };
+
+    useEffect(() => {
+      console.log("Albums après mise à jour dans PhotosTable :", albums);
+      console.log("Photos après mise à jour dans PhotosTable :", photos);
+    }, [albums, photos]); // Réagir aux mises à jour des albums et des photos
   
     return (
       <div>

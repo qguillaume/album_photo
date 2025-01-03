@@ -13,4 +13,10 @@
 </ul>
 
 <div id="photos-table"></div>
+
+<script>
+  // Injection des données Twig dans JavaScript
+  const albumsData = {{ albums|json_encode()|raw }};
+  const photosData = {{ photos|json_encode()|raw }};
+</script>
 {% endblock %}
