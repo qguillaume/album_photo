@@ -3,6 +3,7 @@ export interface Photo {
     title: string;
     filePath: string;
     albumId: number;
+    album: string;
     likesCount: number;
   }
 

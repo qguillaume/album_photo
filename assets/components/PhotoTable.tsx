@@ -23,35 +23,58 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
   }, [albums]);
 
   // Supprimer une photo
-  const handleDelete = (id: number, albumId: number) => {
+// Mise à jour du handleDelete
+const handleDelete = (id: number, albumName: string) => {
+    // Récupère l'ID de l'album à partir de l'albumName
+    const albumId = albums.find((album) => album.nom === albumName)?.id;
+    console.log(`Suppression demandée pour la photo ID: ${id} de l'album ID: ${albumId}`);
+  
     if (window.confirm("Êtes-vous sûr de vouloir supprimer cette photo ?")) {
       fetch(`http://localhost:8000/photo/delete/${id}`, { method: "DELETE" })
         .then((response) => {
           if (response.ok) {
-            // Mettre à jour la liste des photos
-            onPhotosUpdate(photos.filter((photo) => photo.id !== id));
-
-            // Recharger les albums pour synchroniser le state
-            fetch("http://localhost:8000/albums_list")
-              .then((res) => res.json())
-              .then((updatedAlbums) => {
-                console.log("Albums actualisés (après suppression) :", updatedAlbums); // Debug
-                onAlbumsUpdate(updatedAlbums); // Mettre à jour les albums
-              })
-              .catch((error) =>
-                console.error("Erreur lors de la récupération des albums :", error)
-              );
-
+            console.log(`Photo ID: ${id} supprimée avec succès !`);
+            // Mettre à jour la liste des photos après suppression
+            const updatedPhotos = photos.filter((photo) => photo.id !== id);
+            console.log("Photos après suppression :", updatedPhotos);
+            onPhotosUpdate(updatedPhotos);
+  
+            // Mettre à jour l'album en retirant la photo supprimée
+            const updatedAlbums = albums.map((album) => {
+              if (album.id === albumId) {
+                const updatedAlbum = {
+                  ...album,
+                  photos: album.photos.filter((photo) => photo.id !== id), // Retirer la photo de l'album
+                };
+                console.log(`Album ID: ${albumId} mis à jour :`, updatedAlbum);
+                return updatedAlbum;
+              }
+              return album;
+            });
+  
+            // Mettre à jour l'état des albums
+            onAlbumsUpdate(updatedAlbums);
+  
+            // Vérification finale des albums mis à jour
+            console.log("Albums après mise à jour finale :", updatedAlbums);
+  
+            // Vérification finale du contenu de la photo et des albums dans l'état
+            console.log("Photos finales :", updatedPhotos);
+            console.log("Albums finales :", updatedAlbums);
+  
             alert("Photo supprimée !");
           } else {
             alert("Erreur lors de la suppression.");
+            console.error("Erreur lors de la suppression de la photo.");
           }
         })
-        .catch((error) =>
-          console.error("Erreur lors de la suppression de la photo :", error)
-        );
+        .catch((error) => {
+          console.error("Erreur lors de la suppression de la photo :", error);
+        });
+    } else {
+      console.log("Suppression annulée pour la photo ID:", id);
     }
-  };
+  };  
 
   // Modifier une photo
   const handleEdit = (id: number) => {
@@ -140,7 +163,7 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
                       </button>
                       <button
                         className="delete"
-                        onClick={() => handleDelete(photo.id, photo.albumId)}
+                        onClick={() => handleDelete(photo.id, photo.album)}
                       >
                         Supprimer
                       </button>

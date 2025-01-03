@@ -127,20 +127,19 @@ document.addEventListener("DOMContentLoaded", () => {
           .then((response) => {
             if (response.ok) {
               // Mettre à jour la liste des photos après suppression
-              setPhotos(photos.filter((photo) => photo.id !== id));
+              setPhotos((prevPhotos) => prevPhotos.filter((photo) => photo.id !== id));
   
               // Mettre à jour l'album en retirant la photo supprimée
-              const updatedAlbums = albums.map((album) => {
-                if (album.id === albumId) {
-                  const updatedAlbum = {
-                    ...album,
-                    photos: album.photos.filter((photo) => photo.id !== id),
-                  };
-                  return updatedAlbum;
-                }
-                return album;
-              });
-              setAlbums(updatedAlbums);
+              setAlbums((prevAlbums) =>
+                prevAlbums.map((album) =>
+                  album.id === albumId
+                    ? {
+                        ...album,
+                        photos: album.photos.filter((photo) => photo.id !== id),
+                      }
+                    : album
+                )
+              );
               alert("Photo supprimée !");
             } else {
               alert("Erreur lors de la suppression.");
@@ -155,8 +154,8 @@ document.addEventListener("DOMContentLoaded", () => {
         <PhotoTable
           photos={photos}
           albums={albums}
-          onPhotosUpdate={setPhotos}
-          onAlbumsUpdate={setAlbums}
+          onPhotosUpdate={setPhotos}  // Update des photos
+          onAlbumsUpdate={setAlbums}  // Update des albums
         />
       </div>
     );
