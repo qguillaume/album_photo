@@ -18,37 +18,37 @@ class ContactFormType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'attr' => ['placeholder' => 'Nom'],
+                'attr' => ['placeholder' => 'name'],
                 'label' => false,
                 'constraints' => [
-                    new Assert\NotBlank(['message' => 'Le nom est obligatoire.']),
+                    new Assert\NotBlank(['message' => 'form.name.required']),
                     new Assert\Length([
                         'min' => 3,
-                        'minMessage' => 'Le nom doit contenir au moins {{ limit }} caractères.',
+                        'minMessage' => 'form.name.min_length',
                     ]),
                 ],
             ])
             ->add('email', EmailType::class, [
-                'attr' => ['placeholder' => 'Adresse email'],
+                'attr' => ['placeholder' => 'email'],
                 'label' => false,
                 'constraints' => [
-                    new Assert\NotBlank(['message' => 'L\'adresse email est obligatoire.']),
-                    new Assert\Email(['message' => 'Veuillez entrer une adresse email valide.']),
+                    new Assert\NotBlank(['message' => 'form.email.required']),
+                    new Assert\Email(['message' => 'form.email.invalid']),
                 ],
             ])
             ->add('message', TextareaType::class, [
-                'attr' => ['placeholder' => 'Votre message', 'rows' => 5, 'columns' => 50],
+                'attr' => ['placeholder' => 'message'],
                 'label' => false,
                 'constraints' => [
-                    new Assert\NotBlank(['message' => 'Le message est obligatoire.']),
+                    new Assert\NotBlank(['message' => 'form.message.required']),
                     new Assert\Length([
                         'min' => 10,
-                        'minMessage' => 'Le message doit contenir au moins {{ limit }} caractères.',
+                        'minMessage' => 'form.message.min_length',
                     ]),
                 ],
             ])
             ->add('send', SubmitType::class, [
-                'label' => 'Envoyer',
+                'label' => 'form.send',
             ]);
     }
 

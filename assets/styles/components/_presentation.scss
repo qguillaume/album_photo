@@ -3,46 +3,84 @@
 /* Conteneur principal qui contient l'image et le texte */
 .presentation-container {
     display: flex; /* Utilisation de Flexbox pour disposer l'image et le texte sur une seule ligne */
-    justify-content: flex-start; /* Aligne les éléments à gauche, sans les étirer sur toute la largeur */
+    justify-content: flex-start; /* Aligne les éléments à gauche */
     align-items: flex-start; /* Aligne les éléments en haut du conteneur */
-    
     max-width: 100%; /* Assure que le conteneur prend toute la largeur disponible de son parent */
-    margin: 20px auto; /* Centrer le conteneur horizontalement avec un peu d'espace autour (20px en haut/bas) */
-    padding: 0 60px; /* Ajoute de l'espace intérieur de chaque côté du conteneur (60px à gauche et à droite) */
-    gap: 250px; /* Définit un espacement fixe de 250px entre les éléments enfants (photo et texte) */
-    /* gap est une manière moderne et propre de gérer l'espacement entre les éléments dans un conteneur flex */
+    margin: 20px auto; /* Centrer le conteneur horizontalement */
+    padding: 0 60px; /* Ajoute de l'espace intérieur à gauche et à droite */
+    gap: 300px; /* Espacement entre les sections de texte et image */
+    flex-wrap: wrap; /* Permet aux éléments de se réorganiser sur plusieurs lignes si nécessaire */
+    margin-bottom: 40px; /* Augmente l'espacement sous chaque section */
 
     /* Conteneur de l'image */
     .photo_presentation {
-        /* Initialement, l'image est décalée à gauche en dehors du conteneur */
-        // transform: translateX(-100%);
-        // opacity: 0; /* L'image commence invisible */
-        // transition: transform 1s ease-out, opacity 1s ease-out; /* Définir la durée et le type de transition */
+        /* Fixe une largeur pour l'image */
+        flex: 1 1 200px; /* L'image peut se rétrécir, mais aura une largeur minimale de 200px */
+        text-align: center;
         img {
-            display: block; /* Supprime les marges par défaut des images (les images sont inline par défaut) */
-            max-width: none; /* Ne modifie pas la taille de l'image (elle conserve sa taille d'origine) */
-            border-radius: 8px; /* Applique des coins arrondis à l'image */
+            max-width: 100%; /* Adapte l'image à la largeur disponible */
+            height: auto; /* Conserve les proportions */
+            border-radius: 10px; /* ajout de coins arrondis */
         }
     }
 
     /* Conteneur du texte */
     .texte {
-        // transform: translateX(100%);
-        // opacity: 0;
-        // transition: transform 1s ease-out, opacity 1s ease-out;
-
-        text-align: left; /* Aligne le texte à gauche (en cas d'alignement nécessaire) */
-        font-family: Arial, sans-serif; /* Définition de la police du texte */
+        flex: 2 1 300px; /* Le texte prend plus d'espace que les images */
+        text-align: left; /* Aligne le texte à gauche */
         font-size: 16px; /* Taille du texte */
-        line-height: 1.6; /* Hauteur de ligne (espacement vertical entre les lignes de texte) */
-        color: white; /* Couleur du texte en blanc */
+        line-height: 1.6; /* Hauteur de ligne */
+        color: #ccc; /* Couleur du texte en blanc */
 
         h2 {
-            font-size: 24px; /* Taille du titre (h2) */
+            font-size: 24px; /* Taille du titre */
             margin-bottom: 10px; /* Espacement sous le titre */
-            color: $primary-color; /* Utilisation de la variable pour la couleur du titre (définie dans variables.scss) */
+            color: $primary-color; /* Couleur du titre */
+        }
+
+        /* Paragraphe */
+        p {
+            font-size: 16px; /* Taille du texte */
+            line-height: 1.6; /* Hauteur de ligne */
+            color: #ccc; /* Couleur du texte en blanc */
         }
     }
 
-    
+    /* Section des compétences : empiler les images sous forme de liste */
+    .competences {
+        display: flex;
+        flex-direction: column; /* Aligne les images les unes sous les autres */
+        gap: 20px; /* Ajoute un espacement entre chaque élément */
+        align-items: flex-start; /* Aligne à gauche les images et les textes associés */
+    }
+
+    /* Chaque image et son texte */
+    .competence {
+        display: flex;
+        align-items: center; /* Aligne l'image et le texte sur une même ligne */
+        gap: 15px; /* Espacement entre l'image et le texte */
+        
+        img {
+            width: 50px; /* Largeur fixe pour les images */
+            height: 50px; /* Hauteur fixe pour les images */
+            object-fit: contain; /* Conserve les proportions de l'image */
+            margin-right: 10px; /* Espacement entre l'image et le texte */
+            border-radius: 8px; /* Coins arrondis pour les images */
+        }
+
+        /* Le texte associé à l'image */
+        .competence-text {
+            font-size: 16px; /* Taille du texte */
+            color: #ccc; /* Couleur du texte */
+        }
+    }
+
+    /* Ligne de séparation entre les sections */
+}
+
+.separator {
+    width: 20%; /* Largeur de la ligne sur toute la largeur de l'écran */
+    height: 5px; /* Hauteur de la ligne */
+    background: linear-gradient(to right, $primary-color 50%, $secondary-color 50%); /* Gradient pour diviser la ligne en bleu et vert */
+    margin: 100px auto; /* Espacement au-dessus et en dessous de la ligne */
 }

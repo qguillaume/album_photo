@@ -2,7 +2,7 @@
 @use "../base/variables" as *;
 
 footer {
-  background-color: $secondary-color; /* Définir la couleur de fond du footer à partir de la variable $secondary-color */
+  background-color: $primary-color;
   color: white; /* Le texte du footer sera blanc */
   padding: $space-sm $space-md; /* Ajoute un padding interne, avec des valeurs définies dans les variables $space-sm et $space-md pour la hauteur et la largeur */
   text-align: center; /* Aligne le texte au centre (utile pour le copyright) */

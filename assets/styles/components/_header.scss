@@ -3,8 +3,7 @@
 // Fond sombre sur toute la page
 body.dark-background {
     background-color: #121212; /* Fond très sombre */
-    color: white; /* Couleur de texte blanche pour contraster avec le fond sombre */
-    font-family: 'Arial', sans-serif;
+    color: #ccc;
     margin: 0;
     padding: 0;
 }
@@ -44,17 +43,32 @@ header {
         gap: 30px; /* Espacement entre les liens */
     }
 
+    .register {
+        background-color: $secondary-color; /* Fond vert */
+        color: $header-bg-color;;
+        font-weight: bold; /* Mettre le texte en gras */
+        border-radius: 8px; /* Coins arrondis */
+        padding: 10px 15px; /* Espacement pour l'onglet */
+        transition: background-color 0.3s ease, color 0.3s ease; /* Transition fluide pour l'effet hover */
+    }
+    
+    /* Effet hover pour l'onglet d'inscription */
+    .register:hover {
+        background-color: $secondary-color-hover;
+        color: white;
+    }
+
     a {
-        color: white; /* Texte des liens en blanc */
+        color: $primary-color; /* Texte des liens en blanc */
         text-decoration: none;
         padding: 10px 15px;
         font-size: 1rem;
         font-weight: bold;
         transition: color 0.3s ease, background-color 0.3s ease;
+        border-radius: 8px;
     }
 
     a:hover, .active {
         background-color: $primary-color; /* Couleur d'arrière-plan au survol */
-        color: #121212; /* Texte sombre au survol */
     }
 }

@@ -1,6 +1,8 @@
 // src/styles/base/_body.scss
+@use "./variables" as *;
 
-html, body {
+html, body { 
+    font-family: 'Cambria Math', 'Cambria', serif;
     height: 100%; /* L'élément html et le body occupent toute la hauteur de la page */
     margin: 0; /* Retire toute marge par défaut autour du body */
     padding: 0; /* Retire tout le padding par défaut autour du body */
@@ -16,4 +18,15 @@ html, body {
 
 main {
     padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cambria Math', 'Cambria', serif; /* Vous pouvez différencier les titres */
+    font-weight: bold; /* Facultatif */
+    text-decoration: underline; /* Ajoute une ligne de soulignement */
+    color: $primary-color;
+    text-decoration-color: $secondary-color; /* Définit la couleur du soulignement */
+    text-decoration-thickness: 2px; /* Épaisseur de la ligne de soulignement */
+    text-underline-offset: 8px; /* Décalage de la ligne par rapport au texte */
+    margin-bottom: 10px; /* Ajoute un espacement de 10px en dessous de chaque titre */
 }

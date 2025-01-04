@@ -3,7 +3,7 @@
 {% block title %}Contact{% endblock %}
 
 {% block body %}
-    <h2>Formulaire de contact</h2>
+    <h2>{{ 'contact_form'|trans }}</h2>
 
     {# Affichage des messages de succès #}
     {% for message in app.flashes('success') %}

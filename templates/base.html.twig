@@ -52,7 +52,7 @@
                         {{ 'connexion'|trans }}
                     </a>
                     <a href="{{ path('register') }}" 
-                    class="{% if app.request.attributes.get('_route') == 'register' %}active{% endif %}">
+                    class="register {% if app.request.attributes.get('_route') == 'register' %}active{% endif %}">
                         {{ 'inscription'|trans }}
                     </a>
                 {% endif %}
