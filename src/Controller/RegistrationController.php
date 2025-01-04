@@ -27,6 +27,15 @@ class RegistrationController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
+        // Variable pour vérifier si le formulaire a des erreurs
+        $error = 0;
+
+        // Vérifie si le formulaire est soumis et valide
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $error = 1; // Définit la variable error à 1 si des erreurs existent
+            $this->addFlash('error', 'Veuillez corriger les erreurs ci-dessous.');
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword(
                 $passwordHasher->hashPassword($user, $form->get('password')->getData())
@@ -51,6 +60,7 @@ class RegistrationController extends AbstractController
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
+            'error' => $error
         ]);
     }
 }

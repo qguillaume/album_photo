@@ -1,5 +1,9 @@
 framework:
     default_locale: 'fr' # Définit la langue par défaut (français)
     translator:
+        enabled: true
         default_path: '%kernel.project_dir%/translations' # Chemin des fichiers de traduction
-        fallbacks: ['fr', 'en'] # Langue de secours si une traduction manque
+        fallbacks: ['fr', 'en', 'es', 'de'] # Langue de secours si une traduction manque
+        # paths:
+            # - '%kernel.project_dir%/translations/messages'
+            # - '%kernel.project_dir%/translations/forms'

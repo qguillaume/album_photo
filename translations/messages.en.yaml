@@ -25,15 +25,5 @@ contact_form: "Contact form"
 message: "Message"
 send: "Send"
 name: "Name"
-
-form:
-  name:
-    required: "The name is required."
-    min_length: "The name must be at least {{ limit }} characters long."
-  email:
-    required: "The email address is required."
-    invalid: "Please enter a valid email address."
-  message:
-    required: "The message is required."
-    min_length: "The message must be at least {{ limit }} characters long."
-  send: "Send"
+message.success: 'Votre message a été envoyé avec succèsen !'
+message.error: 'Veuillez corriger les erreurs ci-dessousen.'

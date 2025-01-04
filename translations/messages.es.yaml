@@ -25,15 +25,5 @@ contact_form: "Formulario de contacto"
 message: "Mensaje"
 send: "Enviar"
 name: "Nombre"
-
-form:
-  name:
-    required: "El nombre es obligatorio."
-    min_length: "El nombre debe tener al menos {{ limit }} caracteres."
-  email:
-    required: "La dirección de correo electrónico es obligatoria."
-    invalid: "Por favor, introduce una dirección de correo electrónico válida."
-  message:
-    required: "El mensaje es obligatorio."
-    min_length: "El mensaje debe tener al menos {{ limit }} caracteres."
-  send: "Enviar"
+message.success: 'Votre message a été envoyé avec succès es!'
+message.error: 'Veuillez corriger les erreurs ci-dessouses.'

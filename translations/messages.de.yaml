@@ -25,15 +25,12 @@ contact_form: "Kontaktformular"
 message: "Nachricht"
 send: "Senden"
 name: "Name"
-
-form:
-  name:
-    required: "Der Name ist erforderlich."
-    min_length: "Der Name muss mindestens {{ limit }} Zeichen lang sein."
-  email:
-    required: "Die E-Mail-Adresse ist erforderlich."
-    invalid: "Bitte geben Sie eine gültige E-Mail-Adresse ein."
-  message:
-    required: "Die Nachricht ist erforderlich."
-    min_length: "Die Nachricht muss mindestens {{ limit }} Zeichen enthalten."
-  send: "Senden"
+message.success: "Ihre Nachricht wurde erfolgreich gesendet!"
+message.error: "Bitte beheben Sie die Fehler unten."
+form.send: "Senden"
+form.name.required: "Der Name ist erforderlich."
+form.name.min_length: "Der Name muss mindestens {{ limit }} Zeichen enthalten."
+form.email.required: "Die E-Mail-Adresse ist erforderlich."
+form.email.invalid: "Bitte geben Sie eine gültige E-Mail-Adresse ein."
+form.message.required: "Die Nachricht ist erforderlich."
+form.message.min_length: "Die Nachricht muss mindestens {{ limit }} Zeichen enthalten."

@@ -7,10 +7,30 @@
 {% block body %}
     <h2>{{ 'inscription'|trans }}</h2>
 
+    {% if error == 1 %}
+        <div class="form-error">
+            {{ form_errors(registrationForm.username) }}
+            {{ form_errors(registrationForm.email) }}
+            {{ form_errors(registrationForm.password) }}
+        </div>
+    {% endif %}
+    
     {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.username) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.password) }}
-        {{ form_row(registrationForm.register) }}
-    {{ form_end(registrationForm) }}
+    
+    {# Champs du formulaire avec placeholders uniquement #}
+    <div class="form-group">
+        {{ form_widget(registrationForm.username) }}
+        
+    </div>
+    <div class="form-group">
+        {{ form_widget(registrationForm.email) }}
+        
+    </div>
+    <div class="form-group">
+        {{ form_widget(registrationForm.password) }}
+        
+    </div>
+    <div class="form-group">
+        {{ form_widget(registrationForm.register) }}
+    </div>
 {% endblock %}

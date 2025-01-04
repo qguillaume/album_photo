@@ -6,7 +6,7 @@ form textarea,
 form input[type="password"], 
 form input[type="submit"], 
 form button {
-    width: 50%; /* Largeur uniforme */
+    width: 40%; /* Largeur uniforme */
     margin-bottom: 1rem; /* Espacement vertical */
     padding: 0.5rem; /* Espacement interne */
     border: 1px solid #ccc; /* Bordure grise */
@@ -24,7 +24,8 @@ form textarea {
 form input[type="submit"],
 form button {
     background-color: $secondary-color; /* Fond vert pour les boutons */
-    color: white; /* Texte blanc */
+    color: $header-bg-color;
+    font-weight: bold;
     border: none; /* Supprime la bordure */
     cursor: pointer; /* Pointeur au survol */
     width: auto; /* Ajuste automatiquement à la taille du contenu */
@@ -37,16 +38,17 @@ form button:hover {
 }
 
 .form-error {
+    width: 40%;
     background-color: #f8d7da; /* Rouge clair */
     color: #721c24; /* Texte rouge foncé */
     border: 1px solid #f5c6cb; /* Bordure rouge clair */
     padding: 15px;
     border-radius: 5px;
     margin-bottom: 20px;
+    font-weight: bold;
 
     p {
         margin: 0 0 10px 0;
-        font-weight: bold;
     }
 
     ul {
@@ -60,6 +62,7 @@ form button:hover {
 }
 
 .flash-success {
+    width: 40%;
     color: #155724;
     background-color: #d4edda;
     border: 1px solid #c3e6cb;
