@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de la photo{% endblock %}
+
+{% block body %}
+    <h1>{{ photo.title }}</h1>
+    <img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" style="max-width: 100%; height: auto;">
+
+    <p><strong>Album :</strong> {{ photo.album ? photo.album.nomAlbum : 'Sans album' }}</p>
+    <p><strong>Nombre de likes :</strong> {{ photo.likesCount }}</p>
+
+    <h2>Commentaires</h2>
+    {% if comments|length > 0 %}
+        <ul>
+            {% for comment in comments %}
+                <li>
+                    <strong>{{ comment.user.username }}</strong> : {{ comment.content }}
+                    <br>
+                    <small>Posté le {{ comment.createdAt|date('d/m/Y H:i') }}</small>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucun commentaire pour cette photo.</p>
+    {% endif %}
+
+    <h2>Laisser un commentaire</h2>
+    {% if app.user %}
+        <form action="{{ path('comment_add', { id: photo.id }) }}" method="post">
+            <textarea name="content" rows="4" style="width: 100%;" placeholder="Votre commentaire..."></textarea>
+            <button type="submit">Envoyer</button>
+        </form>
+    {% else %}
+        <p>Vous devez être connecté pour laisser un commentaire.</p>
+    {% endif %}
+{% endblock %}

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Photo;
 use App\Entity\Album;
@@ -13,7 +14,7 @@ use App\Form\PhotoType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Repository\PhotoRepository;
 use Symfony\Component\Routing\Annotation\Route;
-
+use App\Entity\Comment;
 
 class PhotoController extends AbstractController
 {
@@ -189,5 +190,66 @@ class PhotoController extends AbstractController
 
         // Retourner une réponse JSON
         return new JsonResponse($photosData);
+    }
+
+    /**
+     * @Route("/photo/{id}", name="photo_show", methods={"GET"})
+     */
+    public function show(int $id, EntityManagerInterface $em): Response
+    {
+        // Récupérer la photo par son ID
+        $photo = $em->getRepository(Photo::class)->find($id);
+
+        // Si la photo n'existe pas, renvoyer une erreur 404
+        if (!$photo) {
+            throw $this->createNotFoundException('Photo non trouvée');
+        }
+
+        // Récupérer les commentaires associés à la photo
+        ///// $comments = $photo->getComments();
+        $comments = $em->getRepository(Comment::class)->findBy(['photo' => $photo]);
+        // Renvoyer la vue Twig avec les détails de la photo et ses commentaires
+        return $this->render('photo/show.html.twig', [
+            'photo' => $photo,
+            'comments' => $comments,
+        ]);
+    }
+
+    /**
+     * @Route("/photo/{id}/comment", name="comment_add", methods={"POST"})
+     */
+    public function addComment(Request $request, int $id, EntityManagerInterface $em): RedirectResponse
+    {
+        // Récupérer l'utilisateur connecté
+        $user = $this->getUser();
+        if (!$user) {
+            throw $this->createAccessDeniedException('Vous devez être connecté pour commenter.');
+        }
+
+        // Récupérer la photo
+        $photo = $em->getRepository(Photo::class)->find($id);
+        if (!$photo) {
+            throw $this->createNotFoundException('Photo non trouvée.');
+        }
+
+        // Récupérer le contenu du commentaire depuis la requête POST
+        $content = $request->request->get('content');
+        if (empty($content)) {
+            $this->addFlash('error', 'Le contenu du commentaire ne peut pas être vide.');
+            return $this->redirectToRoute('photo_show', ['id' => $id]);
+        }
+
+        // Créer et persister un nouveau commentaire
+        $comment = new Comment();
+        $comment->setContent($content);
+        $comment->setPhoto($photo);
+        $comment->setUser($user);
+        $comment->setCreatedAt(new \DateTime());
+
+        $em->persist($comment);
+        $em->flush();
+
+        // Rediriger vers la page de la photo
+        return $this->redirectToRoute('photo_show', ['id' => $id]);
     }
 }

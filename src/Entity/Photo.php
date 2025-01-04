@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\PhotoRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,7 +10,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\PhotoRepository")
+ * @ORM\Entity(repositoryClass=PhotoRepository::class)
  */
 class Photo
 {
@@ -35,7 +36,7 @@ class Photo
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $filePath; // Nouvelle propriété pour stocker le chemin du fichier
+    private $filePath;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Album", inversedBy="photos")
@@ -48,9 +49,15 @@ class Photo
      */
     private Collection $likes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="photo", cascade={"persist", "remove"})
+     */
+    private Collection $comments;
+
     public function __construct()
     {
         $this->likes = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -79,7 +86,6 @@ class Photo
     {
         $this->file = $file;
 
-        // Si le fichier est un nouvel objet, nous devons gérer un changement dans la base de données (par exemple, pour l'upload)
         return $this;
     }
 
@@ -128,7 +134,6 @@ class Photo
     public function removeLike(Like $like): self
     {
         if ($this->likes->removeElement($like)) {
-            // Si la relation est cassée, définissez la propriété photo de l'objet Like à null
             if ($like->getPhoto() === $this) {
                 $like->setPhoto(null);
             }
@@ -140,5 +145,34 @@ class Photo
     public function getLikesCount(): int
     {
         return $this->likes->count();
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setPhoto($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            if ($comment->getPhoto() === $this) {
+                $comment->setPhoto(null);
+            }
+        }
+
+        return $this;
     }
 }
