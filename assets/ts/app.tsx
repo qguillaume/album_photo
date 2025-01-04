@@ -4,6 +4,7 @@ import ReactDOM from "react-dom/client";
 import AlbumControls from "../components/AlbumControls";
 import PhotoControls from "../components/PhotoControls";
 import PhotoTable from "../components/PhotoTable";
+import Timeline from "../components/Timeline";
 import { Photo, Album } from "./types";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -230,3 +231,12 @@ document.addEventListener("DOMContentLoaded", () => {
     </CookieConsent>
   );
 });
+
+const timelineRoot = document.getElementById("timeline-root");
+if (timelineRoot) {
+  ReactDOM.createRoot(timelineRoot).render(
+    <React.StrictMode>
+      <Timeline />
+    </React.StrictMode>
+  );
+}
