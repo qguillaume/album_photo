@@ -10,8 +10,9 @@ body.dark-background {
 
 // Header transparent
 header {
-    background: transparent; /* Enlève le fond du header pour le rendre transparent */
-    color: white; /* Couleur du texte dans le header */
+    backdrop-filter: blur(8px); /* Effet de flou pour le contenu derrière */
+    -webkit-backdrop-filter: blur(8px); /* Compatibilité avec Safari */
+    color: white;
     position: fixed;
     top: 0;
     left: 0;
@@ -22,7 +23,7 @@ header {
     justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Ombre légère pour plus de visibilité */
 
     h1 {
