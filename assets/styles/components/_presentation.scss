@@ -38,11 +38,10 @@
             color: $primary-color; /* Couleur du titre */
         }
 
-        /* Paragraphe */
         p {
-            font-size: 16px; /* Taille du texte */
+            font-size: 18px; /* Taille du texte */
             line-height: 1.6; /* Hauteur de ligne */
-            color: #ccc; /* Couleur du texte en blanc */
+            color: #ccc;
 
             a {
                 color: $primary-color;

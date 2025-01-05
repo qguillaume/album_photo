@@ -1,0 +1,16 @@
+.cv-contact {
+    display: flex; /* Active flexbox pour le conteneur principal */
+    flex-direction: column; /* Place les enfants en colonne */
+    justify-content: center; /* Centre verticalement */
+    align-items: center; /* Centre horizontalement */
+    text-align: center; /* Centre le texte des éléments enfants */
+    margin: 20px auto; /* Centre le conteneur lui-même dans la page */
+    gap: 20px; /* Espace entre le titre, le texte, et les boutons */
+}
+  
+.cvc-buttons {
+    display: flex; /* Active flexbox pour les boutons */
+    justify-content: center; /* Centre les boutons horizontalement */
+    gap: 15px; /* Espacement horizontal entre les boutons */
+    margin-top: 20px; /* Ajoute un espacement au-dessus des boutons */
+}

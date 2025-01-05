@@ -11,17 +11,19 @@ footer {
   width: 100%; /* Assure que le footer occupe toute la largeur de la page */
   box-sizing: border-box; /* Inclut le padding et les bordures dans la largeur totale de l'élément */
   position: relative; /* Position relative pour pouvoir utiliser certaines propriétés CSS comme "absolute" si nécessaire pour des éléments internes */
+
+  p {
+    font-size: 0.9rem; /* Taille de la police pour le texte du copyright */
+    margin-top: $space-xs; /* Espace au-dessus du texte du copyright */
+  }
+  
+  a {
+    color: white; /* Les liens dans le footer seront en blanc */
+    text-decoration: underline; /* Souligne les liens */
+  }
 }
 
-p {
-  font-size: 0.9rem; /* Taille de la police pour le texte du copyright */
-  margin-top: $space-xs; /* Espace au-dessus du texte du copyright */
-}
 
-a {
-  color: white; /* Les liens dans le footer seront en blanc */
-  text-decoration: underline; /* Souligne les liens */
-}
 
 .social-icons {
   margin-top: 10px; /* Espace entre le texte du copyright et les icônes */

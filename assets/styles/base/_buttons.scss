@@ -13,7 +13,7 @@
     &:hover {
       background-color: $secondary-color-hover;
     }
-  }
+}
   
 /* Style pour le bouton "Refuser" */
 .cookie-consent .decline-button {
@@ -27,5 +27,41 @@
     &:hover {
       background-color: $red-color-hover;
     }
+}
+
+.green-button {
+  background-color: $secondary-color;
+  color: $header-bg-color;
+  font-weight: bold;
+  border-radius: 5px;
+  border: none; /* Supprime la bordure */
+  cursor: pointer; /* Pointeur au survol */
+  width: auto; /* Ajuste automatiquement à la taille du contenu */
+  padding: 0.5rem 1rem; /* Ajuste l'espacement pour un bouton simple */
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    background-color: $secondary-color-hover; /* Fond vert plus sombre au survol */
+    color: white; /* Fond blanc au survol */
   }
+}
+
+.blue-button {
+  background-color: $primary-color;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  width: auto;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: $primary-color-hover;
+  }
+}
+
+
+
   

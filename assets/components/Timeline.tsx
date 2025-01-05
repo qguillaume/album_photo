@@ -7,11 +7,15 @@ interface TimelineItem {
 }
 
 const timelineData: TimelineItem[] = [
-  { year: "2025", description: "Développeur Web Freelance" },
-  { year: "2023", description: "Formation Symfony" },
-  { year: "2022", description: "Licence Informatique" },
-  { year: "2020", description: "DUT Informatique" },
-  { year: "2018", description: "Baccalauréat Scientifique" },
+  { year: "2024", description: "Développeur Fullstack Groupe Bellon" },
+  { year: "2019", description: "Développeur PHP, Laravel - Alphalives Multimedia" },
+  { year: "2018", description: "Développeur PHP, Symfony - Groupe Fnac-Darty" },
+  { year: "2016", description: "Développeur PHP, SugarCRM - Neuros Assurance" },
+  { year: "2015", description: "Développeur PHP, Symfony - Sygedel Assurance" },
+  { year: "2014", description: "Ingénieur d'études Java - BNP Paribas" },
+  { year: "2012", description: "Développeur PHP - Directgestion" },
+  { year: "2011", description: "Formation XHTML/CSS, PHP, MySQL, JAVA, UML" },
+  { year: "2009", description: "Maîtrise Informatique - Université Paris 7" },
 ];
 
 const Timeline: React.FC = () => {

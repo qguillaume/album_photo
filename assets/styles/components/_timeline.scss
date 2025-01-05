@@ -1,77 +1,85 @@
+// A revoir à l'avenir
+$primary-color: #121212;
+$secondary-color: rgba(255, 255, 255, 0.1);
+$highlight-color: rgba(255, 255, 255, 0.3);
+$highlight-hover: rgba(255, 255, 255, 0.2);
+$box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+$hover-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+$transition-duration: 0.3s;
+
 .timeline {
-    padding: 50px 20px;
-    background-color: #121212;
-    color: white;
-    text-align: center;
-  }
-  
+  padding: 50px 20px;
+  background-color: $primary-color;
+  color: white;
+  text-align: center;
+
   .timeline-title {
     font-size: 2.5rem;
     margin-bottom: 30px;
   }
-  
+
   .timeline-container {
     position: relative;
     max-width: 800px;
     margin: 0 auto;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 100%;
+      background-color: $highlight-color;
+    }
   }
-  
-  .timeline-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 4px;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.3);
-  }
-  
+
   .timeline-item {
     position: relative;
     width: 50%;
     padding: 20px;
     text-align: left;
-    transform: translateX(-100px); /* Animation de départ */
+    transform: translateX(-100px); // Animation de départ
     opacity: 0;
     transition: all 0.8s ease;
+
+    &:nth-child(odd) {
+      left: 0;
+      text-align: right;
+    }
+
+    &:nth-child(even) {
+      left: 50%;
+      text-align: left;
+    }
+
+    &.visible {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    .timeline-content {
+      background: $secondary-color;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: $box-shadow;
+
+      h3 {
+        font-size: 1.5rem;
+        margin: 0;
+      }
+
+      p {
+        margin: 10px 0 0;
+      }
+
+      &:hover {
+        background: $highlight-hover;
+        transform: scale(1.05);
+        transition: transform $transition-duration ease, background $transition-duration ease;
+        box-shadow: $hover-shadow;
+      }
+    }
   }
-  
-  .timeline-item:nth-child(odd) {
-    left: 0;
-    text-align: right;
-  }
-  
-  .timeline-item:nth-child(even) {
-    left: 50%;
-    text-align: left;
-  }
-  
-  .timeline-item.visible {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  
-  .timeline-content {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  }
-  
-  .timeline-content h3 {
-    font-size: 1.5rem;
-    margin: 0;
-  }
-  
-  .timeline-content p {
-    margin: 10px 0 0;
-  }
-  
-  .timeline-item:hover .timeline-content {
-    background: rgba(255, 255, 255, 0.2);
-    transform: scale(1.05);
-    transition: transform 0.3s ease, background 0.3s ease;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-  }
-  
+}
