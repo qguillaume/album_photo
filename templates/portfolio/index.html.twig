@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Bienvenue sur mon port folio</h1>
+    <h1 data-aos="zoom-in">Bienvenue sur mon port folio</h1>
 
     <div class="separator"></div>
 
     <div class="presentation-container">
-        <div class="photo_presentation">
+        <div class="photo_presentation" data-aos="fade-right">
             <img src="{{ asset('images/photo_presentation.jpg') }}" alt="Photo de présentation">
         </div>
-        <div class="texte">
+        <div class="texte" data-aos="fade-left">
             <h2>{{ 'hello_welcome'|trans }}</h2>
             <p>{{ 'presentation_text_1'|trans|raw }}</p>
             <p>{{ 'presentation_text_2'|trans|raw }}</p>
@@ -23,9 +23,9 @@
 
     <div class="separator"></div>
 
+    <h2 id=skills data-aos="zoom-in">{{ 'skills'|trans }}</h2>
     <div class="presentation-container">
         <div class="competences">
-            <h2 id=skills>{{ 'skills'|trans }}</h2>
             <div class="competence">
                 <img src="{{ asset('images/logo_html5_css3.png') }}" alt="HTML5 & CSS3">
                 <div class="competence-text">HTML5 & CSS3</div>

@@ -8,9 +8,20 @@ import Timeline from "../components/Timeline";
 import ContactButton from "../components/ContactButton"; 
 import { Photo, Album } from "./types";
 import { BrowserRouter } from "react-router-dom";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 // Composant principal pour téléchargement du CV et contact
-const CVContact = () => {
+const CVContact: React.FC = () => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, // Durée de l'animation en millisecondes
+      easing: 'ease-in-out', // Transition fluide
+      once: true, // Animation ne se produit qu'une fois
+      offset: 120, // Décalage avant déclenchement
+      mirror: false, // Évite les répétitions inutiles
+    });
+  }, []);
   const handleDownloadCV = () => {
     const cvUrl = "/files/CV.pdf";
     const link = document.createElement("a");
@@ -23,9 +34,9 @@ const CVContact = () => {
 
   return (
     <div className="cv-contact">
-      <h2>Envie de collaborer ?</h2>
-      <p>Contactez-moi pour toute collaboration ou projet !</p>
-      <div className="cvc-buttons">
+      <h2 data-aos="zoom-in">Mon profil vous intéresse ?</h2>
+      <p  data-aos="fade-up">Contactez-moi pour toute collaboration ou projet !</p>
+      <div className="cvc-buttons" data-aos="fade-up">
         <ContactButton /> {/* Utilisation du composant ContactButton */}
         <button className="green-button" onClick={handleDownloadCV}>
           Télécharger mon CV

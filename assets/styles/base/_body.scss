@@ -20,7 +20,7 @@ main {
     padding: 0;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3 {
     font-family: 'Cambria Math', 'Cambria', serif; /* Vous pouvez différencier les titres */
     font-weight: bold; /* Facultatif */
     text-decoration: underline; /* Ajoute une ligne de soulignement */
@@ -45,9 +45,14 @@ h2 {
 p {
     font-size: 1.5rem; /* Taille du texte */
     line-height: 1.6; /* Hauteur de ligne */
-    color: #ccc; /* Couleur du texte en blanc */
 
     a {
         color: $primary-color;
     }
+}
+
+h4 {
+    color: $secondary-color;
+    font-size: 1.2rem;
+    margin: 0;
 }
