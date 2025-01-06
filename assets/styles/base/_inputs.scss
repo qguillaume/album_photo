@@ -1,6 +1,6 @@
 @use "./variables" as *;
 
-input, textarea {
+input, textarea, select {
     width: 100%; /* Adapte la largeur à son conteneur */
     padding: 0.5rem 1rem; /* Ajoute de l'espace intérieur */
     border: 1px solid #ced4da; /* Couleur grise douce pour le contour */

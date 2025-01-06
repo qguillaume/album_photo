@@ -69,7 +69,7 @@ header {
         border-radius: 8px;
     }
 
-    a:hover, .active {
+    a:hover:not(.logo), .active:not(.logo) {
         background-color: $primary-color; /* Couleur d'arrière-plan au survol */
     }
 }

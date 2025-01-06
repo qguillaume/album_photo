@@ -193,7 +193,7 @@ class PhotoController extends AbstractController
     }
 
     /**
-     * @Route("/photo/{id}", name="photo_show", methods={"GET"})
+     * @Route("/photo/{id}", name="photo_show", requirements={"id"="\d+"}, methods={"GET"})
      */
     public function show(int $id, EntityManagerInterface $em): Response
     {

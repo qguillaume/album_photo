@@ -1,0 +1,43 @@
+.albums-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Centre les éléments horizontalement */
+    gap: 16px; /* Espacement entre les albums */
+    padding: 16px; /* Un peu d'espace autour du conteneur */
+    box-sizing: border-box; /* S'assurer que le padding ne dépasse pas */
+}
+
+.album {
+    text-align: center;
+    width: 200px; /* Largeur fixée de l'album, peut être ajustée */
+    flex: 1 1 200px; /* Permet de s'adapter avec une largeur minimale */
+    box-sizing: border-box; /* Inclut le padding dans la largeur totale */
+
+    // SCSS spécifique à l'album
+    img {
+        width: 100%; /* L'image prend toute la largeur de l'album */
+        height: 100%; /* Hauteur ajustée à 100% du conteneur */
+        max-width: 100%; /* Limite la largeur de l'image au cadre */
+        max-height: 150px; /* Limite la hauteur de l'image pour ne pas dépasser le cadre */
+        min-width: 120px; /* Largeur minimale pour ne pas devenir trop petite */
+        min-height: 100px; /* Hauteur minimale pour ne pas devenir trop petite */
+        object-fit: contain; /* Remplit le cadre sans déformer l'image */
+    }
+
+    p {
+        margin-top: 8px;
+        font-size: 16px;
+    }
+}
+
+// Responsivité : ajustement des albums pour les petits écrans
+@media (max-width: 768px) {
+    .album {
+        width: 140px; /* Réduit la taille des albums pour les écrans plus petits */
+    }
+
+    .album img {
+        height: 120px; /* Ajuste la hauteur des images sur les petits écrans */
+        min-height: 120px; /* Hauteur minimale sur les petits écrans pour que l'image ne devienne pas trop petite */
+    }
+}

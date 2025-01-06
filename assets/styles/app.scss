@@ -11,6 +11,7 @@
 @use "base/forms" as *;
 
 // Composants
+@use "components/albums" as *;
 @use "components/album-controls" as *;
 @use "components/carousel" as *;
 @use "components/cv-contact" as *;

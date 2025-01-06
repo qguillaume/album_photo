@@ -13,7 +13,7 @@
 </head>
 <body class="dark-background">
     <header class="header">
-        <a href="{{ path('portfolio_home') }}"><img src="{{ asset('images/logoGQ.png') }}" alt="logo GQ"></a>
+        <a class="logo" href="{{ path('portfolio_home') }}"><img src="{{ asset('images/logoGQ.png') }}" alt="logo GQ"></a>
         <nav>
             <div class="menu">
                 <a href="{{ path('portfolio_home') }}" class="{% if app.request.attributes.get('_route') == 'portfolio_home' %}active{% endif %}">{{ 'home'|trans }}</a>

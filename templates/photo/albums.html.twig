@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<h1>Albums</h1>
+<h2>Albums</h2>
 <div class="albums-container">
     {% for album in albums %}
         <div class="album">
@@ -21,28 +21,4 @@
     {% endfor %}
 </div>
 
-<style>
-.albums-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-}
-.album {
-    text-align: center;
-    width: 150px;
-}
-.album img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-}
-.album p {
-    margin-top: 8px;
-    font-size: 16px;
-}
-</style>
-{% endblock %}
-
-{% block javascripts %}
-    {{ encore_entry_script_tags('app') }}
 {% endblock %}

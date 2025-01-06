@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<h1>Photos de l'album : {{ album.getNomAlbum() }}</h1>
+<h2>{{ 'pictures_of_album'|trans}} {{ album.getNomAlbum() }}</h2>
 
 {# Affiche l'image par défaut avec un lien vers la liste des albums #}
 <div class="default-photo">

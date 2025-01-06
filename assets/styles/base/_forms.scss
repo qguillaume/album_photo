@@ -9,6 +9,7 @@ form input[type="text"],
 form input[type="email"],
 form input[type="file"],
 form textarea,
+form select,
 form input[type="password"],
 form input[type="submit"],
 form button {
@@ -36,11 +37,13 @@ form button {
     cursor: pointer; /* Pointeur au survol */
     width: auto; /* Ajuste automatiquement à la taille du contenu */
     padding: 0.5rem 1rem; /* Ajuste l'espacement pour un bouton simple */
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 form input[type="submit"]:hover,
 form button:hover {
     background-color: $secondary-color-hover; /* Fond vert plus sombre au survol */
+    color: white;
 }
 
 .form-error {
