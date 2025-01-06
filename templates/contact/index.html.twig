@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Contact{% endblock %}
+{% block title %}{{ 'contact'|trans}}{% endblock %}
 
 {% block body %}
     <h2>{{ 'contact_form'|trans }}</h2>
@@ -15,7 +15,7 @@
 
     {% if error == 1 %}
     <div class="form-group">
-        <div class="form-error">
+        <div class="flash-error">
             {{ form_errors(contactForm.name) }}
             {{ form_errors(contactForm.email) }}
             {{ form_errors(contactForm.message) }}

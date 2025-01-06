@@ -4,10 +4,10 @@
 
 {% block body %}
     <h1>{{ photo.title }}</h1>
-    <img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" style="max-width: 100%; height: auto;">
+    <div class="photo_agrandie"><img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" ></div>
 
-    <p><strong>Album :</strong> {{ photo.album ? photo.album.nomAlbum : 'Sans album' }}</p>
-    <p><strong>Nombre de likes :</strong> {{ photo.likesCount }}</p>
+    <p class="details_photo"><strong>Album :</strong> {{ photo.album ? photo.album.nomAlbum : 'Sans album' }}</p>
+    <p class="details_photo"><strong>Nombre de likes :</strong> {{ photo.likesCount }}</p>
 
     <h2>Commentaires</h2>
     {% if comments|length > 0 %}

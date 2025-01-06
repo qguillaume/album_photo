@@ -18,7 +18,9 @@
 
     {% for photo in photos %}
         <div class="photo">
-            <img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" class="photo-thumbnail">
+            <a href="{{ path('photo_show', {'id': photo.id}) }}">
+                <img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" class="photo-thumbnail">
+            </a>
             <p>{{ photo.title }}</p>
 
             {% if is_granted('ROLE_USER') %}

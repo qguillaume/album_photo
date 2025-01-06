@@ -55,6 +55,9 @@ class RegistrationController extends AbstractController
 
             $mailer->send($email);
 
+            // Ajouter un message flash de succès, on fait ca ici pour afficher un message de succès sur une autre page (page de login par exemple)
+            $this->addFlash('success', 'inscription_successful');
+
             return $this->redirectToRoute('login');
         }
 

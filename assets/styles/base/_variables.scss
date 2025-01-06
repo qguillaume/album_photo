@@ -18,6 +18,10 @@ $purple-color: #9b59b6;
 $orange-color: #ffa500;
 $input-color: #444;
 
+$active-color: #ffffff;
+$hover-color: #dddddd;
+$menu-item-height: 38px;
+
 /* Définition des couleurs hover */
 $primary-color-hover: color.scale($primary-color, $lightness: -10%);// Réduit la luminosité de 10%, comme l'ancien "darken"
 $secondary-color-hover: color.scale($secondary-color, $lightness: -10%);

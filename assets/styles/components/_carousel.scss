@@ -1,21 +1,18 @@
+.project-carousel-container { 
+  padding-top: 70px;
+}
+
 .project-carousel {
-    text-align: center;
-    margin: 40px 0;
-  }
+  text-align: center;
+  margin: 40px 0;
+}
   
-  .project-slide {
-    position: relative;
-  }
+.project-slide {
+  position: relative;
+}
   
-  .project-image {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-  }
-  
-  .project-carousel h3 {
-    margin-top: 10px;
-    font-size: 1.2rem;
-    color: #ff0000;
-  }
-  
+.project-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}

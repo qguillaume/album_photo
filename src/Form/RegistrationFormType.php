@@ -13,9 +13,17 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RegistrationFormType extends AbstractType
 {
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -23,10 +31,10 @@ class RegistrationFormType extends AbstractType
                 'attr' => ['placeholder' => 'username'],
                 'label' => false, // Désactive l'affichage du label
                 'constraints' => [
-                    new Assert\NotBlank(['message' => 'form.username.required']),
+                    new Assert\NotBlank(['message' => $this->translator->trans('username_required')]),
                     new Assert\Length([
                         'min' => 3,
-                        'minMessage' => 'form.username.min_length',
+                        'minMessage' => $this->translator->trans('username_min_length', ['{{ limit }}' => 3]),
                     ]),
                 ],
             ])
@@ -34,18 +42,18 @@ class RegistrationFormType extends AbstractType
                 'attr' => ['placeholder' => 'email'],
                 'label' => false,
                 'constraints' => [
-                    new Assert\NotBlank(['message' => 'form.email.required']),
-                    new Assert\Email(['message' => 'form.email.invalid']),
+                    new Assert\NotBlank(['message' => $this->translator->trans('email_required')]),
+                    new Assert\Email(['message' => $this->translator->trans('email_invalid')]),
                 ],
             ])
             ->add('password', PasswordType::class, [
                 'attr' => ['placeholder' => 'password'],
                 'label' => false,
                 'constraints' => [
-                    new Assert\NotBlank(['message' => 'form.password.required']),
+                    new Assert\NotBlank(['message' => $this->translator->trans('password_required')]),
                     new Assert\Length([
-                        'min' => 6,
-                        'minMessage' => 'form.password.min_length',
+                        'min' => 8,
+                        'minMessage' => $this->translator->trans('password_min_length', ['{{ limit }}' => 8]),
                     ]),
                 ],
             ])

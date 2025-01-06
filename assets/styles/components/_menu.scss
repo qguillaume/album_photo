@@ -1,9 +1,5 @@
 @use "../base/variables" as *;
 
-$active-color: #ffffff;
-$hover-color: #dddddd;
-$menu-item-height: 40px;
-
 .menu {
   display: flex;
   gap: 20px;

@@ -3,8 +3,7 @@
 {% block title %}Télécharger une Photo{% endblock %}
 
 {% block body %}
-    <h2>Télécharger une Photo</h2>
-
+    <h2>{{ "publish_photo"|trans}}</h2>
     {{ form_start(form) }}
         <div class="form-group">
             {{ form_widget(form.title) }}

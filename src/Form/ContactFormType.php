@@ -11,9 +11,16 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ContactFormType extends AbstractType
 {
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -21,10 +28,10 @@ class ContactFormType extends AbstractType
                 'attr' => ['placeholder' => 'name'],
                 'label' => false,
                 'constraints' => [
-                    new Assert\NotBlank(['message' => 'form.name.required']),
+                    new Assert\NotBlank(['message' => 'name_required']),
                     new Assert\Length([
                         'min' => 3,
-                        'minMessage' => 'form.name.min_length',
+                        'minMessage' => $this->translator->trans('name_min_length', ['{{ limit }}' => 3]),
                     ]),
                 ],
             ])
@@ -32,23 +39,23 @@ class ContactFormType extends AbstractType
                 'attr' => ['placeholder' => 'email'],
                 'label' => false,
                 'constraints' => [
-                    new Assert\NotBlank(['message' => 'form.email.required']),
-                    new Assert\Email(['message' => 'form.email.invalid']),
+                    new Assert\NotBlank(['message' => $this->translator->trans('email_required')]),
+                    new Assert\Email(['message' => $this->translator->trans('email_invalid')]),
                 ],
             ])
             ->add('message', TextareaType::class, [
                 'attr' => ['placeholder' => 'message'],
                 'label' => false,
                 'constraints' => [
-                    new Assert\NotBlank(['message' => 'form.message.required']),
+                    new Assert\NotBlank(['message' => $this->translator->trans('message_required')]),
                     new Assert\Length([
                         'min' => 10,
-                        'minMessage' => 'form.message.min_length',
+                        'minMessage' => $this->translator->trans('message_min_length', ['{{ limit }}' => 10]),
                     ]),
                 ],
             ])
             ->add('send', SubmitType::class, [
-                'label' => 'form.send',
+                'label' => 'send',
             ]);
     }
 

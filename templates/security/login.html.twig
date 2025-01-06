@@ -5,12 +5,25 @@
 {% block body %}
     <h2>{{ 'connexion'|trans }}</h2>
 
-    {% if error %}
+    {# Gestion des erreurs de connexion #}
+    {% if error is defined and error %}
         <div class="form-group">
-            <div class="error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            <div class="flash-error">
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
         </div>
     {% endif %}
 
+    {# Affichage des messages flash de succès #}
+    {% for message in app.flashes('success') %}
+        <div class="form-group">
+            <div class="flash-success">
+                {{ message|trans }}
+            </div>
+        </div>
+    {% endfor %}
+
+    {# Formulaire de connexion #}
     {{ form_start(loginForm) }}
         <div class="form-group">
             {{ form_widget(loginForm.username) }}

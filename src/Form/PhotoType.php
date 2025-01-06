@@ -19,15 +19,14 @@ class PhotoType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'attr' => ['placeholder' => 'Titre de la photo'],
+                'attr' => ['placeholder' => 'title_photo_form'],
                 'label' => false,
             ])
             ->add('album', EntityType::class, [
-                'attr' => ['placeholder' => 'Choix de l\'album'],
                 'label' => false,
                 'class' => Album::class, // Spécifie l'entité Album
                 'choice_label' => 'nom_album', // Attribut affiché dans la liste déroulante
-                'placeholder' => 'Sélectionnez un album', // Valeur par défaut
+                'placeholder' => 'select_album_form', // Valeur par défaut
                 'required' => true, // Rend ce champ obligatoire
             ])
             ->add('file', FileType::class, [
@@ -44,7 +43,7 @@ class PhotoType extends AbstractType
                 ],
             ])
             ->add('download_photo', SubmitType::class, [
-                'label' => 'Télécharger',
+                'label' => 'publish',
             ]);
         ;
     }

@@ -16,10 +16,10 @@ class ContactController extends AbstractController
         $form = $this->createForm(ContactFormType::class);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && !$form->isValid()) {
-            // Traduction du message d'erreur dans addFlash
-            $this->addFlash('error', $translator->trans('Veuillez corriger les erreurs ci-dessous.'));
-        }
+        // if ($form->isSubmitted() && !$form->isValid()) {
+        //     // Traduction du message d'erreur dans addFlash
+        //     $this->addFlash('error', $translator->trans('Veuillez corriger les erreurs ci-dessous.'));
+        // }
 
         // Variable pour vérifier si le formulaire a des erreurs
         $error = 0;
@@ -40,7 +40,7 @@ class ContactController extends AbstractController
 
             $mailer->send($email);
             // Traduction du message de succès dans addFlash
-            $this->addFlash('success', $translator->trans('Votre message a été envoyé avec succès !'));
+            $this->addFlash('success', $translator->trans('message_success'));
             return $this->redirectToRoute('contact');
         }
 
