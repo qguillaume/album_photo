@@ -32,9 +32,12 @@ services:
         tags:
             - { name: 'controller.service_arguments' }
 
+    App\Controller\TranslationController:
+            tags:
+                - { name: 'controller.service_arguments' }
     App\EventListener\LocaleListener:
         arguments:
-            $defaultLocale: 'fr' # La langue par défaut ici
+            $defaultLocale: 'de' # La langue par défaut ici
         tags:
             - { name: kernel.event_listener, event: kernel.request, priority: 10 }
 

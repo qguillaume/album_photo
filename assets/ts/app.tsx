@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import CookieConsent from 'react-cookie-consent';
 import ReactDOM from "react-dom/client";
 import AlbumControls from "../components/AlbumControls";
@@ -10,36 +10,47 @@ import { Photo, Album } from "./types";
 import { BrowserRouter } from "react-router-dom";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { useTranslation } from 'react-i18next'; // Importer useTranslation ici pour l'utiliser dans les composants
+import ProjectCarousel from '../components/ProjectCarousel'; // Assure-toi que le chemin est correct
+
+import '../../public/i18n'; // Importer le fichier de configuration de i18next
 
 // Composant principal pour téléchargement du CV et contact
 const CVContact: React.FC = () => {
+  const { t, i18n } = useTranslation(); // Hook pour accéder aux traductions
+  const [isReady, setIsReady] = useState(false);
+
   useEffect(() => {
     AOS.init({
-      duration: 1000, // Durée de l'animation en millisecondes
-      easing: 'ease-in-out', // Transition fluide
-      once: true, // Animation ne se produit qu'une fois
-      offset: 120, // Décalage avant déclenchement
-      mirror: false, // Évite les répétitions inutiles
+      duration: 1000,
+      easing: 'ease-in-out',
+      once: true,
+      offset: 120,
+      mirror: false,
     });
-  }, []);
+    if (i18n.isInitialized) {
+      setIsReady(true); // Attendre que i18next soit initialisé
+    }
+  }, [i18n.isInitialized]);
+
+  if (!isReady) return null; // Afficher rien ou un loader pendant l'initialisation
+
   const handleDownloadCV = () => {
     const cvUrl = "/files/CV.pdf";
     const link = document.createElement("a");
     link.href = cvUrl;
-    link.download = "CV.pdf"; // Le nom donné au fichier téléchargé
-    document.body.appendChild(link); // Ajoute le lien temporairement dans le DOM
-    link.click(); // Simule un clic pour télécharger le fichier
-    document.body.removeChild(link); // Retire le lien du DOM après le clic
+    link.download = "CV.pdf"; 
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
     <div className="cv-contact">
-      <h2 data-aos="zoom-in">Mon profil vous intéresse ?</h2>
-      <p  data-aos="fade-up">Contactez-moi pour toute collaboration ou projet !</p>
       <div className="cvc-buttons" data-aos="fade-up">
-        <ContactButton /> {/* Utilisation du composant ContactButton */}
+        <ContactButton />
         <button className="green-button" onClick={handleDownloadCV}>
-          Télécharger mon CV
+          {t('download_cv')} {/* Traduction pour le texte du bouton */}
         </button>
       </div>
     </div>
@@ -48,7 +59,7 @@ const CVContact: React.FC = () => {
 
 // Composant principal PhotosTable
 const PhotosTable = () => {
-  const [photos, setPhotos] = useState<Photo[]>([]);
+  const [photos, setPhotos] = useState<Photo[]>([]); 
   const [albums, setAlbums] = useState<Album[]>([]);
 
   useEffect(() => {
@@ -134,7 +145,6 @@ document.addEventListener("DOMContentLoaded", () => {
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ name: newName }),
             })
-              .then((response) => response.json())
               .then(() => alert(`Album renommé en : "${newName}"`))
               .catch(() => alert("Erreur lors du renommage de l'album."));
           }}
@@ -253,13 +263,21 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
+  // Ajouter le composant CVContact dans le DOM
   const cvcElement = document.getElementById("cv_contact");
-    if (cvcElement) {
-      ReactDOM.createRoot(cvcElement).render(
-        <BrowserRouter>
-          <CVContact />
-        </BrowserRouter>
-      );
-    }
-  });
+  if (cvcElement) {
+    ReactDOM.createRoot(cvcElement).render(
+      <BrowserRouter>
+        <CVContact />
+      </BrowserRouter>
+    );
+  }
 
+  // Ajouter le composant carousel dans le DOM
+  const rootElement = document.getElementById('project-carousel');  // Récupère l'élément DOM
+
+  if (rootElement) {
+    const root = ReactDOM.createRoot(rootElement);  // Crée la racine React
+    root.render(<ProjectCarousel />);  // Rendre le composant dans l'élément
+  }
+});

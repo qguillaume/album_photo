@@ -3,12 +3,18 @@
 {% block title %}Télécharger une Photo{% endblock %}
 
 {% block body %}
-    <h1>Télécharger une Photo</h1>
+    <h2>Télécharger une Photo</h2>
 
     {{ form_start(form) }}
-        {{ form_row(form.title) }}
-        {{ form_row(form.file) }}
-        {{ form_row(form.album) }}
+        <div class="form-group">
+            {{ form_widget(form.title) }}
+        </div>
+        <div class="form-group">
+            {{ form_widget(form.file) }}
+        </div>
+        <div class="form-group">
+            {{ form_widget(form.album) }}
+        </div>
         <button type="submit">Télécharger</button>
     {{ form_end(form) }}
 {% endblock %}

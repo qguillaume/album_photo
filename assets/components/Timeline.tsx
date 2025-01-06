@@ -10,7 +10,7 @@ interface TimelineItem {
 }
 
 const timelineData: TimelineItem[] = [
-  { year: "2024", description: "Développeur Fullstack Groupe Bellon", duration: "6 mois"},
+  { year: "2024", description: "Développeur Fullstack - Groupe Bellon", duration: "6 mois"},
   { year: "2019", description: "Développeur PHP, Laravel - Alphalives Multimedia", duration: "4 ans" },
   { year: "2018", description: "Développeur PHP, Symfony - Groupe Fnac-Darty", duration: "1 an" },
   { year: "2016", description: "Développeur PHP, SugarCRM - Neuros Assurance", duration: "1 an et demi" },
@@ -56,7 +56,6 @@ const Timeline: React.FC = () => {
 
   return (
     <section className="timeline">
-      <h2 className="timeline-title" data-aos="zoom-in">Mon Parcours</h2>
       <div className="timeline-container">
         {timelineData.map((item, index) => (
           <div key={index} className="timeline-item" data-aos="zoom-in">

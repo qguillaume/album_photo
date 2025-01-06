@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Validator\Constraints\File;
 
 class AlbumType extends AbstractType
@@ -16,9 +17,13 @@ class AlbumType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nomAlbum', TextType::class)
+            ->add('nomAlbum', TextType::class, [
+                'attr' => ['placeholder' => 'Nom de l\'album'],
+                'label' => false,
+                'required' => true
+            ])
             ->add('image_path', FileType::class, [
-                'label' => 'Image de l\'album (PNG, JPG, JPEG)',
+                'label' => false,
                 'required' => false,
                 'constraints' => [
                     new File([
@@ -27,6 +32,9 @@ class AlbumType extends AbstractType
                     ])
                 ],
             ])
+            ->add('create_album', SubmitType::class, [
+                'label' => 'Créer l\'album',
+            ]);
         ;
     }
 

@@ -4,6 +4,7 @@
  * Utiliser des variables permet de centraliser les modifications de style et de rendre le projet plus facile à maintenir.
  */
 
+ @use "sass:color";
 /* Définition des couleurs principales */
 $primary-color: #3498db;  /* Bleu clair pour les éléments principaux */
 $secondary-color: #2ecc71;
@@ -18,15 +19,15 @@ $orange-color: #ffa500;
 $input-color: #444;
 
 /* Définition des couleurs hover */
-$primary-color-hover: darken($primary-color, 10%);
-$secondary-color-hover: darken($secondary-color, 10%);
-$red-color-hover: darken($red-color, 10%);
-$blue-color-hover: darken($blue-color, 10%);
-$yellow-color-hover: darken($yellow-color, 10%);
-$green-color-hover: darken($green-color, 10%);
-$purple-color-hover: darken($purple-color, 10%);
-$orange-color-hover: darken($orange-color, 10%);
-$input-color-hover: darken($input-color, 10%);
+$primary-color-hover: color.scale($primary-color, $lightness: -10%);// Réduit la luminosité de 10%, comme l'ancien "darken"
+$secondary-color-hover: color.scale($secondary-color, $lightness: -10%);
+$red-color-hover: color.scale($red-color, $lightness: -10%);
+$blue-color-hover: color.scale($blue-color, $lightness: -10%);
+$yellow-color-hover: color.scale($yellow-color, $lightness: -10%);
+$green-color-hover: color.scale($green-color, $lightness: -10%);
+$purple-color-hover: color.scale($purple-color, $lightness: -10%);
+$orange-color-hover: color.scale($orange-color, $lightness: -10%);
+$input-color-hover: color.scale($input-color, $lightness: -10%);
 
 $color-light-bg: #ffffff; // Couleur de fond claire
 $color-light-text: #000000; // Texte sombre pour le mode clair
@@ -34,10 +35,10 @@ $color-dark-bg: #1e1e1e; // Couleur de fond sombre
 $color-dark-text: #f5f5f5; // Texte clair pour le mode sombre
 
 /* Définition des couleurs hover pour les modes clair et sombre */
-$color-light-bg-hover: darken($color-light-bg, 5%);
-$color-light-text-hover: lighten($color-light-text, 20%);
-$color-dark-bg-hover: lighten($color-dark-bg, 5%);
-$color-dark-text-hover: darken($color-dark-text, 20%);
+$color-light-bg-hover: color.scale($color-light-bg, $lightness: -5%);
+$color-light-text-hover: color.scale($color-light-text, $lightness: 20%);
+$color-dark-bg-hover: color.scale($color-dark-bg, $lightness: 5%);
+$color-dark-text-hover: color.scale($color-dark-text, $lightness: -20%);
 
 /* Définition de la taille de police */
 $font-size-base: 16px;  /* Taille de base de la police */

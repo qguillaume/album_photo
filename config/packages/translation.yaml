@@ -1,5 +1,5 @@
 framework:
-    default_locale: 'fr' # Définit la langue par défaut (français)
+    default_locale: 'es' # Définit la langue par défaut (français)
     translator:
         enabled: true
         default_path: '%kernel.project_dir%/translations' # Chemin des fichiers de traduction

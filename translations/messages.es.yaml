@@ -1,3 +1,4 @@
+main_title: "Bienvenido a mi portafolio"
 hello_welcome: "Desarrollador Fullstack y apasionado por mi trabajo"
 presentation_text_1: "Hola, mi nombre es Guillaume y realmente disfruto de este oficio en el que pierdo la noción del tiempo. Me encanta enfrentar nuevos desafíos y aprender de ellos."
 presentation_text_2: "Resiliente y persistente por naturaleza, invierto mucho en los proyectos que emprendo y me comprometo a ofrecer trabajo de alta calidad."
@@ -27,3 +28,9 @@ send: "Enviar"
 name: "Nombre"
 message.success: 'Votre message a été envoyé avec succès es!'
 message.error: 'Veuillez corriger les erreurs ci-dessouses.'
+journey: "Mi trayectoria"
+profile_interest: "¿Te interesa mi perfil?"
+collab_sentence: "¡Contáctame para cualquier colaboración o proyecto!"
+contact_me: "Contáctame"
+projects_title: "Mis proyectos realizados"
+copyright: "Todos los derechos reservados 2025"

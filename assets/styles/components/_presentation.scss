@@ -3,8 +3,8 @@
 /* Conteneur principal qui contient l'image et le texte */
 .presentation-container {
     display: flex; /* Utilisation de Flexbox pour disposer l'image et le texte sur une seule ligne */
-    justify-content: flex-start; /* Aligne les éléments à gauche */
-    align-items: flex-start; /* Aligne les éléments en haut du conteneur */
+    justify-content: center;
+    align-items: center;
     max-width: 100%; /* Assure que le conteneur prend toute la largeur disponible de son parent */
     margin: 20px auto; /* Centrer le conteneur horizontalement */
     padding: 0 60px; /* Ajoute de l'espace intérieur à gauche et à droite */
@@ -86,4 +86,25 @@
     height: 5px; /* Hauteur de la ligne */
     background: linear-gradient(to right, $primary-color 50%, $secondary-color 50%); /* Gradient pour diviser la ligne en bleu et vert */
     margin: 100px auto; /* Espacement au-dessus et en dessous de la ligne */
+}
+
+.project-carousel {
+    text-align: center;
+    margin: 40px 0;
+
+    h3 {
+        margin-top: 10px;
+        font-size: 1.2rem;
+        color: #333;
+      }
+}
+  
+.project-slide {
+    position: relative;
+}
+  
+.project-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
 }

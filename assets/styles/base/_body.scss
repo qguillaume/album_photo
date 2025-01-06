@@ -20,15 +20,16 @@ main {
     padding: 0;
 }
 
-h1, h2, h3 {
-    font-family: 'Cambria Math', 'Cambria', serif; /* Vous pouvez différencier les titres */
+h1, h2, h3, h4 {
+    font-family: 'Cambria Math', 'Cambria', serif;
     font-weight: bold; /* Facultatif */
     text-decoration: underline; /* Ajoute une ligne de soulignement */
     color: $primary-color;
     text-decoration-color: $secondary-color; /* Définit la couleur du soulignement */
     text-decoration-thickness: 2px; /* Épaisseur de la ligne de soulignement */
     text-underline-offset: 8px; /* Décalage de la ligne par rapport au texte */
-    margin-bottom: 10px; /* Ajoute un espacement de 10px en dessous de chaque titre */
+    margin-bottom: 30px;
+    margin-top: 30px;
 }
 
 h1 {

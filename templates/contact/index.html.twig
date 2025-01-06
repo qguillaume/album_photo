@@ -5,39 +5,40 @@
 {% block body %}
     <h2>{{ 'contact_form'|trans }}</h2>
 
-    {# Affichage des messages de succès #}
     {% for message in app.flashes('success') %}
+    <div class="form-group">
         <div class="flash-success">
             {{ message }}
         </div>
+    </div>
     {% endfor %}
 
     {% if error == 1 %}
+    <div class="form-group">
         <div class="form-error">
             {{ form_errors(contactForm.name) }}
             {{ form_errors(contactForm.email) }}
             {{ form_errors(contactForm.message) }}
-        </div>
+        </div></div>
     {% endif %}
 
     {{ form_start(contactForm) }}
     
-    {# Champs du formulaire avec placeholders uniquement #}
-    <div class="form-group">
-        {{ form_widget(contactForm.name, {'attr': {'class': 'form-control'}}) }}
-        
-    </div>
-    <div class="form-group">
-        {{ form_widget(contactForm.email, {'attr': {'class': 'form-control'}}) }}
-        
-    </div>
-    <div class="form-group">
-        {{ form_widget(contactForm.message, {'attr': {'class': 'form-control'}}) }}
-        
-    </div>
-    <div class="form-group">
-        {{ form_widget(contactForm.send, {'attr': {'class': 'btn'}}) }}
-    </div>
+        <div class="form-group">
+            {{ form_widget(contactForm.name, {'attr': {'class': 'form-control'}}) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_widget(contactForm.email, {'attr': {'class': 'form-control'}}) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_widget(contactForm.message, {'attr': {'class': 'form-control'}}) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_widget(contactForm.send, {'attr': {'class': 'btn'}}) }}
+        </div>
 
     {{ form_end(contactForm) }}
 {% endblock %}

@@ -1,10 +1,16 @@
 @use "./variables" as *;
 
-form input[type="text"], 
-form input[type="email"], 
+.form-group {
+    display: flex; 
+    justify-content: center;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="file"],
 form textarea,
-form input[type="password"], 
-form input[type="submit"], 
+form input[type="password"],
+form input[type="submit"],
 form button {
     width: 40%; /* Largeur uniforme */
     margin-bottom: 1rem; /* Espacement vertical */

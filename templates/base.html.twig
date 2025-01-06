@@ -1,6 +1,6 @@
 {# base.html.twig #}
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +13,7 @@
 </head>
 <body class="dark-background">
     <header class="header">
-        <img src="{{ asset('images/logoGQ.png') }}" alt="logo GQ">
+        <a href="{{ path('portfolio_home') }}"><img src="{{ asset('images/logoGQ.png') }}" alt="logo GQ"></a>
         <nav>
             <div class="menu">
                 <a href="{{ path('portfolio_home') }}" class="{% if app.request.attributes.get('_route') == 'portfolio_home' %}active{% endif %}">{{ 'home'|trans }}</a>
@@ -115,7 +115,7 @@
     </div>
 
     <footer>
-        <p>© Tous droits réservés 2025 - Guillaume Quesnel</p>
+        <p>© {{ 'copyright'|trans }} - Guillaume Quesnel</p>
         <div class="social-icons">
             <a href="https://www.instagram.com/globeinyourhand" target="_blank">
                 <img src="{{ asset('images/logo_instagram.png') }}" alt="Instagram" class="social-icon">

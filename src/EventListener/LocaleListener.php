@@ -10,7 +10,7 @@ class LocaleListener
     private $defaultLocale;
     private $translator;
 
-    public function __construct(string $defaultLocale = 'fr', TranslatorInterface $translator)
+    public function __construct(string $defaultLocale = 'es', TranslatorInterface $translator)
     {
         $this->defaultLocale = $defaultLocale;
         $this->translator = $translator;

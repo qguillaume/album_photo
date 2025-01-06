@@ -13,7 +13,7 @@ class LocaleController
 {
     public function changeLocale(Request $request, SessionInterface $session): RedirectResponse
     {
-        $locale = $request->query->get('locale', 'fr');
+        $locale = $request->query->get('locale', 'en');
         $session->set('_locale', $locale);
 
         // Récupère l'URL de la page précédente

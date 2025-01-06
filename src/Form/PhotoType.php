@@ -17,9 +17,21 @@ class PhotoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', TextType::class)
+            ->add('title', TextType::class, [
+                'attr' => ['placeholder' => 'Titre de la photo'],
+                'label' => false,
+            ])
+            ->add('album', EntityType::class, [
+                'attr' => ['placeholder' => 'Choix de l\'album'],
+                'label' => false,
+                'class' => Album::class, // Spécifie l'entité Album
+                'choice_label' => 'nom_album', // Attribut affiché dans la liste déroulante
+                'placeholder' => 'Sélectionnez un album', // Valeur par défaut
+                'required' => true, // Rend ce champ obligatoire
+            ])
             ->add('file', FileType::class, [
-                'label' => 'Photo (JPEG, PNG)',
+                'attr' => ['placeholder' => 'Photo (JPEG, PNG)'],
+                'label' => false,
                 'mapped' => false, // Ne lie pas ce champ à l'entité
                 'required' => true,
                 'constraints' => [
@@ -29,12 +41,6 @@ class PhotoType extends AbstractType
                         'mimeTypesMessage' => 'Veuillez télécharger une image au format JPEG ou PNG.',
                     ])
                 ],
-            ])
-            ->add('album', EntityType::class, [
-                'class' => Album::class, // Spécifie l'entité Album
-                'choice_label' => 'nom_album', // Attribut affiché dans la liste déroulante
-                'placeholder' => 'Sélectionnez un album', // Valeur par défaut
-                'required' => true, // Rend ce champ obligatoire
             ]);
     }
 

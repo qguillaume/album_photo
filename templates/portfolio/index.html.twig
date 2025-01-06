@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1 data-aos="zoom-in">Bienvenue sur mon port folio</h1>
+    <h1 data-aos="zoom-in">{{ 'main_title'|trans }}</h1>
 
     <div class="separator"></div>
 
@@ -25,27 +25,7 @@
 
     <h2 id=skills data-aos="zoom-in">{{ 'skills'|trans }}</h2>
     <div class="presentation-container">
-        <div class="competences">
-            <div class="competence">
-                <img src="{{ asset('images/logo_html5_css3.png') }}" alt="HTML5 & CSS3">
-                <div class="competence-text">HTML5 & CSS3</div>
-            </div>
-            <div class="competence">
-                <img src="{{ asset('images/logo_js.jpg') }}" alt="JavaScript">
-                <div class="competence-text">JavaScript</div>
-            </div>
-            <div class="competence">
-                <img src="{{ asset('images/logo_jquery.jpg') }}" alt="jQuery">
-                <div class="competence-text">jQuery</div>
-            </div>
-            <div class="competence">
-                <img src="{{ asset('images/logo_php.png') }}" alt="PHP">
-                <div class="competence-text">PHP</div>
-            </div>
-            <div class="competence">
-                <img src="{{ asset('images/logo_mysql.png') }}" alt="MySQL">
-                <div class="competence-text">MySQL</div>
-            </div>
+        <div class="competences" data-aos="fade-right">
             <div class="competence">
                 <img src="{{ asset('images/logo_laravel.png') }}" alt="Laravel">
                 <div class="competence-text">Laravel</div>
@@ -67,17 +47,46 @@
                 <div class="competence-text">Docker</div>
             </div>
         </div>
-        <div class="photo_presentation">
-            <img src="{{ asset('images/photo_presentation2.jpg') }}" alt="Photo de présentation 2">
+        <div class="competences" data-aos="fade-left">
+            <div class="competence">
+                <img src="{{ asset('images/logo_html5_css3.png') }}" alt="HTML5 & CSS3">
+                <div class="competence-text">HTML5 & CSS3</div>
+            </div>
+            <div class="competence">
+                <img src="{{ asset('images/logo_js.jpg') }}" alt="JavaScript">
+                <div class="competence-text">JavaScript</div>
+            </div>
+            <div class="competence">
+                <img src="{{ asset('images/logo_jquery.jpg') }}" alt="jQuery">
+                <div class="competence-text">jQuery</div>
+            </div>
+            <div class="competence">
+                <img src="{{ asset('images/logo_php.png') }}" alt="PHP">
+                <div class="competence-text">PHP</div>
+            </div>
+            <div class="competence">
+                <img src="{{ asset('images/logo_mysql.png') }}" alt="MySQL">
+                <div class="competence-text">MySQL</div>
+            </div>
         </div>
     </div>
 
     <div class="separator"></div>
 
+    <h2 data-aos="zoom-in">{{ 'journey'|trans }}</h2>
     <div id="timeline-root"></div>
 
     <div class="separator"></div>
 
+    <h2 data-aos="zoom-in">{{ 'projects_title'|trans }}</h2>
+    <div class="project-carousel-container">
+        <div id="project-carousel"></div>
+    </div>
+
+    <div class="separator"></div>
+
+    <h2 data-aos="zoom-in">{{ 'profile_interest'|trans }}</h2>
+    <p class="cv-p" data-aos="fade-up">{{ 'collab_sentence'|trans }}</p>
     <div id="cv_contact"></div>
 
     <div class="separator"></div>
