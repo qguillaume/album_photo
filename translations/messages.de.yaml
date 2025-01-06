@@ -51,3 +51,7 @@ username_min_length: "Der Benutzername muss mindestens {{ limit }} Zeichen entha
 password_required: "Passwort ist erforderlich!"
 password_min_length: "Das Passwort muss mindestens {{ limit }} Zeichen enthalten!"
 inscription_successful: "Ihre Registrierung wurde erfolgreich abgeschlossen. Eine E-Mail wurde an Sie gesendet. Sie können sich jetzt anmelden und auf alle Funktionen der Website zugreifen!"
+comments: "Kommentare"
+leave_comment: "Kommentar hinterlassen"
+no_comment: "Kein Kommentar zu diesem Foto."
+connected_to_comment: "Sie müssen angemeldet sein, um einen Kommentar zu hinterlassen."

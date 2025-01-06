@@ -4,20 +4,24 @@ namespace App\Controller;
 
 use App\Entity\Like;
 use App\Entity\Photo;
-use App\Repository\LikeRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
+use App\Repository\PhotoRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class LikeController extends AbstractController
 {
     /**
      * @Route("/photo/{id}/like", name="photo_like", methods={"POST"})
      */
-    public function like(Photo $photo, EntityManagerInterface $entityManager, Request $request): JsonResponse
+    public function like(int $id, PhotoRepository $photoRepository, EntityManagerInterface $entityManager): JsonResponse
     {
+        $photo = $photoRepository->find($id);
+
+        if (!$photo) {
+            return new JsonResponse(['error' => 'Photo non trouvée.'], 404);
+        }
         // Vérifier si l'utilisateur est connecté
         $user = $this->getUser();
         if (!$user) {
@@ -43,8 +47,8 @@ class LikeController extends AbstractController
         $entityManager->persist($like);
         $entityManager->flush();
 
-        // Recalculer les likes de la photo après l'ajout
-        $updatedLikesCount = count($photo->getLikes()); // On utilise getLikes() si relation bidirectionnelle
+        // Utiliser la méthode getLikesCount() pour obtenir le nombre de likes
+        $updatedLikesCount = $photo->getLikesCount();
 
         // Retourner le nouveau nombre de likes
         return new JsonResponse(['likes' => $updatedLikesCount]);

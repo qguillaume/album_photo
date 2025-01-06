@@ -51,3 +51,7 @@ username_min_length: "Le nom d'utilisateur doit contenir au moins {{ limit }} ca
 password_required: "Le mot de passe est obligatoire !"
 password_min_length: "Le mot de passe doit contenir au moins {{ limit }} caractères !"
 inscription_successful: "Votre inscription a bien été effectuée, un mail vous a été adressé. Vous pouvez désormais vous connecter et accéder à toutes les fonctionnalités du site !"
+comments: "Commentaires"
+leave_comment: "Laisser un commentaire"
+no_comment: "Aucun commentaire pour cette photo."
+connected_to_comment: "Vous devez être connecté pour laisser un commentaire."

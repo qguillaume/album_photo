@@ -9,7 +9,7 @@
     <p class="details_photo"><strong>Album :</strong> {{ photo.album ? photo.album.nomAlbum : 'Sans album' }}</p>
     <p class="details_photo"><strong>Nombre de likes :</strong> {{ photo.likesCount }}</p>
 
-    <h2>Commentaires</h2>
+    <h2>{{"comments"|trans}}</h2>
     {% if comments|length > 0 %}
         <ul>
             {% for comment in comments %}
@@ -21,16 +21,16 @@
             {% endfor %}
         </ul>
     {% else %}
-        <p>Aucun commentaire pour cette photo.</p>
+        <p>{{"no_comment"|trans}}</p>
     {% endif %}
 
-    <h2>Laisser un commentaire</h2>
+    <h2>{{"leave_comment"|trans}}</h2>
     {% if app.user %}
         <form action="{{ path('comment_add', { id: photo.id }) }}" method="post">
             <textarea name="content" rows="4" style="width: 100%;" placeholder="Votre commentaire..."></textarea>
-            <button type="submit">Envoyer</button>
+            <button type="submit">{{"send"|trans}}</button>
         </form>
     {% else %}
-        <p>Vous devez être connecté pour laisser un commentaire.</p>
+        <p>{{"connected_to_comment"|trans}}</p>
     {% endif %}
 {% endblock %}

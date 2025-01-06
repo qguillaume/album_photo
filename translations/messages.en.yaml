@@ -51,3 +51,7 @@ username_min_length: "The username must be at least {{ limit }} characters long!
 password_required: "The password is required !"
 password_min_length: "The password must be at least {{ limit }} characters long!"
 inscription_successful: "Your registration has been successfully completed. An email has been sent to you. You can now log in and access all the features of the site!"
+comments: "Comments"
+leave_comment: "Leave a comment"
+no_comment: "No comment for this photo."
+connected_to_comment: "You must be logged in to leave a comment."

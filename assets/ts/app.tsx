@@ -145,7 +145,10 @@ document.addEventListener("DOMContentLoaded", () => {
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ name: newName }),
             })
-              .then(() => alert(`Album renommé en : "${newName}"`))
+              .then(() => {
+                alert(`Album renommé en : "${newName}"`);
+                window.location.reload();
+              })
               .catch(() => alert("Erreur lors du renommage de l'album."));
           }}
           onDelete={(id) => {
@@ -153,6 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
               .then(() => {
                 alert("Album supprimé avec succès");
                 el.remove();
+                window.location.reload();
               })
               .catch(() => alert("Erreur lors de la suppression de l'album."));
           }}
@@ -188,7 +192,10 @@ document.addEventListener("DOMContentLoaded", () => {
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ name: newName }),
             })
-              .then(() => alert(`Photo renommée en : "${newName}"`))
+              .then(() => {
+                alert(`Photo renommée en : "${newName}"`);
+                window.location.reload();
+              })
               .catch(() => alert("Erreur lors du renommage de la photo."));
           }}
           onDelete={(id) => {
@@ -196,6 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
               .then(() => {
                 alert("Photo supprimée avec succès");
                 el.remove();
+                window.location.reload();
               })
               .catch(() => alert("Erreur lors de la suppression de la photo."));
           }}
