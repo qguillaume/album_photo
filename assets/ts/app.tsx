@@ -76,7 +76,6 @@ const PhotosTable = () => {
   }, []);
 
   useEffect(() => { 
-    console.log("chargment photos B");
     fetch(`${process.env.REACT_APP_API_URL}/photos_list`)
       .then((response) => response.json())
       .then((data) => {
@@ -86,7 +85,6 @@ const PhotosTable = () => {
         console.error("Erreur lors de la récupération des photos:", error);
       });
 
-    console.log("chargment albums B");
     fetch(`${process.env.REACT_APP_API_URL}/albums_list`)
       .then((response) => response.json())
       .then((data) => {
@@ -141,14 +139,14 @@ const AlbumsTable = () => {
   const handleAlbumsUpdate = (updatedAlbums: Album[]) => {
     setAlbums(updatedAlbums);
   };
-  
+
   useEffect(() => {
     console.log("chargment albums C");
     fetch(`${process.env.REACT_APP_API_URL}/albums_list`)
       .then((response) => response.json())
       .then((data) => setAlbums(data))
       .catch((error) => console.error("Erreur lors du fetch des albums", error));
-  }, []); // <- Tableau de dépendances vide
+  }, []);
   
 
   return (
@@ -172,11 +170,11 @@ const UsersTable = () => {
       .then((response) => response.json())
       .then((data) => setUsers(data))
       .catch((error) => console.error("Erreur lors du fetch des utilisateurs", error));
-  }, []); // <- Tableau de dépendances vide
+  }, []);
 
   return (
     <div>
-      <UserTable />
+      <UserTable users={users} />
     </div>
   );
 };

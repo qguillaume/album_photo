@@ -6,48 +6,38 @@ interface User {
   email: string;
 }
 
-const UserTable: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([]);
+interface UserTableProps {
+  users: User[];  // Les utilisateurs sont passés en props
+}
 
-  // Récupérer les utilisateurs depuis l'API Symfony
-  useEffect(() => {
-    console.log("chargement users AA");
-    fetch("/api/users")
-      .then((response) => response.json())
-      .then((data) => setUsers(data))
-      .catch((error) => console.error("Erreur lors de la récupération des utilisateurs", error));
-  }, []);
-
+const UserTable: React.FC<UserTableProps> = ({ users }) => {
   return (
     <div className="table-container">
-      <div>
-        <h2>Liste des Utilisateurs</h2>
-        <table className="dashboard-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nom d'utilisateur</th>
-              <th>Email</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user, index) => {
-              // Applique une classe différente pour les lignes impaires et paires
-              const rowClass = (index + 1) % 2 === 0 ? "even-row-users" : "odd-row-users"; 
+      <h2>Liste des Utilisateurs</h2>
+      <table className="dashboard-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nom d'utilisateur</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user, index) => {
+            // Applique une classe différente pour les lignes impaires et paires
+            const rowClass = (index + 1) % 2 === 0 ? "even-row-users" : "odd-row-users"; 
 
-              return (
-                <tr key={user.id} className={rowClass}>
-                  <td>{user.id}</td>
-                  <td>{user.username}</td>
-                  <td>{user.email}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+            return (
+              <tr key={user.id} className={rowClass}>
+                <td>{user.id}</td>
+                <td>{user.username}</td>
+                <td>{user.email}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 };
-
 export default UserTable;

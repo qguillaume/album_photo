@@ -17,20 +17,17 @@ const DashboardTabs: React.FC = () => {
   useEffect(() => {
     // Si les données ne sont pas encore chargées, on les charge
     if (photos.length === 0) {
-        console.log("chargement photos A");
       fetch('/photos_list')
         .then(response => response.json())
         .then(data => setPhotos(data));
     }
     if (albums.length === 0) {
-        console.log("chargement albums A");
       fetch('/albums_list')
         .then(response => response.json())
         .then(data => setAlbums(data));
     }
     if (users.length === 0) {
-        console.log("chargement users A");
-      fetch('/api/users')
+      fetch('/users_list')
         .then(response => response.json())
         .then(data => setUsers(data));
     }
@@ -82,7 +79,7 @@ const DashboardTabs: React.FC = () => {
             onAlbumsUpdate={handleAlbumsUpdate}
           />
         )}
-        {activeTab === 'users' && <UserTable />}
+        {activeTab === 'users' && <UserTable users={users} />}
       </div>
     </div>
   );

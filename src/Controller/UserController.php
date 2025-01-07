@@ -19,7 +19,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/api/users", name="api_users", methods={"GET"})
+     * @Route("/users_list", name="users_list", methods={"GET"})
      */
     public function getUsers()
     {
