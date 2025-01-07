@@ -104,4 +104,29 @@ class AlbumController extends AbstractController
         // Retourner la réponse JSON avec les albums
         return new JsonResponse($albumsData);
     }
+
+    // Renommer un album
+    public function renameAlbum(Request $request, EntityManagerInterface $em, int $id): JsonResponse
+    {
+        $album = $em->getRepository(Album::class)->find($id);
+        if (!$album) {
+            return new JsonResponse(['message' => 'Album non trouvé'], 404);
+        }
+        $data = json_decode($request->getContent(), true);
+        $album->setNomAlbum($data['name']);
+        $em->flush();
+        return new JsonResponse(['message' => 'Album renommé avec succès']);
+    }
+
+    // Supprimer un album
+    public function deleteAlbum(EntityManagerInterface $em, int $id): JsonResponse
+    {
+        $album = $em->getRepository(Album::class)->find($id);
+        if (!$album) {
+            return new JsonResponse(['message' => 'Album non trouvé'], 404);
+        }
+        $em->remove($album);
+        $em->flush();
+        return new JsonResponse(['message' => 'Album supprimé avec succès']);
+    }
 }

@@ -80,7 +80,7 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
   return (
     <div className="table-container">
       <h2>Top Photos par Likes</h2>
-      <table className="photo-table">
+      <table className="dashboard-table">
         <thead>
           <tr>
             <th>#</th>
@@ -94,8 +94,12 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
         <tbody>
           {photos.map((photo, index) => {
             const album = albums.find((a) => a.id === photo.albumId);
+
+            // Applique une classe différente pour les lignes impaires et paires
+            const rowClass = (index + 1) % 2 === 0 ? "even-row-photos" : "odd-row-photos"; 
+
             return (
-              <tr key={photo.id}>
+              <tr key={photo.id} className={rowClass}>
                 <td>{index + 1}</td>
                 <td>
                   {editingPhotoId === photo.id ? (

@@ -11,9 +11,10 @@
       margin-bottom: 1rem;
       color: #333;
       text-align: center;
+      text-decoration: none;
     }
   
-    .photo-table {
+    .dashboard-table {
       width: 100%;
       border-collapse: collapse;
       color: white;
@@ -39,6 +40,33 @@
   
       tr:hover {
         background-color: $primary-color-hover;
+      }
+
+      /* Couleurs pour les utilisateurs (tableau rouge) */
+      .odd-row-users {
+        background-color: $odd-row-color-users;  // Rouge pour la ligne impaire
+      }
+
+      .even-row-users {
+        background-color: $even-row-color-users; // Rouge pour la ligne paire
+      }
+
+      /* Couleurs pour les photos (tableau vert) */
+      .odd-row-photos {
+        background-color: $odd-row-color-photos;  // Vert pour la ligne impaire
+      }
+
+      .even-row-photos {
+        background-color: $even-row-color-photos; // Vert pour la ligne paire
+      }
+
+      /* Couleurs pour les albums (tableau bleu) */
+      .odd-row-albums {
+        background-color: $odd-row-color-albums;  // Bleu pour la ligne impaire
+      }
+
+      .even-row-albums {
+        background-color: $even-row-color-albums; // Bleu pour la ligne paire
       }
   
       .crud-buttons {

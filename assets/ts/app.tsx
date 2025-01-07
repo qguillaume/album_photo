@@ -11,8 +11,9 @@ import { BrowserRouter } from "react-router-dom";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useTranslation } from 'react-i18next'; // Importer useTranslation ici pour l'utiliser dans les composants
-import ProjectCarousel from '../components/ProjectCarousel'; // Assure-toi que le chemin est correct
-import UserList from "../components/UserList"; 
+import ProjectCarousel from '../components/ProjectCarousel';
+import UserTable from "../components/UserTable";
+import AlbumTable from "../components/AlbumTable"; 
 
 import '../../public/i18n'; // Importer le fichier de configuration de i18next
 
@@ -141,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
           albumId={parseInt(albumId, 10)}
           albumName={albumName}
           onRename={(id, newName) => {
-            fetch(`${process.env.REACT_APP_API_URL}/albums/rename/${id}`, {
+            fetch(`${process.env.REACT_APP_API_URL}/album/rename/${id}`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ name: newName }),
@@ -153,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
               .catch(() => alert("Erreur lors du renommage de l'album."));
           }}
           onDelete={(id) => {
-            fetch(`${process.env.REACT_APP_API_URL}/albums/delete/${id}`, { method: "DELETE" })
+            fetch(`${process.env.REACT_APP_API_URL}/album/delete/${id}`, { method: "DELETE" })
               .then(() => {
                 alert("Album supprimé avec succès");
                 el.remove();
@@ -290,14 +291,21 @@ document.addEventListener("DOMContentLoaded", () => {
     root.render(<ProjectCarousel />);  // Rendre le composant dans l'élément
   }
 
-  // Ajouter le composant UserList dans le DOM
+  // Ajouter le composant UserTable dans le DOM
+  const UserTableRoot = document.getElementById('user-table');  // Récupère l'élément DOM
 
-  const UserListRoot = document.getElementById('user-list');  // Récupère l'élément DOM
-
-  if (UserListRoot) {
-    const root = ReactDOM.createRoot(UserListRoot);  // Crée la racine React
-    root.render(<UserList />);  // Rendre le composant dans l'élément
+  if (UserTableRoot) {
+    const root = ReactDOM.createRoot(UserTableRoot);  // Crée la racine React
+    root.render(<UserTable />);  // Rendre le composant dans l'élément
   }
+
+    // Ajouter le composant UserTable dans le DOM
+    const AlbumTableRoot = document.getElementById('albums-table');  // Récupère l'élément DOM
+
+    if (AlbumTableRoot) {
+      const root = ReactDOM.createRoot(AlbumTableRoot);  // Crée la racine React
+      root.render(<AlbumTable />);  // Rendre le composant dans l'élément
+    }
 });
 
 

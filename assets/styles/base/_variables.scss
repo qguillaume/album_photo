@@ -22,6 +22,16 @@ $active-color: #ffffff;
 $hover-color: #dddddd;
 $menu-item-height: 38px;
 
+// Définition des couleurs de lignes pour chaque tableau
+$odd-row-color-users: #8B1A1A;  // Rouge pour les utilisateurs (ligne impaire)
+$even-row-color-users: #6F1414; // Rouge pour les utilisateurs (ligne paire)
+
+$odd-row-color-photos: #2C6B3F;  // Vert pour les photos (ligne impaire)
+$even-row-color-photos: #1F5232; // Vert pour les photos (ligne paire)
+
+$odd-row-color-albums: #2C3E50;  // Bleu pour les albums (ligne impaire)
+$even-row-color-albums: #1A2530; // Bleu pour les albums (ligne paire)
+
 /* Définition des couleurs hover */
 $primary-color-hover: color.scale($primary-color, $lightness: -10%);// Réduit la luminosité de 10%, comme l'ancien "darken"
 $secondary-color-hover: color.scale($secondary-color, $lightness: -10%);

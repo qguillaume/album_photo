@@ -5,22 +5,10 @@
 {% block body %}
 <h1>{{ 'dashboard'|trans }}</h1>
 
-<h2>Albums</h2>
-<ul>
-    {% for album in albums %}
-        <li>
-          {{ album.getNomAlbum() }} 
-          ({{ albumPhotosCount[album.id] is defined ? albumPhotosCount[album.id] : 0 }} photos)
-        </li>
-    {% endfor %}
-</ul>
+<div id="albums-table"></div>
 
 <div id="photos-table"></div>
 
-<div id="user-list"></div>
-<script>
-  // Injection des données Twig dans JavaScript
-  const albumsData = {{ albums|json_encode()|raw }};
-  const photosData = {{ photos|json_encode()|raw }};
-</script>
+<div id="user-table"></div>
+
 {% endblock %}
