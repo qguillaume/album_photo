@@ -6,7 +6,7 @@ import PhotoControls from "../components/PhotoControls";
 import PhotoTable from "../components/PhotoTable";
 import Timeline from "../components/Timeline";
 import ContactButton from "../components/ContactButton"; 
-import { Photo, Album } from "./types";
+import { Photo, Album, User } from "./types";
 import { BrowserRouter } from "react-router-dom";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -60,6 +60,8 @@ const CVContact: React.FC = () => {
   );
 };
 
+
+
 // Composant principal PhotosTable
 const PhotosTable = () => {
   const [photos, setPhotos] = useState<Photo[]>([]); 
@@ -73,7 +75,8 @@ const PhotosTable = () => {
     setPhotos(photosFromTwig);
   }, []);
 
-  useEffect(() => {
+  useEffect(() => { 
+    console.log("chargment photos B");
     fetch(`${process.env.REACT_APP_API_URL}/photos_list`)
       .then((response) => response.json())
       .then((data) => {
@@ -83,6 +86,7 @@ const PhotosTable = () => {
         console.error("Erreur lors de la récupération des photos:", error);
       });
 
+    console.log("chargment albums B");
     fetch(`${process.env.REACT_APP_API_URL}/albums_list`)
       .then((response) => response.json())
       .then((data) => {
@@ -126,6 +130,53 @@ const PhotosTable = () => {
         onPhotosUpdate={setPhotos}
         onAlbumsUpdate={setAlbums}
       />
+    </div>
+  );
+};
+
+const AlbumsTable = () => {
+  const [albums, setAlbums] = useState<Album[]>([]);
+
+  // Fonction pour mettre à jour les albums
+  const handleAlbumsUpdate = (updatedAlbums: Album[]) => {
+    setAlbums(updatedAlbums);
+  };
+  
+  useEffect(() => {
+    console.log("chargment albums C");
+    fetch(`${process.env.REACT_APP_API_URL}/albums_list`)
+      .then((response) => response.json())
+      .then((data) => setAlbums(data))
+      .catch((error) => console.error("Erreur lors du fetch des albums", error));
+  }, []); // <- Tableau de dépendances vide
+  
+
+  return (
+    <div>
+      {albums.map((album) => (
+        <div>
+          <AlbumTable albums={albums} onAlbumsUpdate={handleAlbumsUpdate} />
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const UsersTable = () => {
+  const [users, setUsers] = useState<User[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    console.log("chargment users B");
+    fetch(`${process.env.REACT_APP_API_URL}/users_list`)
+      .then((response) => response.json())
+      .then((data) => setUsers(data))
+      .catch((error) => console.error("Erreur lors du fetch des utilisateurs", error));
+  }, []); // <- Tableau de dépendances vide
+
+  return (
+    <div>
+      <UserTable />
     </div>
   );
 };
@@ -224,6 +275,18 @@ document.addEventListener("DOMContentLoaded", () => {
     ReactDOM.createRoot(photosTableElement).render(<PhotosTable />);
   }
 
+  // Rendre le tableau des albums dans le DOM
+  const albumsTableElement = document.getElementById("albums-table");
+  if (albumsTableElement) {
+    ReactDOM.createRoot(albumsTableElement).render(<AlbumsTable />);
+  }
+
+  // Rendre le tableau des users dans le DOM
+  const usersTableElement = document.getElementById("users-table");
+  if (usersTableElement) {
+    ReactDOM.createRoot(usersTableElement).render(<UsersTable />);
+  }
+
   // Rendre le consentement des cookies
   const cookieConsentElement = document.getElementById("cookie-consent");
   if (cookieConsentElement) {
@@ -290,22 +353,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (carouselElement) {
     const root = ReactDOM.createRoot(carouselElement);  // Crée la racine React
     root.render(<ProjectCarousel />);  // Rendre le composant dans l'élément
-  }
-
-  // Ajouter le composant UserTable dans le DOM
-  const UserTableRoot = document.getElementById('user-table');  // Récupère l'élément DOM
-
-  if (UserTableRoot) {
-    const root = ReactDOM.createRoot(UserTableRoot);  // Crée la racine React
-    root.render(<UserTable />);  // Rendre le composant dans l'élément
-  }
-
-  // Ajouter le composant UserTable dans le DOM
-  const AlbumTableRoot = document.getElementById('albums-table');  // Récupère l'élément DOM
-
-  if (AlbumTableRoot) {
-    const root = ReactDOM.createRoot(AlbumTableRoot);  // Crée la racine React
-    root.render(<AlbumTable />);  // Rendre le composant dans l'élément
   }
 
   // Ajouter le composant DashboardTabs dans le DOM

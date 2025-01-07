@@ -11,6 +11,7 @@ const UserTable: React.FC = () => {
 
   // Récupérer les utilisateurs depuis l'API Symfony
   useEffect(() => {
+    console.log("chargement users AA");
     fetch("/api/users")
       .then((response) => response.json())
       .then((data) => setUsers(data))

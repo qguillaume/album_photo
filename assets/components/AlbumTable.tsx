@@ -1,108 +1,79 @@
 import React, { useEffect, useState } from "react";
+import { Photo, Album, User } from '../ts/types';
 
-interface Album {
-    id: number;
-    nom: string;
-    photos: any[];
-  }
-
+// AlbumTable.tsx
 interface AlbumTableProps {
-  albums: Album[];
-  onAlbumsUpdate: (updatedAlbums: Album[]) => void;
-}
-
-const AlbumTable: React.FC = () => {
-  const [albums, setAlbums] = useState<Album[]>([]);
-  const [editingAlbumId, setEditingAlbumId] = useState<number | null>(null);
-  const [newAlbumName, setNewAlbumName] = useState<string>("");
-
-  // Charger les albums depuis l'API
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/albums_list`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erreur lors de la récupération des albums");
-        }
-        return response.json();
+    albums: Album[]; // Les albums sont passés en props
+    onAlbumsUpdate: (updatedAlbums: Album[]) => void;
+  }
+  
+  const AlbumTable: React.FC<AlbumTableProps> = ({ albums, onAlbumsUpdate }) => {
+    const [editingAlbumId, setEditingAlbumId] = useState<number | null>(null);
+    const [newAlbumName, setNewAlbumName] = useState<string>("");
+  
+    // Supprimer un album
+    const handleDelete = (id: number) => {
+      if (window.confirm("Êtes-vous sûr de vouloir supprimer cet album ?")) {
+        fetch(`/album/delete/${id}`, { method: "DELETE" })
+          .then((response) => {
+            if (response.ok) {
+              const updatedAlbums = albums.filter((album) => album.id !== id);
+              onAlbumsUpdate(updatedAlbums);
+              alert("Album supprimé !");
+            } else {
+              alert("Erreur lors de la suppression.");
+            }
+          })
+          .catch((error) => {
+            console.error("Erreur lors de la suppression de l'album :", error);
+          });
+      }
+    };
+  
+    // Modifier un album
+    const handleEdit = (id: number) => {
+      fetch(`/album/rename/${id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: newAlbumName }),
       })
-      .then((data: Album[]) => {      
-        console.log("Données API reçues :", data);
-        setAlbums(data);
-      })
-      .catch((error) => {
-        console.error("Erreur lors du chargement des albums :", error);
-      });
-  }, []);
-
-  // Fonction pour mettre à jour les albums
-  const onAlbumsUpdate = (updatedAlbums: Album[]) => {
-    setAlbums(updatedAlbums);
-  };
-
-  // Supprimer un album
-  const handleDelete = (id: number) => {
-    if (window.confirm("Êtes-vous sûr de vouloir supprimer cet album ?")) {
-      fetch(`http://localhost:8000/album/delete/${id}`, { method: "DELETE" })
         .then((response) => {
           if (response.ok) {
-            const updatedAlbums = albums.filter((album) => album.id !== id);
-            onAlbumsUpdate(updatedAlbums);
-            alert("Album supprimé !");
+            onAlbumsUpdate(
+              albums.map((album) =>
+                album.id === id ? { ...album, nom: newAlbumName } : album
+              )
+            );
+            setEditingAlbumId(null);
+            setNewAlbumName("");
+            alert("Album mis à jour !");
           } else {
-            alert("Erreur lors de la suppression.");
+            alert("Erreur lors de la mise à jour de l'album.");
           }
         })
         .catch((error) => {
-          console.error("Erreur lors de la suppression de l'album :", error);
+          console.error("Erreur lors de la mise à jour de l'album :", error);
         });
-    }
-  };
-
-  // Modifier un album
-  const handleEdit = (id: number) => {
-    fetch(`http://localhost:8000/album/rename/${id}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: newAlbumName }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          onAlbumsUpdate(
-            albums.map((album) =>
-              album.id === id ? { ...album, nom: newAlbumName } : album
-            )
-          );
-          setEditingAlbumId(null);
-          setNewAlbumName("");
-          alert("Album mis à jour !");
-        } else {
-          alert("Erreur lors de la mise à jour de l'album.");
-        }
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la mise à jour de l'album :", error);
-      });
-  };
-
-  return (
-    <div className="table-container">
-      <h2>Liste des Albums</h2>
-      <table className="dashboard-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Nom de l'Album</th>
-            <th>Nombre de Photos</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {albums.map((album, index) => {
-            // Appliquer une classe différente pour les lignes impaires et paires
-            const rowClass = (index + 1) % 2 === 0 ? "even-row-albums" : "odd-row-albums";
-
-            return (
-              <tr key={album.id} className={rowClass}>
+    };
+  
+    return (
+      <div className="table-container">
+        <h2>Liste des Albums</h2>
+        <table className="dashboard-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nom de l'Album</th>
+              <th>Nombre de Photos</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {albums.map((album, index) => (
+              <tr
+                key={album.id}
+                className={(index + 1) % 2 === 0 ? "even-row-albums" : "odd-row-albums"}
+              >
                 <td>{index + 1}</td>
                 <td>
                   {editingAlbumId === album.id ? (
@@ -121,10 +92,7 @@ const AlbumTable: React.FC = () => {
                   <div className="crud-buttons">
                     {editingAlbumId === album.id ? (
                       <>
-                        <button
-                          className="validate"
-                          onClick={() => handleEdit(album.id)}
-                        >
+                        <button className="validate" onClick={() => handleEdit(album.id)}>
                           Valider
                         </button>
                         <button
@@ -156,12 +124,12 @@ const AlbumTable: React.FC = () => {
                   </div>
                 </td>
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
-  );
-};
-
-export default AlbumTable;
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+  
+  export default AlbumTable;
+  
