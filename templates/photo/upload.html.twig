@@ -15,7 +15,7 @@
             {{ form_widget(form.album) }}
         </div>
         <div class="form-group">
-            {{ form_widget(form.download_photo) }}
+            {{ form_widget(form.download_photo, {'attr': {'class': 'green-button'}}) }}
         </div>
     {{ form_end(form) }}
 {% endblock %}

@@ -11,16 +11,27 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AlbumType extends AbstractType
 {
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('nomAlbum', TextType::class, [
-                'attr' => ['placeholder' => 'Nom de l\'album'],
+                'attr' => ['placeholder' => 'album_name'],
                 'label' => false,
-                'required' => true
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'name_album_required']),
+                ],
             ])
             ->add('image_path', FileType::class, [
                 'label' => false,
@@ -28,12 +39,12 @@ class AlbumType extends AbstractType
                 'constraints' => [
                     new File([
                         'mimeTypes' => ['image/jpeg', 'image/png', 'image/jpg'],
-                        'mimeTypesMessage' => 'Veuillez télécharger une image valide.',
+                        'mimeTypesMessage' => $this->translator->trans('upload_valide'),
                     ])
                 ],
             ])
             ->add('create_album', SubmitType::class, [
-                'label' => 'Créer l\'album',
+                'label' => 'create_album',
             ]);
         ;
     }

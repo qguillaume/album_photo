@@ -4,7 +4,6 @@
 footer {
   background-color: $primary-color;
   color: white; /* Le texte du footer sera blanc */
-  font-weight: bold;
   padding: $space-sm $space-md; /* Ajoute un padding interne, avec des valeurs définies dans les variables $space-sm et $space-md pour la hauteur et la largeur */
   text-align: center; /* Aligne le texte au centre (utile pour le copyright) */
   margin-top: auto; /* Pousse le footer en bas de la page en utilisant la propriété flexbox */

@@ -21,8 +21,7 @@ main {
 }
 
 h1, h2, h3, h4 {
-    font-family: 'Cambria Math', 'Cambria', serif;
-    font-weight: bold; /* Facultatif */
+    font-weight: bold;
     text-decoration: underline; /* Ajoute une ligne de soulignement */
     color: $primary-color;
     text-decoration-color: $secondary-color; /* Définit la couleur du soulignement */
@@ -51,7 +50,7 @@ p {
         color: $primary-color;
     }
 
-    &.details_photo {
+    &.details-photo {
         text-align: center;
     }
 }

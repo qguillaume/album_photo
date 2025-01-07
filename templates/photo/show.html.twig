@@ -4,10 +4,10 @@
 
 {% block body %}
     <h1>{{ photo.title }}</h1>
-    <div class="photo_agrandie"><img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" ></div>
+    <div class="photo-agrandie"><img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" ></div>
 
-    <p class="details_photo"><strong>Album :</strong> {{ photo.album ? photo.album.nomAlbum : 'Sans album' }}</p>
-    <p class="details_photo"><strong>Nombre de likes :</strong> {{ photo.likesCount }}</p>
+    <p class="details-photo"><strong>Album :</strong> {{ photo.album ? photo.album.nomAlbum : 'Sans album' }}</p>
+    <p class="details-photo"><strong>Nombre de likes :</strong> {{ photo.likesCount }}</p>
 
     <h2>{{"comments"|trans}}</h2>
     {% if comments|length > 0 %}
@@ -26,9 +26,9 @@
 
     <h2>{{"leave_comment"|trans}}</h2>
     {% if app.user %}
-        <form action="{{ path('comment_add', { id: photo.id }) }}" method="post">
+        <form action="{{ path('comment_add', { id: photo.id }) }}" method="post"> <!-- @TODO il faudra faire le formulaire symfony -->
             <textarea name="content" rows="4" style="width: 100%;" placeholder="Votre commentaire..."></textarea>
-            <button type="submit">{{"send"|trans}}</button>
+            <button type="submit" class="green-button">{{"send"|trans}}</button>
         </form>
     {% else %}
         <p>{{"connected_to_comment"|trans}}</p>
