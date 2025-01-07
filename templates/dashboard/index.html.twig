@@ -5,10 +5,11 @@
 {% block body %}
 <h1>{{ 'dashboard'|trans }}</h1>
 
-<div id="albums-table"></div>
+<!-- Point d'ancrage pour React -->
+<div id="dashboard-tabs"></div>
 
-<div id="photos-table"></div>
+{% endblock %}
 
-<div id="user-table"></div>
-
+{% block javascripts %}
+    <script src="{{ encore_entry_script_tags('app-ts') }}"></script>
 {% endblock %}

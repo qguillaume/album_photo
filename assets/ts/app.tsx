@@ -13,7 +13,8 @@ import 'aos/dist/aos.css';
 import { useTranslation } from 'react-i18next'; // Importer useTranslation ici pour l'utiliser dans les composants
 import ProjectCarousel from '../components/ProjectCarousel';
 import UserTable from "../components/UserTable";
-import AlbumTable from "../components/AlbumTable"; 
+import AlbumTable from "../components/AlbumTable";
+import DashboardTabs from "../components/DashboardTabs";
 
 import '../../public/i18n'; // Importer le fichier de configuration de i18next
 
@@ -299,13 +300,21 @@ document.addEventListener("DOMContentLoaded", () => {
     root.render(<UserTable />);  // Rendre le composant dans l'élément
   }
 
-    // Ajouter le composant UserTable dans le DOM
-    const AlbumTableRoot = document.getElementById('albums-table');  // Récupère l'élément DOM
+  // Ajouter le composant UserTable dans le DOM
+  const AlbumTableRoot = document.getElementById('albums-table');  // Récupère l'élément DOM
 
-    if (AlbumTableRoot) {
-      const root = ReactDOM.createRoot(AlbumTableRoot);  // Crée la racine React
-      root.render(<AlbumTable />);  // Rendre le composant dans l'élément
-    }
+  if (AlbumTableRoot) {
+    const root = ReactDOM.createRoot(AlbumTableRoot);  // Crée la racine React
+    root.render(<AlbumTable />);  // Rendre le composant dans l'élément
+  }
+
+  // Ajouter le composant DashboardTabs dans le DOM
+  const DashboardTabsRoot = document.getElementById('dashboard-tabs');  // Récupère l'élément DOM
+
+  if (DashboardTabsRoot) {
+    const root = ReactDOM.createRoot(DashboardTabsRoot);  // Crée la racine React
+    root.render(<DashboardTabs />);  // Rendre le composant dans l'élément
+  }
 });
 
 
