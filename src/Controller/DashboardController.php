@@ -12,8 +12,8 @@ class DashboardController extends AbstractController
 {
     public function index(AlbumRepository $albumRepository, PhotoRepository $photoRepository): Response
     {
-        // Cette page est protégée, donc l'utilisateur doit être connecté
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        // Cette page est protégée, donc l'utilisateur doit être connecté en tant qu'admin uniquement !!!!!!!!
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $albums = $albumRepository->findAll();  // Récupère tous les albums
         $photos = $photoRepository->findAll();  // Récupère toutes les photos
         $topLikedPhotos = $photoRepository->findTopLikedPhotos(); // Les photos avec le plus de likes
@@ -21,14 +21,16 @@ class DashboardController extends AbstractController
         // Calcul du nombre de photos par album
         $albumPhotosCount = [];
         foreach ($albums as $album) {
-            $albumPhotosCount[$album->getId()] = count($album->getPhotos());
+            $albumPhotosCount[$album->getId()] = $album->getPhotos() ? count($album->getPhotos()) : 0;
         }
+
+        //$albumPhotosCount = $albumRepository->findAlbumsWithPhotoCounts();
 
         return $this->render('dashboard/index.html.twig', [
             'albums' => $albums,
             'photos' => $photos,
             'topLikedPhotos' => $topLikedPhotos,
-            'albumPhotosCount' => $albumPhotosCount, // Ajouter cette donnée au rendu
+            'albumPhotosCount' => $albumPhotosCount,
         ]);
     }
 }

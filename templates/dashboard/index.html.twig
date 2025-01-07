@@ -8,7 +8,10 @@
 <h2>Albums</h2>
 <ul>
     {% for album in albums %}
-        <li>{{ album.getNomAlbum() }} ({{ albumPhotosCount[album.id] }} photos)</li>
+        <li>
+          {{ album.getNomAlbum() }} 
+          ({{ albumPhotosCount[album.id] is defined ? albumPhotosCount[album.id] : 0 }} photos)
+        </li>
     {% endfor %}
 </ul>
 

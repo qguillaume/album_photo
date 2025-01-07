@@ -185,6 +185,7 @@ class PhotoController extends AbstractController
                 'filePath' => $photo->getFilePath(),
                 'album' => $photo->getAlbum() ? $photo->getAlbum()->getNomAlbum() : 'Sans album',
                 'likesCount' => $photo->getLikesCount(),
+                'commentsCount' => $photo->getCommentsCount(),
             ];
         }
 

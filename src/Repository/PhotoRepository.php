@@ -30,4 +30,16 @@ class PhotoRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findPhotosWithCommentsAndLikes(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p', 'COUNT(c) AS comments_count', 'COUNT(l) AS likes_count')
+            ->leftJoin('p.comments', 'c') // Jointure pour les commentaires
+            ->leftJoin('p.likes', 'l')    // Jointure pour les likes
+            ->groupBy('p.id')            // Groupement par photo
+            ->orderBy('likes_count', 'DESC') // Trier par likes décroissants
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -63,4 +63,9 @@ header {
     a:hover:not(.logo), .active:not(.logo) {
         background-color: $primary-color; /* Couleur d'arrière-plan au survol */
     }
+
+    .logo img { /* @TODO avoir un svg du logo */
+        width: 150px;
+        height: 89px;
+    }
 }

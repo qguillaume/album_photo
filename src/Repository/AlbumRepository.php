@@ -29,4 +29,15 @@ class AlbumRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findAlbumsWithPhotoCounts(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a.id', 'COUNT(p.id) AS photo_count')
+            ->leftJoin('a.photos', 'p')
+            ->groupBy('a.id')
+            ->getQuery()
+            ->getResult();
+    }
+
 }

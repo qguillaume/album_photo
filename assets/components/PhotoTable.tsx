@@ -17,68 +17,42 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
   const [editingPhotoId, setEditingPhotoId] = useState<number | null>(null);
   const [newTitle, setNewTitle] = useState<string>("");
 
-  // Debug : Vérifier les mises à jour des albums dans le composant
-  useEffect(() => {
-    console.log("Albums mis à jour dans PhotoTable :", albums);
-  }, [albums]);
-
   // Supprimer une photo
-// Mise à jour du handleDelete
-const handleDelete = (id: number, albumName: string) => {
-    // Récupère l'ID de l'album à partir de l'albumName
-    const albumId = albums.find((album) => album.nom === albumName)?.id;
-    console.log(`Suppression demandée pour la photo ID: ${id} de l'album ID: ${albumId}`);
-  
+  const handleDelete = (id: number, albumId: number | undefined) => {
+    console.log(`Suppression demandée pour la photo ID: ${id}, Album ID: ${albumId}`);
+
     if (window.confirm("Êtes-vous sûr de vouloir supprimer cette photo ?")) {
       fetch(`http://localhost:8000/photo/delete/${id}`, { method: "DELETE" })
         .then((response) => {
           if (response.ok) {
-            console.log(`Photo ID: ${id} supprimée avec succès !`);
-            // Mettre à jour la liste des photos après suppression
             const updatedPhotos = photos.filter((photo) => photo.id !== id);
-            console.log("Photos après suppression :", updatedPhotos);
             onPhotosUpdate(updatedPhotos);
-  
-            // Mettre à jour l'album en retirant la photo supprimée
-            const updatedAlbums = albums.map((album) => {
-              if (album.id === albumId) {
-                const updatedAlbum = {
-                  ...album,
-                  photos: album.photos.filter((photo) => photo.id !== id), // Retirer la photo de l'album
-                };
-                console.log(`Album ID: ${albumId} mis à jour :`, updatedAlbum);
-                return updatedAlbum;
-              }
-              return album;
-            });
-  
-            // Mettre à jour l'état des albums
-            onAlbumsUpdate(updatedAlbums);
-  
-            // Vérification finale des albums mis à jour
-            console.log("Albums après mise à jour finale :", updatedAlbums);
-  
-            // Vérification finale du contenu de la photo et des albums dans l'état
-            console.log("Photos finales :", updatedPhotos);
-            console.log("Albums finales :", updatedAlbums);
-  
+
+            if (albumId) {
+              const updatedAlbums = albums.map((album) =>
+                album.id === albumId
+                  ? {
+                      ...album,
+                      photos: album.photos.filter((photo) => photo.id !== id),
+                    }
+                  : album
+              );
+              onAlbumsUpdate(updatedAlbums);
+            }
+
             alert("Photo supprimée !");
           } else {
             alert("Erreur lors de la suppression.");
-            console.error("Erreur lors de la suppression de la photo.");
           }
         })
         .catch((error) => {
           console.error("Erreur lors de la suppression de la photo :", error);
         });
-    } else {
-      console.log("Suppression annulée pour la photo ID:", id);
     }
-  };  
+  };
 
   // Modifier une photo
   const handleEdit = (id: number) => {
-    console.log("Édition de la photo ID:", id, "Nouveau titre:", newTitle); // Ajout d'un log pour déboguer
     fetch(`http://localhost:8000/photo/rename/${id}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -86,7 +60,6 @@ const handleDelete = (id: number, albumName: string) => {
     })
       .then((response) => {
         if (response.ok) {
-          console.log("Réponse du serveur après mise à jour de la photo");
           onPhotosUpdate(
             photos.map((photo) =>
               photo.id === id ? { ...photo, title: newTitle } : photo
@@ -112,67 +85,74 @@ const handleDelete = (id: number, albumName: string) => {
           <tr>
             <th>#</th>
             <th>Titre de la Photo</th>
+            <th>Album associé</th>
             <th>Nombre de Likes</th>
+            <th>Nombre de Commentaires</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {photos.map((photo, index) => (
-            <tr key={photo.id}>
-              <td>{index + 1}</td>
-              <td>
-                {editingPhotoId === photo.id ? (
-                  <input
-                    type="text"
-                    value={newTitle}
-                    onChange={(e) => setNewTitle(e.target.value)} // Mettre à jour le titre pendant l'édition
-                    placeholder="Nouveau titre"
-                  />
-                ) : (
-                  photo.title
-                )}
-              </td>
-              <td>{photo.likesCount}</td>
-              <td className="td-actions">
-                <div className="crud-buttons">
+          {photos.map((photo, index) => {
+            const album = albums.find((a) => a.id === photo.albumId);
+            return (
+              <tr key={photo.id}>
+                <td>{index + 1}</td>
+                <td>
                   {editingPhotoId === photo.id ? (
-                    <>
-                      <button
-                        className="validate"
-                        onClick={() => handleEdit(photo.id)}
-                      >
-                        Valider
-                      </button>
-                      <button
-                        className="cancel"
-                        onClick={() => setEditingPhotoId(null)}
-                      >
-                        Annuler
-                      </button>
-                    </>
+                    <input
+                      type="text"
+                      value={newTitle}
+                      onChange={(e) => setNewTitle(e.target.value)}
+                      placeholder="Nouveau titre"
+                    />
                   ) : (
-                    <>
-                      <button
-                        className="edit"
-                        onClick={() => {
-                          setEditingPhotoId(photo.id);
-                          setNewTitle(photo.title); // Pré-remplir le champ avec le titre actuel de la photo
-                        }}
-                      >
-                        Modifier
-                      </button>
-                      <button
-                        className="delete"
-                        onClick={() => handleDelete(photo.id, photo.album)}
-                      >
-                        Supprimer
-                      </button>
-                    </>
+                    photo.title
                   )}
-                </div>
-              </td>
-            </tr>
-          ))}
+                </td>
+                <td>{photo.album}</td>
+                <td>{photo.likesCount}</td>
+                <td>{photo.commentsCount || 0}</td>
+                <td className="td-actions">
+                  <div className="crud-buttons">
+                    {editingPhotoId === photo.id ? (
+                      <>
+                        <button
+                          className="validate"
+                          onClick={() => handleEdit(photo.id)}
+                        >
+                          Valider
+                        </button>
+                        <button
+                          className="cancel"
+                          onClick={() => setEditingPhotoId(null)}
+                        >
+                          Annuler
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          className="edit"
+                          onClick={() => {
+                            setEditingPhotoId(photo.id);
+                            setNewTitle(photo.title);
+                          }}
+                        >
+                          Modifier
+                        </button>
+                        <button
+                          className="delete"
+                          onClick={() => handleDelete(photo.id, photo.albumId)}
+                        >
+                          Supprimer
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

@@ -5,6 +5,7 @@ export interface Photo {
     albumId: number;
     album: string;
     likesCount: number;
+    commentsCount: number;
   }
 
 export interface Album {
