@@ -12,6 +12,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useTranslation } from 'react-i18next'; // Importer useTranslation ici pour l'utiliser dans les composants
 import ProjectCarousel from '../components/ProjectCarousel'; // Assure-toi que le chemin est correct
+import UserList from "../components/UserList"; 
 
 import '../../public/i18n'; // Importer le fichier de configuration de i18next
 
@@ -272,9 +273,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Ajouter le composant CVContact dans le DOM
-  const cvcElement = document.getElementById("cv_contact");
-  if (cvcElement) {
-    ReactDOM.createRoot(cvcElement).render(
+  const cvcRoot = document.getElementById("cv_contact");
+  if (cvcRoot) {
+    ReactDOM.createRoot(cvcRoot).render(
       <BrowserRouter>
         <CVContact />
       </BrowserRouter>
@@ -282,10 +283,22 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Ajouter le composant carousel dans le DOM
-  const rootElement = document.getElementById('project-carousel');  // Récupère l'élément DOM
+  const carouselElement = document.getElementById('project-carousel');  // Récupère l'élément DOM
 
-  if (rootElement) {
-    const root = ReactDOM.createRoot(rootElement);  // Crée la racine React
+  if (carouselElement) {
+    const root = ReactDOM.createRoot(carouselElement);  // Crée la racine React
     root.render(<ProjectCarousel />);  // Rendre le composant dans l'élément
   }
+
+  // Ajouter le composant UserList dans le DOM
+
+  const UserListRoot = document.getElementById('user-list');  // Récupère l'élément DOM
+
+  if (UserListRoot) {
+    const root = ReactDOM.createRoot(UserListRoot);  // Crée la racine React
+    root.render(<UserList />);  // Rendre le composant dans l'élément
+  }
 });
+
+
+
