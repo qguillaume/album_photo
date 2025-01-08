@@ -164,7 +164,7 @@ class ArticleController extends AbstractController
         }
 
         $data = json_decode($request->getContent(), true);
-        $article->setTitle($data['content']);
+        $article->setContent($data['content']);
         $em->flush();
 
         return new JsonResponse(['message' => 'Texte de article modifie avec succès']);
