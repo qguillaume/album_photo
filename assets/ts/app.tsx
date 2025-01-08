@@ -191,7 +191,12 @@ const ArticlesTable = () => {
 
   return (
     <div>
-      <ArticleTable articles={articles} />
+      <ArticleTable articles={articles} onEdit={(id, newContent) => {
+        console.log(`Editing article ${id} with new content: ${newContent}`);
+      }}
+      onDelete={(id) => {
+        console.log(`Deleting article ${id}`);
+      }}/>
     </div>
   );
 };

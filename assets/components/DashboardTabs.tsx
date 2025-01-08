@@ -54,6 +54,48 @@ const DashboardTabs: React.FC = () => {
     setAlbums(updatedAlbums);
   };
 
+  const handleArticlesUpdate = (updatedArticles: Article[]) => {
+    setArticles(updatedArticles);
+  };
+
+  // Éditer un article
+  const handleArticleEdit = (id: number, newContent: string) => {
+    fetch(`/article/${id}/edit`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ content: newContent }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          setArticles((prevArticles) =>
+            prevArticles.map((article) =>
+              article.id === id ? { ...article, content: newContent } : article
+            )
+          );
+          alert("Article mis à jour !");
+        } else {
+          alert("Erreur lors de la mise à jour de l'article.");
+        }
+      })
+      .catch((error) => console.error("Erreur :", error));
+  };
+
+  // Supprimer un article
+  const handleArticleDelete = (id: number) => {
+    fetch(`/article/${id}/delete`, { method: "POST" })
+      .then((response) => {
+        if (response.ok) {
+          setArticles((prevArticles) =>
+            prevArticles.filter((article) => article.id !== id)
+          );
+          alert("Article supprimé !");
+        } else {
+          alert("Erreur lors de la suppression de l'article.");
+        }
+      })
+      .catch((error) => console.error("Erreur :", error));
+  };
+
   return (
     <div>
       <div className="tabs">
@@ -94,7 +136,7 @@ const DashboardTabs: React.FC = () => {
           />
         )}
         {activeTab === 'users' && <UserTable users={users} />}
-        {activeTab === 'articles' && <ArticleTable articles={articles} />}
+        {activeTab === 'articles' && <ArticleTable articles={articles} onEdit={handleArticleEdit} onDelete={handleArticleDelete}/>}
       </div>
     </div>
   );
