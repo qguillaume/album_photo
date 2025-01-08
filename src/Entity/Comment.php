@@ -40,6 +40,14 @@ class Comment
      */
     private User $user;
 
+    /**
+     * Constructeur pour initialiser la date de création.
+     */
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable(); // Définit la date actuelle
+    }
+
     // Getters et setters
     public function getId(): ?int
     {

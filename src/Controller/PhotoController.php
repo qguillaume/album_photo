@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Repository\PhotoRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Comment;
+use App\Form\CommentType;
 
 class PhotoController extends AbstractController
 {
@@ -194,9 +195,9 @@ class PhotoController extends AbstractController
     }
 
     /**
-     * @Route("/photo/{id}", name="photo_show", requirements={"id"="\d+"}, methods={"GET"})
+     * @Route("/photo/{id}", name="photo_show", requirements={"id"="\d+"}, methods={"GET", "POST"})
      */
-    public function show(int $id, EntityManagerInterface $em): Response
+    public function show(int $id, Request $request, EntityManagerInterface $em): Response
     {
         // Récupérer la photo par son ID
         $photo = $em->getRepository(Photo::class)->find($id);
@@ -207,14 +208,37 @@ class PhotoController extends AbstractController
         }
 
         // Récupérer les commentaires associés à la photo
-        ///// $comments = $photo->getComments();
         $comments = $em->getRepository(Comment::class)->findBy(['photo' => $photo]);
-        // Renvoyer la vue Twig avec les détails de la photo et ses commentaires
+
+        // Créer un nouvel objet Comment lié à la photo
+        $comment = new Comment();
+        $comment->setPhoto($photo);
+
+        // Créer le formulaire pour ajouter un commentaire
+        $form = $this->createForm(CommentType::class, $comment);
+
+        // Gérer la soumission du formulaire
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Associer l'utilisateur connecté au commentaire
+            $comment->setUser($this->getUser());
+
+            // Sauvegarder le commentaire dans la base de données
+            $em->persist($comment);
+            $em->flush();
+
+            // Rediriger pour éviter la resoumission du formulaire
+            return $this->redirectToRoute('photo_show', ['id' => $photo->getId()]);
+        }
+
+        // Renvoyer la vue Twig avec les détails de la photo, ses commentaires et le formulaire
         return $this->render('photo/show.html.twig', [
             'photo' => $photo,
             'comments' => $comments,
+            'commentForm' => $form->createView(),
         ]);
     }
+
 
     /**
      * @Route("/photo/{id}/comment", name="comment_add", methods={"POST"})

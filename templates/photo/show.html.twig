@@ -26,11 +26,17 @@
 
     <h2>{{"leave_comment"|trans}}</h2>
     {% if app.user %}
-        <form action="{{ path('comment_add', { id: photo.id }) }}" method="post"> <!-- @TODO il faudra faire le formulaire symfony -->
-            <textarea name="content" rows="4" style="width: 100%;" placeholder="Votre commentaire..."></textarea>
-            <button type="submit" class="green-button">{{"send"|trans}}</button>
-        </form>
+        {{ form_start(commentForm) }}
+            <div class="form-group">
+                {{ form_widget(commentForm.content) }}
+            </div>
+            <div class="form-group">
+                {{ form_widget(commentForm.send, {'attr': {'class': 'green-button'}}) }}
+            </div>
+        {{ form_end(commentForm) }}
     {% else %}
         <p>{{"connected_to_comment"|trans}}</p>
     {% endif %}
+
+    <div class="separator"></div>
 {% endblock %}

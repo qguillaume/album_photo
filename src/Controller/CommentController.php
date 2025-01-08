@@ -29,7 +29,6 @@ class CommentController extends AbstractController
         $comment = new Comment();
         $comment->setContent($content);
         $comment->setPhoto($photo);
-        $comment->setCreatedAt(new \DateTime());
 
         // Sauvegarder dans la base de données
         $em->persist($comment);
