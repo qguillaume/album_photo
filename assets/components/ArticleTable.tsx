@@ -49,7 +49,7 @@ const ArticleTable: React.FC<ArticleTableProps> = ({ articles, onEdit, onDelete 
             return (
               <tr key={article.id} className={rowClass}>
                 <td>{article.id}</td>
-                <td>{article.title}</td>
+                <td>{article.content}</td>
                 <td>{article.author.username}</td>
                 <td>
                   {editingArticleId === article.id ? (

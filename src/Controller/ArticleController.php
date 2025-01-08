@@ -153,6 +153,24 @@ class ArticleController extends AbstractController
     }
 
     /**
+     * @Route("/article/{id}/edit_dashboard", name="article_edit_dashboard", methods={"PUT"})
+     */
+    public function editFromDashboard(Request $request, EntityManagerInterface $em, int $id): JsonResponse
+    {
+        $article = $em->getRepository(Article::class)->find($id);
+
+        if (!$article) {
+            return new JsonResponse(['message' => 'Article non trouvé'], 404);
+        }
+
+        $data = json_decode($request->getContent(), true);
+        $article->setTitle($data['content']);
+        $em->flush();
+
+        return new JsonResponse(['message' => 'Texte de article modifie avec succès']);
+    }
+
+    /**
      * @Route("/article/{id}/delete", name="article_delete", methods={"POST"})
      */
     public function delete(int $id): Response

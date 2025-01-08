@@ -54,14 +54,10 @@ const DashboardTabs: React.FC = () => {
     setAlbums(updatedAlbums);
   };
 
-  const handleArticlesUpdate = (updatedArticles: Article[]) => {
-    setArticles(updatedArticles);
-  };
-
   // Éditer un article
   const handleArticleEdit = (id: number, newContent: string) => {
-    fetch(`/article/${id}/edit`, {
-      method: "POST",
+    fetch(`/article/${id}/edit_dashboard`, {
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ content: newContent }),
     })
@@ -136,7 +132,7 @@ const DashboardTabs: React.FC = () => {
           />
         )}
         {activeTab === 'users' && <UserTable users={users} />}
-        {activeTab === 'articles' && <ArticleTable articles={articles} onEdit={handleArticleEdit} onDelete={handleArticleDelete}/>}
+        {activeTab === 'articles' && <ArticleTable articles={articles} onEdit={handleArticleEdit} onDelete={handleArticleDelete} />}
       </div>
     </div>
   );

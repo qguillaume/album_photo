@@ -180,23 +180,85 @@ const UsersTable = () => {
 
 const ArticlesTable = () => {
   const [articles, setArticles] = useState<Article[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
 
+  // Charger les articles depuis l'API
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/users_list`)
+    fetch(`${process.env.REACT_APP_API_URL}/articles_list`)
       .then((response) => response.json())
       .then((data) => setArticles(data))
       .catch((error) => console.error("Erreur lors du fetch des articles", error));
   }, []);
 
+  // Fonction pour éditer un article
+  const handleEdit = (id: number, newContent: string) => {
+    // 1. Mettre à jour localement l'article dans l'état
+    setArticles((prevArticles) =>
+      prevArticles.map((article) =>
+        article.id === id ? { ...article, content: newContent } : article
+      )
+    );
+  
+    // 2. Mettre à jour l'article sur l'API
+    fetch(`${process.env.REACT_APP_API_URL}/article/${id}/edit`, {
+      method: "PUT", //test put au lieu de post
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ content: newContent }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la mise à jour de l\'article');
+        }
+        alert("Article mis à jour avec succès !");
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la mise à jour de l'article :", error);
+        alert("Erreur lors de la mise à jour de l'article.");
+      });
+  };
+
+  // Fonction de mise à jour d'un article
+  const handleUpdate = (id: number, updatedArticle: Article) => {
+    // Mettre à jour localement l'article dans l'état
+    setArticles((prevArticles) =>
+      prevArticles.map((article) =>
+        article.id === id ? { ...article, ...updatedArticle } : article
+      )
+    );
+
+    // Envoyer la mise à jour à l'API
+    fetch(`${process.env.REACT_APP_API_URL}/article/${id}/edit_dashboard`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedArticle),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la mise à jour de l\'article');
+        }
+        return response.json();
+      })
+      .then(() => {
+        alert("Article mis à jour avec succès !");
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la mise à jour de l'article :", error);
+        alert("Erreur lors de la mise à jour de l'article.");
+      });
+  };
+
   return (
     <div>
-      <ArticleTable articles={articles} onEdit={(id, newContent) => {
-        console.log(`Editing article ${id} with new content: ${newContent}`);
-      }}
-      onDelete={(id) => {
-        console.log(`Deleting article ${id}`);
-      }}/>
+      <ArticleTable
+        articles={articles}
+        onEdit={handleEdit}
+        onDelete={(id) => {
+          console.log(`Deleting article ${id}`);
+        }}
+      />
     </div>
   );
 };
@@ -305,6 +367,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const usersTableElement = document.getElementById("users-table");
   if (usersTableElement) {
     ReactDOM.createRoot(usersTableElement).render(<UsersTable />);
+  }
+
+  // Rendre le tableau des articles dans le DOM
+  const articlesTableElement = document.getElementById("articles-table");
+  if (articlesTableElement) {
+    ReactDOM.createRoot(articlesTableElement).render(<ArticlesTable />);
   }
 
   // Rendre le consentement des cookies
