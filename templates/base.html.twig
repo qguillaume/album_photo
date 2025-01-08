@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Mon Album Photo{% endblock %}</title>
-    {{ encore_entry_link_tags('app-ts') }} <!-- Assure-toi que ceci charge les bons fichiers CSS/JS générés par Webpack -->
+    {{ encore_entry_link_tags('app-ts') }}
     <link rel="stylesheet" href="{{ asset('build/app.css') }}">
     <link rel="icon" href="{{ asset('images/favicon.png') }}" type="image/png">
     
@@ -28,6 +28,10 @@
                 </div>
                 
                 {% if app.user %}
+                    <a href="{{ path('articles_list') }}" class="{% if app.request.attributes.get('_route') == 'articles_list' %}active{% endif %}">Articles</a>
+                {% endif %}
+
+                {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('reference') }}" class="{% if app.request.attributes.get('_route') == 'reference' %}active{% endif %}">{{ 'references'|trans }}</a>
                 {% endif %}
 
@@ -130,7 +134,7 @@
     </footer>
 
     <div id="cookie-consent"></div>
-    {{ encore_entry_script_tags('app-ts') }} <!-- Chargement correct du fichier JavaScript via Webpack -->
+        {{ encore_entry_script_tags('app-ts') }}
     {% block javascripts %}{% endblock %}
 </body>
 </html>

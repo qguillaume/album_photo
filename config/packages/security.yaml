@@ -19,6 +19,15 @@ security:
             logout:
                 path: logout  # chemin pour se déconnecter
                 target: /  # Redirige après déconnexion vers la page d'accueil
+
+        # Définir un firewall qui protège les pages des articles
+        article_area:
+            pattern: ^/articles
+            form_login:
+                login_path: app_login
+                check_path: app_login
+                default_target_path: /articles # L'URL après une connexion réussie
+
     # Fournisseur d'utilisateurs
     providers:
         app_user_provider:
@@ -41,3 +50,7 @@ security:
         - { path: ^/test-password$, roles: ROLE_ADMIN }
         - { path: ^/album/new$, roles: ROLE_ADMIN }
         - { path: ^/photo/upload$, roles: ROLE_ADMIN }
+        # Restreindre l'accès à toutes les pages commençant par /articles uniquement aux utilisateurs connectés
+        - { path: ^/articles, roles: ROLE_USER }
+        # Pour les pages de l'article avec /article en singulier (pour être sûr de ne rien manquer)
+        - { path: ^/article, roles: ROLE_USER }

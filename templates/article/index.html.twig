@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des articles{% endblock %}
+
+{% block body %}
+    <h1>Liste des articles</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Auteur</th>
+                <th>Titre</th>
+                <th>Date de création</th>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <th>Actions</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for article in articles %}
+                <tr>
+                    <td>{{ article.author.username }}</td>
+                    <td>{{ article.title }}</td>
+                    <td>{{ article.createdAt|date('d/m/Y') }}</td>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <td>
+                            <a href="{{ path('article_edit', {'id': article.id}) }}">Modifier</a>
+                            <!-- Formulaire de suppression -->
+                            <form method="post" action="{{ path('article_delete', {'id': article.id}) }}" style="display:inline;">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?')">Effacer</button>
+                            </form>
+                        </td>
+                    {% endif %}    
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if app.user %}
+        <a href="{{ path('article_create') }}">Rédiger un nouvel article</a>
+    {% endif %}
+{% endblock %}
