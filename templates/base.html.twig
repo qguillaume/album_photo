@@ -28,7 +28,7 @@
                 </div>
                 
                 {% if app.user %}
-                    <a href="{{ path('articles_list') }}" class="{% if app.request.attributes.get('_route') == 'articles_list' %}active{% endif %}">Articles</a>
+                    <a href="{{ path('articles_index') }}" class="{% if app.request.attributes.get('_route') == 'articles_index' %}active{% endif %}">Articles</a>
                 {% endif %}
 
                 {% if is_granted('ROLE_ADMIN') %}
