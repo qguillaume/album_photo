@@ -11,6 +11,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\ArticleFormType;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 class ArticleController extends AbstractController
 {
@@ -24,7 +26,34 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/articles", name="articles_list", methods={"GET"})
+     * @Route("/articles_list", name="articles_list", methods={"GET"})
+     */
+    public function list()
+    {
+        // Récupérer tous les albums depuis la base de données
+        $articles = $this->articleRepository->findAll();
+
+        $articlesData = [];
+        foreach ($articles as $article) {
+            $articlesData[] =
+                [
+                    'id' => $article->getId(),
+                    'title' => $article->getTitle(),
+                    'content' => $article->getContent(),
+                    'author' => [
+                        'username' => $article->getAuthor()->getUsername(),
+                    ],
+                    'createdAt' => $article->getCreatedAt()->format('Y-m-d H:i:s'),
+                    'updatedAt' => $article->getUpdatedAt() ? $article->getUpdatedAt()->format('Y-m-d H:i:s') : null,
+                    'published' => $article->isPublished(),
+                ];
+        }
+
+        return new JsonResponse($articlesData);
+    }
+
+    /**
+     * @Route("/articles", name="articles_index", methods={"GET"})
      */
     public function index(): Response
     {

@@ -6,7 +6,7 @@ import PhotoControls from "../components/PhotoControls";
 import PhotoTable from "../components/PhotoTable";
 import Timeline from "../components/Timeline";
 import ContactButton from "../components/ContactButton"; 
-import { Photo, Album, User } from "./types";
+import { Photo, Album, User, Article } from "./types";
 import { BrowserRouter } from "react-router-dom";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next'; // Importer useTranslation ici p
 import ProjectCarousel from '../components/ProjectCarousel';
 import UserTable from "../components/UserTable";
 import AlbumTable from "../components/AlbumTable";
+import ArticleTable from "../components/ArticleTable";
 import DashboardTabs from "../components/DashboardTabs";
 
 import '../../public/i18n'; // Importer le fichier de configuration de i18next
@@ -141,7 +142,6 @@ const AlbumsTable = () => {
   };
 
   useEffect(() => {
-    console.log("chargment albums C");
     fetch(`${process.env.REACT_APP_API_URL}/albums_list`)
       .then((response) => response.json())
       .then((data) => setAlbums(data))
@@ -165,7 +165,6 @@ const UsersTable = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    console.log("chargment users B");
     fetch(`${process.env.REACT_APP_API_URL}/users_list`)
       .then((response) => response.json())
       .then((data) => setUsers(data))
@@ -175,6 +174,24 @@ const UsersTable = () => {
   return (
     <div>
       <UserTable users={users} />
+    </div>
+  );
+};
+
+const ArticlesTable = () => {
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_API_URL}/users_list`)
+      .then((response) => response.json())
+      .then((data) => setArticles(data))
+      .catch((error) => console.error("Erreur lors du fetch des articles", error));
+  }, []);
+
+  return (
+    <div>
+      <ArticleTable articles={articles} />
     </div>
   );
 };

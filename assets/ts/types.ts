@@ -20,10 +20,22 @@ export interface User {
   email: string;
 }
 
+export interface Article {
+  id: number;
+  title: string;
+  content: string;
+  author: { // Définir author comme un objet
+    username: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+  published: boolean;
+}
+
 declare global {
   interface Window {
-    albumsData: any[]; // ou type plus spécifique si vous connaissez la structure exacte des albums
-    photosData: any[];  // même pour photosData
+    albumsData: any[];
+    photosData: any[];
   }
 }
 

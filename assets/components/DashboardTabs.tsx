@@ -2,17 +2,19 @@ import React, { useState, useEffect } from 'react';
 import AlbumTable from './AlbumTable';
 import PhotoTable from './PhotoTable';
 import UserTable from './UserTable';
-import { Photo, Album, User } from '../ts/types';
+import ArticleTable from './ArticleTable';
+import { Photo, Album, User, Article } from '../ts/types';
 
 const DashboardTabs: React.FC = () => {
   // L'état pour savoir quel onglet est sélectionné
-  const [activeTab, setActiveTab] = useState<'albums' | 'photos' | 'users'>('albums');
+  const [activeTab, setActiveTab] = useState<'albums' | 'photos' | 'users' | 'articles'>('albums');
   
-  // États pour stocker les photos, albums et utilisateurs
+  // États pour stocker les photos, albums, utilisateurs et articles
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [albums, setAlbums] = useState<Album[]>([]);
   const [users, setUsers] = useState<User[]>([]);
-  
+  const [articles, setArticles] = useState<Article[]>([]);
+
   // Vérifier si les données ont déjà été chargées pour éviter de refaire les requêtes
   useEffect(() => {
     // Si les données ne sont pas encore chargées, on les charge
@@ -31,10 +33,16 @@ const DashboardTabs: React.FC = () => {
         .then(response => response.json())
         .then(data => setUsers(data));
     }
-  }, [photos, albums, users]); // Assurer que la requête n'est effectuée qu'une fois par type de données
+    if (articles.length === 0) {
+      fetch('/articles_list')
+        .then(response => response.json())
+        .then(data => setArticles(data));
+    }
+  }, []); // Le tableau vide empêche la ré-exécution du useEffect
+  //}, [photos, albums, users, articles]); // Assurer que la requête n'est effectuée qu'une fois par type de données
 
   // Fonction pour changer d'onglet
-  const handleTabClick = (tab: 'albums' | 'photos' | 'users') => {
+  const handleTabClick = (tab: 'albums' | 'photos' | 'users' | 'articles') => {
     setActiveTab(tab);
   };
 
@@ -67,6 +75,12 @@ const DashboardTabs: React.FC = () => {
         >
           Users
         </button>
+        <button
+          className={`tab-button ${activeTab === 'articles' ? 'active' : ''}`}
+          onClick={() => handleTabClick('articles')}
+        >
+          Articles
+        </button>
       </div>
 
       <div className="tab-content">
@@ -80,6 +94,7 @@ const DashboardTabs: React.FC = () => {
           />
         )}
         {activeTab === 'users' && <UserTable users={users} />}
+        {activeTab === 'articles' && <ArticleTable articles={articles} />}
       </div>
     </div>
   );

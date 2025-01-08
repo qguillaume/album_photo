@@ -32,6 +32,9 @@ $even-row-color-photos: #1F5232; // Vert pour les photos (ligne paire)
 $odd-row-color-albums: #2C3E50;  // Bleu pour les albums (ligne impaire)
 $even-row-color-albums: #1A2530; // Bleu pour les albums (ligne paire)
 
+$odd-row-color-articles: #5A4633;  // Marron pour les articles (ligne impaire)
+$even-row-color-articles: #3D2F22; // Marron pour les articles (ligne paire)
+
 /* Définition des couleurs hover */
 $primary-color-hover: color.scale($primary-color, $lightness: -10%);// Réduit la luminosité de 10%, comme l'ancien "darken"
 $secondary-color-hover: color.scale($secondary-color, $lightness: -10%);
