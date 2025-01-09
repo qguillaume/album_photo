@@ -32,6 +32,19 @@ export interface Article {
   published: boolean;
 }
 
+export interface Comment {
+  id: number;
+  content: string;
+  user: { // Définir user comme un objet
+    username: string;
+  };
+  photo: { // Définir photo comme un objet
+    title: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
 declare global {
   interface Window {
     albumsData: any[];

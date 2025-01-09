@@ -30,7 +30,7 @@ class ArticleController extends AbstractController
      */
     public function list()
     {
-        // Récupérer tous les albums depuis la base de données
+        // Récupérer tous les articles depuis la base de données
         $articles = $this->articleRepository->findAll();
 
         $articlesData = [];

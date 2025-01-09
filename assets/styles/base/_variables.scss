@@ -35,6 +35,9 @@ $even-row-color-albums: #1A2530; // Bleu pour les albums (ligne paire)
 $odd-row-color-articles: #5A4633;  // Marron pour les articles (ligne impaire)
 $even-row-color-articles: #3D2F22; // Marron pour les articles (ligne paire)
 
+$odd-row-color-comments: #6A4C9C;  // Violet pour les commentaires (ligne impaire)
+$even-row-color-comments: #4E2A84 ; // Violet pour les commentaires (ligne paire)
+
 /* Définition des couleurs hover */
 $primary-color-hover: color.scale($primary-color, $lightness: -10%);// Réduit la luminosité de 10%, comme l'ancien "darken"
 $secondary-color-hover: color.scale($secondary-color, $lightness: -10%);

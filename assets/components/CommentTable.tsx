@@ -1,72 +1,69 @@
 import React, { useState } from "react";
-import { Article } from "../ts/types";
+import { Comment } from "../ts/types";
 
-interface ArticleTableProps {
-  articles: Article[]; // Liste des articles
-  onEdit: (id: number, newContent: string) => void; // Callback pour éditer un article
-  onDelete: (id: number) => void; // Callback pour supprimer un article
+interface CommentTableProps {
+  comments: Comment[]; // Liste des commentaires
+  onEdit: (id: number, newContent: string) => void; // Callback pour éditer un commentaire
+  onDelete: (id: number) => void; // Callback pour supprimer un commentaire
 }
 
-const ArticleTable: React.FC<ArticleTableProps> = ({ articles, onEdit, onDelete }) => {
-  const [editingArticleId, setEditingArticleId] = useState<number | null>(null); // ID de l'article en cours d'édition
-  const [newArticleContents, setNewArticleContents] = useState<string>(""); // Nouveau contenu de l'article
+const CommentTable: React.FC<CommentTableProps> = ({ comments, onEdit, onDelete }) => {
+  const [editingCommentId, setEditingCommentId] = useState<number | null>(null); // ID du commentaire en cours d'édition
+  const [newCommentContents, setNewCommentContents] = useState<string>(""); // Nouveau texte du commentaire
 
   // Déclencher la suppression
   const handleDelete = (id: number) => {
-    if (window.confirm("Êtes-vous sûr de vouloir supprimer cet article ?")) {
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer ce commentaire ?")) {
       onDelete(id); // Appeler la fonction passée en props
     }
   };
 
   // Déclencher la validation de la modification
   const handleEdit = (id: number) => {
-    onEdit(id, newArticleContents); // Passer l'ID et le nouveau contenu
-    setEditingArticleId(null); // Sortir du mode édition
-    setNewArticleContents(""); // Réinitialiser le champ d'édition
+    onEdit(id, newCommentContents); // Passer l'ID et le nouveau contenu
+    setEditingCommentId(null); // Sortir du mode édition
+    setNewCommentContents(""); // Réinitialiser le champ d'édition
   };
 
   return (
     <div className="table-container">
-      <h2>Liste des Articles</h2>
+      <h2>Liste des Commentaires</h2>
       <table className="dashboard-table">
         <thead>
           <tr>
             <th>ID</th>
-            <th>Titre</th>
-            <th>Auteur</th>
+            <th>Utilisateur</th>
             <th>Contenu</th>
+            <th>Photo concernée</th>
             <th>Créé le</th>
-            <th>Modifié le</th>
-            <th>Publié</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {articles.map((article, index) => {
+          {comments.map((comment, index) => {
             const rowClass =
-              (index + 1) % 2 === 0 ? "even-row-articles" : "odd-row-articles";
+              (index + 1) % 2 === 0 ? "even-row-comments" : "odd-row-comments";
 
             return (
-              <tr key={article.id} className={rowClass}>
-                <td>{article.id}</td>
-                <td>{article.title}</td>
-                <td>{article.author.username}</td>
+              <tr key={comment.id} className={rowClass}>
+                <td>{comment.id}</td>
+                <td>{comment.user.username}</td>
                 <td>
-                  {editingArticleId === article.id ? (
+                  {editingCommentId === comment.id ? (
                     // Mode édition : champ de saisie
                     <input
                       type="text"
-                      value={newArticleContents}
-                      onChange={(e) => setNewArticleContents(e.target.value)}
-                      placeholder="Nouveau contenu"
+                      value={newCommentContents}
+                      onChange={(e) => setNewCommentContents(e.target.value)}
+                      placeholder="Nouveau commentaire"
                     />
                   ) : (
                     // Mode lecture
-                    article.content.length > 30 ? (
+                    comment.content.length > 30 ? (
                       <>
-                        {article.content.substring(0, 30) + "..."}{" "}
+                        {comment.content.substring(0, 30) + "..."}{" "}
                         <a
-                          href={`/article/${article.id}`}
+                          href={`/comment/${comment.id}`}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
@@ -74,27 +71,26 @@ const ArticleTable: React.FC<ArticleTableProps> = ({ articles, onEdit, onDelete 
                         </a>
                       </>
                     ) : (
-                      article.content
+                        comment.content
                     )
                   )}
                 </td>
-                <td>{new Date(article.createdAt).toLocaleString()}</td>
-                <td>{new Date(article.updatedAt).toLocaleString()}</td>
-                <td>{article.published ? "Oui" : "Non"}</td>
+                <td>{comment.photo.title}</td>
+                <td>{new Date(comment.createdAt).toLocaleString()}</td>
                 <td className="td-actions">
                   <div className="crud-buttons">
-                    {editingArticleId === article.id ? (
+                    {editingCommentId === comment.id ? (
                       // Boutons en mode édition
                       <>
                         <button
                           className="validate"
-                          onClick={() => handleEdit(article.id)}
+                          onClick={() => handleEdit(comment.id)}
                         >
                           Valider
                         </button>
                         <button
                           className="cancel"
-                          onClick={() => setEditingArticleId(null)}
+                          onClick={() => setEditingCommentId(null)}
                         >
                           Annuler
                         </button>
@@ -105,15 +101,15 @@ const ArticleTable: React.FC<ArticleTableProps> = ({ articles, onEdit, onDelete 
                         <button
                           className="edit"
                           onClick={() => {
-                            setEditingArticleId(article.id);
-                            setNewArticleContents(article.content);
+                            setEditingCommentId(comment.id);
+                            setNewCommentContents(comment.content);
                           }}
                         >
                           Modifier
                         </button>
                         <button
                           className="delete"
-                          onClick={() => handleDelete(article.id)}
+                          onClick={() => handleDelete(comment.id)}
                         >
                           Supprimer
                         </button>
@@ -130,4 +126,4 @@ const ArticleTable: React.FC<ArticleTableProps> = ({ articles, onEdit, onDelete 
   );
 };
 
-export default ArticleTable;
+export default CommentTable;

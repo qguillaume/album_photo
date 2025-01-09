@@ -77,6 +77,15 @@
       .even-row-articles {
         background-color: $even-row-color-articles; // Marron pour la ligne paire
       }
+
+      /* Couleurs pour les commentaires (tableau violet) */
+      .odd-row-comments {
+        background-color: $odd-row-color-comments;  // Violet pour la ligne impaire
+      }
+
+      .even-row-comments {
+        background-color: $even-row-color-comments; // Violet pour la ligne paire
+      }
   
       .crud-buttons {
         display: flex;

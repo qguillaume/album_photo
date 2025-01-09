@@ -6,7 +6,7 @@ import PhotoControls from "../components/PhotoControls";
 import PhotoTable from "../components/PhotoTable";
 import Timeline from "../components/Timeline";
 import ContactButton from "../components/ContactButton"; 
-import { Photo, Album, User, Article } from "./types";
+import { Photo, Album, User, Article, Comment } from "./types";
 import { BrowserRouter } from "react-router-dom";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -15,6 +15,7 @@ import ProjectCarousel from '../components/ProjectCarousel';
 import UserTable from "../components/UserTable";
 import AlbumTable from "../components/AlbumTable";
 import ArticleTable from "../components/ArticleTable";
+import CommentTable from "../components/CommentTable";
 import DashboardTabs from "../components/DashboardTabs";
 
 import '../../public/i18n'; // Importer le fichier de configuration de i18next
@@ -219,7 +220,7 @@ const ArticlesTable = () => {
   };
 
   // Fonction de mise à jour d'un article
-  const handleUpdate = (id: number, updatedArticle: Article) => {
+  /*const handleUpdate = (id: number, updatedArticle: Article) => {
     // Mettre à jour localement l'article dans l'état
     setArticles((prevArticles) =>
       prevArticles.map((article) =>
@@ -248,7 +249,7 @@ const ArticlesTable = () => {
         console.error("Erreur lors de la mise à jour de l'article :", error);
         alert("Erreur lors de la mise à jour de l'article.");
       });
-  };
+  };*/
 
   return (
     <div>
@@ -262,6 +263,92 @@ const ArticlesTable = () => {
     </div>
   );
 };
+
+const CommentsTable = () => {
+  const [comments, setComments] = useState<Comment[]>([]);
+
+  // Charger les commentaires depuis l'API
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_API_URL}/commentaires_list`)
+      .then((response) => response.json())
+      .then((data) => setComments(data))
+      .catch((error) => console.error("Erreur lors du fetch des commentaires", error));
+  }, []);
+
+  // Fonction pour éditer un commentaire
+  const handleEdit = (id: number, newContent: string) => {
+    // 1. Mettre à jour localement le commentaire dans l'état
+    setComments((prevComments) =>
+      prevComments.map((comment) =>
+        comment.id === id ? { ...comment, content: newContent } : comment
+      )
+    );
+  
+    // 2. Mettre à jour le commentaire sur l'API
+    fetch(`${process.env.REACT_APP_API_URL}/comment/${id}/edit`, {
+      method: "PUT", //test put au lieu de post
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ content: newContent }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la mise à jour du commentaire');
+        }
+        alert("Commentaire mis à jour avec succès !");
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la mise à jour du commentaire :", error);
+        alert("Erreur lors de la mise à jour du commentaire.");
+      });
+  };
+
+  // Fonction de mise à jour d'un commentaire
+  /*const handleUpdate = (id: number, updatedComment: Comment) => {
+    // Mettre à jour localement le commentaire dans l'état
+    setComments((prevComments) =>
+      prevComments.map((comment) =>
+        comment.id === id ? { ...comment, ...updatedComment } : comment
+      )
+    );
+
+    // Envoyer la mise à jour à l'API
+    fetch(`${process.env.REACT_APP_API_URL}/comment/${id}/edit_dashboard`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedComment),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la mise à jour du commentaire');
+        }
+        return response.json();
+      })
+      .then(() => {
+        alert("Commentaire mis à jour avec succès !");
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la mise à jour du commentaire :", error);
+        alert("Erreur lors de la mise à jour du commentaire.");
+      });
+  };*/
+
+  return (
+    <div>
+      <CommentTable
+        comments={comments}
+        onEdit={handleEdit}
+        onDelete={(id) => {
+          console.log(`Deleting comment ${id}`);
+        }}
+      />
+    </div>
+  );
+};
+
 
 // Initialisation des contrôles des albums et photos (en dehors des composants React)
 document.addEventListener("DOMContentLoaded", () => {
@@ -373,6 +460,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const articlesTableElement = document.getElementById("articles-table");
   if (articlesTableElement) {
     ReactDOM.createRoot(articlesTableElement).render(<ArticlesTable />);
+  }
+
+  // Rendre le tableau des comments dans le DOM
+  const commentsTableElement = document.getElementById("comments-table");
+  if (commentsTableElement) {
+    ReactDOM.createRoot(commentsTableElement).render(<CommentsTable />);
   }
 
   // Rendre le consentement des cookies
