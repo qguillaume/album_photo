@@ -141,31 +141,31 @@ const DashboardTabs: React.FC = () => {
     <div>
       <div className="tabs">
         <button
-          className={`tab-button ${activeTab === 'albums' ? 'active' : ''}`}
+          className={`tab-button albums ${activeTab === 'albums' ? 'active' : ''}`}
           onClick={() => handleTabClick('albums')}
         >
           Albums
         </button>
         <button
-          className={`tab-button ${activeTab === 'photos' ? 'active' : ''}`}
+          className={`tab-button photos ${activeTab === 'photos' ? 'active' : ''}`}
           onClick={() => handleTabClick('photos')}
         >
           Photos
         </button>
         <button
-          className={`tab-button ${activeTab === 'users' ? 'active' : ''}`}
+          className={`tab-button users ${activeTab === 'users' ? 'active' : ''}`}
           onClick={() => handleTabClick('users')}
         >
           Users
         </button>
         <button
-          className={`tab-button ${activeTab === 'articles' ? 'active' : ''}`}
+          className={`tab-button articles ${activeTab === 'articles' ? 'active' : ''}`}
           onClick={() => handleTabClick('articles')}
         >
           Articles
         </button>
         <button
-          className={`tab-button ${activeTab === 'comments' ? 'active' : ''}`}
+          className={`tab-button comments ${activeTab === 'comments' ? 'active' : ''}`}
           onClick={() => handleTabClick('comments')}
         >
           Commentaires

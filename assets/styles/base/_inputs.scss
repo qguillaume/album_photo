@@ -13,7 +13,7 @@ input, textarea, select {
 }
 
 input:focus {
-    border-color: $yellow-color; /* Couleur bleue pour l'accent */
+    border-color: $yellow-color; /* Couleur jaune pour l'accent */
     outline: none; /* Supprime le contour par défaut */
     box-shadow: 0 0 5px rgba(255, 253, 128, 0.815); /* Ombre jaune subtile */
 }
