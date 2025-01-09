@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Article } from "../ts/types";
+import Pagination from "./PaginationDashboard";
 
 interface ArticleTableProps {
   articles: Article[];
@@ -68,6 +69,10 @@ const ArticleTable: React.FC<ArticleTableProps> = ({ articles, onEdit, onDelete 
   return (
     <div className="table-container">
       <h2>Liste des Articles</h2>
+      
+      {/* Pagination en haut */}
+      <Pagination currentPage={currentPage} totalPages={totalPages} onPaginate={paginate} />
+
       <table className="dashboard-table">
         <thead>
           <tr>
@@ -173,30 +178,8 @@ const ArticleTable: React.FC<ArticleTableProps> = ({ articles, onEdit, onDelete 
         </tbody>
       </table>
 
-      {/* Pagination */}
-      <div className="pagination">
-        <button
-          disabled={currentPage === 1}
-          onClick={() => paginate(currentPage - 1)}
-        >
-          Précédent
-        </button>
-        {[...Array(totalPages)].map((_, index) => (
-          <button
-            key={index}
-            className={currentPage === index + 1 ? "active" : ""}
-            onClick={() => paginate(index + 1)}
-          >
-            {index + 1}
-          </button>
-        ))}
-        <button
-          disabled={currentPage === totalPages}
-          onClick={() => paginate(currentPage + 1)}
-        >
-          Suivant
-        </button>
-      </div>
+      {/* Pagination en bas */}
+      <Pagination currentPage={currentPage} totalPages={totalPages} onPaginate={paginate} />
     </div>
   );
 };

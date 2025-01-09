@@ -3,13 +3,13 @@
 .pagination {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin: 20px 0;
 
   // Style des boutons de pagination
   button {
     margin: 0 5px;
     padding: 5px 10px;
-    background-color: $light-white-color;
+    background-color: $secondary-color;
     cursor: pointer;
     border-radius: 5px;
 
