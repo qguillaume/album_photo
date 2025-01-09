@@ -8,7 +8,7 @@
     <h1>{{ article.title }}</h1>
     <p><strong>Auteur:</strong> {{ article.author.username }}</p>
     <p><strong>Date de création:</strong> {{ article.createdAt|date('Y-m-d') }}</p>
-    <p>{{ article.content }}</p>
+    <p>{{ article.content|raw }}</p>
 
     <a href="{{ path('articles_index') }}">Retour à la liste des articles</a>
 {% endblock %}

@@ -38,6 +38,7 @@
   "author": "",
   "description": "",
   "dependencies": {
+    "@tinymce/tinymce-react": "^5.1.1",
     "aos": "^2.3.4",
     "dotenv": "^16.4.7",
     "i18next": "^24.2.0",

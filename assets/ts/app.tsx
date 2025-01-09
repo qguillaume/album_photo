@@ -20,6 +20,18 @@ import DashboardTabs from "../components/DashboardTabs";
 
 import '../../public/i18n'; // Importer le fichier de configuration de i18next
 
+import TinyEditor from "./TinyEditor";  // Assurez-vous que le chemin est correct
+
+const App = () => {
+  return (
+    <div>
+      <TinyEditor />
+    </div>
+  );
+};
+
+export default App;
+
 // Composant principal pour téléchargement du CV et contact
 const CVContact: React.FC = () => {
   const { t, i18n } = useTranslation(); // Hook pour accéder aux traductions

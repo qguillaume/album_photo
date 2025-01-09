@@ -4,6 +4,7 @@
 
 namespace App\Form;
 
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -20,7 +21,12 @@ class ArticleFormType extends AbstractType
     {
         $builder
             ->add('title', TextType::class)
-            ->add('content', TextType::class)
+            ->add('content', TextareaType::class, [
+                'label' => 'Contenu',
+                'attr' => [
+                    'class' => 'tinymce',  // Cette classe peut être utilisée pour personnaliser le champ si nécessaire
+                ]
+            ])
             // Utiliser EntityType pour lier l'entité User
             ->add('author', EntityType::class, [
                 'class' => User::class, // Spécifie la classe User
