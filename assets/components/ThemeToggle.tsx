@@ -30,11 +30,18 @@ const ThemeToggle: React.FC = () => {
   return (
     <div
       style={{
+        position: "fixed", // Fixe la position sur l'écran
+        bottom: "20px", // À 20px du bas
+        right: "20px", // À 20px de la droite
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         gap: "10px", // Espacement entre les éléments
-        marginTop: "6px"
+        padding: "10px", // Espacement interne
+        borderRadius: "10px", // Coins arrondis
+        boxShadow: "0 2px 5px rgba(0, 0, 0, 0.2)", // Ombre légère
+        zIndex: 1000, // Toujours au-dessus des autres éléments
+        backgroundColor: "rgba(0, 0, 0, 0.5)", // Fond semi-transparent noir (50% d'opacité)
       }}
     >
       {/* Label pour la lune à gauche */}
@@ -53,6 +60,7 @@ const ThemeToggle: React.FC = () => {
             width: "24px",
             height: "24px",
             opacity: isDarkMode ? 1 : 0.5, // Opacité pour indiquer le mode
+            transition: "opacity 0.5s ease", // Transition fluide
           }}
         />
       </label>
@@ -85,6 +93,7 @@ const ThemeToggle: React.FC = () => {
             width: "24px",
             height: "24px",
             opacity: isDarkMode ? 0.5 : 1, // Opacité pour indiquer le mode
+            transition: "opacity 0.5s ease", // Transition fluide
           }}
         />
       </label>

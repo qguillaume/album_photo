@@ -23,7 +23,7 @@ body.dark-mode {
 
 /* Ajouter des transitions pour rendre le changement plus fluide */
 body {
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color 0.5s, color 0.5s;
 }
 
 /* Style du switch */
@@ -48,7 +48,7 @@ body {
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  transition: 0.4s;
+  transition: 0.5s;
   border-radius: 24px;
 }
 
@@ -60,7 +60,7 @@ body {
   left: 4px;
   bottom: 2px;
   background-color: white;
-  transition: 0.4s;
+  transition: 0.5s;
   border-radius: 50%;
 }
 
