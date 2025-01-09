@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Form\ArticleFormType;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
-
+use Knp\Component\Pager\PaginatorInterface;
 
 class ArticleController extends AbstractController
 {
@@ -55,12 +55,23 @@ class ArticleController extends AbstractController
     /**
      * @Route("/articles", name="articles_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(Request $request, PaginatorInterface $paginator): Response
     {
         // Vérifier que l'utilisateur est connecté
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $articles = $this->articleRepository->findAll();
+        // Récupérer la requête pour les articles
+        $query = $this->articleRepository->createQueryBuilder('a')
+            ->orderBy('a.createdAt', 'DESC')
+            ->getQuery();
+
+        // Paginer les résultats
+        $articles = $paginator->paginate(
+            $query, // QueryBuilder ou Query
+            $request->query->getInt('page', 1), // Numéro de la page actuelle (par défaut 1)
+            10 // Nombre d'articles par page
+        );
+
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
         ]);

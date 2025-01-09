@@ -17,6 +17,7 @@ import AlbumTable from "../components/AlbumTable";
 import ArticleTable from "../components/ArticleTable";
 import CommentTable from "../components/CommentTable";
 import DashboardTabs from "../components/DashboardTabs";
+import ThemeToggle from "../components/ThemeToggle";
 
 import '../../public/i18n'; // Importer le fichier de configuration de i18next
 
@@ -361,6 +362,13 @@ const CommentsTable = () => {
   );
 };
 
+  // Ajouter le composant ThemeToggle dans le DOM
+  const ThemeToggleRoot = document.getElementById('lightModeToggle');  // Récupère l'élément DOM
+
+  if (ThemeToggleRoot) {console.log("ThemeToggle component loaded.");
+    const root = ReactDOM.createRoot(ThemeToggleRoot);  // Crée la racine React
+    root.render(<ThemeToggle />);  // Rendre le composant dans l'élément
+  }
 
 // Initialisation des contrôles des albums et photos (en dehors des composants React)
 document.addEventListener("DOMContentLoaded", () => {
@@ -556,6 +564,7 @@ document.addEventListener("DOMContentLoaded", () => {
     root.render(<DashboardTabs />);  // Rendre le composant dans l'élément
   }
 });
+
 
 
 

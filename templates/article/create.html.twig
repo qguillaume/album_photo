@@ -10,7 +10,7 @@
         {{ form_row(form.title) }}
         {{ form_row(form.content) }}
         {{ form_row(form.published) }}
-        {{ form_row(form.save) }}
+        {{ form_row(form.save, {'attr': {class:'green-button'}}) }}
     {{ form_end(form) }}
 
     {# Ajouter le script TinyMCE à la fin du formulaire #}

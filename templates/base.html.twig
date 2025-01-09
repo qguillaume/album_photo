@@ -11,7 +11,7 @@
     
     {% block head %}{% endblock %}
 </head>
-<body class="dark-background">
+<body class="dark-mode">
     <header class="header">
         <a class="logo" href="{{ path('portfolio_home') }}"><img src="{{ asset('images/logoGQ.png') }}" alt="logo GQ"></a>
         <nav>
@@ -106,6 +106,7 @@
                         </ul>
                     </div>
                 </form>
+                <div id="lightModeToggle"></div>
             </div>
         </nav>
     </header>
@@ -128,7 +129,7 @@
     </footer>
 
     <div id="cookie-consent"></div>
-        {{ encore_entry_script_tags('app-ts') }}
+    {{ encore_entry_script_tags('app-ts') }}
     {% block javascripts %}{% endblock %}
 </body>
 </html>

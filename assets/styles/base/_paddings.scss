@@ -1,0 +1,38 @@
+// Paddings globaux
+@mixin generate-padding-classes($directions, $sizes) {
+    @each $direction in $directions {
+      @each $size, $value in $sizes {
+        .p#{$direction}-#{$size} {
+          padding#{$direction}: $value;
+        }
+      }
+    }
+  }
+  
+  // Directions possibles : (génère p-, pt-, pb-, pl-, pr-, px-, py-)
+  $directions: '', '-top', '-bottom', '-left', '-right', '-x', '-y';
+  
+  // Tailles possibles : 0 = 0rem, 1 = 0.25rem, etc.
+  $sizes: (
+    0: 0rem,
+    1: 0.25rem,
+    2: 0.5rem,
+    3: 1rem,
+    4: 1.5rem,
+    5: 3rem
+  );
+  
+  @include generate-padding-classes($directions, $sizes);
+
+  /*
+
+  Cela générera des classes comme :
+
+  .p-0, .p-1, .p-2, etc.
+  .pt-0, .pt-1, .pt-2, etc. pour padding-top
+  .pb-0, .pl-3, .pr-4, etc.
+  .px-2 pour padding-left et padding-right
+  .py-3 pour padding-top et padding-bottom
+
+  */
+  

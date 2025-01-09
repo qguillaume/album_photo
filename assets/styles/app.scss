@@ -2,6 +2,9 @@
 @use "base/variables" as *;
 @use "base/mixins" as *;
 @use "base/reset" as *;
+@use "base/margins" as *;
+@use "base/paddings" as *;
+@use "base/center" as *;
 
 // Styles spécifiques
 @use "base/boxes" as *;
@@ -27,3 +30,4 @@
 @use "components/dashboard" as *;
 @use "components/timeline" as *;
 @use "components/pagination" as *;
+@use "components/lightmode" as *;
