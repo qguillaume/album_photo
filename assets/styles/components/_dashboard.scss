@@ -1,5 +1,6 @@
 // _dashboard.scss
 @use "../base/variables" as *;
+@use "../components/pagination" as *;
 
 .table-container {
     margin: 2rem 0;

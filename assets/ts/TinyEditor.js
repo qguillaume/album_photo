@@ -33,6 +33,10 @@ const TinyEditor = () => {
           ],
           toolbar:
             "undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help",
+          paste_data_images: true, // Autoriser les images collées
+          paste_as_text: false, // Ne pas convertir en texte brut
+          content_style:
+            "body { font-family:Arial,Helvetica,sans-serif; font-size:14px }", // Adapter le style si nécessaire
         }}
         onChange={handleEditorChange} // Utilisation de l'événement onChange de l'API TinyMCE
       />
