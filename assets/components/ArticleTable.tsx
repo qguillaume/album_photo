@@ -12,11 +12,30 @@ const ArticleTable: React.FC<ArticleTableProps> = ({ articles, onEdit, onDelete 
   const [newArticleContents, setNewArticleContents] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1); // Page actuelle
   const articlesPerPage = 10; // Nombre d'articles par page
+  const [sortConfig, setSortConfig] = useState<{ key: keyof Article; direction: "asc" | "desc" }>({
+    key: "id",
+    direction: "asc",
+  });
+
+  // Fonction pour trier les articles
+  const sortedArticles = [...articles].sort((a, b) => {
+    let aValue: any = a[sortConfig.key];
+    let bValue: any = b[sortConfig.key];
+
+    if (sortConfig.key === "author") {
+      aValue = a.author.username;
+      bValue = b.author.username;
+    }
+
+    if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
+    if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
+    return 0;
+  });
 
   // Calculer les articles à afficher pour la page courante
   const indexOfLastArticle = currentPage * articlesPerPage;
   const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
-  const currentArticles = articles.slice(indexOfFirstArticle, indexOfLastArticle);
+  const currentArticles = sortedArticles.slice(indexOfFirstArticle, indexOfLastArticle);
 
   // Changer de page
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
@@ -35,6 +54,14 @@ const ArticleTable: React.FC<ArticleTableProps> = ({ articles, onEdit, onDelete 
     setNewArticleContents("");
   };
 
+  // Gérer le tri par colonne
+  const handleSort = (key: keyof Article) => {
+    setSortConfig((prevConfig) => ({
+      key,
+      direction: prevConfig.key === key && prevConfig.direction === "asc" ? "desc" : "asc",
+    }));
+  };
+
   // Calculer le nombre total de pages
   const totalPages = Math.ceil(articles.length / articlesPerPage);
 
@@ -44,13 +71,25 @@ const ArticleTable: React.FC<ArticleTableProps> = ({ articles, onEdit, onDelete 
       <table className="dashboard-table">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Titre</th>
-            <th>Auteur</th>
+            <th onClick={() => handleSort("id")}>
+              ID {sortConfig.key === "id" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+            </th>
+            <th onClick={() => handleSort("title")}>
+              Titre {sortConfig.key === "title" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+            </th>
+            <th onClick={() => handleSort("author")}>
+              Auteur {sortConfig.key === "author" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+            </th>
             <th>Contenu</th>
-            <th>Créé le</th>
-            <th>Modifié le</th>
-            <th>Publié</th>
+            <th onClick={() => handleSort("createdAt")}>
+              Créé le {sortConfig.key === "createdAt" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+            </th>
+            <th onClick={() => handleSort("updatedAt")}>
+              Modifié le {sortConfig.key === "updatedAt" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+            </th>
+            <th onClick={() => handleSort("published")}>
+              Publié {sortConfig.key === "published" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+            </th>
             <th>Actions</th>
           </tr>
         </thead>
