@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Photo, Album, User } from '../ts/types';
+import Pagination from "./PaginationDashboard";
 
 // AlbumTable.tsx
 interface AlbumTableProps {
@@ -10,7 +11,32 @@ interface AlbumTableProps {
   const AlbumTable: React.FC<AlbumTableProps> = ({ albums, onAlbumsUpdate }) => {
     const [editingAlbumId, setEditingAlbumId] = useState<number | null>(null);
     const [newAlbumName, setNewAlbumName] = useState<string>("");
-  
+    const [currentPage, setCurrentPage] = useState(1); // Page actuelle
+    const albumsPerPage = 10; // Nombre d'albums par page
+
+    const [sortConfig, setSortConfig] = useState<{ key: keyof Album; direction: "asc" | "desc" }>({
+        key: "id",
+        direction: "asc",
+      });
+    
+      // Fonction pour trier les albums
+      const sortedAlbums = [...albums].sort((a, b) => {
+        let aValue: any = a[sortConfig.key];
+        let bValue: any = b[sortConfig.key];
+    
+        if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
+        if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
+        return 0;
+      });
+
+    // Calculer les albums à afficher pour la page courante
+    const indexOfLastAlbum = currentPage * albumsPerPage;
+    const indexOfFirstAlbum = indexOfLastAlbum - albumsPerPage;
+    const currentAlbums = sortedAlbums.slice(indexOfFirstAlbum, indexOfLastAlbum);
+
+    // Changer de page
+    const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
     // Supprimer un album
     const handleDelete = (id: number) => {
       if (window.confirm("Êtes-vous sûr de vouloir supprimer cet album ?")) {
@@ -56,20 +82,40 @@ interface AlbumTableProps {
         });
     };
   
+      // Gérer le tri par colonne
+      const handleSort = (key: keyof Album) => {
+        setSortConfig((prevConfig) => ({
+          key,
+          direction: prevConfig.key === key && prevConfig.direction === "asc" ? "desc" : "asc",
+        }));
+      };
+    
+      // Calculer le nombre total de pages
+      const totalPages = Math.ceil(albums.length / albumsPerPage);
+
     return (
       <div className="table-container">
         <h2>Liste des Albums</h2>
+        {/* Pagination en haut */}
+        <Pagination currentPage={currentPage} totalPages={totalPages} onPaginate={paginate} />
         <table className="dashboard-table">
           <thead>
             <tr>
-              <th>#</th>
-              <th>Nom de l'Album</th>
-              <th>Nombre de Photos</th>
-              <th>Actions</th>
+            <th onClick={() => handleSort("id")}>
+              ID {sortConfig.key === "id" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+            </th>
+            <th onClick={() => handleSort("nom")}>
+              Nom de l'album {sortConfig.key === "nom" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+            </th>
+            <th onClick={() => handleSort("photos")}>
+              Nombre de photos contenu dans l'album {sortConfig.key === "photos" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+            </th>
+            <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {albums.map((album, index) => (
+            
+            {currentAlbums.map((album, index) => (
               <tr
                 key={album.id}
                 className={(index + 1) % 2 === 0 ? "even-row-albums" : "odd-row-albums"}
@@ -127,6 +173,8 @@ interface AlbumTableProps {
             ))}
           </tbody>
         </table>
+        {/* Pagination en bas */}
+      <Pagination currentPage={currentPage} totalPages={totalPages} onPaginate={paginate} />
       </div>
     );
   };

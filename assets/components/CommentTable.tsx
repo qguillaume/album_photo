@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Comment } from "../ts/types";
+import Pagination from "./PaginationDashboard";
 
 interface CommentTableProps {
   comments: Comment[]; // Liste des commentaires
@@ -10,6 +11,36 @@ interface CommentTableProps {
 const CommentTable: React.FC<CommentTableProps> = ({ comments, onEdit, onDelete }) => {
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null); // ID du commentaire en cours d'édition
   const [newCommentContents, setNewCommentContents] = useState<string>(""); // Nouveau texte du commentaire
+  const [currentPage, setCurrentPage] = useState(1); // Page actuelle
+  const commentsPerPage = 10; // Nombre de commentaires par page
+  
+  const [sortConfig, setSortConfig] = useState<{ key: keyof Comment; direction: "asc" | "desc" }>({
+      key: "id",
+      direction: "asc",
+    });
+  
+    // Fonction pour trier les commentaires
+    const sortedComments = [...comments].sort((a, b) => {
+      let aValue: any = a[sortConfig.key];
+      let bValue: any = b[sortConfig.key];
+  
+      if (sortConfig.key === "user") {
+        aValue = a.user.username;
+        bValue = b.user.username;
+      }
+  
+      if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
+      return 0;
+    });
+
+    // Calculer les commentaires à afficher pour la page courante
+    const indexOfLastComments = currentPage * commentsPerPage;
+    const indexOfFirstComments = indexOfLastComments - commentsPerPage;
+    const currentComments = sortedComments.slice(indexOfFirstComments, indexOfLastComments);
+
+  // Changer de page
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   // Déclencher la suppression
   const handleDelete = (id: number) => {
@@ -25,22 +56,42 @@ const CommentTable: React.FC<CommentTableProps> = ({ comments, onEdit, onDelete 
     setNewCommentContents(""); // Réinitialiser le champ d'édition
   };
 
+    // Gérer le tri par colonne
+    const handleSort = (key: keyof Comment) => {
+      setSortConfig((prevConfig) => ({
+        key,
+        direction: prevConfig.key === key && prevConfig.direction === "asc" ? "desc" : "asc",
+      }));
+    };
+  
+    // Calculer le nombre total de pages
+    const totalPages = Math.ceil(comments.length / commentsPerPage);
+
   return (
     <div className="table-container">
       <h2>Liste des Commentaires</h2>
+      <Pagination currentPage={currentPage} totalPages={totalPages} onPaginate={paginate} />
       <table className="dashboard-table">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Utilisateur</th>
+          <th onClick={() => handleSort("id")}>
+              ID {sortConfig.key === "id" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+            </th>
+            <th onClick={() => handleSort("user")}>
+              Utilisateur {sortConfig.key === "user" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+            </th>
             <th>Contenu</th>
-            <th>Photo concernée</th>
-            <th>Créé le</th>
+            <th onClick={() => handleSort("photo")}>
+              Photo concernée {sortConfig.key === "photo" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+            </th>
+            <th onClick={() => handleSort("createdAt")}>
+              Créé le {sortConfig.key === "createdAt" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+            </th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {comments.map((comment, index) => {
+          {currentComments.map((comment, index) => {
             const rowClass =
               (index + 1) % 2 === 0 ? "even-row-comments" : "odd-row-comments";
 
@@ -122,6 +173,8 @@ const CommentTable: React.FC<CommentTableProps> = ({ comments, onEdit, onDelete 
           })}
         </tbody>
       </table>
+      {/* Pagination en bas */}
+      <Pagination currentPage={currentPage} totalPages={totalPages} onPaginate={paginate} />
     </div>
   );
 };

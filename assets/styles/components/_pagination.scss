@@ -12,6 +12,7 @@
     background-color: $secondary-color;
     cursor: pointer;
     border-radius: 5px;
+    font-weight: bold;
 
     // Style pour le bouton actif
     &.active {

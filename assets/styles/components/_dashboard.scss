@@ -183,6 +183,7 @@
     }
   
     &.active {
+      background-color: $primary-color;
       color: $yellow-color;
       border-color: $yellow-color; /* Couleur jaune pour l'accent */
       outline: none; /* Supprime le contour par défaut */

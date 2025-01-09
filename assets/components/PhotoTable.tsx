@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Photo, Album } from "../ts/types";
+import Pagination from "./PaginationDashboard";
 
 interface PhotoTableProps {
   photos: Photo[];
@@ -16,6 +17,31 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
 }) => {
   const [editingPhotoId, setEditingPhotoId] = useState<number | null>(null);
   const [newTitle, setNewTitle] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState(1); // Page actuelle
+  const photosPerPage = 10; // Nombre de photos par page
+
+  const [sortConfig, setSortConfig] = useState<{ key: keyof Photo; direction: "asc" | "desc" }>({
+      key: "id",
+      direction: "asc",
+    });
+  
+    // Fonction pour trier les photos
+    const sortedPhotos = [...photos].sort((a, b) => {
+      let aValue: any = a[sortConfig.key];
+      let bValue: any = b[sortConfig.key];
+  
+      if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
+      return 0;
+    });
+
+    // Calculer les photos à afficher pour la page courante
+    const indexOfLastPhoto = currentPage * photosPerPage;
+    const indexOfFirstPhoto = indexOfLastPhoto - photosPerPage;
+    const currentPhotos = sortedPhotos.slice(indexOfFirstPhoto, indexOfLastPhoto);
+
+  // Changer de page
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   // Supprimer une photo
   const handleDelete = (id: number, albumId: number | undefined) => {
@@ -77,22 +103,44 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
       );
   };
 
+    // Gérer le tri par colonne
+    const handleSort = (key: keyof Photo) => {
+      setSortConfig((prevConfig) => ({
+        key,
+        direction: prevConfig.key === key && prevConfig.direction === "asc" ? "desc" : "asc",
+      }));
+    };
+  
+    // Calculer le nombre total de pages
+    const totalPages = Math.ceil(photos.length / photosPerPage);
+
   return (
     <div className="table-container">
-      <h2>Top Photos par Likes</h2>
+      <h2>Liste des Photos</h2>
+      <Pagination currentPage={currentPage} totalPages={totalPages} onPaginate={paginate} />
       <table className="dashboard-table">
         <thead>
           <tr>
-            <th>#</th>
-            <th>Titre de la Photo</th>
-            <th>Album associé</th>
-            <th>Nombre de Likes</th>
-            <th>Nombre de Commentaires</th>
+          <th onClick={() => handleSort("id")}>
+              ID {sortConfig.key === "id" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+            </th>
+            <th onClick={() => handleSort("title")}>
+              Titre de la photo {sortConfig.key === "title" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+            </th>
+            <th onClick={() => handleSort("album")}>
+              Album associé {sortConfig.key === "album" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+            </th>
+            <th onClick={() => handleSort("likesCount")}>
+              Nombre de likes {sortConfig.key === "likesCount" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+            </th>
+            <th onClick={() => handleSort("commentsCount")}>
+              Nombre de commentaires {sortConfig.key === "commentsCount" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+            </th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {photos.map((photo, index) => {
+          {currentPhotos.map((photo, index) => {
             const album = albums.find((a) => a.id === photo.albumId);
 
             // Applique une classe différente pour les lignes impaires et paires
@@ -100,7 +148,7 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
 
             return (
               <tr key={photo.id} className={rowClass}>
-                <td>{index + 1}</td>
+                <td>{photo.id}</td>
                 <td>
                   {editingPhotoId === photo.id ? (
                     <input
@@ -159,6 +207,8 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
           })}
         </tbody>
       </table>
+      {/* Pagination en bas */}
+      <Pagination currentPage={currentPage} totalPages={totalPages} onPaginate={paginate} />
     </div>
   );
 };
