@@ -50,4 +50,21 @@
   input + .slider {
     background-color: $red-color;
   }
+
+   // Lorsque le switch a la classe "light-mode-toggle"
+   &.light-mode-toggle {
+    // Lorsque le switch est coché (activé), changer la couleur en jaune
+    input:checked + .slider {
+      background-color: $yellow-color;
+
+      &::before {
+        transform: translateX(22px); /* Déplace la balle du switch */
+      }
+    }
+
+    // Lorsque le switch est décoché (désactivé), changer la couleur en gris
+    input + .slider {
+      background-color: #ccc;
+    }
+  }
 }

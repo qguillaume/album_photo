@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Pagination from "./PaginationDashboard";
 import { User } from "../ts/types";
 
@@ -10,12 +10,14 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
   const [currentPage, setCurrentPage] = useState(1); 
   const usersPerPage = 10; 
   const [userList, setUserList] = useState(users); 
+  const [notification, setNotification] = useState<string | null>(null); // Ajout de l'état pour la notification
+  const [notificationClass, setNotificationClass] = useState<string>(""); // Ajout pour gérer les classes CSS
 
   const [sortConfig, setSortConfig] = useState<{ key: keyof User; direction: "asc" | "desc" }>({
     key: "id",
     direction: "asc",
   });
-  
+
   const sortedUsers = [...userList].sort((a, b) => {
     let aValue: any = a[sortConfig.key];
     let bValue: any = b[sortConfig.key];
@@ -79,7 +81,13 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
         throw new Error("Échec de la mise à jour des rôles.");
       }
 
-      console.log("Rôle mis à jour avec succès");
+      // Afficher la notification de succès
+      setNotification("Le rôle a été mis à jour avec succès.");
+      setNotificationClass("show"); // Afficher la notification
+
+      // Cacher la notification après 5 secondes avec animation
+      setTimeout(() => setNotificationClass("hide"), 5000);
+
     } catch (error) {
       console.error("Erreur lors de la mise à jour du rôle :", error);
     }
@@ -129,6 +137,13 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
         </tbody>
       </table>
       <Pagination currentPage={currentPage} totalPages={totalPages} onPaginate={paginate} />
+
+      {/* Affichage de la notification en bas à gauche */}
+      {notification && (
+        <div className={`notification ${notificationClass}`}>
+          {notification}
+        </div>
+      )}
     </div>
   );
 };

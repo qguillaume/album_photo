@@ -1,0 +1,31 @@
+@use "../base/variables" as *;
+
+/* Style de la notification */
+.notification {
+    position: fixed;
+    bottom: 20px;
+    left: -300px; /* Initialement en dehors de l'écran à gauche */
+    background-color: $lightgreen-color;
+    color: $darkgreen-color;
+    border: 1px solid $bordergreen-color;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    z-index: 1000;
+    opacity: 0; /* Initialement totalement transparent */
+    transition: transform 1s ease, opacity 1s ease; /* Animation de translation et opacité */
+  }
+  
+  .notification.show {
+    left: 20px; /* Déplacer l'élément vers la gauche de l'écran */
+    opacity: 1; /* Rendre l'élément visible */
+  }
+  
+  /* Lorsque la notification disparaît */
+  .notification.hide {
+    left: -300px; /* Revenir à la position initiale en dehors de l'écran */
+    opacity: 0; /* Rendre l'élément transparent */
+    transition: transform 1s ease, opacity 1s ease;
+  }
+  

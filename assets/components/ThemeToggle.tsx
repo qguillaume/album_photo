@@ -66,7 +66,7 @@ const ThemeToggle: React.FC = () => {
       </label>
 
       {/* Switch */}
-      <label className="switch" style={{ position: "relative" }}>
+      <label className="switch light-mode-toggle" style={{ position: "relative" }}>
         <input
           type="checkbox"
           id="lightModeToggle"

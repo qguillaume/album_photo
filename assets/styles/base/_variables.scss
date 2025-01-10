@@ -19,10 +19,18 @@ $input-color: #444;
 $light-white-color: #f9f9f9;
 $active-color: #ffffff;
 $hover-color: #dddddd;
-$menu-item-height: 38px;
+
+/* couleur des notifications et messages flashs */
+$darkgreen-color: #155724;
+$lightgreen-color: #d4edda;
+$bordergreen-color: #c3e6cb;
+$darkred-color: #721c24;
+$lightred-color: #f8d7da;
+$borderred-color: #f5c6cb;
 
 /* header */
 $header-bg-color: #333;  // définis la couleur de fond du header
+$menu-item-height: 38px;
 
 /* Light et Dark modes */
 $dark-bg-color: #121212; // Couleur de fond sombre
