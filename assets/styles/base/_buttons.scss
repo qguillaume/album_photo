@@ -61,6 +61,63 @@
   }
 }
 
+.orange-button {
+  background-color: $orange-color;
+  color: $header-bg-color;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  width: auto;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.5s ease, color 0.5s ease;
 
+  &:hover {
+    background-color: $orange-color-hover;
+    color: white; /* Texte en blanc au survol */
+  }
+}
+
+.crud-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+
+  button, a {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+
+    &.edit {
+      background-color: $secondary-color;
+      color: black;
+      font-weight: bold;
+      &:hover {
+          background-color: $secondary-color-hover; /* Assombrit la couleur de fond */
+          transform: scale(1.2); /* Zoom léger */
+      }
+    }
+
+    &.delete {
+      background-color: $orange-color;
+      color: black;
+      font-weight: bold;
+      &:hover {
+          background-color: $orange-color-hover;
+          transform: scale(1.2);
+      }
+    }
+
+    &.validate {
+      background-color: $purple-color;
+      color: black;
+      font-weight: bold;
+      &:hover {
+          background-color: $purple-color-hover;
+          transform: scale(1.2);
+      }
+    }
+  }
+}
 
   

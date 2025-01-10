@@ -23,13 +23,15 @@
                     <td>{{ article.title }}</td>
                     <td>{{ article.createdAt|date('d/m/Y') }}</td>
                     {% if is_granted('ROLE_ADMIN') %}
-                        <td>
-                            <a href="{{ path('article_edit', {'id': article.id}) }}">Modifier</a>
-                            <!-- Formulaire de suppression -->
-                            <form method="post" action="{{ path('article_delete', {'id': article.id}) }}" style="display:inline;">
-                                <input type="hidden" name="_method" value="DELETE">
-                                <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?')">Effacer</button>
-                            </form>
+                        <td class="td-actions">
+                            <div class="crud-buttons">
+                                <a class="edit" href="{{ path('article_edit', {'id': article.id}) }}">Modifier</a>
+                                <!-- Formulaire de suppression -->
+                                <form method="post" action="{{ path('article_delete', {'id': article.id}) }}" style="display:inline;">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?')">Effacer</button>
+                                </form>
+                            </div>
                         </td>
                     {% endif %}
                 </tr>
@@ -43,6 +45,8 @@
     </div>
 
     {% if app.user %}
-        <a href="{{ path('article_create') }}" class="green-button">Rédiger un nouvel article</a>
+        <div class="center">
+            <a href="{{ path('article_create') }}" class="green-button inline-block">Rédiger un nouvel article</a>
+        </div>
     {% endif %}
 {% endblock %}

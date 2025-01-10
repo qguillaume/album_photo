@@ -4,7 +4,8 @@
 @use "base/reset" as *;
 @use "base/margins" as *;
 @use "base/paddings" as *;
-@use "base/center" as *;
+@use "base/centers" as *;
+@use "base/utilities" as *;
 
 // Styles spécifiques
 @use "base/boxes" as *;
