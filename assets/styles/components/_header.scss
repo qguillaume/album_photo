@@ -1,12 +1,7 @@
 @use "../base/variables" as *;
 
 // Fond sombre sur toute la page
-body.dark-background {
-    background-color: #121212; /* Fond très sombre */
-    color: #ccc;
-    margin: 0;
-    padding: 0;
-}
+
 
 // Header transparent
 header {

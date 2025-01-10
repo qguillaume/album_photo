@@ -1,16 +1,7 @@
-// A revoir à l'avenir
-$primary-color: #121212;
-$secondary-color: rgba(255, 255, 255, 0.1);
-$highlight-color: rgba(255, 255, 255, 0.3);
-$highlight-hover: rgba(255, 255, 255, 0.2);
-$box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-$hover-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-$transition-duration: 0.3s;
+@use "../base/variables" as *;
 
 .timeline {
   padding: 50px 20px;
-  background-color: $primary-color;
-  color: white;
   text-align: center;
 
   .timeline-title {
@@ -60,7 +51,7 @@ $transition-duration: 0.3s;
     }
 
     .timeline-content {
-      background: $secondary-color;
+      background: $experience-color;
       border-radius: 10px;
       padding: 20px;
       box-shadow: $box-shadow;
