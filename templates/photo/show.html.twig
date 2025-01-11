@@ -3,7 +3,7 @@
 {% block title %}Détails de la photo{% endblock %}
 
 {% block body %}
-    <h1>{{ photo.title }}</h1>
+    <h2>{{ photo.title }}</h2>
     <div class="photo-agrandie"><img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" ></div>
 
     <p class="details-photo"><strong>Album :</strong> {{ photo.album ? photo.album.nomAlbum : 'Sans album' }}</p>
