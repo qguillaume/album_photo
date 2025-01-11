@@ -6,6 +6,59 @@
   margin: 20px 0;
 
   // Style des boutons de pagination
+  .first, .previous, .next, .last, .page, .current {
+    display: inline-flex;
+    align-items: center;  // Centrer verticalement le contenu (utile pour les liens)
+    justify-content: center; // S'assurer que le contenu est bien centré horizontalement
+    vertical-align: middle; // Ajouté pour éviter tout décalage de hauteur entre les éléments
+
+    a {
+      padding: 8px 12px;
+      background-color: $secondary-color;
+      color: $header-bg-color;
+      cursor: pointer;
+      border-radius: 5px;
+      font-weight: bold;
+      text-decoration: none; // Enlever la décoration du lien
+      margin: 0 5px;
+      transition: background-color 0.3s, color 0.3s;
+
+      &:hover {
+        background-color: $primary-color;
+        color: $yellow-color;
+        box-shadow: 0 0 5px rgba(255, 253, 128, 0.815);
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+    }
+  }
+
+  // Style pour la page courante
+  .current {
+    display: inline-flex;  // Changer pour inline-flex pour une gestion plus précise du centrage
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    background-color: $primary-color;
+    color: $yellow-color;
+    border-radius: 5px;
+    font-weight: bold;
+    margin: 0 5px;
+    box-shadow: 0 0 5px rgba(255, 253, 128, 0.815); // Ombre pour la page active
+  }
+
+  // Styles pour les boutons désactivés (précédent, suivant)
+  .previous, .next {
+    a:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+  
+  // Style des boutons de pagination (premier, précédent, suivant, dernier)
   button {
     margin: 0 5px;
     padding: 5px 10px;

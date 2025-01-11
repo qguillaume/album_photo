@@ -3,9 +3,9 @@
 {% block title %}Liste des articles{% endblock %}
 
 {% block body %}
-    <h1>Liste des articles</h1>
+    <h2>Liste des articles</h2>
 
-    <table>
+    <table class="table-strip">
         <thead>
             <tr>
                 <th>Auteur</th>
@@ -48,9 +48,9 @@
     </table>
 
     <!-- Afficher la pagination -->
-    <div class="pagination">
-        {{ knp_pagination_render(articles) }}
-    </div>
+    
+    {{ knp_pagination_render(articles) }}
+
 
     {% if app.user %}
         <div class="center">

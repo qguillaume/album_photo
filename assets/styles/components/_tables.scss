@@ -1,3 +1,43 @@
+@use "../base/variables" as *;
+
+.table-strip {
+    width: 100%;
+    border-collapse: collapse; /* Empêche les bordures doubles */
+    
+    thead {
+      background-color: $primary-color; /* Couleur de fond pour l'en-tête */
+      color: $light-white-color;
+    }
+  
+    tbody {
+      tr:nth-child(odd) {
+        background-color: #4F6B6B; /* Couleur de fond pour les lignes impaires */
+      }
+  
+      tr:nth-child(even) {
+        background-color: darkslategray; /* Couleur de fond pour les lignes paires */
+      }
+  
+      /* Optionnel : ajouter un effet au survol des lignes */
+      tr:hover {
+        background-color: $secondary-color;
+        color: $header-bg-color;
+        cursor: pointer;
+      }
+    }
+  
+    th, td {
+      padding: 12px; /* Espacement dans les cellules */
+      border: 1px solid $light-white-color; /* Bordure de cellule */
+      text-align: left; /* Aligner le texte à gauche */
+    }
+  
+    .td-actions {
+      text-align: center; /* Centrer les actions dans la colonne */
+    }
+  }
+
+
 .table-spacing {
     margin-top: 2rem;
     margin-bottom: 2rem;
