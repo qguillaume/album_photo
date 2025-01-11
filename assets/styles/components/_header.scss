@@ -1,66 +1,108 @@
 @use "../base/variables" as *;
 
-// Fond sombre sur toute la page
-
-
-// Header transparent
+// Header transparent avec trois sections (gauche, centre, droite)
 header {
-    backdrop-filter: blur(8px); /* Effet de flou pour le contenu derrière */
-    -webkit-backdrop-filter: blur(8px); /* Compatibilité avec Safari */
-    color: white;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    padding: 20px 40px; /* Espacement pour le header */
+  backdrop-filter: blur(8px); /* Effet de flou */
+  -webkit-backdrop-filter: blur(8px); /* Compatibilité Safari */
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+
+  // Section gauche : navigation principale
+  .header-left {
     display: flex;
-    justify-content: space-between;
+    gap: 30px; /* Espacement entre les liens */
     align-items: center;
-    box-sizing: border-box;
-    transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Ombre légère pour plus de visibilité */
-
-    nav {
-        display: flex;
-        justify-content: flex-end; /* Navigation alignée à droite */
-        align-items: center;
-    }
-
-    .menu {
-        display: flex;
-        gap: 30px; /* Espacement entre les liens */
-    }
-
-    .register {
-        background-color: $secondary-color; /* Fond vert */
-        color: $header-bg-color;
-        border-radius: 8px; /* Coins arrondis */
-        padding: 10px 15px; /* Espacement pour l'onglet */
-        transition: background-color 0.3s ease, color 0.3s ease; /* Transition fluide pour l'effet hover */
-    }
-    
-    /* Effet hover pour l'onglet d'inscription */
-    .register:hover {
-        background-color: $secondary-color-hover;
-        color: white;
-    }
 
     a {
-        color: $primary-color; /* Texte des liens en blanc */
-        text-decoration: none;
-        padding: 10px 15px;
-        font-size: 1rem;
-        transition: color 0.3s ease, background-color 0.3s ease;
-        border-radius: 8px;
-    }
+      color: $primary-color;
+      text-decoration: none;
+      padding: 10px 15px;
+      font-size: 1rem;
+      border-radius: 8px;
+      transition: color 0.3s ease, background-color 0.3s ease;
 
-    a:hover:not(.logo), .active:not(.logo) {
+      &:hover,
+      &.active {
         background-color: $primary-color; /* Couleur d'arrière-plan au survol */
+        color: white;
+      }
+    }
+  }
+
+  // Section centrale : logo
+  .header-center {
+    flex: 1; /* Permet de centrer le logo */
+    display: flex;
+    justify-content: center;
+
+    .logo img {
+      width: 140px;
+      height: auto; /* Garde les proportions */
+    }
+  }
+
+  // Section droite : utilisateur et langue
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    a {
+      color: $primary-color;
+      text-decoration: none;
+      padding: 10px 15px;
+      font-size: 1rem;
+      border-radius: 8px;
+      transition: color 0.3s ease, background-color 0.3s ease;
+
+      &:hover {
+        background-color: $primary-color;
+        color: white;
+      }
     }
 
-    .logo img { /* @TODO avoir un svg du logo */
-        width: 150px;
-        height: 89px;
+    // Bouton d'inscription
+    .register {
+      background-color: $secondary-color;
+      color: $header-bg-color;
+      border-radius: 8px;
+      padding: 10px 15px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+
+      &:hover {
+        background-color: $secondary-color-hover;
+        color: white;
+      }
     }
+
+    // Sélecteur de langue
+    .language-select {
+      select {
+        background-color: transparent;
+        border: 1px solid $primary-color;
+        color: $primary-color;
+        padding: 5px 10px;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: border-color 0.3s ease, color 0.3s ease;
+
+        &:hover {
+          border-color: $secondary-color;
+          color: $secondary-color;
+        }
+      }
+    }
+  }
 }

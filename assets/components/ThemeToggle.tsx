@@ -30,9 +30,9 @@ const ThemeToggle: React.FC = () => {
   return (
     <div
       style={{
-        position: "fixed", // Fixe la position sur l'écran
-        bottom: "20px", // À 20px du bas
-        right: "20px", // À 20px de la droite
+        //position: "fixed", // Fixe la position sur l'écran
+        //bottom: "20px", // À 20px du bas
+        //right: "20px", // À 20px de la droite
         display: "flex",
         alignItems: "center",
         justifyContent: "center",

@@ -13,61 +13,37 @@
 </head>
 <body class="dark-mode">
     <header class="header">
-        <a class="logo" href="{{ path('portfolio_home') }}"><img src="{{ asset('images/logoGQ.png') }}" alt="logo GQ"></a>
-        <nav>
-            <div class="menu">
-                <a href="{{ path('portfolio_home') }}" class="{% if app.request.attributes.get('_route') == 'portfolio_home' %}active{% endif %}">{{ 'home'|trans }}</a>
-                <div class="dropdown">
-                    <a href="{{ path('photo_albums') }}" class="{% if app.request.attributes.get('_route') == 'photo_albums' %}active{% endif %}">{{ 'photos'|trans }}</a>
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <div class="dropdown-content">
-                            <a href="{{ path('album_new') }}">{{ 'create_album'|trans }}</a>
-                            <a href="{{ path('photo_upload') }}">{{ 'upload_photo'|trans }}</a>
-                        </div>
-                    {% endif %}
-                </div>
-                
-                <div class="dropdown">
-                    <a href="{{ path('articles_index') }}" class="{% if app.request.attributes.get('_route') == 'articles_index' %}active{% endif %}">articles</a>
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <div class="dropdown-content">
-                            <a href="{{ path('article_create') }}">nouvel article</a>
-                            <a href="{{ path('theme_create') }}">nouveau theme</a>
-                        </div>
-                    {% endif %}
-                </div>
+        <!-- Section gauche : navigation principale -->
+        <nav class="header-left">
+            <a href="{{ path('portfolio_home') }}" class="{% if app.request.attributes.get('_route') == 'portfolio_home' %}active{% endif %}">{{ 'home'|trans }}</a>
+            <a href="{{ path('photo_albums') }}" class="{% if app.request.attributes.get('_route') == 'photo_albums' %}active{% endif %}">{{ 'photos'|trans }}</a>
+            <a href="{{ path('articles_index') }}" class="{% if app.request.attributes.get('_route') == 'articles_index' %}active{% endif %}">Articles</a>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('reference') }}" class="{% if app.request.attributes.get('_route') == 'reference' %}active{% endif %}">{{ 'references'|trans }}</a>
+            {% endif %}
+            <a href="{{ path('contact') }}" class="{% if app.request.attributes.get('_route') == 'contact' %}active{% endif %}">{{ 'contact'|trans }}</a>
+        </nav>
 
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('reference') }}" class="{% if app.request.attributes.get('_route') == 'reference' %}active{% endif %}">{{ 'references'|trans }}</a>
-                {% endif %}
+        <!-- Section centrale : logo -->
+        <div class="header-center">
+            <a class="logo" href="{{ path('portfolio_home') }}">
+                <img src="{{ asset('images/logoGQ.png') }}" alt="logo GQ">
+            </a>
+        </div>
 
-                <a href="{{ path('contact') }}" class="{% if app.request.attributes.get('_route') == 'contact' %}active{% endif %}">{{ 'contact'|trans }}</a>
-
-                {% if app.user %}
-                    <div class="dropdown">
-                        <a href="#" 
-                        class="{% if app.request.attributes.get('_route') == 'logout' %}active{% endif %}">
-                            {{ 'welcome'|trans }} {{ app.user.username }} !
-                        </a>
-                        <div class="dropdown-content">
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <a href="{{ path('dashboard') }}">{{ 'dashboard'|trans }}</a>
-                            {% endif %}
-                            <a href="{{ path('logout') }}">{{ 'disconnection'|trans }}</a>
-                        </div>
-                    </div>
-                {% else %}
-                    <a href="{{ path('login') }}" 
-                    class="{% if app.request.attributes.get('_route') == 'login' %}active{% endif %}">
-                        {{ 'connexion'|trans }}
-                    </a>
-                    <a href="{{ path('register') }}" 
-                    class="register {% if app.request.attributes.get('_route') == 'register' %}active{% endif %}">
-                        {{ 'inscription'|trans }}
-                    </a>
-                {% endif %}
-
-                <form method="get" action="{{ path('change_locale') }}">
+        <!-- Section droite : utilisateur et langue -->
+        <div class="header-right">
+            {% if app.user %}
+                <a href="{{ path('logout') }}">{{ 'disconnection'|trans }}</a>
+            {% else %}
+                <a href="{{ path('login') }}" class="{% if app.request.attributes.get('_route') == 'login' %}active{% endif %}">
+                    {{ 'connexion'|trans }}
+                </a>
+                <a href="{{ path('register') }}" class="{% if app.request.attributes.get('_route') == 'register' %}active{% endif %}">
+                    {{ 'inscription'|trans }}
+                </a>
+            {% endif %}
+            <form method="get" action="{{ path('change_locale') }}">
                     <div class="custom-select">
                         <div class="selected-option">
                             {% if app.request.locale == 'fr' %}
@@ -112,8 +88,8 @@
                         </ul>
                     </div>
                 </form>
-            </div>
-        </nav>
+            <div id="lightModeToggle"></div>
+        </div>
     </header>
 
     <div class="main-content-wrapper">
@@ -134,7 +110,6 @@
     </footer>
 
     <div id="cookie-consent"></div>
-    <div id="lightModeToggle"></div>
 
     <!-- Spinner et message en overlay -->
     <div id="spinner-overlay">
