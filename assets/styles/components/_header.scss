@@ -10,7 +10,7 @@ header {
   left: 0;
   width: 100%;
   z-index: 1000;
-  padding: 20px 40px;
+  padding: 30px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -42,9 +42,13 @@ header {
 
   // Section centrale : logo
   .header-center {
-    flex: 1; /* Permet de centrer le logo */
+    position: absolute;
+    top: calc(50% + 5px); /* Décalage de 10px vers le bas */
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centre le logo indépendamment */
     display: flex;
     justify-content: center;
+    align-items: center;
 
     .logo img {
       width: 140px;
