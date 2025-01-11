@@ -15,6 +15,51 @@
     <header class="header">
         <!-- Section gauche : navigation principale -->
         <nav class="header-left">
+            <form method="get" action="{{ path('change_locale') }}">
+                <div class="custom-select">
+                    <div class="selected-option">
+                        {% if app.request.locale == 'fr' %}
+                            <img src="{{ asset('images/fr.png') }}" alt="Français" class="flag-icon" />
+                        {% elseif app.request.locale == 'en' %}
+                            <img src="{{ asset('images/gb.png') }}" alt="English" class="flag-icon" />
+                        {% elseif app.request.locale == 'es' %}
+                            <img src="{{ asset('images/es.png') }}" alt="Espanol" class="flag-icon" />
+                        {% elseif app.request.locale == 'de' %}
+                            <img src="{{ asset('images/de.png') }}" alt="Deutsch" class="flag-icon" />
+                        {% endif %}
+                    </div>
+                    <ul class="options">
+                        {% if app.request.locale != 'fr' %}
+                            <li>
+                                <a href="{{ path('change_locale', {'locale': 'fr'}) }}">
+                                    <img src="{{ asset('images/fr.png') }}" alt="Français" class="flag-icon" />
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if app.request.locale != 'en' %}
+                            <li>
+                                <a href="{{ path('change_locale', {'locale': 'en'}) }}">
+                                    <img src="{{ asset('images/gb.png') }}" alt="English" class="flag-icon" />
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if app.request.locale != 'es' %}
+                            <li>
+                                <a href="{{ path('change_locale', {'locale': 'es'}) }}">
+                                    <img src="{{ asset('images/es.png') }}" alt="Espanol" class="flag-icon" />
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if app.request.locale != 'de' %}
+                            <li>
+                                <a href="{{ path('change_locale', {'locale': 'de'}) }}">
+                                    <img src="{{ asset('images/de.png') }}" alt="Deutsch" class="flag-icon" />
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </form>
             <a href="{{ path('portfolio_home') }}" class="{% if app.request.attributes.get('_route') == 'portfolio_home' %}active{% endif %}">{{ 'home'|trans }}</a>
             <div class="dropdown">
                 <a href="{{ path('photo_albums') }}" class="{% if app.request.attributes.get('_route') == 'photo_albums' %}active{% endif %}">{{ 'photos'|trans }}</a>
@@ -49,61 +94,29 @@
 
         <!-- Section droite : utilisateur et langue -->
         <div class="header-right">
-            {% if app.user %}
-                <a href="{{ path('logout') }}">{{ 'disconnection'|trans }}</a>
-            {% else %}
-                <a href="{{ path('login') }}" class="{% if app.request.attributes.get('_route') == 'login' %}active{% endif %}">
-                    {{ 'connexion'|trans }}
-                </a>
-                <a href="{{ path('register') }}" class="{% if app.request.attributes.get('_route') == 'register' %}active{% endif %}">
-                    {{ 'inscription'|trans }}
-                </a>
-            {% endif %}
-            <form method="get" action="{{ path('change_locale') }}">
-                    <div class="custom-select">
-                        <div class="selected-option">
-                            {% if app.request.locale == 'fr' %}
-                                <img src="{{ asset('images/fr.png') }}" alt="Français" class="flag-icon" />
-                            {% elseif app.request.locale == 'en' %}
-                                <img src="{{ asset('images/gb.png') }}" alt="English" class="flag-icon" />
-                            {% elseif app.request.locale == 'es' %}
-                                <img src="{{ asset('images/es.png') }}" alt="Espanol" class="flag-icon" />
-                            {% elseif app.request.locale == 'de' %}
-                                <img src="{{ asset('images/de.png') }}" alt="Deutsch" class="flag-icon" />
+                {% if app.user %}
+                    <div class="dropdown">
+                        <a href="#" 
+                        class="{% if app.request.attributes.get('_route') == 'logout' %}active{% endif %}">
+                            {{ 'welcome'|trans }} {{ app.user.username }} !
+                        </a>
+                        <div class="dropdown-content">
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('dashboard') }}">{{ 'dashboard'|trans }}</a>
                             {% endif %}
+                            <a href="{{ path('logout') }}">{{ 'disconnection'|trans }}</a>
                         </div>
-                        <ul class="options">
-                            {% if app.request.locale != 'fr' %}
-                                <li>
-                                    <a href="{{ path('change_locale', {'locale': 'fr'}) }}">
-                                        <img src="{{ asset('images/fr.png') }}" alt="Français" class="flag-icon" />
-                                    </a>
-                                </li>
-                            {% endif %}
-                            {% if app.request.locale != 'en' %}
-                                <li>
-                                    <a href="{{ path('change_locale', {'locale': 'en'}) }}">
-                                        <img src="{{ asset('images/gb.png') }}" alt="English" class="flag-icon" />
-                                    </a>
-                                </li>
-                            {% endif %}
-                            {% if app.request.locale != 'es' %}
-                                <li>
-                                    <a href="{{ path('change_locale', {'locale': 'es'}) }}">
-                                        <img src="{{ asset('images/es.png') }}" alt="Espanol" class="flag-icon" />
-                                    </a>
-                                </li>
-                            {% endif %}
-                            {% if app.request.locale != 'de' %}
-                                <li>
-                                    <a href="{{ path('change_locale', {'locale': 'de'}) }}">
-                                        <img src="{{ asset('images/de.png') }}" alt="Deutsch" class="flag-icon" />
-                                    </a>
-                                </li>
-                            {% endif %}
-                        </ul>
                     </div>
-                </form>
+                {% else %}
+                    <a href="{{ path('login') }}" 
+                    class="{% if app.request.attributes.get('_route') == 'login' %}active{% endif %}">
+                        {{ 'connexion'|trans }}
+                    </a>
+                    <a href="{{ path('register') }}" 
+                    class="register {% if app.request.attributes.get('_route') == 'register' %}active{% endif %}">
+                        {{ 'inscription'|trans }}
+                    </a>
+                {% endif %}
             <div id="lightModeToggle"></div>
         </div>
     </header>
