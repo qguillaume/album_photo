@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert; // Import des contraintes Symfony Validator
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -26,23 +27,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(message="Le nom d'utilisateur ne doit pas être vide.")
+     * @Assert\Length(
+     *     max=180,
+     *     maxMessage="Le nom d'utilisateur ne doit pas dépasser {{ limit }} caractères."
+     * )
      */
     private $username;
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Le mot de passe ne doit pas être vide.")
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(message="L'email ne doit pas être vide.")
+     * @Assert\Email(message="Veuillez fournir une adresse email valide.")
+     * @Assert\Length(
+     *     max=180,
+     *     maxMessage="L'adresse email ne doit pas dépasser {{ limit }} caractères."
+     * )
      */
     private $email;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isBanned = false;  // Nouvelle propriété ajoutée pour l'état "banni"
+    private $isBanned = false; // Nouvelle propriété ajoutée pour l'état "banni"
 
     public function getId(): ?int
     {
@@ -87,7 +100,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="json")
      */
-    private array $roles = [];
+    private array $roles = []; // Stockage des rôles utilisateur sous forme de tableau JSON
 
     // Getter
     public function getRoles(): array

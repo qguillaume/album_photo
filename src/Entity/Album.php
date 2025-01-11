@@ -89,6 +89,24 @@ class Album
         return $this;
     }
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private ?User $creator = null;
+
+    public function getCreator(): ?User
+    {
+        return $this->creator;
+    }
+
+    public function setCreator(User $creator): self
+    {
+        $this->creator = $creator;
+
+        return $this;
+    }
+
     public function addPhoto(Photo $photo): self
     {
         if (!$this->photos->contains($photo)) {

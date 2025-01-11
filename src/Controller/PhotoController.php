@@ -60,10 +60,29 @@ class PhotoController extends AbstractController
         ]);
     }
 
-    public function upload(Request $request, EntityManagerInterface $em): Response
+    /**
+     * @Route("photo/upload/{albumId}", name="photo_upload", defaults={"albumId"=null})
+     */
+    public function upload(Request $request, EntityManagerInterface $em, $albumId = null): Response
     {
         $photo = new Photo();
+
+        // Si l'albumId est passé, pré-sélectionner l'album dans le formulaire
+        $album = null;
+        if ($albumId) {
+            $album = $em->getRepository(Album::class)->find($albumId);
+            if ($album) {
+                $photo->setAlbum($album);  // Pré-sélectionner l'album
+            }
+        }
+
+        // Création du formulaire pour l'upload de la photo
         $form = $this->createForm(PhotoType::class, $photo);
+
+        // Si l'album est passé en paramètre, vous pouvez également l'ajouter au formulaire
+        if ($album) {
+            $form->get('album')->setData($album);
+        }
 
         $form->handleRequest($request);
 

@@ -6,10 +6,6 @@ hello_world:
     path: /hello_world
     controller: App\Controller\HelloWorldController::index
 
-photo_upload:
-    path: /photo/upload
-    controller: App\Controller\PhotoController::upload
-
 album:
     path: /photo/album
     controller: App\Controller\AlbumController::index

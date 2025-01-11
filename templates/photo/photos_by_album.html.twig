@@ -4,9 +4,7 @@
 <h2>{{ 'pictures_of_album'|trans}} {{ album.getNomAlbum() }}</h2>
 
 {# Affiche l'image par défaut avec un lien vers la liste des albums #}
-<div class="default-photo">
-    <!-- Il peut être utile d'afficher une photo par défaut ici si nécessaire -->
-</div>
+<div class="default-photo"></div>
 
 <div class="photos-container">
     <div class="photo">
@@ -34,7 +32,10 @@
             {% endif %}
         </div>
     {% else %}
-        <p>Aucune photo dans cet album.</p>
+        <div>
+            <p>Aucune photo dans cet album</p>
+            <p><a href="{{ path('photo_upload', {'albumId': album.id}) }}">upload_first_photo</a></p>
+        </div>
     {% endfor %}
 </div>
 {% endblock %}

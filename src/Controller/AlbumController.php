@@ -14,15 +14,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\AlbumRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Security;
 
 class AlbumController extends AbstractController
 {
-
     private $albumRepository;
+    private $security;
 
-    public function __construct(AlbumRepository $albumRepository)
+    // Ajout du service de sécurité pour récupérer l'utilisateur connecté
+    public function __construct(AlbumRepository $albumRepository, Security $security)
     {
         $this->albumRepository = $albumRepository;
+        $this->security = $security;
     }
 
     /*
@@ -40,33 +43,32 @@ class AlbumController extends AbstractController
             $imageFile = $form->get('image_path')->getData();
 
             if ($imageFile) {
-                // Générer un nom unique pour l'image et déplacer le fichier
-                $newFilename = uniqid() . '.' . $imageFile->guessExtension();
-                $imageFile->move(
-                    $this->getParameter('albums_directory'), // Définir le répertoire de destination
-                    $newFilename
-                );
+                try {
+                    // Générer un nom unique pour l'image et déplacer le fichier
+                    $newFilename = uniqid() . '.' . $imageFile->guessExtension();
+                    $imageFile->move(
+                        $this->getParameter('albums_directory'), // Définir le répertoire de destination
+                        $newFilename
+                    );
 
-                // Définir le chemin de l'image dans l'entité Album
-                $album->setImagePath($newFilename);
+                    // Définir le chemin de l'image dans l'entité Album
+                    $album->setImagePath($newFilename);
+                } catch (\Exception $e) {
+                    $this->addFlash('error', 'Erreur lors du téléchargement de l\'image : ' . $e->getMessage());
+                }
             } else {
                 // Utiliser l'image par défaut si aucune image n'est fournie
                 $album->setImagePath(NULL);
             }
 
-            // Persister l'album dans la base de données
-            $em->persist($album);
-
-            // Ajouter une photo par défaut si l'album n'a pas de photo
-            if (!$album->getPhotos()->count()) {
-                $defaultPhoto = new Photo();
-                $defaultPhoto->setTitle('Image par défaut');
-                $defaultPhoto->setFilePath('default-album.png'); // Nom du fichier générique
-                $defaultPhoto->setAlbum($album);
-
-                $em->persist($defaultPhoto);
+            // Associer l'album à l'utilisateur connecté
+            $user = $this->security->getUser();
+            if ($user) {
+                $album->setCreator($user); // Lier l'album à l'utilisateur
             }
 
+            // Persister l'album dans la base de données
+            $em->persist($album);
             $em->flush();
 
             return $this->redirectToRoute('photo_albums');
@@ -97,7 +99,7 @@ class AlbumController extends AbstractController
                         'title' => $photo->getTitle(),
                         // Ajoute les autres attributs de la photo si nécessaire
                     ];
-                }, $album->getPhotos()->toArray()),  // Assure-toi que getPhotos() retourne un tableau ou une collection
+                }, $album->getPhotos()->toArray()), // Assure-toi que getPhotos() retourne un tableau ou une collection
             ];
         }
 
