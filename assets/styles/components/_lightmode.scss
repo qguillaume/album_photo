@@ -14,6 +14,10 @@ body.light-mode {
   color: $light-text-color;
 }
 
+body.light-mode .texte p {
+  color: $light-text-color;
+}
+
 /* Mode sombre (dark mode) */
 body.dark-mode {
   background-color: $dark-bg-color;

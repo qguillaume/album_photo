@@ -16,9 +16,25 @@
         <!-- Section gauche : navigation principale -->
         <nav class="header-left">
             <a href="{{ path('portfolio_home') }}" class="{% if app.request.attributes.get('_route') == 'portfolio_home' %}active{% endif %}">{{ 'home'|trans }}</a>
-            <a href="{{ path('photo_albums') }}" class="{% if app.request.attributes.get('_route') == 'photo_albums' %}active{% endif %}">{{ 'photos'|trans }}</a>
-            <a href="{{ path('articles_index') }}" class="{% if app.request.attributes.get('_route') == 'articles_index' %}active{% endif %}">Articles</a>
+            <div class="dropdown">
+                <a href="{{ path('photo_albums') }}" class="{% if app.request.attributes.get('_route') == 'photo_albums' %}active{% endif %}">{{ 'photos'|trans }}</a>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <div class="dropdown-content">
+                        <a href="{{ path('album_new') }}">{{ 'create_album'|trans }}</a>
+                        <a href="{{ path('photo_upload') }}">{{ 'upload_photo'|trans }}</a>
+                    </div>
+                {% endif %}
+            </div>
             {% if is_granted('ROLE_ADMIN') %}
+                <div class="dropdown">
+                    <a href="{{ path('articles_index') }}" class="{% if app.request.attributes.get('_route') == 'articles_index' %}active{% endif %}">articles</a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <div class="dropdown-content">
+                            <a href="{{ path('article_create') }}">nouvel article</a>
+                            <a href="{{ path('theme_create') }}">nouveau theme</a>
+                        </div>
+                    {% endif %}
+                </div>
                 <a href="{{ path('reference') }}" class="{% if app.request.attributes.get('_route') == 'reference' %}active{% endif %}">{{ 'references'|trans }}</a>
             {% endif %}
             <a href="{{ path('contact') }}" class="{% if app.request.attributes.get('_route') == 'contact' %}active{% endif %}">{{ 'contact'|trans }}</a>

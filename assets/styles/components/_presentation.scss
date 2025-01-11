@@ -43,6 +43,10 @@
             line-height: 1.6; /* Hauteur de ligne */
             color: #ccc;
 
+            &.light-mode {
+                color: $light-text-color; /* Couleur du texte de présentation en noir en mode clair */
+            }
+
             a {
                 color: $primary-color;
             }
