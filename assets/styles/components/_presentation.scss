@@ -1,6 +1,5 @@
-@use "../base/variables" as *; /* Importation des variables globales (comme les couleurs, etc.) si nécessaire */
+@use "../base/variables" as *;
 
-/* Conteneur principal qui contient l'image et le texte */
 .presentation-container {
     display: flex; /* Utilisation de Flexbox pour disposer l'image et le texte sur une seule ligne */
     justify-content: center;
@@ -8,11 +7,10 @@
     max-width: 100%; /* Assure que le conteneur prend toute la largeur disponible de son parent */
     margin: 20px auto; /* Centrer le conteneur horizontalement */
     padding: 0 60px; /* Ajoute de l'espace intérieur à gauche et à droite */
-    gap: 300px; /* Espacement entre les sections de texte et image */
+    gap: 100px; /* Espacement entre les sections de texte et image */
     flex-wrap: wrap; /* Permet aux éléments de se réorganiser sur plusieurs lignes si nécessaire */
     margin-bottom: 40px; /* Augmente l'espacement sous chaque section */
 
-    /* Conteneur de l'image */
     .photo-presentation {
         /* Fixe une largeur pour l'image */
         flex: 1 1 200px; /* L'image peut se rétrécir, mais aura une largeur minimale de 200px */
@@ -24,7 +22,6 @@
         }
     }
 
-    /* Conteneur du texte */
     .texte {
         flex: 2 1 300px; /* Le texte prend plus d'espace que les images */
         text-align: left; /* Aligne le texte à gauche */
@@ -53,62 +50,70 @@
         }
     }
 
-    /* Section des compétences : empiler les images sous forme de liste */
+    /* Section des compétences */
     .competences {
         display: flex;
-        flex-direction: column; /* Aligne les images les unes sous les autres */
+        flex-wrap: wrap;
+        justify-content: space-between;
         gap: 20px; /* Ajoute un espacement entre chaque élément */
-        align-items: flex-start; /* Aligne à gauche les images et les textes associés */
+        width: 45%;
     }
 
-    /* Chaque image et son texte */
+    /* Chaque compétence */
     .competence {
         display: flex;
+        justify-content: center;
         align-items: center; /* Aligne l'image et le texte sur une même ligne */
         gap: 15px; /* Espacement entre l'image et le texte */
-        
+        width: 30%;
+        position: relative; /* Nécessaire pour positionner le texte à l'intérieur de l'icône */
+        overflow: hidden; /* Empêche le texte de dépasser l'icône */
+        transition: transform 0.3s ease; /* Transition globale pour l'effet de survol */
+
+        /* Icône */
         img {
             width: 50px; /* Largeur fixe pour les images */
             height: 50px; /* Hauteur fixe pour les images */
             object-fit: contain; /* Conserve les proportions de l'image */
             margin-right: 10px; /* Espacement entre l'image et le texte */
             border-radius: 8px; /* Coins arrondis pour les images */
+            transition: transform 0.3s ease; /* Transition pour l'effet de survol */
         }
 
-        /* Le texte associé à l'image */
+        /* Texte de la compétence */
         .competence-text {
-            font-size: 16px; /* Taille du texte */
-            color: #ccc; /* Couleur du texte */
+            position: absolute;
+            top: 100%;
+            left: 47%;
+            transform: translateX(-50%);
+            opacity: 0;
+            visibility: hidden;
+            background-color: rgba(0, 0, 0, 0.7); /* Fond sombre pour le texte */
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: opacity 0.3s ease, top 0.3s ease; /* Transition pour le texte */
+        }
+
+        /* Animation de survol */
+        &:hover {
+            img {
+                transform: scale(1.05); /* Agrandir légèrement l'icône sans trop déformer */
+            }
+
+            .competence-text {
+                top: 48%; /* Déplacer le texte juste au-dessus de l'icône */
+                opacity: 1;
+                visibility: visible; /* Afficher le texte */
+            }
         }
     }
-
-    /* Ligne de séparation entre les sections */
 }
 
 .separator {
-    width: 20%; /* Largeur de la ligne sur toute la largeur de l'écran */
-    height: 5px; /* Hauteur de la ligne */
-    background: linear-gradient(to right, $primary-color 50%, $secondary-color 50%); /* Gradient pour diviser la ligne en bleu et vert */
-    margin: 100px auto; /* Espacement au-dessus et en dessous de la ligne */
-}
-
-.project-carousel {
-    text-align: center;
-    margin: 40px 0;
-
-    h3 {
-        margin-top: 10px;
-        font-size: 1.2rem;
-        color: #333;
-      }
-}
-  
-.project-slide {
-    position: relative;
-}
-  
-.project-image {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
+    width: 20%;
+    height: 5px;
+    background: linear-gradient(to right, $primary-color 50%, $secondary-color 50%);
+    margin: 100px auto;
 }
