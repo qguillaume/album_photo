@@ -6,14 +6,29 @@
 
 {% block body %}
     <h2>{{ article.title }}</h2>
-    {% if article.theme %}
-        <p>Thème : {{ article.theme.name }}</p>
-    {% else %}
-        <p>Non classé</p>
-    {% endif %}
-    <p><strong>Auteur:</strong> {{ article.author.username }}</p>
-    <p><strong>Date de création:</strong> {{ article.createdAt|date('Y-m-d') }}</p>
-    <p>{{ article.content|raw }}</p>
-
-    <a href="{{ path('articles_index') }}">Retour à la liste des articles</a>
+    <div class="center">
+        {% if article.theme %}
+            <p>Thème : {{ article.theme.name }}</p>
+        {% else %}
+            <p>Non classé</p>
+        {% endif %}
+    </div>
+    <div class="center">
+        <p><strong>Auteur:</strong> {{ article.author.username }}</p>
+    </div>
+    <div class="center">
+        <p><strong>Date de création:</strong> {{ article.createdAt|date('d/m/Y H:i:s') }}</p>
+    </div>
+    <div>
+        <table class="table-spacing table-bordered">
+            <tr>
+                <td>
+                    <p>{{ article.content|raw }}</p>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="center">
+        <a href="{{ path('articles_index') }}" class="green-button">Retour à la liste des articles</a> {# @TODO c'est sale ! à revoir #}
+    </div>
 {% endblock %}

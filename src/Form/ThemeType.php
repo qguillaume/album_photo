@@ -16,7 +16,7 @@ class ThemeType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'false',
+                'label' => false,
                 'attr' => ['placeholder' => 'Nom du thème']
             ])
             ->add('save', SubmitType::class, ['label' => 'Créer un thème']);

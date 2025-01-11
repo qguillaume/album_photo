@@ -33,10 +33,12 @@
             {{ form_widget(loginForm.password) }}
         </div>
 
-        <a href="{{ path('forgot_password') }}">Mot de passe oublié ?</a>
-
         <div class="form-group">
             {{ form_widget(loginForm.login, {'attr': {'class': 'green-button'}}) }}
+        </div>
+
+        <div class="form-group mt-2">
+            <a href="{{ path('forgot_password') }}" >Mot de passe oublié ?</a>
         </div>
     {{ form_end(loginForm) }}
 {% endblock %}

@@ -88,6 +88,16 @@
     border-radius: 3px;
     cursor: pointer;
 
+    &.view {
+      background-color: $primary-color;
+      color: black;
+      font-weight: bold;
+      &:hover {
+          background-color: $primary-color-hover; /* Assombrit la couleur de fond */
+          transform: scale(1.2); /* Zoom léger */
+      }
+    }
+
     &.edit {
       background-color: $secondary-color;
       color: black;

@@ -42,6 +42,10 @@ form input[type="submit"]:hover {
     color: white;
 }
 
+form a {
+    margin-top: 2rem;
+}
+
 .flash-error {
     width: 40%;
     background-color: #f8d7da; /* Rouge clair */
@@ -75,4 +79,23 @@ form input[type="submit"]:hover {
     border-radius: 5px;
     margin-bottom: 15px;
     font-weight: bold;
+}
+
+.form-group-wrapper {
+    margin-top: 1.5rem; /* Marge en haut pour chaque champ */
+    margin-bottom: 1rem; /* Marge en bas pour chaque champ */
+}
+
+/* Ajout de styles pour aligner le label et le switch horizontalement */
+.form-group .switch {
+    display: flex;
+    align-items: center;  /* Centrer verticalement le switch */
+}
+
+.form-group label {
+    margin-right: 1rem;  /* Espacement horizontal entre le label et le switch */
+    white-space: nowrap;  /* Évite que le label se sépare si trop long */
+    align-self: center;  /* Centre verticalement le label par rapport au switch */
+    /* Ajuste légèrement la position du label pour que ce soit parfaitement centré */
+    margin-top: 2px;  /* Légère marge vers le bas */
 }

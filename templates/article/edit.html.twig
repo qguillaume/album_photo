@@ -3,12 +3,47 @@
 {% block title %}Modifier l'article{% endblock %}
 
 {% block body %}
-    <h1>Modifier l'article</h1>
+    <h2>Modifier l'article</h2>
 
-    {{ form_start(form) }}
-        {{ form_row(form.title) }}
-        {{ form_row(form.content) }}
-        {{ form_row(form.published) }}
-        {{ form_row(form.save) }}
+    {{ form_start(form, { 'attr': { 'novalidate': 'novalidate' } }) }}
+        <div class="form-group">
+            {{ form_widget(form.author) }}
+        </div>
+        <div class="form-group">
+            {{ form_widget(form.title) }}
+        </div>
+        <div class="form-group">
+            {{ form_widget(form.theme) }}
+        </div>
+        <div>
+            {{ form_widget(form.content) }}
+        </div>
+        
+        <div class="form-group-wrapper">
+            <div class="form-group">
+                <label for="{{ form.published.vars.id }}">Publié :</label>
+                <div class="switch">
+                    {{ form_widget(form.published, {'attr': {'id': form.published.vars.id, 'class': 'switch-input'}}) }}
+                    <span class="slider"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group-wrapper">
+            <div class="form-group mt-5">
+                {{ form_widget(form.save, {'attr': {class:'green-button'}}) }}
+            </div>
+        </div>
     {{ form_end(form) }}
+
+    {# Ajouter le script TinyMCE à la fin du formulaire #}
+    <script src="https://cdn.tiny.cloud/1/kabvnq0v1wn1ibq3zfglnmtpeswg4pu9a7nh6vi8fmfrat8c/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea#{{ form.content.vars.id }}',  // Sélecteur du champ content
+            plugins: 'advlist autolink lists link image charmap print preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste code help wordcount',
+            toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+            height: 500
+        });
+    </script>
 {% endblock %}

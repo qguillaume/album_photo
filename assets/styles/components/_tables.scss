@@ -1,0 +1,19 @@
+.table-spacing {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.table-bordered {
+    border-collapse: collapse;  /* Pour que les bordures des cellules se collent */
+    width: 100%;  /* Facultatif : pour étirer le tableau sur toute la largeur */
+}
+
+.table-bordered td {
+    border: 1px solid #ccc;  /* Bordure légère grise pour chaque cellule */
+    padding: 10px;  /* Espacement interne pour les cellules */
+}
+
+.table-bordered th {
+    border: 1px solid #ccc;  /* Bordure pour les cellules d'en-tête */
+    padding: 10px;  /* Espacement interne pour les cellules d'en-tête */
+}

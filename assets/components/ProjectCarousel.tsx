@@ -25,24 +25,14 @@ const projects: Project[] = [
     link: 'https://www.laciedescgp.fr/',
   },
   {
-    title: 'Projet 3',
-    imageUrl: 'images/lixim.png',
-    link: 'https://www.example3.com',
+    title: 'Directgestion',
+    imageUrl: 'images/directgestion.png',
+    link: 'https://directgestion.com',
   },
   {
-    title: 'Projet 3',
-    imageUrl: 'images/logo_js.jpg',
-    link: 'https://www.example3.com',
-  },
-  {
-    title: 'Projet 3',
-    imageUrl: 'images/logo_js.jpg',
-    link: 'https://www.example3.com',
-  },
-  {
-    title: 'Projet 3',
-    imageUrl: 'images/logo_js.jpg',
-    link: 'https://www.example3.com',
+    title: 'Directgestion',
+    imageUrl: 'images/directgestion.png',
+    link: 'https://directgestion.com',
   },
 ];
 
@@ -82,10 +72,10 @@ const ProjectCarousel = () => {
     <div className="project-carousel">
       <Swiper
         spaceBetween={30}
-        slidesPerView={3}
+        slidesPerView={4}
         loop={true}
         pagination={{ clickable: true }}
-        navigation={true}
+        navigation={false}
         onSlideChange={() => console.log('Slide changé')}
         onSwiper={(swiper) => console.log(swiper)}
       >

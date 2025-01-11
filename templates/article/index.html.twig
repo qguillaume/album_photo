@@ -28,10 +28,11 @@
                             Non classé
                         {% endif %}
                     </td>
-                    <td>{{ article.createdAt|date('d/m/Y') }}</td>
+                    <td>{{ article.createdAt|date('d/m/Y H:i:s') }}</td>
                     {% if is_granted('ROLE_ADMIN') %}
                         <td class="td-actions">
                             <div class="crud-buttons">
+                                <a class="view" href="{{ path('article_show', {'id': article.id}) }}">Voir</a>
                                 <a class="edit" href="{{ path('article_edit', {'id': article.id}) }}">Modifier</a>
                                 <!-- Formulaire de suppression -->
                                 <form method="post" action="{{ path('article_delete', {'id': article.id}) }}" style="display:inline;">

@@ -21,11 +21,17 @@ class ArticleFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', TextType::class)
-            ->add('content', TextareaType::class, [
-                'label' => 'Contenu',
+            ->add('title', TextType::class, [
+                'label' => false,
                 'attr' => [
-                    'class' => 'tinymce',  // Cette classe peut être utilisée pour personnaliser le champ si nécessaire
+                    'placeholder' => 'Titre'
+                ]
+            ])
+            ->add('content', TextareaType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'tinymce',
+                    'placeholder' => 'Entrez le texte de l\'article'
                 ]
             ])
             ->add('theme', EntityType::class, [
