@@ -4,18 +4,20 @@ import PhotoTable from './PhotoTable';
 import UserTable from './UserTable';
 import ArticleTable from './ArticleTable';
 import CommentTable from './CommentTable';
-import { Photo, Album, User, Article, Comment } from '../ts/types';
+import ThemeTable from './ThemeTable';
+import { Photo, Album, User, Article, Comment, Theme } from '../ts/types';
 
 const DashboardTabs: React.FC = () => {
   // L'état pour savoir quel onglet est sélectionné
-  const [activeTab, setActiveTab] = useState<'albums' | 'photos' | 'users' | 'articles' | 'comments'>('albums');
+  const [activeTab, setActiveTab] = useState<'albums' | 'photos' | 'users' | 'articles' | 'comments' | 'themes'>('albums');
   
-  // États pour stocker les photos, albums, utilisateurs, articles et commentaires
+  // États pour stocker les photos, albums, utilisateurs, articles, commentaires et themes
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [albums, setAlbums] = useState<Album[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);
   const [comments, setComments] = useState<Comment[]>([]);
+  const [themes, setThemes] = useState<Theme[]>([]);
 
   // Vérifier si les données ont déjà été chargées pour éviter de refaire les requêtes
   useEffect(() => {
@@ -45,11 +47,16 @@ const DashboardTabs: React.FC = () => {
         .then(response => response.json())
         .then(data => setComments(data));
     }
+    if (themes.length === 0) {
+      fetch('/themes_list')
+        .then(response => response.json())
+        .then(data => setThemes(data));
+    }
   }, []); // Le tableau vide empêche la ré-exécution du useEffect
-  //}, [photos, albums, users, articles, comments]); // Assurer que la requête n'est effectuée qu'une fois par type de données
+  //}, [photos, albums, users, articles, comments, themes]); // Assurer que la requête n'est effectuée qu'une fois par type de données
 
   // Fonction pour changer d'onglet
-  const handleTabClick = (tab: 'albums' | 'photos' | 'users' | 'articles' | 'comments') => {
+  const handleTabClick = (tab: 'albums' | 'photos' | 'users' | 'articles' | 'comments' | 'themes') => {
     setActiveTab(tab);
   };
 
@@ -137,6 +144,32 @@ const DashboardTabs: React.FC = () => {
       .catch((error) => console.error("Erreur :", error));
   };
 
+  // Éditer un commentaire
+  const handleThemeEdit = async (id: number, newName: string) => {
+    const response = await fetch(`/theme/${id}/edit_dashboard`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: newName,  // Assure-toi que la clé ici est 'name'
+      }),
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+      console.log(result.message);  // Thème modifié avec succès
+      // Actualiser les données des thèmes après l'édition
+      setThemes((prevThemes) =>
+        prevThemes.map((theme) =>
+          theme.id === id ? { ...theme, name: newName } : theme
+        )
+      );
+    } else {
+      console.error(result.message);  // Thème non trouvé
+    }
+  };
+
   return (
     <div>
       <div className="tabs">
@@ -170,6 +203,12 @@ const DashboardTabs: React.FC = () => {
         >
           Commentaires
         </button>
+        <button
+          className={`tab-button themes ${activeTab === 'themes' ? 'active' : ''}`}
+          onClick={() => handleTabClick('themes')}
+        >
+          Themes
+        </button>
       </div>
 
       <div className="tab-content">
@@ -185,6 +224,7 @@ const DashboardTabs: React.FC = () => {
         {activeTab === 'users' && <UserTable users={users} />}
         {activeTab === 'articles' && <ArticleTable articles={articles} onEdit={handleArticleEdit} onDelete={handleArticleDelete} />}
         {activeTab === 'comments' && <CommentTable comments={comments} onEdit={handleCommentEdit} onDelete={handleCommentDelete} />}
+        {activeTab === 'themes' && <ThemeTable themes={themes} onEdit={handleThemeEdit} />}
       </div>
     </div>
   );

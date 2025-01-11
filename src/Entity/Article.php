@@ -5,9 +5,14 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Annotation\Groups;
+use App\Repository\ArticleRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
+ * @ORM\Entity(repositoryClass=ArticleRepository::class)
  */
 class Article
 {
@@ -15,6 +20,7 @@ class Article
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("article_read")
      */
     private ?int $id = null;
 
@@ -22,35 +28,48 @@ class Article
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Le titre ne peut pas être vide.")
      * @Assert\Length(max=255, maxMessage="Le titre ne peut pas excéder 255 caractères.")
+     * @Groups("article_read")
      */
     private string $title;
 
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="Le contenu ne peut pas être vide.")
+     * @Groups("article_read")
      */
     private string $content;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("article_read")
      */
     private bool $published;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("article_read")
      */
     private \DateTimeInterface $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups("article_read")
      */
     private ?\DateTimeInterface $updatedAt = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="articles")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull(message="L'auteur est obligatoire.")
      */
     private User $author;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Theme", inversedBy="articles")
+     * @ORM\JoinColumn(nullable=true)
+     * @Groups("article_read")
+     */
+    private ?Theme $theme = null;
 
     public function __construct()
     {
@@ -119,6 +138,17 @@ class Article
         return $this;
     }
 
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updateTimestamps(): void
+    {
+        if ($this->updatedAt === null) {
+            $this->updatedAt = new \DateTime();
+        }
+    }
+
     public function getAuthor(): User
     {
         return $this->author;
@@ -127,6 +157,17 @@ class Article
     public function setAuthor(User $author): self
     {
         $this->author = $author;
+        return $this;
+    }
+
+    public function getTheme(): ?Theme
+    {
+        return $this->theme;
+    }
+
+    public function setTheme(?Theme $theme): self
+    {
+        $this->theme = $theme;
         return $this;
     }
 }

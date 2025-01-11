@@ -1,0 +1,13 @@
+{# templates/theme/edit.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le Thème{% endblock %}
+
+{% block body %}
+    <h1>Modifier le Thème</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.save) }}
+    {{ form_end(form) }}
+{% endblock %}

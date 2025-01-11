@@ -21,6 +21,11 @@ export interface User {
   roles: string[];
 }
 
+export interface Theme {
+  id: number;
+  name: string;
+}
+
 export interface Article {
   id: number;
   title: string;

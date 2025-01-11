@@ -5,7 +5,12 @@
 {% block title %}{{ article.title }}{% endblock %}
 
 {% block body %}
-    <h1>{{ article.title }}</h1>
+    <h2>{{ article.title }}</h2>
+    {% if article.theme %}
+        <p>Thème : {{ article.theme.name }}</p>
+    {% else %}
+        <p>Non classé</p>
+    {% endif %}
     <p><strong>Auteur:</strong> {{ article.author.username }}</p>
     <p><strong>Date de création:</strong> {{ article.createdAt|date('Y-m-d') }}</p>
     <p>{{ article.content|raw }}</p>

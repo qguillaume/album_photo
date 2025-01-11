@@ -27,9 +27,15 @@
                     {% endif %}
                 </div>
                 
-                {% if app.user %}
-                    <a href="{{ path('articles_index') }}" class="{% if app.request.attributes.get('_route') == 'articles_index' %}active{% endif %}">Articles</a>
-                {% endif %}
+                <div class="dropdown">
+                    <a href="{{ path('articles_index') }}" class="{% if app.request.attributes.get('_route') == 'articles_index' %}active{% endif %}">articles</a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <div class="dropdown-content">
+                            <a href="{{ path('article_create') }}">nouvel article</a>
+                            <a href="{{ path('theme_create') }}">nouveau theme</a>
+                        </div>
+                    {% endif %}
+                </div>
 
                 {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('reference') }}" class="{% if app.request.attributes.get('_route') == 'reference' %}active{% endif %}">{{ 'references'|trans }}</a>

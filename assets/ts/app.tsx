@@ -6,7 +6,7 @@ import PhotoControls from "../components/PhotoControls";
 import PhotoTable from "../components/PhotoTable";
 import Timeline from "../components/Timeline";
 import ContactButton from "../components/ContactButton"; 
-import { Photo, Album, User, Article, Comment } from "./types";
+import { Photo, Album, User, Article, Comment, Theme } from "./types";
 import { BrowserRouter } from "react-router-dom";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -16,6 +16,7 @@ import UserTable from "../components/UserTable";
 import AlbumTable from "../components/AlbumTable";
 import ArticleTable from "../components/ArticleTable";
 import CommentTable from "../components/CommentTable";
+import ThemeTable from "../components/ThemeTable";
 import DashboardTabs from "../components/DashboardTabs";
 import ThemeToggle from "../components/ThemeToggle";
 
@@ -176,7 +177,6 @@ const AlbumsTable = () => {
 
 const UsersTable = () => {
   const [users, setUsers] = useState<User[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/users_list`)
@@ -191,6 +191,58 @@ const UsersTable = () => {
     </div>
   );
 };
+
+
+  const ThemesTable = () => {
+    const [themes, setThemes] = useState<Theme[]>([]);
+    const [newThemeName, setNewThemeName] = useState<string>(""); // Pour stocker le nom du nouveau thème
+  
+    useEffect(() => {
+      fetch(`${process.env.REACT_APP_API_URL}/themes_list`)
+        .then((response) => response.json())
+        .then((data) => setThemes(data))
+        .catch((error) => console.error("Erreur lors du fetch des thèmes", error));
+    }, []);
+  
+    // Fonction de mise à jour de l'API
+    const handleEdit = async (themeId: number) => {
+      const newThemeName = prompt("Entrez le nouveau nom du thème :");
+      if (!newThemeName?.trim()) {
+        alert("Le nom du thème ne peut pas être vide.");
+        return;
+      }
+    
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/theme/${themeId}/edit_dashboard`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name: newThemeName }),
+        });
+    
+        if (!response.ok) {
+          throw new Error("Échec de la mise à jour du thème");
+        }
+    
+        const updatedTheme = await response.json();
+        setThemes((prevThemes) =>
+          prevThemes.map((theme) =>
+            theme.id === themeId ? updatedTheme : theme
+          )
+        );
+      } catch (error) {
+        console.error("Erreur lors de la mise à jour du thème", error);
+      }
+    };
+  
+    return (
+      <div>
+        <ThemeTable themes={themes} onEdit={handleEdit} />
+      </div>
+    );
+  };
+  
 
 const ArticlesTable = () => {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -231,38 +283,6 @@ const ArticlesTable = () => {
         alert("Erreur lors de la mise à jour de l'article.");
       });
   };
-
-  // Fonction de mise à jour d'un article
-  /*const handleUpdate = (id: number, updatedArticle: Article) => {
-    // Mettre à jour localement l'article dans l'état
-    setArticles((prevArticles) =>
-      prevArticles.map((article) =>
-        article.id === id ? { ...article, ...updatedArticle } : article
-      )
-    );
-
-    // Envoyer la mise à jour à l'API
-    fetch(`${process.env.REACT_APP_API_URL}/article/${id}/edit_dashboard`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedArticle),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Erreur lors de la mise à jour de l\'article');
-        }
-        return response.json();
-      })
-      .then(() => {
-        alert("Article mis à jour avec succès !");
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la mise à jour de l'article :", error);
-        alert("Erreur lors de la mise à jour de l'article.");
-      });
-  };*/
 
   return (
     <div>
@@ -317,38 +337,6 @@ const CommentsTable = () => {
       });
   };
 
-  // Fonction de mise à jour d'un commentaire
-  /*const handleUpdate = (id: number, updatedComment: Comment) => {
-    // Mettre à jour localement le commentaire dans l'état
-    setComments((prevComments) =>
-      prevComments.map((comment) =>
-        comment.id === id ? { ...comment, ...updatedComment } : comment
-      )
-    );
-
-    // Envoyer la mise à jour à l'API
-    fetch(`${process.env.REACT_APP_API_URL}/comment/${id}/edit_dashboard`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedComment),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Erreur lors de la mise à jour du commentaire');
-        }
-        return response.json();
-      })
-      .then(() => {
-        alert("Commentaire mis à jour avec succès !");
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la mise à jour du commentaire :", error);
-        alert("Erreur lors de la mise à jour du commentaire.");
-      });
-  };*/
-
   return (
     <div>
       <CommentTable
@@ -365,7 +353,7 @@ const CommentsTable = () => {
   // Ajouter le composant ThemeToggle dans le DOM
   const ThemeToggleRoot = document.getElementById('lightModeToggle');  // Récupère l'élément DOM
 
-  if (ThemeToggleRoot) {console.log("ThemeToggle component loaded.");
+  if (ThemeToggleRoot) {
     const root = ReactDOM.createRoot(ThemeToggleRoot);  // Crée la racine React
     root.render(<ThemeToggle />);  // Rendre le composant dans l'élément
   }
@@ -486,6 +474,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const commentsTableElement = document.getElementById("comments-table");
   if (commentsTableElement) {
     ReactDOM.createRoot(commentsTableElement).render(<CommentsTable />);
+  }
+
+  // Rendre le tableau des themes dans le DOM
+  const themesTableElement = document.getElementById("themes-table");
+  if (themesTableElement) {
+    ReactDOM.createRoot(themesTableElement).render(<ThemesTable />);
   }
 
   // Rendre le consentement des cookies

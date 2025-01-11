@@ -1,0 +1,22 @@
+{# templates/theme/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Thèmes{% endblock %}
+
+{% block body %}
+    <h1>Liste des Thèmes</h1>
+
+    <a href="{{ path('theme_create') }}">Créer un nouveau thème</a>
+
+    <ul>
+        {% for theme in themes %}
+            <li>{{ theme.name }} 
+                <a href="{{ path('theme_edit', {'id': theme.id}) }}">Modifier</a> 
+                <form action="{{ path('theme_delete', {'id': theme.id}) }}" method="POST" style="display:inline;">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ theme.id) }}">
+                    <button type="submit">Supprimer</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

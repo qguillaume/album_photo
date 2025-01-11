@@ -14,6 +14,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\Article;
 use App\Entity\User;
+use App\Entity\Theme;
 
 class ArticleFormType extends AbstractType
 {
@@ -26,6 +27,12 @@ class ArticleFormType extends AbstractType
                 'attr' => [
                     'class' => 'tinymce',  // Cette classe peut être utilisée pour personnaliser le champ si nécessaire
                 ]
+            ])
+            ->add('theme', EntityType::class, [
+                'class' => Theme::class,
+                'choice_label' => 'name',
+                'required' => false, // Ce champ est optionnel
+                'placeholder' => 'Non classé', // Option pour le placeholder "non classé"
             ])
             // Utiliser EntityType pour lier l'entité User
             ->add('author', EntityType::class, [

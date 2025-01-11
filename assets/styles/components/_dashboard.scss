@@ -87,6 +87,15 @@
       .even-row-comments {
         background-color: $even-row-color-comments; // Violet pour la ligne paire
       }
+
+      /* Couleurs pour les thèmes (tableau jaune foncé) */
+      .odd-row-themes {
+        background-color: $odd-row-color-themes;  // Jaune foncé pour la ligne impaire
+      }
+
+      .even-row-themes {
+        background-color: $even-row-color-themes; // Jaune foncé pour la ligne paire
+      }
   
       .crud-buttons {
         display: flex;
@@ -179,6 +188,11 @@
   
     &.comments {
       background-color: $odd-row-color-comments;
+      color: white;
+    }
+
+    &.themes {
+      background-color: $odd-row-color-themes;
       color: white;
     }
   

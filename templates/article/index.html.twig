@@ -10,6 +10,7 @@
             <tr>
                 <th>Auteur</th>
                 <th>Titre</th>
+                <th>Theme</th>
                 <th>Date de création</th>
                 {% if is_granted('ROLE_ADMIN') %}
                     <th>Actions</th>
@@ -21,6 +22,12 @@
                 <tr>
                     <td>{{ article.author.username }}</td>
                     <td>{{ article.title }}</td>
+                    <td>{% if article.theme %}
+                            {{ article.theme.name }}
+                        {% else %}
+                            Non classé
+                        {% endif %}
+                    </td>
                     <td>{{ article.createdAt|date('d/m/Y') }}</td>
                     {% if is_granted('ROLE_ADMIN') %}
                         <td class="td-actions">
