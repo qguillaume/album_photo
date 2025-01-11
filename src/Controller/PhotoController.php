@@ -66,6 +66,7 @@ class PhotoController extends AbstractController
     public function upload(Request $request, EntityManagerInterface $em, $albumId = null): Response
     {
         $photo = new Photo();
+        $user = $this->getUser(); // Récupérer l'utilisateur connecté
 
         // Si l'albumId est passé, pré-sélectionner l'album dans le formulaire
         $album = null;
@@ -76,19 +77,17 @@ class PhotoController extends AbstractController
             }
         }
 
-        // Création du formulaire pour l'upload de la photo
-        $form = $this->createForm(PhotoType::class, $photo);
-
-        // Si l'album est passé en paramètre, vous pouvez également l'ajouter au formulaire
-        if ($album) {
-            $form->get('album')->setData($album);
-        }
+        // Créer le formulaire avec l'utilisateur passé comme option
+        $form = $this->createForm(PhotoType::class, $photo, [
+            'user' => $user, // Passer l'utilisateur connecté en option
+        ]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $form->get('file')->getData();
             if ($file) {
+                // Générer un nom unique pour l'image et déplacer le fichier
                 $filename = uniqid() . '.' . $file->guessExtension();
                 $file->move($this->getParameter('photos_directory'), $filename);
 
@@ -98,7 +97,14 @@ class PhotoController extends AbstractController
                 $album = $photo->getAlbum();
 
                 if ($album) {
-                    // Associer la photo à l'album
+                    // Vérifier que l'album appartient à l'utilisateur connecté
+                    if ($album->getCreator() !== $user) {
+                        $this->addFlash('error', 'Vous ne pouvez pas ajouter une photo dans un album qui ne vous appartient pas.');
+
+                        // Rediriger l'utilisateur
+                        return $this->redirectToRoute('photo_upload');
+                    }
+
                     $album->addPhoto($photo);
 
                     // Mettre à jour le compteur de photos
@@ -106,6 +112,7 @@ class PhotoController extends AbstractController
                 }
 
                 $em->persist($photo);
+                $em->persist($album);
                 $em->flush();
 
                 return $this->redirectToRoute('photo_albums');

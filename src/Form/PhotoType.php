@@ -4,7 +4,7 @@
 namespace App\Form;
 
 use App\Entity\Photo;
-use App\Entity\Album; // Import de l'entité Album
+use App\Entity\Album;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -12,9 +12,18 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use App\Repository\AlbumRepository;
+use Doctrine\ORM\EntityRepository;
 
 class PhotoType extends AbstractType
 {
+    private $albumRepository;
+
+    public function __construct(AlbumRepository $albumRepository)
+    {
+        $this->albumRepository = $albumRepository;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -24,15 +33,19 @@ class PhotoType extends AbstractType
             ])
             ->add('album', EntityType::class, [
                 'label' => false,
-                'class' => Album::class, // Spécifie l'entité Album
-                'choice_label' => 'nom_album', // Attribut affiché dans la liste déroulante
-                'placeholder' => 'select_album_form', // Valeur par défaut
-                'required' => true, // Rend ce champ obligatoire
+                'class' => Album::class,
+                'choice_label' => 'nom_album',
+                'placeholder' => 'select_album_form',
+                'required' => true,
+                'query_builder' => function (EntityRepository $er) use ($options) {
+                    $user = $options['user']; // Passer l'utilisateur comme option
+                    return $this->albumRepository->findByCreator($user);
+                },
             ])
             ->add('file', FileType::class, [
                 'attr' => ['placeholder' => 'Photo (JPEG, PNG)'],
                 'label' => false,
-                'mapped' => false, // Ne lie pas ce champ à l'entité
+                'mapped' => false,
                 'required' => true,
                 'constraints' => [
                     new \Symfony\Component\Validator\Constraints\File([
@@ -45,13 +58,13 @@ class PhotoType extends AbstractType
             ->add('download_photo', SubmitType::class, [
                 'label' => 'publish',
             ]);
-        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Photo::class,
+            'user' => null, // Ajouter un utilisateur en option
         ]);
     }
 }

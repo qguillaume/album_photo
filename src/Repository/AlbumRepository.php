@@ -40,4 +40,17 @@ class AlbumRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * Récupère tous les albums d'un utilisateur.
+     *
+     * @param \App\Entity\User $user
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function findByCreator($user)
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.creator = :user') // Filtrer par l'utilisateur connecté
+            ->setParameter('user', $user)
+            ->orderBy('a.nom_album', 'ASC');
+    }
 }
