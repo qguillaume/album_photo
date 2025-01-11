@@ -19,6 +19,7 @@ security:
             logout:
                 path: logout  # chemin pour se déconnecter
                 target: /  # Redirige après déconnexion vers la page d'accueil
+            user_checker: App\Security\UserChecker
 
         # Définir un firewall qui protège les pages des articles
         article_area:

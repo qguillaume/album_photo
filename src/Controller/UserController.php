@@ -27,17 +27,6 @@ class UserController extends AbstractController
     {
         $users = $this->entityManager->getRepository(User::class)->findAll();
         return $this->json($users);
-        // Transformation des utilisateurs en tableau associatif
-        // $userData = [];
-        // foreach ($users as $user) {
-        //     $userData[] = [
-        //         'id' => $user->getId(),
-        //         'username' => $user->getUsername(),
-        //         'email' => $user->getEmail(),
-        //     ];
-        // }
-
-        // return new JsonResponse($userData);
     }
 
     /**
@@ -49,6 +38,11 @@ class UserController extends AbstractController
 
         if (!$user) {
             return new JsonResponse(['error' => 'Utilisateur non trouvé'], 404);
+        }
+
+        // Vérification de l'état "banni"
+        if ($user->getIsBanned()) {
+            return new JsonResponse(['error' => 'Utilisateur banni et ne peut pas effectuer cette action.'], 403);
         }
 
         $data = json_decode($request->getContent(), true);
@@ -63,5 +57,41 @@ class UserController extends AbstractController
         }
 
         return new JsonResponse(['error' => 'Données invalides'], 400);
+    }
+
+    /**
+     * @Route("/api/users/{id}/ban", name="ban_user", methods={"PUT"})
+     */
+    public function banUser(int $id, UserRepository $userRepository): JsonResponse
+    {
+        $user = $userRepository->find($id);
+
+        if (!$user) {
+            return new JsonResponse(['error' => 'Utilisateur non trouvé'], 404);
+        }
+
+        // Mettre à jour l'état "banni"
+        $user->setIsBanned(true);
+        $this->entityManager->flush();
+
+        return new JsonResponse(['message' => 'Utilisateur banni avec succès']);
+    }
+
+    /**
+     * @Route("/api/users/{id}/unban", name="unban_user", methods={"PUT"})
+     */
+    public function unbanUser(int $id, UserRepository $userRepository): JsonResponse
+    {
+        $user = $userRepository->find($id);
+
+        if (!$user) {
+            return new JsonResponse(['error' => 'Utilisateur non trouvé'], 404);
+        }
+
+        // Mettre à jour l'état "banni" à false (débanir)
+        $user->setIsBanned(false);
+        $this->entityManager->flush();
+
+        return new JsonResponse(['message' => 'Utilisateur débanni avec succès']);
     }
 }

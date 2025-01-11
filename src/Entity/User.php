@@ -11,10 +11,10 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-
     public function __construct()
     {
         $this->roles = ['ROLE_USER']; // Rôle par défaut
+        $this->isBanned = false; // Par défaut, l'utilisateur n'est pas banni
     }
 
     /**
@@ -39,6 +39,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $email;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isBanned = false;  // Nouvelle propriété ajoutée pour l'état "banni"
+
     public function getId(): ?int
     {
         return $this->id;
@@ -54,7 +59,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUsername(string $username): self
     {
         $this->username = $username;
-
         return $this;
     }
 
@@ -66,7 +70,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
-
         return $this;
     }
 
@@ -78,7 +81,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -91,10 +93,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-
-        // Chaque utilisateur a au moins ROLE_USER (cela n'ajoute pas ROLE_USER dans les rôles mais les users auront quand même le role)
+        // Chaque utilisateur a au moins ROLE_USER
         $roles[] = 'ROLE_USER';
-
         return array_unique($roles);
     }
 
@@ -102,7 +102,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
+        return $this;
+    }
 
+    // Getter pour l'état "banni"
+    public function getIsBanned(): bool
+    {
+        return $this->isBanned;
+    }
+
+    // Setter pour l'état "banni"
+    public function setIsBanned(bool $isBanned): self
+    {
+        $this->isBanned = $isBanned;
         return $this;
     }
 
@@ -113,7 +125,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getSalt(): ?string
     {
-        // Retourne null car bcrypt ne nécessite pas de salt supplémentaire
-        return null;
+        return null; // bcrypt ne nécessite pas de salt
     }
 }

@@ -37,10 +37,14 @@ services:
                 - { name: 'controller.service_arguments' }
     App\EventListener\LocaleListener:
         arguments:
-            $defaultLocale: 'de' # La langue par défaut ici
+            $defaultLocale: 'fr' # La langue par défaut ici
         tags:
             - { name: kernel.event_listener, event: kernel.request, priority: 10 }
-
+    App\EventListener\CheckUserBanListener:
+            arguments:
+                $security: '@security.helper'
+            tags:
+                - { name: 'kernel.event_subscriber' }
 # Pensez à décommenter pour la prod
 # framework:
 #     error_controller: 'App\Controller\ErrorController::showError'
