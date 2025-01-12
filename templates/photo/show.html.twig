@@ -7,13 +7,21 @@
         <div class="polaroid-images">
             <a href="#">
                 <img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" class="polaroid-thumbnail">
+                <div class="photo-title">{{ photo.title }}</div>
             </a>
         </div>
     </div>
 
-    <p class="details-photo"><strong>Album :</strong> {{ photo.album ? photo.album.nomAlbum : 'Sans album' }}</p>
-    <p class="details-photo"><strong>Nombre de likes :</strong> {{ photo.likesCount }}</p>
-
+    <p class="details-photo"><strong>Nombre de likes : {{ photo.likesCount }}</strong><div id="like-button-container"></div></p><!-- @TODO isoler le bouton like et le faire fonctionner ici -->
+        {% if photo.album %}
+            <div class="center">
+                <a href="{{ path('photos_by_album', {'id': photo.album.id}) }}" class="orange-button">Retour à l'album {{ photo.album.nomAlbum }}</a>
+            </div>
+        {% else %}
+            <p class="details-photo">Sans album</p>
+        {% endif %}
+    
+    
     <h2>{{"comments"|trans}}</h2>
     {% if comments|length > 0 %}
         <ul>

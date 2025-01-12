@@ -28,7 +28,17 @@
 .polaroid-images img {
     display: block;
     width: inherit;
+    margin-bottom: 15px; /* Ajoute un espace entre l'image et le texte */
 }
+
+.polaroid-images .photo-title {
+    font-size: 26px;
+    color: #333;
+    font-weight: bold;
+    margin-top: 8px;
+    text-align: center;
+    font-family: 'Great Vibes', cursive;
+  }
 
 .polaroid-images a:hover{
     -webkit-transform: scale(1.2);
@@ -41,7 +51,7 @@
 }
 
 .polaroid-thumbnail {
-    height: 400px;
+    height: 420px;
     object-fit: cover; /* Maintient les proportions de l'image */
     width: 100%; /* Ajuste l'image à la largeur de son conteneur */
     display: block; /* S'assure que l'image occupe une ligne complète */
