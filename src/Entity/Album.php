@@ -7,9 +7,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AlbumRepository")
+ * @ORM\Table(name="album", uniqueConstraints={
+ *     @UniqueConstraint(name="unique_album_user", columns={"nom_album", "creator_id"})
+ * })
  */
 class Album
 {
@@ -23,6 +27,7 @@ class Album
     /**
      * @ORM\Column(type="string", length=60)
      * @Assert\Length(max=60, maxMessage="Le nom de l'album ne peut pas excéder 60 caractères.")
+     * @Assert\NotBlank(message="Le nom de l'album est requis.")
      */
     private ?string $nom_album = null;
 
@@ -48,8 +53,7 @@ class Album
 
     public function setNomAlbum(string $nom_album): self
     {
-        $this->nom_album = $nom_album;
-
+        $this->nom_album = trim($nom_album);  // Enlever les espaces avant et après
         return $this;
     }
 
@@ -92,7 +96,7 @@ class Album
     }
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="albums")
      * @ORM\JoinColumn(nullable=false)
      */
     private ?User $creator = null;

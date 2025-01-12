@@ -9,10 +9,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
-
+use Doctrine\ORM\Mapping\UniqueConstraint;
 
 /**
  * @ORM\Entity(repositoryClass=PhotoRepository::class)
+ * @ORM\Table(name="photo", uniqueConstraints={
+ *     @UniqueConstraint(name="unique_photo_album", columns={"title", "album_id"})
+ * })
  */
 class Photo
 {
@@ -75,8 +78,7 @@ class Photo
 
     public function setTitle(string $title): self
     {
-        $this->title = $title;
-
+        $this->title = trim($title);  // Enlever les espaces avant et après
         return $this;
     }
 
