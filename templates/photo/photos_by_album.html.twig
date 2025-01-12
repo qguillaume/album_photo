@@ -3,43 +3,14 @@
 {% block body %}
 <h2>{{ 'pictures_of_album'|trans}} {{ album.getNomAlbum() }}</h2>
 
-{# Affiche l'image par défaut avec un lien vers la liste des albums #}
-<div class="default-photo"></div>
-
-<div class="photos-container">
-    <div class="photo">
-        <a href="{{ path('photo_albums') }}">
-            <img src="{{ asset('images/default-photo.png') }}" alt="Retour aux albums">
-        </a>
-        <p>Retour aux albums</p>
-    </div>
-
+<div class="polaroid-images">
     {% for photo in photos %}
-        <div class="photo">
-            <a href="{{ path('photo_show', {'id': photo.id}) }}">
-                <img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" class="photo-thumbnail">
-            </a>
-            <p>{{ photo.title }}</p>
-
-            {% if is_granted('ROLE_USER') %}
-                <div class="photo-actions">
-                    <!-- Conteneur React pour les autres contrôles -->
-                    <div id="photo-controls-{{ photo.id }}" 
-                        data-photo-id="{{ photo.id }}" 
-                        data-photo-title="{{ photo.title }}" 
-                        data-photo-url="{{ asset('uploads/photos/' ~ photo.filePath) }}"
-                        data-initial-likes="{{ photo.likesCount }}">
-                    </div>
-                </div>
-            {% endif %}
-        </div>
-    {% else %}
-        <div>
-            <p>Aucune photo dans cet album</p>
-            <p><a href="{{ path('photo_upload', {'albumId': album.id}) }}">upload_first_photo</a></p>
-        </div>
+        <a href="{{ path('photo_show', {'id': photo.id}) }}">
+            <img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" class="photo-thumbnail">
+        </a>   
     {% endfor %}
 </div>
+
 {% endblock %}
 
 {% block javascripts %}
