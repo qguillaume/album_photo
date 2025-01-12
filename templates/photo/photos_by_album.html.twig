@@ -1,15 +1,36 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<h2>{{ 'pictures_of_album'|trans}} {{ album.getNomAlbum() }}</h2>
+<h2>{{ 'pictures_of_album'|trans }} {{ album.getNomAlbum() }}</h2>
 
-<div class="polaroid-images">
+
     {% for photo in photos %}
-        <a href="{{ path('photo_show', {'id': photo.id}) }}">
-            <img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" class="photo-thumbnail">
-        </a>   
+    <div class="card-container">
+        <div class="card">
+            <!-- Face avant -->
+            <div class="card-front">
+                <img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" class="photo-thumbnail">
+            </div>
+            <!-- Face arrière -->
+            <div class="card-back">
+                <div>
+                    <p>{{ photo.title }}</p>
+                    {% if is_granted('ROLE_USER') %}
+                        <div class="photo-actions">
+                            <!-- Conteneur React pour les autres contrôles -->
+                            <div id="photo-controls-{{ photo.id }}" 
+                                data-photo-id="{{ photo.id }}" 
+                                data-photo-title="{{ photo.title }}" 
+                                data-photo-url="{{ asset('uploads/photos/' ~ photo.filePath) }}"
+                                data-initial-likes="{{ photo.likesCount }}">
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
     {% endfor %}
-</div>
 
 {% endblock %}
 

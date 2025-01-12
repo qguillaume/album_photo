@@ -1,0 +1,52 @@
+.card-container {
+    display: inline-block; /* Permet de contenir chaque carte proprement */
+    width: 200px;
+    height: 300px; /* Taille fixe pour la carte */
+    perspective: 1000px; /* Nécessaire pour créer l'effet 3D */
+    margin: 15px; /* Ajoute un espacement entre les cartes */
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d; /* Active le mode 3D */
+    transition: transform 0.8s ease; /* Animation de rotation */
+}
+
+.card-container:hover .card {
+    transform: rotateY(180deg); /* Fait pivoter la carte sur l'axe Y */
+}
+
+.card-front,
+.card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden; /* Cache l'autre face quand elle est retournée */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px; /* Ajoute des coins arrondis */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, .3); /* Ombre légère */
+    overflow: hidden; /* Assure que le contenu reste dans les limites */
+}
+
+.card-front {
+    background: #fff;
+}
+
+.card-front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ajuste l'image sans la déformer */
+}
+
+.card-back {
+    background: white;
+    color: black;
+    transform: rotateY(180deg); /* Retourne la face arrière initialement */
+    text-align: center;
+    font-size: 18px;
+    padding: 20px;
+}
