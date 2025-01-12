@@ -10,12 +10,12 @@ use App\Entity\Photo;
 use App\Entity\Album;
 use App\Entity\Like;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Form\PhotoType;
+use App\Form\PhotoFormType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Repository\PhotoRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Comment;
-use App\Form\CommentType;
+use App\Form\CommentFormType;
 
 class PhotoController extends AbstractController
 {
@@ -78,7 +78,7 @@ class PhotoController extends AbstractController
         }
 
         // Créer le formulaire avec l'utilisateur passé comme option
-        $form = $this->createForm(PhotoType::class, $photo, [
+        $form = $this->createForm(PhotoFormType::class, $photo, [
             'user' => $user, // Passer l'utilisateur connecté en option
         ]);
 
@@ -241,7 +241,7 @@ class PhotoController extends AbstractController
         $comment->setPhoto($photo);
 
         // Créer le formulaire pour ajouter un commentaire
-        $form = $this->createForm(CommentType::class, $comment);
+        $form = $this->createForm(CommentFormType::class, $comment);
 
         // Gérer la soumission du formulaire
         $form->handleRequest($request);

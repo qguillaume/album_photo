@@ -3,6 +3,22 @@
 {% block body %}
     <h2>{{ "create_new_album"|trans }}</h2>
 
+    {% for message in app.flashes('success') %}
+        <div class="form-group">
+            <div class="flash-success">
+                {{ message }}
+            </div>
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('error') %}
+        <div class="form-group">
+            <div class="flash-error">
+                {{ message }}
+            </div>
+        </div>
+    {% endfor %}
+
     {{ form_start(form) }}
         <div class="form-group">
             {{ form_widget(form.nomAlbum) }}

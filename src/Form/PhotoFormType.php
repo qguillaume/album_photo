@@ -1,6 +1,6 @@
 <?php
 
-// src/Form/PhotoType.php
+// src/Form/PhotoFormType.php
 namespace App\Form;
 
 use App\Entity\Photo;
@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Repository\AlbumRepository;
 use Doctrine\ORM\EntityRepository;
 
-class PhotoType extends AbstractType
+class PhotoFormType extends AbstractType
 {
     private $albumRepository;
 

@@ -1,6 +1,6 @@
 <?php
 
-// src/Form/ThemeType.php
+// src/Form/ThemeFormType.php
 namespace App\Form;
 
 use App\Entity\Theme;
@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class ThemeType extends AbstractType
+class ThemeFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

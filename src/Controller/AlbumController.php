@@ -5,7 +5,7 @@ namespace App\Controller;
 
 use App\Entity\Album;
 use App\Entity\Photo;
-use App\Form\AlbumType;
+use App\Form\AlbumFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +34,7 @@ class AlbumController extends AbstractController
     public function new(Request $request, EntityManagerInterface $em): Response
     {
         $album = new Album();
-        $form = $this->createForm(AlbumType::class, $album);
+        $form = $this->createForm(AlbumFormType::class, $album);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -54,7 +54,15 @@ class AlbumController extends AbstractController
                     // Définir le chemin de l'image dans l'entité Album
                     $album->setImagePath($newFilename);
                 } catch (\Exception $e) {
-                    $this->addFlash('error', 'Erreur lors du téléchargement de l\'image : ' . $e->getMessage());
+                    if ($this->getParameter('kernel.environment') === 'dev') {
+                        // Afficher l'erreur détaillée en mode développement
+                        $this->addFlash('error', 'Erreur lors du téléchargement de l\'image : ' . $e->getMessage());
+                    } else {
+                        // Afficher un message générique en mode production
+                        $this->addFlash('error', 'Une erreur est survenue lors du téléchargement de l\'image.');
+                    }
+
+                    return $this->redirectToRoute('album_new');
                 }
             } else {
                 // Utiliser l'image par défaut si aucune image n'est fournie

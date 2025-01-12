@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Form\ForgotPasswordType;
+use App\Form\ForgotPasswordFormType;
 use App\Entity\PasswordResetToken;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -24,7 +24,7 @@ class ForgotPasswordController extends AbstractController
      */
     public function forgotPassword(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
-        $form = $this->createForm(ForgotPasswordType::class);
+        $form = $this->createForm(ForgotPasswordFormType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

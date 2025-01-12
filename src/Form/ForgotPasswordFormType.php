@@ -1,6 +1,6 @@
 <?php
 
-// src/Form/ForgotPasswordType.php
+// src/Form/ForgotPasswordFormType.php
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class ForgotPasswordType extends AbstractType
+class ForgotPasswordFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

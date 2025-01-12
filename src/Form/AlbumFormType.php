@@ -1,6 +1,6 @@
 <?php
 
-// src/Form/AlbumType.php
+// src/Form/AlbumFormType.php
 namespace App\Form;
 
 use App\Entity\Album;
@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class AlbumType extends AbstractType
+class AlbumFormType extends AbstractType
 {
     private $translator;
 

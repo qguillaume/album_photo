@@ -4,7 +4,7 @@
 namespace App\Controller;
 
 use App\Entity\Theme;
-use App\Form\ThemeType;
+use App\Form\ThemeFormType;
 use App\Repository\ThemeRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,7 +42,7 @@ class ThemeController extends AbstractController
     public function create(Request $request): Response
     {
         $theme = new Theme();
-        $form = $this->createForm(ThemeType::class, $theme);
+        $form = $this->createForm(ThemeFormType::class, $theme);
 
         $form->handleRequest($request);
 
@@ -68,7 +68,7 @@ class ThemeController extends AbstractController
      */
     public function edit(Request $request, Theme $theme): Response
     {
-        $form = $this->createForm(ThemeType::class, $theme);
+        $form = $this->createForm(ThemeFormType::class, $theme);
 
         $form->handleRequest($request);
 
