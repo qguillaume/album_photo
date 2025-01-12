@@ -8,14 +8,17 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class CheckUserBanListener implements EventSubscriberInterface
 {
     private $security;
+    private $session;
 
-    public function __construct(Security $security)
+    public function __construct(Security $security, SessionInterface $session)
     {
         $this->security = $security;
+        $this->session = $session;
     }
 
     public function onKernelRequest(RequestEvent $event)
@@ -24,8 +27,13 @@ class CheckUserBanListener implements EventSubscriberInterface
 
         // Vérifier si l'utilisateur est banni et non déjà sur la page de connexion
         if ($user && $user->getIsBanned() && $event->getRequest()->getPathInfo() !== '/login') {
-            // Déconnecter l'utilisateur
-            $event->getRequest()->getSession()->invalidate();
+            // Invalider la session (supprime les données de session)
+            $this->session->invalidate();
+
+            // Détruire explicitement la session pour s'assurer qu'elle est complètement supprimée
+            $this->session->getMetadataBag()->clear();
+            session_destroy();
+
             // Rediriger vers la page de connexion
             $event->setResponse(new RedirectResponse('/login'));
         }
@@ -38,4 +46,3 @@ class CheckUserBanListener implements EventSubscriberInterface
         ];
     }
 }
-
