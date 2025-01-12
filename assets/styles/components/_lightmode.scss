@@ -21,6 +21,40 @@ body.dark-mode {
   color: $dark-text-color;
 }
 
+/* Styles par défaut pour les éléments de formulaire */
+input[type="text"], input[type="password"], input[type="email"], input[type="file"], select, textarea {
+  background-color: $dark-bg-color; /* Pour le mode sombre par défaut */
+  color: $dark-text-color;
+  border: 1px solid $dark-text-color;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+}
+
+/* Styles pour les éléments de formulaire en mode sombre */
+body.dark-mode input[type="text"],
+body.dark-mode input[type="password"],
+body.dark-mode input[type="email"],
+body.dark-mode input[type="file"],
+body.dark-mode select,
+body.dark-mode textarea {
+  background-color: $dark-bg-color;
+  color: $dark-text-color;
+  border: 1px solid $dark-text-color;
+}
+
+/* Styles pour les éléments de formulaire en mode clair */
+body.light-mode input[type="text"],
+body.light-mode input[type="password"],
+body.light-mode input[type="email"],
+body.light-mode input[type="file"],
+body.light-mode select,
+body.light-mode textarea {
+  background-color: $light-bg-color;
+  color: $light-text-color;
+  border: 1px solid $light-text-color;
+}
+
 /* Styles généraux pour les éléments du tableau */
 table {
   th, td {
@@ -37,28 +71,4 @@ table th, table td {
 body.light-mode table th, body.light-mode table td,
 body.dark-mode table th, body.dark-mode table td {
   color: $dark-text-color; /* Fixe la couleur du texte du tableau dans tous les modes */
-}
-
-/* Styles des éléments de formulaire (pas impactés ici) */
-input[type="text"], input[type="password"], input[type="email"], textarea {
-  background-color: $dark-bg-color; /* Pour le mode sombre par défaut */
-  color: $dark-text-color;
-  border: 1px solid $dark-text-color;
-  padding: 8px;
-  border-radius: 4px;
-  transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
-}
-
-/* Styles pour les éléments de formulaire en mode sombre */
-body.dark-mode input[type="text"], body.dark-mode input[type="password"], body.dark-mode input[type="email"], body.dark-mode textarea {
-  background-color: $dark-bg-color;
-  color: $dark-text-color;
-  border: 1px solid $dark-text-color;
-}
-
-/* Styles pour les éléments de formulaire en mode clair */
-body.light-mode input[type="text"], body.light-mode input[type="password"], body.light-mode input[type="email"], body.light-mode textarea {
-  background-color: $light-bg-color;
-  color: $light-text-color;
-  border: 1px solid $light-text-color;
 }
