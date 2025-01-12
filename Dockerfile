@@ -22,3 +22,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 # Définir le répertoire de travail
 WORKDIR /var/www/html
+
+# Copier le fichier php.ini dans le répertoire de configuration PHP
+COPY ./php.ini /usr/local/etc/php/php.ini
+
+# S'assurer que les permissions sont correctes
+RUN chown www-data:www-data /usr/local/etc/php/php.ini

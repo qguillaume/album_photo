@@ -17,6 +17,7 @@ services:
       dockerfile: Dockerfile  # Assure-toi que le Dockerfile est bien référencé ici
     container_name: symfony_php
     volumes:
+      - ./php.ini:/usr/local/etc/php/php.ini
       - .:/var/www/html
     networks:
       - mon_album_photo_symfony_network  # Utilisation du même réseau

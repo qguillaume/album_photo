@@ -26,10 +26,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=30, unique=true)
      * @Assert\NotBlank(message="Le nom d'utilisateur ne doit pas être vide.")
      * @Assert\Length(
-     *     max=180,
+     *     max=30,
      *     maxMessage="Le nom d'utilisateur ne doit pas dépasser {{ limit }} caractères."
      * )
      */
@@ -38,6 +38,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Le mot de passe ne doit pas être vide.")
+     * @Assert\Length(
+     *     min=8,
+     *     max=64,
+     *     minMessage="Le mot de passe doit comporter au moins {{ limit }} caractères.",
+     *     maxMessage="Le mot de passe ne doit pas dépasser {{ limit }} caractères."
+     * )
      */
     private $password;
 

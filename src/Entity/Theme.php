@@ -5,6 +5,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ThemeRepository")
@@ -22,7 +23,8 @@ class Theme
 
     // Nom du thème
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=30)
+     * @Assert\Length(max=30, maxMessage="Le nom du thème ne peut pas dépasser 30 caractères.")
      */
     private $name;
 

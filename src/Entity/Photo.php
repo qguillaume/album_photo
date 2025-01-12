@@ -24,8 +24,9 @@ class Photo
     private $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=30)
      * @Assert\NotBlank
+     * @Assert\Length(max=30, maxMessage="Le titre ne peut pas dépasser 30 caractères.")
      */
     private $title;
 

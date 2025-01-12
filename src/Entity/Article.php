@@ -25,9 +25,9 @@ class Article
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=60)
      * @Assert\NotBlank(message="Le titre ne peut pas être vide.")
-     * @Assert\Length(max=255, maxMessage="Le titre ne peut pas excéder 255 caractères.")
+     * @Assert\Length(max=60, maxMessage="Le titre ne peut pas excéder 60 caractères.")
      * @Groups("article_read")
      */
     private string $title;
@@ -35,6 +35,7 @@ class Article
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="Le contenu ne peut pas être vide.")
+     * @Assert\Length(max=20000, maxMessage="Le contenu de l'article ne peut pas dépasser 20 000 caractères.")
      * @Groups("article_read")
      */
     private string $content;

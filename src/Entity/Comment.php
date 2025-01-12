@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Photo;
 use App\Entity\User;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity()
@@ -20,6 +21,7 @@ class Comment
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(max=500, maxMessage="Le contenu du commentaire ne peut pas dépasser 500 caractères.")
      */
     private string $content;
 
