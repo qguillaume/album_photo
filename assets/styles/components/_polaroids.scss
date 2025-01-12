@@ -10,10 +10,11 @@
     -webkit-box-shadow: 0 4px 6px rgba(0, 0, 0, .3);
     -moz-box-shadow: 0 4px 6px rgba(0,0,0,.3);
     box-shadow: 0 4px 6px rgba(0,0,0,.3);
-    -webkit-transition: all .15s linear;
-    -moz-transition: all .15s linear;
-    transition: all .15s linear;
+    -webkit-transition: transform 0.8s ease;
+    -moz-transition: transform 0.8s ease;
+    transition: transform 0.8s ease;
     z-index:0;
+    perspective: 1000px; /* Ajoute de la profondeur pour l'effet 3D */
 }
 
 .polaroid-images a:after {
@@ -27,13 +28,13 @@
 .polaroid-images img {
     display: block;
     width: inherit;
+    backface-visibility: hidden; /* Cache l'autre face pendant la rotation */
+    transform-style: preserve-3d;
 }
 
 .polaroid-images a:hover{
-    -webkit-transform: scale(1.2);
-    -moz-transform: scale(1.2);
-    transform: scale(1.2);
-    z-index:10;
+    transform: rotateY(180deg); /* Effectue une rotation de 180° */
+    z-index: 10;
     -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, .7);
     -moz-box-shadow: 0 10px 20px rgba(0,0,0,.7);
     box-shadow: 0 10px 20px rgba(0,0,0,.7);
