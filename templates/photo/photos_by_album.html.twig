@@ -9,7 +9,7 @@
 <div class="photos-container">
     <div class="photo">
         <a href="{{ path('photo_albums') }}">
-            <img src="{{ asset('images/default-photo.png') }}" alt="Retour à la liste des albums">
+            <img src="{{ asset('images/default-photo.png') }}" alt="Retour aux albums">
         </a>
         <p>Retour aux albums</p>
     </div>
@@ -22,12 +22,14 @@
             <p>{{ photo.title }}</p>
 
             {% if is_granted('ROLE_USER') %}
-                <!-- Conteneur React pour les autres contrôles -->
-                <div id="photo-controls-{{ photo.id }}" 
-                     data-photo-id="{{ photo.id }}" 
-                     data-photo-title="{{ photo.title }}" 
-                     data-photo-url="{{ asset('uploads/photos/' ~ photo.filePath) }}"
-                     data-initial-likes="{{ photo.likesCount }}">
+                <div class="photo-actions">
+                    <!-- Conteneur React pour les autres contrôles -->
+                    <div id="photo-controls-{{ photo.id }}" 
+                        data-photo-id="{{ photo.id }}" 
+                        data-photo-title="{{ photo.title }}" 
+                        data-photo-url="{{ asset('uploads/photos/' ~ photo.filePath) }}"
+                        data-initial-likes="{{ photo.likesCount }}">
+                    </div>
                 </div>
             {% endif %}
         </div>

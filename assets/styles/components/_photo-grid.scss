@@ -7,28 +7,51 @@
 
 /* Container pour les photos : Utilisation de CSS Grid */
 .photo-grid {
-  display: grid;  /* Active le mode Grid pour cet élément */
-  grid-template-columns: repeat(3, 1fr);  /* Déclare une grille avec 3 colonnes de même taille */
-  gap: 16px;  /* Espacement de 16px entre chaque élément de la grille */
-  padding: 16px;  /* Espacement autour de la grille (marge intérieure) */
+  display: grid; /* Active le mode Grid pour cet élément */
+  grid-template-columns: repeat(3, 1fr); /* Déclare une grille avec 3 colonnes de même taille */
+  gap: 16px; /* Espacement de 16px entre chaque élément de la grille */
+  padding: 16px; /* Espacement autour de la grille (marge intérieure) */
 }
 
-/* 
- * Style des images dans la grille : 
- * Assure que les images ont une taille uniforme et s'ajustent correctement dans les cellules de la grille.
- */
-.photo-grid img {
-  width: 100%;  /* Les images prennent toute la largeur de la cellule de la grille */
-  height: auto;  /* Laisse l'image garder son ratio d'aspect sans déformation */
-  border-radius: 8px;  /* Ajoute un arrondi léger aux coins des images */
-  object-fit: cover;  /* Permet aux images de couvrir toute la cellule sans être déformées (peut couper l'image si nécessaire) */
-}
-
-/* 
- * Style des éléments de la liste (li) : 
- * Les éléments de la liste doivent être nettoyés de leur style par défaut 
- * (comme les puces de liste), pour un meilleur contrôle visuel.
- */
+/* Style des éléments de la liste (li) : */
 .photo-grid li {
-  list-style: none;  /* Supprime les puces des éléments de la liste */
+  list-style: none; /* Supprime les puces des éléments de la liste */
+}
+
+/* Nouveau style pour chaque carte photo (cadre) */
+.photo-card {
+  background-color: #fff; /* Fond blanc pour le cadre */
+  border-radius: 12px; /* Arrondi des coins du cadre */
+  overflow: hidden; /* Assure que tout débordement est masqué */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Légère ombre pour le relief */
+  padding: 10px; /* Marge interne pour espacer l'image et les boutons */
+  display: flex;
+  flex-direction: column; /* Pour empiler les éléments verticalement */
+  justify-content: space-between;
+  height: 300px; /* Hauteur fixe pour les cartes */
+  text-align: center;
+}
+
+/* Style des images dans la grille */
+.photo-wrapper img {
+  width: 100%; /* Les images prennent toute la largeur du cadre */
+  height: auto; /* Laissez l'image garder son ratio d'aspect sans déformation */
+  border-radius: 8px; /* Arrondi des coins de l'image */
+  object-fit: cover; /* Les images couvrent toute la cellule sans déformation */
+  margin-bottom: 16px; /* Espacement entre l'image et le titre */
+}
+
+/* Titre sous l'image */
+.photo-wrapper p {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px; /* Espacement entre le titre et les boutons */
+}
+
+/* Style pour les boutons sous la photo */
+.photo-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto; /* Pousse les boutons vers le bas de la carte */
 }
