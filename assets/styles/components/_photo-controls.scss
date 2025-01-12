@@ -1,44 +1,51 @@
 @use "../base/variables" as *;
 
 .photo-controls {
-    margin-top: 10px;
-  
-    button {
-      margin-right: 5px;
-      padding: 5px 10px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      background-color: $primary-color; // Couleur par défaut
-      color: white;
-  
-      &:hover {
-        background-color: $primary-color-hover; // Hover
-      }
-  
-      &.btn-delete {
-        background-color: $orange-color; // Couleur orangée par défaut pour "btn-delete"
-  
-        &:hover {
-          background-color: $orange-color-hover; // Effet hover pour "btn-delete"
-        }
-      }
-  
-      &.btn-rename {
-        background-color: $secondary-color; // Couleur spécifique à "btn-rename"
-  
-        &:hover {
-          background-color: $secondary-color-hover; // Effet hover pour "btn-rename"
-        }
-      }
+  display: flex;
+  justify-content: center; /* Centrer tout le groupe de boutons */
+  width: 100%; /* S'assurer que le conteneur occupe toute la largeur */
+  padding-bottom: 10px; /* Espacement de 10px depuis le bas de la carte */
+  margin-top: auto; /* Pousse ce conteneur au bas de la face arrière */
 
-      &.btn-view {
-        background-color: $primary-color; // Couleur spécifique à "btn-rename"
-  
-        &:hover {
-          background-color: $primary-color-hover; // Effet hover pour "btn-rename"
-        }
+  button {
+    margin-right: 5px; /* Espacement entre les boutons */
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: $primary-color; /* Couleur de fond par défaut */
+
+    &:hover {
+      background-color: $primary-color-hover; /* Effet au survol */
+    }
+
+    &.btn-delete {
+      background-color: $orange-color; /* Couleur pour le bouton "supprimer" */
+      &:hover {
+        background-color: $orange-color-hover; /* Effet hover pour "supprimer" */
+      }
+    }
+
+    &.btn-rename {
+      background-color: $secondary-color; /* Couleur pour "renommer" */
+      &:hover {
+        background-color: $secondary-color-hover; /* Effet hover pour "renommer" */
+      }
+    }
+
+    &.btn-view {
+      background-color: $primary-color; /* Couleur pour "voir" */
+      &:hover {
+        background-color: $primary-color-hover; /* Effet hover pour "voir" */
+      }
+    }
+
+    &.btn-like {
+      background-color: $like-color; /* Une couleur que tu peux définir pour le bouton like */
+      &:hover {
+        background-color: $like-color-hover; /* Hover pour like */
       }
     }
   }
-  
+}
+

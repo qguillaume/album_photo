@@ -81,14 +81,10 @@ const PhotoControls: React.FC<PhotoControlsProps> = ({
   return (
     <div>
       <div className="photo-controls">
+        <button className="btn-like" onClick={handleLike}>❤️ {likesCount}</button>
         <button className="btn-view" onClick={handleView}>👁️</button>
         <button className="btn-rename" onClick={handleRename}>✏️</button>
         <button className="btn-delete" onClick={handleDelete}>❌</button>
-        
-        {/* Bouton Like */}
-        <button className="btn-like" onClick={handleLike}>
-          ❤️ {likesCount}
-        </button>
       </div>
 
       {isViewerVisible && (
