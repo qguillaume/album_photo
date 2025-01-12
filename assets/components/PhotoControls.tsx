@@ -5,11 +5,11 @@ interface PhotoControlsProps {
   photoId: number;
   photoTitle: string;
   photoUrl: string;
-  initialLikesCount: number;  // Compteur de likes initial
-  onView: (photoId: number) => void;
+  initialLikesCount: number; // Compteur de likes initial
   onRename: (photoId: number, newName: string) => void;
   onDelete: (photoId: number) => void;
-  onLike: (photoId: number) => void;  // Fonction de gestion du like
+  onLike: (photoId: number) => void; // Fonction de gestion du like
+  photoPath: string; // Chemin de la photo (fourni par Twig)
 }
 
 const PhotoControls: React.FC<PhotoControlsProps> = ({
@@ -17,46 +17,35 @@ const PhotoControls: React.FC<PhotoControlsProps> = ({
   photoTitle,
   photoUrl,
   initialLikesCount,
-  onView,
   onRename,
   onDelete,
   onLike,
+  photoPath,
 }) => {
-  const [likesCount, setLikesCount] = useState(initialLikesCount);  // Suivi du nombre de likes
-  const [isViewerVisible, setIsViewerVisible] = useState(false);
-  const [currentPhoto, setCurrentPhoto] = useState({ url: "", title: "" });
+  const [likesCount, setLikesCount] = useState(initialLikesCount);
 
   // Gestion du "like"
   const handleLike = async () => {
     try {
       const response = await fetch(`/photo/${photoId}/like`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
       if (response.ok) {
         const data = await response.json();
-        setLikesCount(data.likes);  // Mettre à jour le nombre de likes
-        onLike(photoId);  // Appeler la fonction "onLike" pour informer le parent
+        setLikesCount(data.likes);
+        onLike(photoId);
       } else {
         const errorData = await response.json();
-        alert(errorData.error || 'Une erreur est survenue.');
+        alert(errorData.error || "Une erreur est survenue.");
       }
     } catch (error) {
-      alert('Une erreur est survenue lors de la tentative de like.');
+      alert("Une erreur est survenue lors de la tentative de like.");
     }
     // Ne pas recharger la page après le like, gérer l'état localement
-  };
-
-  const handleView = () => {
-    setCurrentPhoto({ url: photoUrl, title: photoTitle });
-    setIsViewerVisible(true);
-  };
-
-  const handleCloseViewer = () => {
-    setIsViewerVisible(false);
   };
 
   const handleRename = () => {
@@ -81,21 +70,19 @@ const PhotoControls: React.FC<PhotoControlsProps> = ({
   return (
     <div>
       <div className="photo-controls">
-        <button className="btn-like" onClick={handleLike}>❤️ {likesCount}</button>
-        <button className="btn-view" onClick={handleView}>👁️</button>
-        <button className="btn-rename" onClick={handleRename}>✏️</button>
-        <button className="btn-delete" onClick={handleDelete}>❌</button>
+        <button className="btn-like" onClick={handleLike}>
+          ❤️ {likesCount}
+        </button>
+        <a href={photoPath} className="btn-view">
+          👁️
+        </a>
+        <button className="btn-rename" onClick={handleRename}>
+          ✏️
+        </button>
+        <button className="btn-delete" onClick={handleDelete}>
+          ❌
+        </button>
       </div>
-
-      {isViewerVisible && (
-        <div id="photo-viewer-container" className="photo-viewer-container">
-          <PhotoViewer
-            photoUrl={currentPhoto.url}
-            photoTitle={currentPhoto.title}
-            closeViewer={handleCloseViewer}  // Passer la fonction de fermeture
-          />
-        </div>
-      )}
     </div>
   );
 };

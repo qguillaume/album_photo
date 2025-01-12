@@ -28,21 +28,21 @@
 .polaroid-images img {
     display: block;
     width: inherit;
-    backface-visibility: hidden; /* Cache l'autre face pendant la rotation */
-    transform-style: preserve-3d;
 }
 
 .polaroid-images a:hover{
-    transform: rotateY(180deg); /* Effectue une rotation de 180° */
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    transform: scale(1.2);
     z-index: 10;
     -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, .7);
     -moz-box-shadow: 0 10px 20px rgba(0,0,0,.7);
     box-shadow: 0 10px 20px rgba(0,0,0,.7);
 }
 
-.photo-thumbnail {
-    height: 200px;
+.polaroid-thumbnail {
+    height: 400px;
     object-fit: cover; /* Maintient les proportions de l'image */
     width: 100%; /* Ajuste l'image à la largeur de son conteneur */
     display: block; /* S'assure que l'image occupe une ligne complète */
-}
+  }

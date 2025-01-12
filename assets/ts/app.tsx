@@ -404,6 +404,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const photoTitle = el.getAttribute("data-photo-title");
     const photoUrl = el.getAttribute("data-photo-url");
     const initialLikesCount = parseInt(el.getAttribute("data-initial-likes") || "0", 10);
+    const photoPath = el.getAttribute("data-photo-path") || "#";
 
     const onLike = (id: number) => {
       console.log(`Photo ${id} aimée!`);
@@ -416,7 +417,7 @@ document.addEventListener("DOMContentLoaded", () => {
           photoTitle={photoTitle}
           photoUrl={photoUrl}
           initialLikesCount={initialLikesCount}
-          onView={() => {}}
+          photoPath={photoPath}
           onRename={(id, newName) => {
             fetch(`${process.env.REACT_APP_API_URL}/photo/rename/${id}`, {
               method: "POST",

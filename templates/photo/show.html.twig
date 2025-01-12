@@ -3,8 +3,13 @@
 {% block title %}Détails de la photo{% endblock %}
 
 {% block body %}
-    <h2>{{ photo.title }}</h2>
-    <div class="photo-agrandie"><img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" ></div>
+    <div class="center">
+        <div class="polaroid-images">
+            <a href="#">
+                <img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" class="polaroid-thumbnail">
+            </a>
+        </div>
+    </div>
 
     <p class="details-photo"><strong>Album :</strong> {{ photo.album ? photo.album.nomAlbum : 'Sans album' }}</p>
     <p class="details-photo"><strong>Nombre de likes :</strong> {{ photo.likesCount }}</p>
@@ -21,14 +26,13 @@
             {% endfor %}
         </ul>
     {% else %}
-        <p>{{"no_comment"|trans}}</p>
+        <div class="center"><p>{{"no_comment"|trans}}</p></div>
     {% endif %}
 
-    <h2>{{"leave_comment"|trans}}</h2>
     {% if app.user %}
         {{ form_start(commentForm) }}
             <div class="form-group">
-                {{ form_widget(commentForm.content) }}
+                {{ form_widget(commentForm.content, {'attr': {'placeholder': 'leave_comment'}}) }}
             </div>
             <div class="form-group">
                 {{ form_widget(commentForm.send, {'attr': {'class': 'green-button'}}) }}
@@ -37,6 +41,4 @@
     {% else %}
         <p>{{"connected_to_comment"|trans}}</p>
     {% endif %}
-
-    <div class="separator"></div>
 {% endblock %}

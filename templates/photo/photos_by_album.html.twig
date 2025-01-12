@@ -22,7 +22,8 @@
                                 data-photo-id="{{ photo.id }}" 
                                 data-photo-title="{{ photo.title }}" 
                                 data-photo-url="{{ asset('uploads/photos/' ~ photo.filePath) }}"
-                                data-initial-likes="{{ photo.likesCount }}">
+                                data-initial-likes="{{ photo.likesCount }}"
+                                data-photo-path="{{ path('photo_show', { 'id': photo.id }) }}">
                             </div>
                         </div>
                     {% endif %}
