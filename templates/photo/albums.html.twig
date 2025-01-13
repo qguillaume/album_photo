@@ -1,23 +1,39 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<h2>Albums</h2>
-
-<div class="albums-container">
+<div class="card-folder-gallery">
     {% for album in albums %}
         {% if album.isVisible and album.isApproved %}
-            <div class="album">
-                <a href="{{ path('photos_by_album', { id: album.id }) }}">
-                    <img src="{{ album.imagePath is not null ? asset('uploads/albums/' ~ album.imagePath) : asset('images/folder-icon.png') }}" 
-                        alt="Dossier" class="album-icon">
-                    <p>{{ album.nomAlbum }}</p>
-                </a>
-
-                {% if is_granted('ROLE_ADMIN') %}
-                    <!-- Conteneur React pour modifier/supprimer -->
-                    <div id="album-controls-{{ album.id }}" data-album-id="{{ album.id }}" data-album-name="{{ album.nomAlbum }}"></div>
-                {% endif %}
+            <div class="card-folder-container">
+                <div class="card-folder">
+                    <!-- Face avant -->
+                    <div class="card-folder-front">
+                        {% if album.imagePath is not null %}
+                            <img 
+                                src="{{ asset('uploads/albums/' ~ album.imagePath) }}" 
+                                alt="Dossier"
+                            >
+                        {% endif %}
+                    </div>
+                    <!-- Face arrière de la carte -->
+                    <a class="card-folder-back" href="{{ path('photos_by_album', { 'id': album.id }) }}">
+                        <div>
+                            {% if is_granted('ROLE_USER') %}
+                                <div class="album-actions">
+                                    <!-- Conteneur React pour les autres contrôles -->
+                                    <div id="album-controls-{{ album.id }}" 
+                                        data-album-id="{{ album.id }}" 
+                                        data-album-name="{{ album.nomAlbum }}" 
+                                        data-album-url="{{ asset('uploads/albums/' ~ album.imagePath) }}"
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </a>
+                </div>
+                <p class="card-folder-name">{{ album.nomAlbum }} ({{album.photoCount}})</p>
             </div>
+            
         {% endif %}
     {% endfor %}
 </div>

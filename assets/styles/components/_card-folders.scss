@@ -1,0 +1,97 @@
+.card-folder-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Colonnes adaptatives */
+    gap: 20px; /* Ajoute de l'espace entre les colonnes et les lignes */
+    justify-content: center; /* Centre la grille si elle a moins de colonnes que nécessaire */
+    padding: 20px; /* Ajoute de l'espace autour de la grille */
+}
+
+.card-folder-container {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    height: 150px;
+    perspective: 1000px;
+    margin: 15px;
+    align-items: center;
+}
+
+.card-folder {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.8s ease;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); /* Ombre par défaut */
+}
+
+.card-folder-container:hover .card-folder {
+    transform: rotateY(180deg);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.5); /* Ombre plus prononcée au survol */
+}
+
+.card-folder-front,
+.card-folder-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.card-folder-front {
+    background: linear-gradient(to top, #ffe4a4, #fbbc04);
+    clip-path: polygon(
+        0 20%, 
+        10% 20%, 
+        10% 0, 
+        40% 0, 
+        40% 20%, 
+        100% 20%, 
+        100% 100%, 
+        0 100%
+    ); // Forme du dossier avec onglet
+}
+
+.card-folder-front img {
+    width: 80%;
+    height: 60%;
+    object-fit: cover;
+}
+
+.card-folder-back {
+    background: darkslateblue;
+    color: black;
+    transform: rotateY(180deg);
+    text-align: center;
+    font-size: 16px;
+    padding: 10px;
+    clip-path: polygon(
+        0 20%, 
+        10% 20%, 
+        10% 0, 
+        40% 0, 
+        40% 20%, 
+        100% 20%, 
+        100% 100%, 
+        0 100%
+    );
+}
+
+.card-folder-name {
+    text-align: center;
+    font-size: 14px;
+    white-space: normal; /* Permet le retour à la ligne si nécessaire */
+    word-wrap: break-word; /* Permet de couper les mots trop longs si nécessaire */
+    overflow-wrap: break-word; /* Assure la compatibilité pour le texte long */
+    margin-top: 10px;
+}
+
+.card-folder-container:hover .card-folder-back {
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4); /* Ombre plus forte au survol */
+}
