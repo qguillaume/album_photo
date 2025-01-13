@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Pagination from "./PaginationDashboard";
 import { User } from "../ts/types";
 
@@ -7,16 +7,42 @@ interface UserTableProps {
 }
 
 const UserTable: React.FC<UserTableProps> = ({ users }) => {
+  const [currentUserRoles, setCurrentUserRoles] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true); // État de chargement
   const [currentPage, setCurrentPage] = useState(1);
-  const usersPerPage = 10;
   const [userList, setUserList] = useState(users);
   const [notification, setNotification] = useState<string | null>(null); // Ajout de l'état pour la notification
   const [notificationClass, setNotificationClass] = useState<string>(""); // Ajout pour gérer les classes CSS
-
   const [sortConfig, setSortConfig] = useState<{ key: keyof User; direction: "asc" | "desc" }>({
     key: "id",
     direction: "asc",
   });
+
+  const usersPerPage = 10;
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await fetch("/api/current_user");
+        if (!response.ok) {
+          throw new Error("Erreur dans la réponse de l'API");
+        }
+        const data = await response.json();
+        setCurrentUserRoles(data.roles || []);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des rôles:", error);
+      } finally {
+        setLoading(false); // Désactive l'état de chargement
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
+  
+
+  if (loading) {
+    return <div>Chargement...</div>; // Affiche un message pendant le chargement
+  }
 
   const sortedUsers = [...userList].sort((a, b) => {
     let aValue: any = a[sortConfig.key];
@@ -41,6 +67,9 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
   };
 
   const totalPages = Math.ceil(userList.length / usersPerPage);
+
+  // Vérifie si l'utilisateur connecté a le rôle ROLE_SUPER_ADMIN
+  const isSuperAdmin = currentUserRoles.includes("ROLE_SUPER_ADMIN");
 
   // Fonction pour gérer l'ajout ou le retrait du rôle "ROLE_ADMIN"
   const handleRoleChange = async (userId: number, isAdmin: boolean) => {
@@ -150,8 +179,8 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
             <th onClick={() => handleSort("email")}>
               Email {sortConfig.key === "email" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
-            <th>Rôle Admin</th>
-            <th>Est Banni</th>
+            {isSuperAdmin && (<th>Rôle Admin</th>)}
+            {isSuperAdmin && (<th>Est Banni</th>)}
           </tr>
         </thead>
         <tbody>
@@ -163,8 +192,8 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
                 <td>{user.id}</td>
                 <td>{user.username}</td>
                 <td>{user.email}</td>
-                <td>
-                  <label className="switch">
+                {isSuperAdmin && (<td>
+                <label className="switch">
                     <input
                       type="checkbox"
                       checked={user.roles.includes("ROLE_ADMIN")}
@@ -172,9 +201,9 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
                     />
                     <span className="slider"></span>
                   </label>
-                </td>
-                <td>
-                  <label className="switch">
+                </td>)}
+                {isSuperAdmin && (<td>
+                <label className="switch">
                     <input
                       type="checkbox"
                       checked={user.isBanned} // Afficher l'état de bannissement
@@ -182,7 +211,7 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
                     />
                     <span className="slider"></span>
                   </label>
-                </td>
+                </td>)}
               </tr>
             );
           })}

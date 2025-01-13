@@ -109,4 +109,29 @@ class UserController extends AbstractController
 
         return new JsonResponse(['message' => 'Utilisateur débanni avec succès']);
     }
+
+    /**
+     * @Route("/api/current_user", name="current_user", methods={"GET"})
+     */
+    public function getCurrentUser(): JsonResponse
+    {
+        try {
+            $user = $this->getUser();
+
+            if (!$user) {
+                throw new \Exception('Utilisateur non authentifié');
+            }
+
+            return new JsonResponse([
+                'id' => $user->getId(),
+                'username' => $user->getUsername(),
+                'email' => $user->getEmail(),
+                'roles' => $user->getRoles(),
+            ]);
+        } catch (\Exception $e) {
+            $this->get('logger')->error('Erreur lors de la récupération de l\'utilisateur: ' . $e->getMessage());
+            return new JsonResponse(['error' => 'Erreur serveur'], 500);
+        }
+    }
+
 }
