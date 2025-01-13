@@ -107,9 +107,9 @@ class AlbumController extends AbstractController
                     return [
                         'id' => $photo->getId(),
                         'title' => $photo->getTitle(),
-
                     ];
                 }, $album->getPhotos()->toArray()),
+                'isVisible' => $album->getIsVisible(),
             ];
         }
 

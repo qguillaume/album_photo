@@ -153,11 +153,14 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, onAlbumsUpdate }) => {
               </td>
               <td>{album.photos.length}</td>
               <td>
-                <input
-                  type="checkbox"
-                  checked={album.isVisible}
-                  onChange={(e) => handleVisibilityChange(album.id, e.target.checked)}
-                />
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    checked={album.isVisible}
+                    onChange={(e) => handleVisibilityChange(album.id, e.target.checked)}
+                  />
+                  <span className="slider"></span>
+                </label>
               </td>
               <td className="td-actions">
                 <div className="crud-buttons">
