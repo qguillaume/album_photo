@@ -8,17 +8,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PortFolioController extends AbstractController
 {
+    /**
+     * @Route("/", name="portfolio_home")
+     */
     public function index(): Response
     {
-        return $this->render(
-            'portfolio/index.html.twig',
-            /* [
-            'sections' => [
-            'Albums photos' => '/photos',
-            'Référentiel CSS' => '/reference',
-            'Autres projets' => '/projets',
-            ],
-            ]*/
-        );
+        return $this->render('portfolio/index.html.twig');
     }
 }

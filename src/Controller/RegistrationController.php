@@ -15,7 +15,9 @@ use Symfony\Component\Mime\Email;
 
 class RegistrationController extends AbstractController
 {
-
+    /**
+     * @Route("/register", name="register")
+     */
     public function register(Request $request, UserPasswordHasherInterface $passwordHasher, MailerInterface $mailer): Response
     {
         /*if ($this->getUser()) {

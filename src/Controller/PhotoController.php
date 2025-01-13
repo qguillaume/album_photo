@@ -20,6 +20,9 @@ use App\Form\CommentFormType;
 class PhotoController extends AbstractController
 {
     // Afficher tous les albums
+    /**
+     * @Route("/photos", name="photo_albums")
+     */
     public function albums(EntityManagerInterface $em): Response
     {
         // Récupérer tous les albums
@@ -32,6 +35,9 @@ class PhotoController extends AbstractController
     }
 
     // Afficher les photos d'un album
+    /**
+     * @Route("/album/{id}", name="photos_by_album", requirements={"id"="\d+"})
+     */
     public function photosByAlbum(EntityManagerInterface $em, int $id): Response
     {
         // Récupérer un album spécifique par son ID
@@ -45,18 +51,6 @@ class PhotoController extends AbstractController
         return $this->render('photo/photos_by_album.html.twig', [
             'album' => $album,
             'photos' => $album->getPhotos(),
-        ]);
-    }
-
-    // Méthode pour afficher toutes les photos
-    public function index(EntityManagerInterface $em): Response
-    {
-        // Récupérer toutes les photos de la base de données
-        $photos = $em->getRepository(Photo::class)->findAll();
-
-        // Retourner la réponse avec la vue Twig
-        return $this->render('photo/index.html.twig', [
-            'photos' => $photos,
         ]);
     }
 
@@ -126,8 +120,9 @@ class PhotoController extends AbstractController
         ]);
     }
 
-
-    // Renommer une photo
+    /**
+     * @Route("/photo/rename/{id}", name="rename_photo", requirements={"id"="\d+"})
+     */
     public function renamePhoto(Request $request, EntityManagerInterface $em, int $id): JsonResponse
     {
         $photo = $em->getRepository(Photo::class)->find($id);
@@ -143,7 +138,9 @@ class PhotoController extends AbstractController
         return new JsonResponse(['message' => 'Photo renommée avec succès']);
     }
 
-    // Supprimer une photo
+    /**
+     * @Route("/photo/delete/{id}", name="delete_photo", requirements={"id"="\d+"})
+     */
     public function deletePhoto(EntityManagerInterface $em, int $id): JsonResponse
     {
         $photo = $em->getRepository(Photo::class)->find($id);

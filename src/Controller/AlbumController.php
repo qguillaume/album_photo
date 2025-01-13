@@ -30,7 +30,8 @@ class AlbumController extends AbstractController
         $this->security = $security;
     }
 
-    /*
+    /**
+     * @Route("/album/new", name="album_new")
      * @IsGranted({"ROLE_ADMIN"})
      */
     public function new(Request $request, EntityManagerInterface $em): Response
@@ -118,7 +119,9 @@ class AlbumController extends AbstractController
         return new JsonResponse($albumsData);
     }
 
-    // Renommer un album
+    /**
+     * @Route("/album/rename/{id}", name="rename_album", requirements={"id"="\d+"})
+     */
     public function renameAlbum(Request $request, EntityManagerInterface $em, int $id): JsonResponse
     {
         $album = $em->getRepository(Album::class)->find($id);
@@ -131,7 +134,9 @@ class AlbumController extends AbstractController
         return new JsonResponse(['message' => 'Album renommé avec succès']);
     }
 
-    // Supprimer un album
+    /**
+     * @Route("/album/delete/{id}", name="delete_album", requirements={"id"="\d+"})
+     */
     public function deleteAlbum(EntityManagerInterface $em, int $id): JsonResponse
     {
         $album = $em->getRepository(Album::class)->find($id);

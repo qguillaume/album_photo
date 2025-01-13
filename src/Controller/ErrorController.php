@@ -12,6 +12,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ErrorController extends AbstractController
 {
+    /**
+     * @Route("/error", name="error_page")
+     */
     public function showError()
     {
         // On vérifie si l'exception est une erreur 404 ou 403

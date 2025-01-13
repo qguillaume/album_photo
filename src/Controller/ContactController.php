@@ -11,6 +11,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ContactController extends AbstractController
 {
+    /**
+     * @Route("/contact", name="contact")
+     */
     public function index(Request $request, MailerInterface $mailer, TranslatorInterface $translator): Response
     {
         $form = $this->createForm(ContactFormType::class);

@@ -26,6 +26,9 @@ class SecurityController extends AbstractController
         $this->passwordHasher = $passwordHasher;
     }
 
+    /**
+     * @Route("/login", name="login")
+     */
     public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
     {
         //dd($request->request->all());
@@ -70,10 +73,9 @@ class SecurityController extends AbstractController
         ]);
     }
 
-
-
+    // Endpoint pour tester un mot de passe avec son hashage.
     /**
-     * Endpoint pour tester un mot de passe avec son hashage.
+     * @Route("/test-password", name="test_password")
      */
     public function testPassword(Request $request): Response
     {
@@ -97,6 +99,9 @@ class SecurityController extends AbstractController
         return new Response('Utilisateur non trouvé.', Response::HTTP_NOT_FOUND);
     }
 
+    /**
+     * @Route("/logout", name="logout")
+     */
     public function logout(): void
     {
         // Symfony se charge de la déconnexion automatiquement.
