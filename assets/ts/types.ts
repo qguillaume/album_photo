@@ -6,6 +6,8 @@ export interface Photo {
   album: string;
   likesCount: number;
   commentsCount: number;
+  isVisible: boolean;
+  isApproved: boolean;
 }
 
 export interface Album {

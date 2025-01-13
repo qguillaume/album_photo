@@ -21,24 +21,24 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
   const photosPerPage = 10; // Nombre de photos par page
 
   const [sortConfig, setSortConfig] = useState<{ key: keyof Photo; direction: "asc" | "desc" }>({
-      key: "id",
-      direction: "asc",
-    });
-  
-    // Fonction pour trier les photos
-    const sortedPhotos = [...photos].sort((a, b) => {
-      let aValue: any = a[sortConfig.key];
-      let bValue: any = b[sortConfig.key];
-  
-      if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
-      if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
-      return 0;
-    });
+    key: "id",
+    direction: "asc",
+  });
 
-    // Calculer les photos à afficher pour la page courante
-    const indexOfLastPhoto = currentPage * photosPerPage;
-    const indexOfFirstPhoto = indexOfLastPhoto - photosPerPage;
-    const currentPhotos = sortedPhotos.slice(indexOfFirstPhoto, indexOfLastPhoto);
+  // Fonction pour trier les photos
+  const sortedPhotos = [...photos].sort((a, b) => {
+    let aValue: any = a[sortConfig.key];
+    let bValue: any = b[sortConfig.key];
+
+    if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
+    if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
+    return 0;
+  });
+
+  // Calculer les photos à afficher pour la page courante
+  const indexOfLastPhoto = currentPage * photosPerPage;
+  const indexOfFirstPhoto = indexOfLastPhoto - photosPerPage;
+  const currentPhotos = sortedPhotos.slice(indexOfFirstPhoto, indexOfLastPhoto);
 
   // Changer de page
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
@@ -103,16 +103,54 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
       );
   };
 
-    // Gérer le tri par colonne
-    const handleSort = (key: keyof Photo) => {
-      setSortConfig((prevConfig) => ({
-        key,
-        direction: prevConfig.key === key && prevConfig.direction === "asc" ? "desc" : "asc",
-      }));
-    };
-  
-    // Calculer le nombre total de pages
-    const totalPages = Math.ceil(photos.length / photosPerPage);
+  // Gérer le tri par colonne
+  const handleSort = (key: keyof Photo) => {
+    setSortConfig((prevConfig) => ({
+      key,
+      direction: prevConfig.key === key && prevConfig.direction === "asc" ? "desc" : "asc",
+    }));
+  };
+
+  // Fonction pour gérer la visibilité des photos
+  const handleVisibilityChange = (photoId: number, newVisibility: boolean) => {
+    fetch(`http://localhost:8000/photo/${photoId}/visibility`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ isVisible: newVisibility }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const updatedPhotos = photos.map((photo) =>
+          photo.id === photoId ? { ...photo, isVisible: newVisibility } : photo
+        );
+        onPhotosUpdate(updatedPhotos);
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la mise à jour de la visibilité:", error);
+      });
+  };
+
+  // Fonction pour gérer l'approbation des photos
+  const handleApprovalChange = (photoId: number, newApproval: boolean) => {
+    fetch(`http://localhost:8000/photo/${photoId}/approval`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ isApproved: newApproval }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const updatedPhotos = photos.map((photo) =>
+          photo.id === photoId ? { ...photo, isApproved: newApproval } : photo
+        );
+        onPhotosUpdate(updatedPhotos);
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la mise à jour de l'approbation:", error);
+      });
+  };
+
+  // Calculer le nombre total de pages
+  const totalPages = Math.ceil(photos.length / photosPerPage);
 
   return (
     <div className="table-container">
@@ -121,7 +159,7 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
       <table className="dashboard-table">
         <thead>
           <tr>
-          <th onClick={() => handleSort("id")}>
+            <th onClick={() => handleSort("id")}>
               ID {sortConfig.key === "id" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
             <th onClick={() => handleSort("title")}>
@@ -136,6 +174,8 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
             <th onClick={() => handleSort("commentsCount")}>
               Nombre de commentaires {sortConfig.key === "commentsCount" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
+            <th>Visibilité</th>
+            <th>Approbation</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -161,9 +201,29 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
                     photo.title
                   )}
                 </td>
-                <td>{photo.album}</td>
+                <td>{album ? album.nom : "Non associé"}</td>
                 <td>{photo.likesCount}</td>
                 <td>{photo.commentsCount || 0}</td>
+                <td>
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    checked={photo.isVisible}
+                    onChange={(e) => handleVisibilityChange(photo.id, e.target.checked)}
+                  />
+                  <span className="slider"></span>
+                  </label>
+                </td>
+                <td>
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    checked={photo.isApproved}
+                    onChange={(e) => handleApprovalChange(photo.id, e.target.checked)}
+                  />
+                  <span className="slider"></span>
+                  </label>
+                </td>
                 <td className="td-actions">
                   <div className="crud-buttons">
                     {editingPhotoId === photo.id ? (
@@ -207,7 +267,6 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
           })}
         </tbody>
       </table>
-      {/* Pagination en bas */}
       <Pagination currentPage={currentPage} totalPages={totalPages} onPaginate={paginate} />
     </div>
   );

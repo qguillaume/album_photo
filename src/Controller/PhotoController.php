@@ -213,6 +213,8 @@ class PhotoController extends AbstractController
                 'album' => $photo->getAlbum() ? $photo->getAlbum()->getNomAlbum() : 'Sans album',
                 'likesCount' => $photo->getLikesCount(),
                 'commentsCount' => $photo->getCommentsCount(),
+                'isVisible' => $photo->getIsVisible(),
+                'isApproved' => $photo->getIsApproved(),
             ];
         }
 
@@ -302,5 +304,53 @@ class PhotoController extends AbstractController
 
         // Rediriger vers la page de la photo
         return $this->redirectToRoute('photo_show', ['id' => $id]);
+    }
+
+    /**
+     * @Route("/photo/{id}/visibility", name="photo_visibility", methods={"POST"})
+     */
+    public function updateVisibility(int $id, Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        $photo = $em->getRepository(Photo::class)->find($id);
+
+        if (!$photo) {
+            return new JsonResponse(['message' => 'Photo non trouvée'], 404);
+        }
+
+        // Récupérer la nouvelle visibilité à partir de la requête
+        $data = json_decode($request->getContent(), true);
+        if (!isset($data['isVisible'])) {
+            return new JsonResponse(['message' => 'Aucune visibilité spécifiée'], 400);
+        }
+
+        // Mettre à jour la visibilité de la photo
+        $photo->setIsVisible($data['isVisible']);
+        $em->flush();
+
+        return new JsonResponse(['message' => 'Visibilité mise à jour avec succès']);
+    }
+
+    /**
+     * @Route("/photo/{id}/approval", name="photo_approval", methods={"POST"})
+     */
+    public function updateApproval(int $id, Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        $photo = $em->getRepository(Photo::class)->find($id);
+
+        if (!$photo) {
+            return new JsonResponse(['message' => 'Photo non trouvée'], 404);
+        }
+
+        // Récupérer la nouvelle approbation à partir de la requête
+        $data = json_decode($request->getContent(), true);
+        if (!isset($data['isApproved'])) {
+            return new JsonResponse(['message' => 'Aucune Approbation spécifiée'], 400);
+        }
+
+        // Mettre à jour l'approbation de la photo
+        $photo->setIsApproved($data['isApproved']);
+        $em->flush();
+
+        return new JsonResponse(['message' => 'Approbation mise à jour avec succès']);
     }
 }
