@@ -40,8 +40,14 @@
             line-height: 1.6; /* Hauteur de ligne */
             color: #ccc;
 
-            &.light-mode {
-                color: $light-text-color; /* Couleur du texte de présentation en noir en mode clair */
+            // Mode clair
+            body.light-mode & {
+                color: $light-text-color; // Utilise la variable pour la couleur en mode clair
+            }
+
+            // Mode sombre
+            body.dark-mode & {
+                color: $dark-text-color; // Utilise la variable pour la couleur en mode sombre
             }
 
             a {
