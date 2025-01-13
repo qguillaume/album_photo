@@ -15,16 +15,42 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
   onPhotosUpdate,
   onAlbumsUpdate,
 }) => {
+  const [currentUserRoles, setCurrentUserRoles] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
   const [editingPhotoId, setEditingPhotoId] = useState<number | null>(null);
   const [newTitle, setNewTitle] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1); // Page actuelle
   const photosPerPage = 10; // Nombre de photos par page
-
+  const isSuperAdmin = currentUserRoles.includes("ROLE_SUPER_ADMIN");
   const [sortConfig, setSortConfig] = useState<{ key: keyof Photo; direction: "asc" | "desc" }>({
     key: "id",
     direction: "asc",
   });
 
+  useEffect(() => {
+      const fetchCurrentUser = async () => {
+        try {
+          const response = await fetch("/api/current_user");
+          if (!response.ok) {
+            throw new Error("Erreur dans la réponse de l'API");
+          }
+          const data = await response.json();
+          setCurrentUserRoles(data.roles || []);
+        } catch (error) {
+          console.error("Erreur lors de la récupération des rôles:", error);
+        } finally {
+          setLoading(false); // Désactive l'état de chargement
+        }
+      };
+  
+      fetchCurrentUser();
+    }, []);
+
+    if (loading) {
+      return <div>Chargement...</div>; // Affiche un message pendant le chargement
+    }
+
+    
   // Fonction pour trier les photos
   const sortedPhotos = [...photos].sort((a, b) => {
     let aValue: any = a[sortConfig.key];
@@ -175,7 +201,7 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
               Nombre de commentaires {sortConfig.key === "commentsCount" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
             <th>Visibilité</th>
-            <th>Approbation</th>
+            {isSuperAdmin && (<th>Approbation</th>)}
             <th>Actions</th>
           </tr>
         </thead>
@@ -214,7 +240,7 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
                   <span className="slider"></span>
                   </label>
                 </td>
-                <td>
+                {isSuperAdmin && (<td>
                 <label className="switch">
                   <input
                     type="checkbox"
@@ -223,7 +249,7 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
                   />
                   <span className="slider"></span>
                   </label>
-                </td>
+                </td>)}
                 <td className="td-actions">
                   <div className="crud-buttons">
                     {editingPhotoId === photo.id ? (
