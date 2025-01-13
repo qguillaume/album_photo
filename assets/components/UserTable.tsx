@@ -99,7 +99,7 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
     setUserList((prevList) =>
       prevList.map((user) => {
         if (user.id === userId) {
-          return { ...user, banned: isBanned }; // Mettre à jour l'état "banni"
+          return { ...user, isBanned: isBanned }; // Mettre à jour l'état "banni"
         }
         return user;
       })
@@ -177,7 +177,7 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
                   <label className="switch">
                     <input
                       type="checkbox"
-                      checked={user.banned} // Afficher l'état de bannissement
+                      checked={user.isBanned} // Afficher l'état de bannissement
                       onChange={(e) => handleBanChange(user.id, e.target.checked)} // Gérer le bannissement
                     />
                     <span className="slider"></span>

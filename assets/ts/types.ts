@@ -22,7 +22,7 @@ export interface User {
   username: string;
   email: string;
   roles: string[];
-  banned: boolean;
+  isBanned: boolean;
 }
 
 export interface Theme {

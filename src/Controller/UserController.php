@@ -23,10 +23,25 @@ class UserController extends AbstractController
     /**
      * @Route("/users_list", name="users_list", methods={"GET"})
      */
-    public function getUsers()
+    public function getUsers(UserRepository $userRepository)
     {
-        $users = $this->entityManager->getRepository(User::class)->findAll();
-        return $this->json($users);
+        // Récupérer toutes les users
+        $users = $userRepository->findAll();
+
+        // Convertir les users en un tableau JSON
+        $usersData = [];
+        foreach ($users as $user) {
+            $usersData[] = [
+                'id' => $user->getId(),
+                'username' => $user->getUsername(),
+                'email' => $user->getEmail(),
+                'roles' => $user->getRoles(),
+                'isBanned' => $user->getIsBanned(),
+            ];
+        }
+
+        // Retourner une réponse JSON
+        return new JsonResponse($usersData);
     }
 
     /**
