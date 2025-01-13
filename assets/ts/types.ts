@@ -12,6 +12,7 @@ export interface Album {
   id: number;
   nom: string;
   photos: Photo[];
+  isVisible: boolean;
 }
 
 export interface User {

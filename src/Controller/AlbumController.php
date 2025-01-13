@@ -16,6 +16,7 @@ use App\Repository\AlbumRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Security;
 use App\Service\AlbumVisibilityService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class AlbumController extends AbstractController
 {
@@ -143,6 +144,7 @@ class AlbumController extends AbstractController
 
     /**
      * @Route("/album/{id}/visibility", name="update_album_visibility", methods={"POST"})
+     * @ParamConverter("album", class="App\Entity\Album")
      */
     public function updateVisibility(
         Album $album,
