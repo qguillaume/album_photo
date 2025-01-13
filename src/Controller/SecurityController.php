@@ -14,6 +14,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class SecurityController extends AbstractController
 {
@@ -111,5 +112,13 @@ class SecurityController extends AbstractController
 
         // Affiche le mot de passe haché
         return new Response('Mot de passe haché : ' . $hashedPassword);
+    }
+
+    /**
+     * @Route("/access-denied", name="access_denied_redirect")
+     */
+    public function accessDenied(): RedirectResponse
+    {
+        return $this->redirectToRoute('portfolio_home');
     }
 }

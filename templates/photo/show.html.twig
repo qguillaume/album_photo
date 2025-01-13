@@ -47,6 +47,6 @@
             </div>
         {{ form_end(commentForm) }}
     {% else %}
-        <p>{{"connected_to_comment"|trans}}</p>
+        <div class="center"><a href="{{path('login')}}">{{"connected_to_comment"|trans}}</a></div>
     {% endif %}
 {% endblock %}

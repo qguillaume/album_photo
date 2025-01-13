@@ -51,7 +51,9 @@ security:
         - { path: ^/test-password$, roles: ROLE_ADMIN }
         - { path: ^/album/new$, roles: ROLE_ADMIN }
         - { path: ^/photo/upload$, roles: ROLE_ADMIN }
-        # Restreindre l'accès à toutes les pages commençant par /articles uniquement aux utilisateurs connectés
-        - { path: ^/articles, roles: ROLE_USER }
-        # Pour les pages de l'article avec /article en singulier (pour être sûr de ne rien manquer)
-        - { path: ^/article, roles: ROLE_USER }
+        # Restreindre l'accès à toutes les pages commençant par /articles uniquement aux utilisateurs admin connectés
+        - { path: ^/articles, roles: ROLE_ADMIN }
+        # Pour les pages de l'article avec /article au singulier (pour être sûr de ne rien manquer)
+        - { path: ^/article, roles: ROLE_ADMIN }
+
+    access_denied_url: /access-denied
