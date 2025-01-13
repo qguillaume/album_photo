@@ -32,6 +32,11 @@ class Album
     private ?string $nom_album = null;
 
     /**
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private $createdAt;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Photo", mappedBy="album", cascade={"persist", "remove"})
      */
     private Collection $photos;
@@ -39,6 +44,7 @@ class Album
     public function __construct()
     {
         $this->photos = new ArrayCollection();
+        $this->createdAt = new \DateTime();
     }
 
     public function getId(): ?int
@@ -110,6 +116,17 @@ class Album
     {
         $this->creator = $creator;
 
+        return $this;
+    }
+
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTime $createdAt): self
+    {
+        $this->createdAt = $createdAt;
         return $this;
     }
 

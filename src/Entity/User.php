@@ -12,10 +12,16 @@ use Symfony\Component\Validator\Constraints as Assert; // Import des contraintes
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    /**
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private $createdAt;
+
     public function __construct()
     {
         $this->roles = ['ROLE_USER']; // Rôle par défaut
         $this->isBanned = false; // Par défaut, l'utilisateur n'est pas banni
+        $this->createdAt = new \DateTime(); // Initialise createdAt à la date et l'heure actuelles
     }
 
     /**
@@ -100,6 +106,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
+        return $this;
+    }
+
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTime $createdAt): self
+    {
+        $this->createdAt = $createdAt;
         return $this;
     }
 

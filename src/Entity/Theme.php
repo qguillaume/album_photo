@@ -13,6 +13,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Theme
 {
+    /**
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private $createdAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
+
     // Id du thème
     /**
      * @ORM\Id
@@ -42,6 +52,17 @@ class Theme
     public function setName(string $name): self
     {
         $this->name = trim($name);
+        return $this;
+    }
+
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTime $createdAt): self
+    {
+        $this->createdAt = $createdAt;
         return $this;
     }
 

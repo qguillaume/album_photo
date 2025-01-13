@@ -60,10 +60,16 @@ class Photo
      */
     private Collection $comments;
 
+    /**
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private $createdAt;
+
     public function __construct()
     {
         $this->likes = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->createdAt = new \DateTime();
     }
 
     public function getId(): ?int
@@ -115,6 +121,17 @@ class Photo
     {
         $this->album = $album;
 
+        return $this;
+    }
+
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTime $createdAt): self
+    {
+        $this->createdAt = $createdAt;
         return $this;
     }
 
