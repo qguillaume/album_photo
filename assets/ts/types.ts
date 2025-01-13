@@ -15,6 +15,7 @@ export interface Album {
   nom: string;
   photos: Photo[];
   isVisible: boolean;
+  isApproved: boolean;
 }
 
 export interface User {

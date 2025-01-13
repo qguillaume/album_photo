@@ -39,6 +39,11 @@ class Album
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
+    private bool $isApproved = false;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
     private bool $isVisible = false;
 
     /**
@@ -132,6 +137,17 @@ class Album
     public function setCreatedAt(\DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    public function getIsApproved(): bool
+    {
+        return $this->isApproved;
+    }
+
+    public function setIsApproved(bool $isApproved): self
+    {
+        $this->isApproved = $isApproved;
         return $this;
     }
 

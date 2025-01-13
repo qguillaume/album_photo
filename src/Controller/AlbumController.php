@@ -110,6 +110,7 @@ class AlbumController extends AbstractController
                     ];
                 }, $album->getPhotos()->toArray()),
                 'isVisible' => $album->getIsVisible(),
+                'isApproved' => $album->getIsApproved(),
             ];
         }
 
@@ -166,5 +167,29 @@ class AlbumController extends AbstractController
         $albumVisibilityService->updateAlbumVisibility($album, $isVisible);
 
         return $this->json(['message' => 'Visibilité mise à jour avec succès !']);
+    }
+
+    /**
+     * @Route("/album/{id}/approval", name="album_approval", methods={"POST"})
+     */
+    public function updateApproval(int $id, Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        $album = $em->getRepository(Album::class)->find($id);
+
+        if (!$album) {
+            return new JsonResponse(['message' => 'Album non trouvé'], 404);
+        }
+
+        // Récupérer la nouvelle approbation à partir de la requête
+        $data = json_decode($request->getContent(), true);
+        if (!isset($data['isApproved'])) {
+            return new JsonResponse(['message' => 'Aucune Approbation spécifiée'], 400);
+        }
+
+        // Mettre à jour l'approbation de la photo
+        $album->setIsApproved($data['isApproved']);
+        $em->flush();
+
+        return new JsonResponse(['message' => 'Approbation mise à jour avec succès']);
     }
 }

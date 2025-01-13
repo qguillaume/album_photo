@@ -5,32 +5,34 @@
 
 
     {% for photo in photos %}
-    <div class="card-container">
-        <div class="card">
-            <!-- Face avant -->
-            <div class="card-front">
-                <img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" class="photo-thumbnail">
-            </div>
-            <!-- Face arrière -->
-            <div class="card-back">
-                <div>
-                    <p>{{ photo.title }}</p>
-                    {% if is_granted('ROLE_USER') %}
-                        <div class="photo-actions">
-                            <!-- Conteneur React pour les autres contrôles -->
-                            <div id="photo-controls-{{ photo.id }}" 
-                                data-photo-id="{{ photo.id }}" 
-                                data-photo-title="{{ photo.title }}" 
-                                data-photo-url="{{ asset('uploads/photos/' ~ photo.filePath) }}"
-                                data-initial-likes="{{ photo.likesCount }}"
-                                data-photo-path="{{ path('photo_show', { 'id': photo.id }) }}">
-                            </div>
+        {% if photo.isVisible and photo.isApproved %}
+            <div class="card-container">
+                <div class="card">
+                    <!-- Face avant -->
+                    <div class="card-front">
+                        <img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" class="photo-thumbnail">
+                    </div>
+                    <!-- Face arrière -->
+                    <div class="card-back">
+                        <div>
+                            <p>{{ photo.title }}</p>
+                            {% if is_granted('ROLE_USER') %}
+                                <div class="photo-actions">
+                                    <!-- Conteneur React pour les autres contrôles -->
+                                    <div id="photo-controls-{{ photo.id }}" 
+                                        data-photo-id="{{ photo.id }}" 
+                                        data-photo-title="{{ photo.title }}" 
+                                        data-photo-url="{{ asset('uploads/photos/' ~ photo.filePath) }}"
+                                        data-initial-likes="{{ photo.likesCount }}"
+                                        data-photo-path="{{ path('photo_show', { 'id': photo.id }) }}">
+                                    </div>
+                                </div>
+                            {% endif %}
                         </div>
-                    {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        {% endif %}
     {% endfor %}
 
 {% endblock %}

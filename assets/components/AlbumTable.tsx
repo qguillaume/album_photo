@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Album } from '../ts/types';
 import Pagination from "./PaginationDashboard";
 
@@ -9,14 +9,40 @@ interface AlbumTableProps {
 }
 
 const AlbumTable: React.FC<AlbumTableProps> = ({ albums, onAlbumsUpdate }) => {
+  const [currentUserRoles, setCurrentUserRoles] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
   const [editingAlbumId, setEditingAlbumId] = useState<number | null>(null);
   const [newAlbumName, setNewAlbumName] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1); // Page actuelle
   const albumsPerPage = 10; // Nombre d'albums par page
+  const isSuperAdmin = currentUserRoles.includes("ROLE_SUPER_ADMIN");
   const [sortConfig, setSortConfig] = useState<{ key: keyof Album; direction: "asc" | "desc" }>({
     key: "id",
     direction: "asc",
   });
+
+  useEffect(() => {
+      const fetchCurrentUser = async () => {
+        try {
+          const response = await fetch("/api/current_user");
+          if (!response.ok) {
+            throw new Error("Erreur dans la réponse de l'API");
+          }
+          const data = await response.json();
+          setCurrentUserRoles(data.roles || []);
+        } catch (error) {
+          console.error("Erreur lors de la récupération des rôles:", error);
+        } finally {
+          setLoading(false); // Désactive l'état de chargement
+        }
+      };
+  
+      fetchCurrentUser();
+    }, []);
+
+    if (loading) {
+      return <div>Chargement...</div>; // Affiche un message pendant le chargement
+    }
 
   // Fonction pour trier les albums
   const sortedAlbums = [...albums].sort((a, b) => {
@@ -112,6 +138,25 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, onAlbumsUpdate }) => {
       });
   };
 
+  // Fonction pour gérer l'approbation des albums
+  const handleApprovalChange = (albumId: number, newApproval: boolean) => {
+    fetch(`http://localhost:8000/album/${albumId}/approval`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ isApproved: newApproval }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const updatedAlbums = albums.map((album) =>
+          album.id === albumId ? { ...album, isApproved: newApproval } : album
+        );
+        onAlbumsUpdate(updatedAlbums);
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la mise à jour de l'approbation:", error);
+      });
+  };
+
   // Calculer le nombre total de pages
   const totalPages = Math.ceil(albums.length / albumsPerPage);
 
@@ -131,7 +176,8 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, onAlbumsUpdate }) => {
             <th onClick={() => handleSort("photos")}>
               Nombre de photos contenu dans l'album {sortConfig.key === "photos" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
-            <th>Visibilité</th>
+            {isSuperAdmin && (<th>Approbation</th>)}
+            {isSuperAdmin && (<th>Visibilité</th>)}
             <th>Actions</th>
           </tr>
         </thead>
@@ -152,7 +198,17 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, onAlbumsUpdate }) => {
                 )}
               </td>
               <td>{album.photos.length}</td>
-              <td>
+              {isSuperAdmin && (<td>
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    checked={album.isApproved}
+                    onChange={(e) => handleApprovalChange(album.id, e.target.checked)}
+                  />
+                  <span className="slider"></span>
+                  </label>
+                </td>)}
+                {isSuperAdmin && (<td>
                 <label className="switch">
                   <input
                     type="checkbox"
@@ -161,7 +217,7 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, onAlbumsUpdate }) => {
                   />
                   <span className="slider"></span>
                 </label>
-              </td>
+              </td>)}
               <td className="td-actions">
                 <div className="crud-buttons">
                   {editingAlbumId === album.id ? (
