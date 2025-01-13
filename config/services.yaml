@@ -35,16 +35,22 @@ services:
     App\Controller\TranslationController:
             tags:
                 - { name: 'controller.service_arguments' }
+
     App\EventListener\LocaleListener:
         arguments:
             $defaultLocale: 'fr' # La langue par défaut ici
         tags:
             - { name: kernel.event_listener, event: kernel.request, priority: 10 }
+
     App\EventListener\CheckUserBanListener:
-            arguments:
-                $security: '@security.helper'
-            tags:
-                - { name: 'kernel.event_subscriber' }
+        arguments:
+            $security: '@security.helper'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+            
+    App\EventListener\AlbumListener:
+        tags:
+            - { name: doctrine.event_listener, event: preRemove }
 # Pensez à décommenter pour la prod
 # framework:
 #     error_controller: 'App\Controller\ErrorController::showError'

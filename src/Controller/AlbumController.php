@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\AlbumRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Security;
+use App\Service\AlbumVisibilityService;
 
 class AlbumController extends AbstractController
 {
@@ -105,9 +106,9 @@ class AlbumController extends AbstractController
                     return [
                         'id' => $photo->getId(),
                         'title' => $photo->getTitle(),
-                        // Ajoute les autres attributs de la photo si nécessaire
+
                     ];
-                }, $album->getPhotos()->toArray()), // Assure-toi que getPhotos() retourne un tableau ou une collection
+                }, $album->getPhotos()->toArray()),
             ];
         }
 
@@ -138,5 +139,30 @@ class AlbumController extends AbstractController
         $em->remove($album);
         $em->flush();
         return new JsonResponse(['message' => 'Album supprimé avec succès']);
+    }
+
+    /**
+     * @Route("/album/{id}/visibility", name="update_album_visibility", methods={"POST"})
+     */
+    public function updateVisibility(
+        Album $album,
+        AlbumVisibilityService $albumVisibilityService,
+        EntityManagerInterface $entityManager,
+        Request $request
+    ): JsonResponse {
+        $user = $this->getUser();
+
+        // Vérifie si l'utilisateur est bien le créateur de l'album ou admin
+        if ($album->getCreator() !== $user && !$this->isGranted('ROLE_ADMIN')) {
+            return $this->json(['error' => 'Vous n\'êtes pas autorisé à modifier cet album.'], 403);
+        }
+
+        // Récupérer le paramètre `isVisible` de la requête
+        $isVisible = json_decode($request->getContent(), true)['isVisible'] ?? false;
+
+        // Utilisation du service pour mettre à jour la visibilité
+        $albumVisibilityService->updateAlbumVisibility($album, $isVisible);
+
+        return $this->json(['message' => 'Visibilité mise à jour avec succès !']);
     }
 }

@@ -65,6 +65,16 @@ class Photo
      */
     private $createdAt;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private bool $isApproved = false;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private bool $isVisible = false;
+
     public function __construct()
     {
         $this->likes = new ArrayCollection();
@@ -132,6 +142,28 @@ class Photo
     public function setCreatedAt(\DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    public function getIsApproved(): bool
+    {
+        return $this->isApproved;
+    }
+
+    public function setIsApproved(bool $isApproved): self
+    {
+        $this->isApproved = $isApproved;
+        return $this;
+    }
+
+    public function getIsVisible(): bool
+    {
+        return $this->isVisible;
+    }
+
+    public function setIsVisible(bool $isVisible): self
+    {
+        $this->isVisible = $isVisible;
         return $this;
     }
 

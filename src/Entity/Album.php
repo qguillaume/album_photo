@@ -37,6 +37,11 @@ class Album
     private $createdAt;
 
     /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private bool $isVisible = false;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Photo", mappedBy="album", cascade={"persist", "remove"})
      */
     private Collection $photos;
@@ -127,6 +132,17 @@ class Album
     public function setCreatedAt(\DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    public function getIsVisible(): bool
+    {
+        return $this->isVisible;
+    }
+
+    public function setIsVisible(bool $isVisible): self
+    {
+        $this->isVisible = $isVisible;
         return $this;
     }
 
