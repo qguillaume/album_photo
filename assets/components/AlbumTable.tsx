@@ -166,13 +166,22 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
   const totalPages = Math.ceil(albums.length / albumsPerPage);
   const album = albums.find((a) => a.id === editingAlbumId);
   const albumCreatorId = album ? album.creator : 0;
-            const canEditOrDelete =
-            isSuperAdmin || 
-            (isAdmin && (
-              albumCreatorId === currentUserId || 
-              (albumCreatorId !== currentUserId && users.find(user => user.id === albumCreatorId)?.roles.length === 1 && users.find(user => user.id === albumCreatorId)?.roles.includes('ROLE_USER'))
-            )) || 
-            (isUser && albumCreatorId === currentUserId);
+
+  // Vérifier si l'utilisateur peut modifier ou supprimer l'album
+  const canEditOrDelete =
+    isSuperAdmin ||
+    (isAdmin &&
+      (albumCreatorId === currentUserId ||
+        (albumCreatorId !== currentUserId &&
+          users.find((user) => user.id === albumCreatorId)?.roles.length === 1 &&
+          users.find((user) => user.id === albumCreatorId)?.roles.includes("ROLE_USER")))) ||
+    (isUser && albumCreatorId === currentUserId);
+
+  // Fonction pour obtenir le nom de l'utilisateur à partir de l'ID
+  const getUserNameById = (userId: number) => {
+    const user = users.find((user) => user.id === userId);
+    return user ? user.username : "Inconnu";
+  };
 
   return (
     <div className="table-container">
@@ -214,64 +223,63 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
                   album.nomAlbum
                 )}
               </td>
-              <td>{album.creator}</td>
+              <td>{getUserNameById(album.creator)}</td>
               <td>{album.photos.length}</td>
-              {isSuperAdmin && (<td>
-                <label className="switch">
-                  <input
-                    type="checkbox"
-                    checked={album.isApproved}
-                    onChange={(e) => handleApprovalChange(album.id, e.target.checked)}
-                  />
-                  <span className="slider"></span>
-                  </label>
-                </td>)}
-                {isSuperAdmin && (<td>
-                <label className="switch">
-                  <input
-                    type="checkbox"
-                    checked={album.isVisible}
-                    onChange={(e) => handleVisibilityChange(album.id, e.target.checked)}
-                  />
-                  <span className="slider"></span>
-                </label>
-              </td>)}
+              {isSuperAdmin && (
+                <>
+                  <td>
+                    <label className="switch">
+                      <input
+                        type="checkbox"
+                        checked={album.isApproved}
+                        onChange={(e) => handleApprovalChange(album.id, e.target.checked)}
+                      />
+                      <span className="slider"></span>
+                    </label>
+                  </td>
+                  <td>
+                    <label className="switch">
+                      <input
+                        type="checkbox"
+                        checked={album.isVisible}
+                        onChange={(e) => handleVisibilityChange(album.id, e.target.checked)}
+                      />
+                      <span className="slider"></span>
+                    </label>
+                  </td>
+                </>
+              )}
               <td className="td-actions">
                 <div className="crud-buttons">
-                {canEditOrDelete && ( <>
-                  {editingAlbumId === album.id ? (
+                  {canEditOrDelete && (
                     <>
-                      <button className="validate" onClick={() => handleEdit(album.id)}>
-                        Valider
-                      </button>
-                      <button
-                        className="cancel"
-                        onClick={() => setEditingAlbumId(null)}
-                      >
-                        Annuler
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <button
-                        className="edit"
-                        onClick={() => {
-                          setEditingAlbumId(album.id);
-                          setNewAlbumName(album.nomAlbum);
-                        }}
-                      >
-                        Modifier
-                      </button>
-                      <button
-                        className="delete"
-                        onClick={() => handleDelete(album.id)}
-                      >
-                        Supprimer
-                      </button>
+                      {editingAlbumId === album.id ? (
+                        <>
+                          <button className="validate" onClick={() => handleEdit(album.id)}>
+                            Valider
+                          </button>
+                          <button className="cancel" onClick={() => setEditingAlbumId(null)}>
+                            Annuler
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            className="edit"
+                            onClick={() => {
+                              setEditingAlbumId(album.id);
+                              setNewAlbumName(album.nomAlbum);
+                            }}
+                          >
+                            Modifier
+                          </button>
+                          <button className="delete" onClick={() => handleDelete(album.id)}>
+                            Supprimer
+                          </button>
+                        </>
+                      )}
                     </>
                   )}
-                  </>
-                )}
                 </div>
               </td>
             </tr>
