@@ -20,6 +20,8 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
 
   const usersPerPage = 10;
 
+  const [currentUser, setCurrentUser] = useState<User | null>(null); // Ajouter un état pour l'utilisateur courant
+
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
@@ -28,9 +30,10 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
           throw new Error("Erreur dans la réponse de l'API");
         }
         const data = await response.json();
+        setCurrentUser(data); // Stocker les informations de l'utilisateur courant
         setCurrentUserRoles(data.roles || []);
       } catch (error) {
-        console.error("Erreur lors de la récupération des rôles:", error);
+        console.error("Erreur lors de la récupération de l'utilisateur courant :", error);
       } finally {
         setLoading(false); // Désactive l'état de chargement
       }
@@ -186,37 +189,51 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
           </tr>
         </thead>
         <tbody>
-          {currentUsers.map((user, index) => {
-            const rowClass = (index + 1) % 2 === 0 ? "even-row-users" : "odd-row-users";
+        {currentUsers.map((user, index) => {
+          const rowClass = (index + 1) % 2 === 0 ? "even-row-users" : "odd-row-users";
 
-            return (
-              <tr key={user.id} className={rowClass}>
-                <td>{user.id}</td>
-                <td>{user.username}</td>
-                <td>{user.email}</td>
-                {isSuperAdmin && (<td>
-                <label className="switch">
-                    <input
-                      type="checkbox"
-                      checked={user.roles.includes("ROLE_ADMIN")}
-                      onChange={(e) => handleRoleChange(user.id, e.target.checked)}
-                    />
-                    <span className="slider"></span>
-                  </label>
-                </td>)}
-                {(isSuperAdmin || isAdmin) && (<td>
-                <label className="switch">
-                    <input
-                      type="checkbox"
-                      checked={user.isBanned} // Afficher l'état de bannissement
-                      onChange={(e) => handleBanChange(user.id, e.target.checked)} // Gérer le bannissement
-                    />
-                    <span className="slider"></span>
-                  </label>
-                </td>)}
-              </tr>
-            );
-          })}
+          // Conditions pour afficher ou non les commutateurs
+          const isCurrentUser = currentUser && user.id === currentUser.id; // Vérifie si c'est l'utilisateur courant
+          const isSuperAdminUser = user.roles.includes("ROLE_SUPER_ADMIN"); // Vérifie si c'est un super admin
+          const isAdminUser = user.roles.includes("ROLE_ADMIN") && !isSuperAdminUser; // Vérifie si c'est un admin non super admin
+          const isSimpleUser = user.roles.includes("ROLE_USER") && !isSuperAdminUser && !isAdminUser; // Vérifie si c'est un simple utilisateur
+
+          return (
+            <tr key={user.id} className={rowClass}>
+              <td>{user.id}</td>
+              <td>{user.username}</td>
+              <td>{user.email}</td>
+              {isSuperAdmin && (
+                <td>
+                  {!isCurrentUser && !isSuperAdminUser && (
+                    <label className="switch">
+                      <input
+                        type="checkbox"
+                        checked={user.roles.includes("ROLE_ADMIN")}
+                        onChange={(e) => handleRoleChange(user.id, e.target.checked)}
+                      />
+                      <span className="slider"></span>
+                    </label>
+                  )}
+                </td>
+              )}
+              {(isSuperAdmin || isAdmin) && (
+                <td>
+                  {((isSuperAdmin && !isCurrentUser && !isSuperAdminUser) || (isAdmin && isSimpleUser)) && (
+                    <label className="switch">
+                      <input
+                        type="checkbox"
+                        checked={user.isBanned}
+                        onChange={(e) => handleBanChange(user.id, e.target.checked)}
+                      />
+                      <span className="slider"></span>
+                    </label>
+                  )}
+                </td>
+              )}
+            </tr>
+          );
+        })}
         </tbody>
       </table>
       <Pagination currentPage={currentPage} totalPages={totalPages} onPaginate={paginate} />
