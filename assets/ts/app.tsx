@@ -163,7 +163,7 @@ const PhotosTable = () => {
 
 const AlbumsTable = () => {
   const [albums, setAlbums] = useState<Album[]>([]);
-
+  const [users, setUsers] = useState<User[]>([]);
   // Fonction pour mettre à jour les albums
   const handleAlbumsUpdate = (updatedAlbums: Album[]) => {
     setAlbums(updatedAlbums);
@@ -172,7 +172,10 @@ const AlbumsTable = () => {
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/albums_list`)
       .then((response) => response.json())
-      .then((data) => setAlbums(data))
+      .then((data) => {
+        setAlbums(data.albums);
+        setUsers(data.users);
+      })
       .catch((error) => console.error("Erreur lors du fetch des albums", error));
   }, []);
   
@@ -181,7 +184,7 @@ const AlbumsTable = () => {
     <div>
       {albums.map((album) => (
         <div>
-          <AlbumTable albums={albums} onAlbumsUpdate={handleAlbumsUpdate} />
+          <AlbumTable albums={albums} users={users} onAlbumsUpdate={handleAlbumsUpdate} />
         </div>
       ))}
     </div>

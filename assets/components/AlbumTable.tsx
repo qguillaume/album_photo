@@ -1,44 +1,49 @@
 import React, { useState, useEffect } from "react";
-import { Album } from '../ts/types';
+import { Album, User } from '../ts/types';
 import Pagination from "./PaginationDashboard";
 
 // AlbumTable.tsx
 interface AlbumTableProps {
-  albums: Album[]; // Les albums sont passés en props
+  albums: Album[];
+  users: User[];
   onAlbumsUpdate: (updatedAlbums: Album[]) => void;
 }
 
-const AlbumTable: React.FC<AlbumTableProps> = ({ albums, onAlbumsUpdate }) => {
+const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }) => {
   const [currentUserRoles, setCurrentUserRoles] = useState<string[]>([]);
+  const [currentUserId, setCurrentUserId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [editingAlbumId, setEditingAlbumId] = useState<number | null>(null);
   const [newAlbumName, setNewAlbumName] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1); // Page actuelle
   const albumsPerPage = 10; // Nombre d'albums par page
   const isSuperAdmin = currentUserRoles.includes("ROLE_SUPER_ADMIN");
+  const isAdmin = currentUserRoles.includes("ROLE_ADMIN");
+  const isUser = currentUserRoles.includes("ROLE_USER");
   const [sortConfig, setSortConfig] = useState<{ key: keyof Album; direction: "asc" | "desc" }>({
     key: "id",
     direction: "asc",
   });
 
   useEffect(() => {
-      const fetchCurrentUser = async () => {
-        try {
-          const response = await fetch("/api/current_user");
-          if (!response.ok) {
-            throw new Error("Erreur dans la réponse de l'API");
-          }
-          const data = await response.json();
-          setCurrentUserRoles(data.roles || []);
-        } catch (error) {
-          console.error("Erreur lors de la récupération des rôles:", error);
-        } finally {
-          setLoading(false); // Désactive l'état de chargement
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await fetch("/api/current_user");
+        if (!response.ok) {
+          throw new Error("Erreur dans la réponse de l'API");
         }
-      };
-  
-      fetchCurrentUser();
-    }, []);
+        const data = await response.json();
+        setCurrentUserRoles(data.roles || []);
+        setCurrentUserId(data.id);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des rôles:", error);
+      } finally {
+        setLoading(false); // Désactive l'état de chargement
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
 
     if (loading) {
       return <div>Chargement...</div>; // Affiche un message pendant le chargement
@@ -159,6 +164,15 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, onAlbumsUpdate }) => {
 
   // Calculer le nombre total de pages
   const totalPages = Math.ceil(albums.length / albumsPerPage);
+  const album = albums.find((a) => a.id === editingAlbumId);
+  const albumCreatorId = album ? album.creator : 0;
+            const canEditOrDelete =
+            isSuperAdmin || 
+            (isAdmin && (
+              albumCreatorId === currentUserId || 
+              (albumCreatorId !== currentUserId && users.find(user => user.id === albumCreatorId)?.roles.length === 1 && users.find(user => user.id === albumCreatorId)?.roles.includes('ROLE_USER'))
+            )) || 
+            (isUser && albumCreatorId === currentUserId);
 
   return (
     <div className="table-container">
@@ -172,6 +186,9 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, onAlbumsUpdate }) => {
             </th>
             <th onClick={() => handleSort("nomAlbum")}>
               Nom de l'album {sortConfig.key === "nomAlbum" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+            </th>
+            <th onClick={() => handleSort("creator")}>
+              Créateur de l'album {sortConfig.key === "creator" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
             <th onClick={() => handleSort("photos")}>
               Nombre de photos contenu dans l'album {sortConfig.key === "photos" && (sortConfig.direction === "asc" ? "↑" : "↓")}
@@ -197,6 +214,7 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, onAlbumsUpdate }) => {
                   album.nomAlbum
                 )}
               </td>
+              <td>{album.creator}</td>
               <td>{album.photos.length}</td>
               {isSuperAdmin && (<td>
                 <label className="switch">
@@ -220,6 +238,7 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, onAlbumsUpdate }) => {
               </td>)}
               <td className="td-actions">
                 <div className="crud-buttons">
+                {canEditOrDelete && ( <>
                   {editingAlbumId === album.id ? (
                     <>
                       <button className="validate" onClick={() => handleEdit(album.id)}>
@@ -251,6 +270,8 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, onAlbumsUpdate }) => {
                       </button>
                     </>
                   )}
+                  </>
+                )}
                 </div>
               </td>
             </tr>

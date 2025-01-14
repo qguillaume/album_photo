@@ -212,7 +212,7 @@ const DashboardTabs: React.FC = () => {
       </div>
 
       <div className="tab-content">
-        {activeTab === 'albums' && <AlbumTable albums={albums} onAlbumsUpdate={handleAlbumsUpdate} />}
+        {activeTab === 'albums' && <AlbumTable albums={albums} users={users} onAlbumsUpdate={handleAlbumsUpdate} />}
         {activeTab === 'photos' && (
           <PhotoTable
             photos={photos}
