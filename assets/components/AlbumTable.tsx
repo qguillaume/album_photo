@@ -164,23 +164,27 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
 
   // Calculer le nombre total de pages
   const totalPages = Math.ceil(albums.length / albumsPerPage);
-  const album = albums.find((a) => a.id === editingAlbumId);
-  const albumCreatorId = album ? album.creator : 0;
-
-  // Vérifier si l'utilisateur peut modifier ou supprimer l'album
-  const canEditOrDelete =
-    isSuperAdmin ||
-    (isAdmin &&
-      (albumCreatorId === currentUserId ||
-        (albumCreatorId !== currentUserId &&
-          users.find((user) => user.id === albumCreatorId)?.roles.length === 1 &&
-          users.find((user) => user.id === albumCreatorId)?.roles.includes("ROLE_USER")))) ||
-    (isUser && albumCreatorId === currentUserId);
 
   // Fonction pour obtenir le nom de l'utilisateur à partir de l'ID
   const getUserNameById = (userId: number) => {
     const user = users.find((user) => user.id === userId);
     return user ? user.username : "Inconnu";
+  };
+
+  // Vérification des permissions d'affichage des boutons (Admin, SuperAdmin, User)
+  const canEditOrDelete = (albumCreatorId: number) => {
+    return (
+      isSuperAdmin || 
+      (isAdmin && 
+        (albumCreatorId === currentUserId || 
+          (albumCreatorId !== currentUserId && 
+            users.find((user) => user.id === albumCreatorId)?.roles.length === 1 &&
+            users.find((user) => user.id === albumCreatorId)?.roles.includes("ROLE_USER")
+          )
+        )
+      ) || 
+      (isUser && albumCreatorId === currentUserId)
+    );
   };
 
   return (
@@ -251,7 +255,7 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
               )}
               <td className="td-actions">
                 <div className="crud-buttons">
-                  {canEditOrDelete && (
+                  {canEditOrDelete(album.creator) && (
                     <>
                       {editingAlbumId === album.id ? (
                         <>
