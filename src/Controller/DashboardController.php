@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repository\AlbumRepository;
 use App\Repository\PhotoRepository;
+use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractController
 {

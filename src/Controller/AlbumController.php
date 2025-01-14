@@ -32,10 +32,11 @@ class AlbumController extends AbstractController
 
     /**
      * @Route("/album/new", name="album_new")
-     * @IsGranted({"ROLE_ADMIN"})
      */
     public function new(Request $request, EntityManagerInterface $em): Response
     {
+        // Vérifier si l'utilisateur a le rôle 'ROLE_ADMIN'
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $album = new Album();
         $form = $this->createForm(AlbumFormType::class, $album);
         $form->handleRequest($request);

@@ -16,6 +16,7 @@ use App\Repository\PhotoRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Comment;
 use App\Form\CommentFormType;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class PhotoController extends AbstractController
 {
@@ -45,6 +46,11 @@ class PhotoController extends AbstractController
 
         if (!$album) {
             throw $this->createNotFoundException('Album non trouvé');
+        }
+
+        // Vérifier si l'album est visible et approuvé
+        if (!$album->getIsVisible() || !$album->getIsApproved()) {
+            throw new AccessDeniedException('Vous n\'avez pas l\'autorisation d\'accéder à cet album');
         }
 
         // Retourner la vue Twig avec les photos de l'album
@@ -231,6 +237,13 @@ class PhotoController extends AbstractController
         if (!$photo) {
             throw $this->createNotFoundException('Photo non trouvée');
         }
+
+        // Vérifier si la photo est visible et approuvée
+        if (!$photo->getIsVisible() || !$photo->getIsApproved()) {
+            throw new AccessDeniedException('Vous n\'avez pas l\'autorisation d\'accéder à cette photo');
+        }
+
+
 
         // Récupérer les commentaires associés à la photo
         $comments = $em->getRepository(Comment::class)->findBy(['photo' => $photo]);
