@@ -62,22 +62,30 @@ const PhotoControls: React.FC<PhotoControlsProps> = ({
     }
   };
 
-  return isOwner ? (
+  return (
     <div className="photo-controls">
-      <button className="btn-like" onClick={handleLike}>
-        ❤️ {likesCount}
-      </button>
+      {!isOwner && (
+        <>
+          <button className="btn-like" onClick={handleLike}>
+            ❤️ {likesCount}
+          </button>
+        </>
+      )}
       <a href={photoPath} className="btn-view">
         👁️
       </a>
-      <button className="btn-rename" onClick={handleRename}>
-        ✏️
-      </button>
-      <button className="btn-delete" onClick={handleDelete}>
-        ❌
-      </button>
-    </div>
-  ) : null;
+      {isOwner && (
+        <>
+          <button className="btn-rename" onClick={handleRename}>
+            ✏️
+          </button>
+          <button className="btn-delete" onClick={handleDelete}>
+            ❌
+          </button>
+        </>
+      )}
+      </div>
+  );
 };
 
 export default PhotoControls;

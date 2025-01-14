@@ -3,8 +3,7 @@
 {% block body %}
 <h2>{{ 'pictures_of_album'|trans }} {{ album.getNomAlbum() }}</h2>
 
-
-    {% for photo in photos %}
+{% for photo in photos %}
     {% if photo.isVisible and photo.isApproved %}
         <div class="card-container">
             <div class="card">
@@ -18,16 +17,27 @@
                         <p>{{ photo.title }}</p>
                         {% if is_granted('ROLE_USER') %}
                             <div class="photo-actions">
-                                {% if is_owner %}
-                                    <div id="photo-controls-{{ photo.id }}" 
-                                        data-photo-id="{{ photo.id }}" 
-                                        data-photo-title="{{ photo.title }}" 
-                                        data-photo-url="{{ asset('uploads/photos/' ~ photo.filePath) }}"
-                                        data-initial-likes="{{ photo.likesCount }}"
-                                        data-photo-path="{{ path('photo_show', { 'id': photo.id }) }}"
-                                        data-is-owner="{{ is_owner }}">
-                                    </div>
-                                {% endif %}
+                                <div id="photo-controls-{{ photo.id }}" 
+                                    data-photo-id="{{ photo.id }}" 
+                                    data-photo-title="{{ photo.title }}" 
+                                    data-photo-url="{{ asset('uploads/photos/' ~ photo.filePath) }}"
+                                    data-initial-likes="{{ photo.likesCount }}"
+                                    data-photo-path="{{ path('photo_show', { 'id': photo.id }) }}"
+                                    data-is-owner="{{ is_owner }}">
+
+                                    {% if not is_owner %}
+                                        <button class="btn-like" onClick="handleLike({{ photo.id }})">
+                                            ❤️ {{ photo.likesCount }}
+                                        </button>
+                                    {% endif %}
+
+                                    <a href="{{ path('photo_show', { 'id': photo.id }) }}" class="btn-view">👁️ Voir</a>
+                                    
+                                    {% if is_owner %}
+                                        <button class="btn-rename" onClick="handleRename({{ photo.id }})">✏️ Renommer</button>
+                                        <button class="btn-delete" onClick="handleDelete({{ photo.id }})">❌ Supprimer</button>
+                                    {% endif %}
+                                </div>
                             </div>
                         {% endif %}
                     </div>
