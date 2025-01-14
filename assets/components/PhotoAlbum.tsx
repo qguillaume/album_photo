@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import PhotoControls from './PhotoControls';
 
 interface Photo {
     id: number;
     title: string;
     url: string;
     likesCount: number;
+    isOwner: boolean;
 }
 
 interface PhotoAlbumProps {
@@ -50,22 +52,36 @@ const PhotoAlbum: React.FC<PhotoAlbumProps> = ({ photos }) => {
 
     return (
         <div className="photo-album">
-            {photos.map((photo) => (
-                <div key={photo.id} className="photo-item">
-                    <img
-                        src={photo.url}
-                        alt={photo.title}
-                        className="photo-thumbnail"
-                    />
-                    <div className="photo-info">
-                        <h4>{photo.title}</h4>
-                        <p>{likes.get(photo.id)} likes</p>
-                        <button onClick={() => handleLike(photo.id)}>
-                            Like
-                        </button>
+            {photos.map((photo) => {
+                return (
+                    <div key={photo.id} className="photo-item">
+                        <img
+                            src={photo.url}
+                            alt={photo.title}
+                            className="photo-thumbnail"
+                        />
+                        <div className="photo-info">
+                            <h4>{photo.title}</h4>
+                            <p>{likes.get(photo.id)} likes</p>
+                            <button onClick={() => handleLike(photo.id)}>
+                                Like
+                            </button>
+
+                            <PhotoControls
+                                photoId={photo.id}
+                                photoTitle={photo.title}
+                                photoUrl={photo.url}
+                                initialLikesCount={likes.get(photo.id) || 0}
+                                onRename={() => {}}
+                                onDelete={() => {}}
+                                onLike={() => {}}
+                                photoPath={photo.url}
+                                isOwner={photo.isOwner}
+                            />
+                        </div>
                     </div>
-                </div>
-            ))}
+                );
+            })}
         </div>
     );
 };

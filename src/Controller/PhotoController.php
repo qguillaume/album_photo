@@ -48,6 +48,11 @@ class PhotoController extends AbstractController
             throw $this->createNotFoundException('Album non trouvé');
         }
 
+        $user = $this->getUser();
+
+        // Vérifier si l'utilisateur est le créateur de l'album
+        $isOwner = $album->getCreator() === $user;
+
         // Vérifier si l'album est visible et approuvé
         if (!$album->getIsVisible() || !$album->getIsApproved()) {
             throw new AccessDeniedException('Vous n\'avez pas l\'autorisation d\'accéder à cet album');
@@ -57,6 +62,7 @@ class PhotoController extends AbstractController
         return $this->render('photo/photos_by_album.html.twig', [
             'album' => $album,
             'photos' => $album->getPhotos(),
+            'is_owner' => $isOwner,
         ]);
     }
 
@@ -203,12 +209,27 @@ class PhotoController extends AbstractController
      */
     public function listPhotos(PhotoRepository $photoRepository): JsonResponse
     {
+        // Récupérer l'utilisateur connecté
+        $user = $this->getUser();
+
+        if (!$user) {
+            return new JsonResponse(['error' => 'Utilisateur non connecté'], 401);
+        }
+
         // Récupérer toutes les photos
         $photos = $photoRepository->findAll();
 
         // Convertir les photos en un tableau JSON
         $photosData = [];
         foreach ($photos as $photo) {
+            // Vérifier si l'utilisateur est le propriétaire de la photo
+            $isOwner = $photo->getAlbum() && $photo->getAlbum()->getCreator() === $user;
+
+            // Vérifier si la photo est visible et approuvée
+            if (!$photo->getIsVisible() || !$photo->getIsApproved()) {
+                continue;  // Si la photo n'est pas visible ou approuvée, on passe à la suivante
+            }
+
             $photosData[] = [
                 'id' => $photo->getId(),
                 'title' => $photo->getTitle(),
@@ -218,12 +239,14 @@ class PhotoController extends AbstractController
                 'commentsCount' => $photo->getCommentsCount(),
                 'isVisible' => $photo->getIsVisible(),
                 'isApproved' => $photo->getIsApproved(),
+                'isOwner' => $isOwner,  // Ajouter la vérification du propriétaire
             ];
         }
 
         // Retourner une réponse JSON
         return new JsonResponse($photosData);
     }
+
 
     /**
      * @Route("/photo/{id}", name="photo_show", requirements={"id"="\d+"}, methods={"GET", "POST"})

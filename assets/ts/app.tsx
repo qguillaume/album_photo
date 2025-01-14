@@ -421,11 +421,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const photoUrl = el.getAttribute("data-photo-url");
     const initialLikesCount = parseInt(el.getAttribute("data-initial-likes") || "0", 10);
     const photoPath = el.getAttribute("data-photo-path") || "#";
-
+    const isOwnerString = el.getAttribute('data-is-owner');
+    const isOwner = isOwnerString === '1' ? true : false;
+  
     const onLike = (id: number) => {
       console.log(`Photo ${id} aimée!`);
     };
-
+  
     if (photoId && photoTitle && photoUrl) {
       ReactDOM.createRoot(el).render(
         <PhotoControls
@@ -434,6 +436,7 @@ document.addEventListener("DOMContentLoaded", () => {
           photoUrl={photoUrl}
           initialLikesCount={initialLikesCount}
           photoPath={photoPath}
+          isOwner={isOwner}
           onRename={(id, newName) => {
             fetch(`${process.env.REACT_APP_API_URL}/photo/rename/${id}`, {
               method: "POST",

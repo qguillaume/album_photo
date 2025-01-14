@@ -5,35 +5,37 @@
 
 
     {% for photo in photos %}
-        {% if photo.isVisible and photo.isApproved %}
-            <div class="card-container">
-                <div class="card">
-                    <!-- Face avant -->
-                    <div class="card-front">
-                        <img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" class="photo-thumbnail">
-                    </div>
-                    <!-- Face arrière -->
-                    <div class="card-back">
-                        <div>
-                            <p>{{ photo.title }}</p>
-                            {% if is_granted('ROLE_USER') %}
-                                <div class="photo-actions">
-                                    <!-- Conteneur React pour les autres contrôles -->
+    {% if photo.isVisible and photo.isApproved %}
+        <div class="card-container">
+            <div class="card">
+                <!-- Face avant -->
+                <div class="card-front">
+                    <img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" class="photo-thumbnail">
+                </div>
+                <!-- Face arrière -->
+                <div class="card-back">
+                    <div>
+                        <p>{{ photo.title }}</p>
+                        {% if is_granted('ROLE_USER') %}
+                            <div class="photo-actions">
+                                {% if is_owner %}
                                     <div id="photo-controls-{{ photo.id }}" 
                                         data-photo-id="{{ photo.id }}" 
                                         data-photo-title="{{ photo.title }}" 
                                         data-photo-url="{{ asset('uploads/photos/' ~ photo.filePath) }}"
                                         data-initial-likes="{{ photo.likesCount }}"
-                                        data-photo-path="{{ path('photo_show', { 'id': photo.id }) }}">
+                                        data-photo-path="{{ path('photo_show', { 'id': photo.id }) }}"
+                                        data-is-owner="{{ is_owner }}">
                                     </div>
-                                </div>
-                            {% endif %}
-                        </div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
-        {% endif %}
-    {% endfor %}
+        </div>
+    {% endif %}
+{% endfor %}
 
 {% endblock %}
 
