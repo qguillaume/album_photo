@@ -70,6 +70,8 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
 
   // Vérifie si l'utilisateur connecté a le rôle ROLE_SUPER_ADMIN
   const isSuperAdmin = currentUserRoles.includes("ROLE_SUPER_ADMIN");
+  // Vérifie si l'utilisateur connecté a le rôle ROLE_ADMIN
+  const isAdmin = currentUserRoles.includes("ROLE_ADMIN");
 
   // Fonction pour gérer l'ajout ou le retrait du rôle "ROLE_ADMIN"
   const handleRoleChange = async (userId: number, isAdmin: boolean) => {
@@ -180,7 +182,7 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
               Email {sortConfig.key === "email" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
             {isSuperAdmin && (<th>Rôle Admin</th>)}
-            {isSuperAdmin && (<th>Est Banni</th>)}
+            {(isSuperAdmin || isAdmin) && (<th>Est Banni</th>)}
           </tr>
         </thead>
         <tbody>
@@ -202,7 +204,7 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
                     <span className="slider"></span>
                   </label>
                 </td>)}
-                {isSuperAdmin && (<td>
+                {(isSuperAdmin || isAdmin) && (<td>
                 <label className="switch">
                     <input
                       type="checkbox"

@@ -205,8 +205,8 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
             <th onClick={() => handleSort("commentsCount")}>
               Nombre de commentaires {sortConfig.key === "commentsCount" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
+            {(isSuperAdmin || isAdmin) && (<th>Approbation</th>)}
             <th>Visibilité</th>
-            {isSuperAdmin && (<th>Approbation</th>)}
             <th>Actions</th>
           </tr>
         </thead>
@@ -241,28 +241,29 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
                 <td>{album ? album.nomAlbum : "Non associé"}</td>
                 <td>{photo.likesCount}</td>
                 <td>{photo.commentsCount || 0}</td>
+                {(isSuperAdmin || isAdmin) && (
                 <td>
                   <label className="switch">
                     <input
                       type="checkbox"
-                      checked={photo.isVisible}
-                      onChange={(e) => handleVisibilityChange(photo.id, e.target.checked)}
+                      checked={photo.isApproved}
+                      onChange={(e) => handleApprovalChange(photo.id, e.target.checked)}
                     />
                     <span className="slider"></span>
                   </label>
                 </td>
-                {isSuperAdmin && (
+                )}
                   <td>
                     <label className="switch">
                       <input
                         type="checkbox"
-                        checked={photo.isApproved}
-                        onChange={(e) => handleApprovalChange(photo.id, e.target.checked)}
+                        checked={photo.isVisible}
+                        onChange={(e) => handleVisibilityChange(photo.id, e.target.checked)}
                       />
                       <span className="slider"></span>
                     </label>
                   </td>
-                )}
+                
                 <td className="td-actions">
                   <div className="crud-buttons">
                     {canEditOrDelete && (
