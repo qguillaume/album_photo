@@ -104,7 +104,7 @@ class AlbumController extends AbstractController
         foreach ($albums as $album) {
             $albumsData[] = [
                 'id' => $album->getId(),
-                'nom' => $album->getNomAlbum(),
+                'nomAlbum' => $album->getNomAlbum(),
                 'photos' => array_map(function ($photo) {
                     return [
                         'id' => $photo->getId(),

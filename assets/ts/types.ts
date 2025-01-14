@@ -12,7 +12,7 @@ export interface Photo {
 
 export interface Album {
   id: number;
-  nom: string;
+  nomAlbum: string;
   photos: Photo[];
   isVisible: boolean;
   isApproved: boolean;

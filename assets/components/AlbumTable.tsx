@@ -92,7 +92,7 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, onAlbumsUpdate }) => {
         if (response.ok) {
           onAlbumsUpdate(
             albums.map((album) =>
-              album.id === id ? { ...album, nom: newAlbumName } : album
+              album.id === id ? { ...album, nomAlbum: newAlbumName } : album
             )
           );
           setEditingAlbumId(null);
@@ -170,8 +170,8 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, onAlbumsUpdate }) => {
             <th onClick={() => handleSort("id")}>
               ID {sortConfig.key === "id" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
-            <th onClick={() => handleSort("nom")}>
-              Nom de l'album {sortConfig.key === "nom" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+            <th onClick={() => handleSort("nomAlbum")}>
+              Nom de l'album {sortConfig.key === "nomAlbum" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
             <th onClick={() => handleSort("photos")}>
               Nombre de photos contenu dans l'album {sortConfig.key === "photos" && (sortConfig.direction === "asc" ? "↑" : "↓")}
@@ -184,7 +184,7 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, onAlbumsUpdate }) => {
         <tbody>
           {currentAlbums.map((album, index) => (
             <tr key={album.id} className={index % 2 === 0 ? "even-row-albums" : "odd-row-albums"}>
-              <td>{index + 1}</td>
+              <td>{album.id}</td>
               <td>
                 {editingAlbumId === album.id ? (
                   <input
@@ -194,7 +194,7 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, onAlbumsUpdate }) => {
                     placeholder="Nouveau nom"
                   />
                 ) : (
-                  album.nom
+                  album.nomAlbum
                 )}
               </td>
               <td>{album.photos.length}</td>
@@ -238,7 +238,7 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, onAlbumsUpdate }) => {
                         className="edit"
                         onClick={() => {
                           setEditingAlbumId(album.id);
-                          setNewAlbumName(album.nom);
+                          setNewAlbumName(album.nomAlbum);
                         }}
                       >
                         Modifier

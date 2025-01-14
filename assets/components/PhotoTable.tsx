@@ -207,7 +207,9 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
         </thead>
         <tbody>
           {currentPhotos.map((photo, index) => {
-            const album = albums.find((a) => a.id === photo.albumId);
+            const album = albums.find((a) => a.photos.some((photoInAlbum) => photoInAlbum.id === photo.id));
+
+            console.log(`Album de la photo ID ${photo.id} :`, album);  // Vérifier l'album trouvé
 
             // Applique une classe différente pour les lignes impaires et paires
             const rowClass = (index + 1) % 2 === 0 ? "even-row-photos" : "odd-row-photos"; 
@@ -227,7 +229,7 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
                     photo.title
                   )}
                 </td>
-                <td>{album ? album.nom : "Non associé"}</td>
+                <td>{album ? album.nomAlbum : "Non associé"}</td>
                 <td>{photo.likesCount}</td>
                 <td>{photo.commentsCount || 0}</td>
                 <td>
