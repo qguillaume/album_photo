@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Photo, Album } from "../ts/types";
+import { Photo, Album, User } from "../ts/types";
 import Pagination from "./PaginationDashboard";
 
 interface PhotoTableProps {
   photos: Photo[];
   albums: Album[];
+  users: User[];
   onPhotosUpdate: (updatedPhotos: Photo[]) => void;
   onAlbumsUpdate: (updatedAlbums: Album[]) => void;
 }
@@ -12,45 +13,51 @@ interface PhotoTableProps {
 const PhotoTable: React.FC<PhotoTableProps> = ({
   photos,
   albums,
+  users,
   onPhotosUpdate,
   onAlbumsUpdate,
 }) => {
   const [currentUserRoles, setCurrentUserRoles] = useState<string[]>([]);
+  const [currentUserId, setCurrentUserId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [editingPhotoId, setEditingPhotoId] = useState<number | null>(null);
   const [newTitle, setNewTitle] = useState<string>("");
+
   const [currentPage, setCurrentPage] = useState(1); // Page actuelle
   const photosPerPage = 10; // Nombre de photos par page
   const isSuperAdmin = currentUserRoles.includes("ROLE_SUPER_ADMIN");
+  const isAdmin = currentUserRoles.includes("ROLE_ADMIN");
+  const isUser = currentUserRoles.includes("ROLE_USER");
+
   const [sortConfig, setSortConfig] = useState<{ key: keyof Photo; direction: "asc" | "desc" }>({
     key: "id",
     direction: "asc",
   });
 
   useEffect(() => {
-      const fetchCurrentUser = async () => {
-        try {
-          const response = await fetch("/api/current_user");
-          if (!response.ok) {
-            throw new Error("Erreur dans la réponse de l'API");
-          }
-          const data = await response.json();
-          setCurrentUserRoles(data.roles || []);
-        } catch (error) {
-          console.error("Erreur lors de la récupération des rôles:", error);
-        } finally {
-          setLoading(false); // Désactive l'état de chargement
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await fetch("/api/current_user");
+        if (!response.ok) {
+          throw new Error("Erreur dans la réponse de l'API");
         }
-      };
-  
-      fetchCurrentUser();
-    }, []);
+        const data = await response.json();
+        setCurrentUserRoles(data.roles || []);
+        setCurrentUserId(data.id);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des rôles:", error);
+      } finally {
+        setLoading(false); // Désactive l'état de chargement
+      }
+    };
 
-    if (loading) {
-      return <div>Chargement...</div>; // Affiche un message pendant le chargement
-    }
+    fetchCurrentUser();
+  }, []);
 
-    
+  if (loading) {
+    return <div>Chargement...</div>;
+  }
+
   // Fonction pour trier les photos
   const sortedPhotos = [...photos].sort((a, b) => {
     let aValue: any = a[sortConfig.key];
@@ -70,16 +77,14 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   // Supprimer une photo
-  const handleDelete = (id: number, albumId: number | undefined) => {
-    console.log(`Suppression demandée pour la photo ID: ${id}, Album ID: ${albumId}`);
-
+  const handleDelete = (id: number, albumId: number | undefined, albumCreatorId: number) => {
     if (window.confirm("Êtes-vous sûr de vouloir supprimer cette photo ?")) {
       fetch(`http://localhost:8000/photo/delete/${id}`, { method: "DELETE" })
         .then((response) => {
           if (response.ok) {
             const updatedPhotos = photos.filter((photo) => photo.id !== id);
             onPhotosUpdate(updatedPhotos);
-
+  
             if (albumId) {
               const updatedAlbums = albums.map((album) =>
                 album.id === albumId
@@ -91,7 +96,7 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
               );
               onAlbumsUpdate(updatedAlbums);
             }
-
+  
             alert("Photo supprimée !");
           } else {
             alert("Erreur lors de la suppression.");
@@ -208,11 +213,15 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
         <tbody>
           {currentPhotos.map((photo, index) => {
             const album = albums.find((a) => a.photos.some((photoInAlbum) => photoInAlbum.id === photo.id));
-
-            console.log(`Album de la photo ID ${photo.id} :`, album);  // Vérifier l'album trouvé
-
-            // Applique une classe différente pour les lignes impaires et paires
-            const rowClass = (index + 1) % 2 === 0 ? "even-row-photos" : "odd-row-photos"; 
+            const rowClass = (index + 1) % 2 === 0 ? "even-row-photos" : "odd-row-photos";
+            const albumCreatorId = album ? album.creator : 0;
+            const canEditOrDelete =
+            isSuperAdmin || 
+            (isAdmin && (
+              albumCreatorId === currentUserId || 
+              (albumCreatorId !== currentUserId && users.find(user => user.id === albumCreatorId)?.roles.length === 1 && users.find(user => user.id === albumCreatorId)?.roles.includes('ROLE_USER'))
+            )) || 
+            (isUser && albumCreatorId === currentUserId);
 
             return (
               <tr key={photo.id} className={rowClass}>
@@ -233,59 +242,65 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
                 <td>{photo.likesCount}</td>
                 <td>{photo.commentsCount || 0}</td>
                 <td>
-                <label className="switch">
-                  <input
-                    type="checkbox"
-                    checked={photo.isVisible}
-                    onChange={(e) => handleVisibilityChange(photo.id, e.target.checked)}
-                  />
-                  <span className="slider"></span>
+                  <label className="switch">
+                    <input
+                      type="checkbox"
+                      checked={photo.isVisible}
+                      onChange={(e) => handleVisibilityChange(photo.id, e.target.checked)}
+                    />
+                    <span className="slider"></span>
                   </label>
                 </td>
-                {isSuperAdmin && (<td>
-                <label className="switch">
-                  <input
-                    type="checkbox"
-                    checked={photo.isApproved}
-                    onChange={(e) => handleApprovalChange(photo.id, e.target.checked)}
-                  />
-                  <span className="slider"></span>
-                  </label>
-                </td>)}
+                {isSuperAdmin && (
+                  <td>
+                    <label className="switch">
+                      <input
+                        type="checkbox"
+                        checked={photo.isApproved}
+                        onChange={(e) => handleApprovalChange(photo.id, e.target.checked)}
+                      />
+                      <span className="slider"></span>
+                    </label>
+                  </td>
+                )}
                 <td className="td-actions">
                   <div className="crud-buttons">
-                    {editingPhotoId === photo.id ? (
+                    {canEditOrDelete && (
                       <>
-                        <button
-                          className="validate"
-                          onClick={() => handleEdit(photo.id)}
-                        >
-                          Valider
-                        </button>
-                        <button
-                          className="cancel"
-                          onClick={() => setEditingPhotoId(null)}
-                        >
-                          Annuler
-                        </button>
-                      </>
-                    ) : (
-                      <>
-                        <button
-                          className="edit"
-                          onClick={() => {
-                            setEditingPhotoId(photo.id);
-                            setNewTitle(photo.title);
-                          }}
-                        >
-                          Modifier
-                        </button>
-                        <button
-                          className="delete"
-                          onClick={() => handleDelete(photo.id, photo.albumId)}
-                        >
-                          Supprimer
-                        </button>
+                        {editingPhotoId === photo.id ? (
+                          <>
+                            <button
+                              className="validate"
+                              onClick={() => handleEdit(photo.id)}
+                            >
+                              Valider
+                            </button>
+                            <button
+                              className="cancel"
+                              onClick={() => setEditingPhotoId(null)}
+                            >
+                              Annuler
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <button
+                              className="edit"
+                              onClick={() => {
+                                setEditingPhotoId(photo.id);
+                                setNewTitle(photo.title);
+                              }}
+                            >
+                              Modifier
+                            </button>
+                            <button
+                              className="delete"
+                              onClick={() => handleDelete(photo.id, photo.albumId, albumCreatorId || 0)}
+                            >
+                              Supprimer
+                            </button>
+                          </>
+                        )}
                       </>
                     )}
                   </div>

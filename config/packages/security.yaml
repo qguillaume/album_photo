@@ -46,11 +46,11 @@ security:
         - { path: ^/photos$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         
         # Les utilisateurs connectés seulement peuvent accéder à ces pages suivantes :
-        - { path: ^/reference$, roles: ROLE_USER }
+        - { path: ^/reference$, roles: ROLE_SUPER_ADMIN }
         - { path: ^/dashboard$, roles: ROLE_ADMIN }
-        - { path: ^/test-password$, roles: ROLE_ADMIN }
-        - { path: ^/album/new$, roles: ROLE_ADMIN }
-        - { path: ^/photo/upload$, roles: ROLE_ADMIN }
+        - { path: ^/test-password$, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/album/new$, roles: ROLE_USER }
+        - { path: ^/photo/upload$, roles: ROLE_USER }
         # Restreindre l'accès à toutes les pages commençant par /articles uniquement aux utilisateurs admin connectés
         - { path: ^/articles, roles: ROLE_ADMIN }
         # Pour les pages de l'article avec /article au singulier (pour être sûr de ne rien manquer)

@@ -113,6 +113,7 @@ class AlbumController extends AbstractController
                 }, $album->getPhotos()->toArray()),
                 'isVisible' => $album->getIsVisible(),
                 'isApproved' => $album->getIsApproved(),
+                'creator' => $album->getCreator()->getId(),
             ];
         }
 

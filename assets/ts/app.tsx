@@ -82,7 +82,7 @@ const CVContact: React.FC = () => {
 const PhotosTable = () => {
   const [photos, setPhotos] = useState<Photo[]>([]); 
   const [albums, setAlbums] = useState<Album[]>([]);
-
+  const [users, setUsers] = useState<User[]>([]);
   useEffect(() => {
     const albumsFromTwig = window.albumsData || [];
     const photosFromTwig = window.photosData || [];
@@ -92,6 +92,7 @@ const PhotosTable = () => {
   }, []);
 
   useEffect(() => { 
+    // Charger les photos depuis l'API
     fetch(`${process.env.REACT_APP_API_URL}/photos_list`)
       .then((response) => response.json())
       .then((data) => {
@@ -101,6 +102,7 @@ const PhotosTable = () => {
         console.error("Erreur lors de la récupération des photos:", error);
       });
 
+    // Charger les albums depuis l'API
     fetch(`${process.env.REACT_APP_API_URL}/albums_list`)
       .then((response) => response.json())
       .then((data) => {
@@ -108,6 +110,16 @@ const PhotosTable = () => {
       })
       .catch((error) => {
         console.error("Erreur lors de la récupération des albums:", error);
+      });
+
+    // Charger les utilisateurs depuis l'API
+    fetch(`${process.env.REACT_APP_API_URL}/users_list`)
+      .then((response) => response.json())
+      .then((data) => {
+        setUsers(data);
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la récupération des utilisateurs:", error);
       });
   }, []);
 
@@ -141,6 +153,7 @@ const PhotosTable = () => {
       <PhotoTable
         photos={photos}
         albums={albums}
+        users={users}
         onPhotosUpdate={setPhotos}
         onAlbumsUpdate={setAlbums}
       />

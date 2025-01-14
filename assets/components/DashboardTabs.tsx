@@ -217,6 +217,7 @@ const DashboardTabs: React.FC = () => {
           <PhotoTable
             photos={photos}
             albums={albums}
+            users={users}
             onPhotosUpdate={handlePhotosUpdate}
             onAlbumsUpdate={handleAlbumsUpdate}
           />
