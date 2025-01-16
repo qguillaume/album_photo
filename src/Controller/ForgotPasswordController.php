@@ -41,7 +41,7 @@ class ForgotPasswordController extends AbstractController
                 $resetUrl = $this->generateUrl('reset_password', ['token' => $token->getToken()], true);
 
                 $email = (new Email())
-                    ->from('no-reply@monalbumphotoxxx.com')
+                    ->from('no-reply@gqportfolio.com')
                     ->to($user->getEmail())
                     ->subject('Réinitialisation de votre mot de passe')
                     ->text("Cliquez sur le lien suivant pour réinitialiser votre mot de passe : $resetUrl");
