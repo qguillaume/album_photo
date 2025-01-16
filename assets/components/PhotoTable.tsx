@@ -79,7 +79,7 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
   // Supprimer une photo
   const handleDelete = (id: number, albumId: number | undefined, albumCreatorId: number) => {
     if (window.confirm("Êtes-vous sûr de vouloir supprimer cette photo ?")) {
-      fetch(`http://localhost:8000/photo/delete/${id}`, { method: "DELETE" })
+      fetch(`/photo/delete/${id}`, { method: "DELETE" })
         .then((response) => {
           if (response.ok) {
             const updatedPhotos = photos.filter((photo) => photo.id !== id);
@@ -110,7 +110,7 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
 
   // Modifier une photo
   const handleEdit = (id: number) => {
-    fetch(`http://localhost:8000/photo/rename/${id}`, {
+    fetch(`/photo/rename/${id}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: newTitle }),
@@ -144,7 +144,7 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
 
   // Fonction pour gérer la visibilité des photos
   const handleVisibilityChange = (photoId: number, newVisibility: boolean) => {
-    fetch(`http://localhost:8000/photo/${photoId}/visibility`, {
+    fetch(`/photo/${photoId}/visibility`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ isVisible: newVisibility }),
@@ -163,7 +163,7 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
 
   // Fonction pour gérer l'approbation des photos
   const handleApprovalChange = (photoId: number, newApproval: boolean) => {
-    fetch(`http://localhost:8000/photo/${photoId}/approval`, {
+    fetch(`/photo/${photoId}/approval`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ isApproved: newApproval }),

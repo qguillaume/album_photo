@@ -145,7 +145,7 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
 
   // Fonction pour gérer l'approbation des albums
   const handleApprovalChange = (albumId: number, newApproval: boolean) => {
-    fetch(`http://localhost:8000/album/${albumId}/approval`, {
+    fetch(`/album/${albumId}/approval`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ isApproved: newApproval }),
