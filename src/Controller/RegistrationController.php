@@ -50,7 +50,7 @@ class RegistrationController extends AbstractController
 
             // Envoi de l'email de confirmation
             $email = (new Email())
-                ->from('noreply@monsitealbumphoto.com') // L'expéditeur
+                ->from('noreply@gqportfolio.com') // L'expéditeur
                 ->to($user->getEmail()) // L'adresse de l'utilisateur
                 ->subject('Merci pour votre inscription !')
                 ->text('Bonjour ' . $user->getUsername() . ', merci pour votre inscription sur notre site.')
