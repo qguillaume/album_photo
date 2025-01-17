@@ -17,9 +17,17 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Comment;
 use App\Form\CommentFormType;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class PhotoController extends AbstractController
 {
+    private $projectDir;
+
+    public function __construct(KernelInterface $kernel)
+    {
+        $this->projectDir = $kernel->getProjectDir();
+    }
+
     // Afficher tous les albums
     /**
      * @Route("/photos", name="photo_albums")
@@ -180,7 +188,7 @@ class PhotoController extends AbstractController
     /**
      * @Route("/photo/delete/{id}", name="delete_photo", requirements={"id"="\d+"})
      */
-    public function deletePhoto(EntityManagerInterface $em, int $id): JsonResponse
+    public function deletePhoto(KernelInterface $kernel, EntityManagerInterface $em, int $id): JsonResponse
     {
         $photo = $em->getRepository(Photo::class)->find($id);
 
@@ -190,6 +198,17 @@ class PhotoController extends AbstractController
 
         // Récupérer l'album associé à la photo
         $album = $photo->getAlbum(); // Suppose qu'il y a une relation bidirectionnelle entre Photo et Album
+
+        $uploadDir = $kernel->getProjectDir() . '/public/uploads/photos/' . $photo->getAlbum()->getCreator()->getId() . '/' . $photo->getAlbum()->getNomAlbum() . '/';
+        $photoPath = $uploadDir . $photo->getFilePath();
+
+        // Vérifier si le fichier existe avant de le supprimer
+        if (file_exists($photoPath)) {
+            unlink($photoPath); // Supprimer le fichier
+        } else {
+            error_log("Le fichier n'existe pas à ce chemin : " . $photoPath);
+        }
+
         $em->remove($photo);
         $em->flush();
 
