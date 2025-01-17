@@ -3,16 +3,24 @@
 namespace App\EventListener;
 
 use App\Entity\Album;
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PreRemoveEventArgs;
 
 class AlbumListener
 {
-    public function preRemove(Album $album, LifecycleEventArgs $event): void
+    public function preRemove(PreRemoveEventArgs $event): void
     {
-        $entityManager = $event->getEntityManager();
+        // Récupérer l'entité en cours de suppression
+        $entity = $event->getObject();
 
-        foreach ($album->getPhotos() as $photo) {
-            // Définir toutes les photos comme invisibles
+        // Vérifier que l'entité est bien un Album
+        if (!$entity instanceof Album) {
+            return;
+        }
+
+        $entityManager = $event->getObjectManager();
+
+        // Rendre toutes les photos associées invisibles
+        foreach ($entity->getPhotos() as $photo) {
             $photo->setIsVisible(false);
             $entityManager->persist($photo);
         }
