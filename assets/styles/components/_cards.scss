@@ -50,3 +50,12 @@
     font-size: 18px;
     padding: 20px;
 }
+
+.photo-transparent {
+    opacity: 0.5; /* Rend l'élément semi-transparent */
+    pointer-events: none; /* Désactive les interactions avec l'élément */
+}
+
+.photo-transparent img {
+    opacity: 0.5; /* Applique également l'opacité à l'image contenue */
+}

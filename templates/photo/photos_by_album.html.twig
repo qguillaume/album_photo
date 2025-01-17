@@ -5,7 +5,7 @@
 
 {% for photo in photos %}
     {% if (photo.isVisible and photo.isApproved) or photo.album.creator.id == app.user.id %}
-        <div class="card-container">
+        <div class="card-container {% if not photo.isVisible or not photo.isApproved %}photo-transparent{% endif %}">
             <div class="card">
                 <!-- Face avant -->
                 <div class="card-front">

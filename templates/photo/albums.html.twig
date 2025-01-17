@@ -26,13 +26,24 @@
                                         data-album-id="{{ album.id }}" 
                                         data-album-name="{{ album.nomAlbum }}" 
                                         data-album-url="{{ asset('uploads/albums/' ~ album.imagePath) }}"
-                                    </div>
+                                    ></div>
                                 </div>
                             {% endif %}
                         </div>
                     </a>
                 </div>
-                <p class="card-folder-name">{{ album.nomAlbum }} ({{album.photoCount}})</p>
+
+                <!-- Nom de l'album avec styles et icônes conditionnels -->
+                <p 
+                    class="card-folder-name" 
+                    {% if album.creator.id == app.user.id %}style="color: green;"{% endif %}
+                >
+                    {{ album.nomAlbum }} ({{album.photoCount}})
+                    
+                    {% if (not album.isApproved or not album.isVisible) and album.creator.id == app.user.id %}
+                        <span class="icon-danger" title="Non approuvé ou invisible" style="color: red;">&#9888;</span>
+                    {% endif %}
+                </p>
             </div>
             
         {% endif %}
