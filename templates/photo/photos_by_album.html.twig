@@ -4,7 +4,7 @@
 <h2>{{ 'pictures_of_album'|trans }} {{ album.getNomAlbum() }}</h2>
 
 {% for photo in photos %}
-    {% if photo.isVisible and photo.isApproved %}
+    {% if (photo.isVisible and photo.isApproved) or photo.album.creator.id == app.user.id %}
         <div class="card-container">
             <div class="card">
                 <!-- Face avant -->
@@ -31,11 +31,11 @@
                                         </button>
                                     {% endif %}
 
-                                    <a href="{{ path('photo_show', { 'id': photo.id }) }}" class="btn-view">👁️ Voir</a>
+                                    <a href="{{ path('photo_show', { 'id': photo.id }) }}" class="btn-view">👁️</a>
                                     
                                     {% if is_owner %}
-                                        <button class="btn-rename" onClick="handleRename({{ photo.id }})">✏️ Renommer</button>
-                                        <button class="btn-delete" onClick="handleDelete({{ photo.id }})">❌ Supprimer</button>
+                                        <button class="btn-rename" onClick="handleRename({{ photo.id }})">✏️</button>
+                                        <button class="btn-delete" onClick="handleDelete({{ photo.id }})">❌</button>
                                     {% endif %}
                                 </div>
                             </div>

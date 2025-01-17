@@ -35,8 +35,8 @@ class AlbumController extends AbstractController
      */
     public function new(Request $request, EntityManagerInterface $em): Response
     {
-        // Vérifier si l'utilisateur a le rôle 'ROLE_ADMIN'
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        // Vérifier si l'utilisateur a le rôle 'ROLE_USER'
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $album = new Album();
         $form = $this->createForm(AlbumFormType::class, $album);
         $form->handleRequest($request);

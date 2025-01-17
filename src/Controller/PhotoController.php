@@ -61,7 +61,9 @@ class PhotoController extends AbstractController
         // Retourner la vue Twig avec les photos de l'album
         return $this->render('photo/photos_by_album.html.twig', [
             'album' => $album,
-            'photos' => $album->getPhotos(),
+            'photos' => array_filter($album->getPhotos()->toArray(), function ($photo) use ($user) {
+                return $photo->getIsVisible() && $photo->getIsApproved() || $photo->getAlbum()->getCreator() === $user;
+            }),
             'is_owner' => $isOwner,
         ]);
     }
@@ -227,7 +229,9 @@ class PhotoController extends AbstractController
 
             // Vérifier si la photo est visible et approuvée
             if (!$photo->getIsVisible() || !$photo->getIsApproved()) {
-                continue;  // Si la photo n'est pas visible ou approuvée, on passe à la suivante
+                if (!$isOwner) {
+                    continue;  // Si l'utilisateur n'est pas le propriétaire, on passe à la suivante
+                }
             }
 
             $photosData[] = [
@@ -261,9 +265,12 @@ class PhotoController extends AbstractController
             throw $this->createNotFoundException('Photo non trouvée');
         }
 
-        // Vérifier si la photo est visible et approuvée
+        // Vérifier si la photo est visible, approuvée ou appartient à l'utilisateur
+        $isOwner = $photo->getAlbum() && $photo->getAlbum()->getCreator() === $this->getUser();
         if (!$photo->getIsVisible() || !$photo->getIsApproved()) {
-            throw new AccessDeniedException('Vous n\'avez pas l\'autorisation d\'accéder à cette photo');
+            if (!$isOwner) {
+                throw new AccessDeniedException('Vous n\'avez pas l\'autorisation d\'accéder à cette photo');
+            }
         }
 
 
