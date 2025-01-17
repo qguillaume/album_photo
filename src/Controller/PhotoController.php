@@ -199,7 +199,7 @@ class PhotoController extends AbstractController
         // Récupérer l'album associé à la photo
         $album = $photo->getAlbum(); // Suppose qu'il y a une relation bidirectionnelle entre Photo et Album
 
-        $uploadDir = $kernel->getProjectDir() . '/public/uploads/photos/' . $photo->getAlbum()->getCreator()->getId() . '/' . $photo->getAlbum()->getNomAlbum() . '/';
+        $uploadDir = $kernel->getProjectDir() . $this->getParameter('public_directory') . '/uploads/photos/' . $photo->getAlbum()->getCreator()->getId() . '/' . $photo->getAlbum()->getNomAlbum() . '/';
         $photoPath = $uploadDir . $photo->getFilePath();
 
         // Vérifier si le fichier existe avant de le supprimer
