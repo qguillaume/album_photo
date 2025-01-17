@@ -53,8 +53,8 @@ class PhotoController extends AbstractController
         // Vérifier si l'utilisateur est le créateur de l'album
         $isOwner = $album->getCreator() === $user;
 
-        // Vérifier si l'album est visible et approuvé
-        if (!$album->getIsVisible() || !$album->getIsApproved()) {
+        // Vérifier si l'album est visible et approuvé ou si l'utilisateur est le créateur
+        if ((!$album->getIsVisible() || !$album->getIsApproved()) && !$isOwner) {
             throw new AccessDeniedException('Vous n\'avez pas l\'autorisation d\'accéder à cet album');
         }
 
@@ -76,48 +76,74 @@ class PhotoController extends AbstractController
         $photo = new Photo();
         $user = $this->getUser(); // Récupérer l'utilisateur connecté
 
-        // Si l'albumId est passé, pré-sélectionner l'album dans le formulaire
-        $album = null;
+        // Si un albumId est passé en paramètre, on pré-sélectionne l'album
         if ($albumId) {
             $album = $em->getRepository(Album::class)->find($albumId);
-            if ($album) {
-                $photo->setAlbum($album);  // Pré-sélectionner l'album
+            if ($album && $album->getCreator() === $user) {
+                // Pré-sélectionner l'album dans le formulaire
+                $photo->setAlbum($album);
             }
         }
 
         // Créer le formulaire avec l'utilisateur passé comme option
         $form = $this->createForm(PhotoFormType::class, $photo, [
-            'user' => $user, // Passer l'utilisateur connecté en option
+            'user' => $user,
+            'album_id' => $albumId, // Passer l'albumId à l'option du formulaire
         ]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $form->get('file')->getData();
+            $album = $form->get('album')->getData(); // Récupérer l'album sélectionné à partir du formulaire
+
+            // Si l'album a été modifié par l'utilisateur, mettre à jour l'album de la photo
+            if ($album) {
+                // Vérifie que l'album appartient bien à l'utilisateur
+                if ($album->getCreator() !== $user) {
+                    $this->addFlash('error', 'Vous ne pouvez pas ajouter une photo dans un album qui ne vous appartient pas.');
+                    return $this->redirectToRoute('photo_upload');
+                }
+                $photo->setAlbum($album); // Mettre à jour l'album de la photo
+            }
+
+            // Si aucun album n'est sélectionné et qu'un album pré-sélectionné est disponible, le garder
+            if (!$album && $photo->getAlbum()) {
+                $album = $photo->getAlbum(); // Récupère l'album pré-sélectionné si rien n'est choisi
+            }
+
+            // Gérer le fichier téléchargé
             if ($file) {
+                $userDir = $this->getParameter('photos_directory') . '/' . $user->getId();
+                $albumName = $album->getNomAlbum();
+                $albumDir = $userDir . '/' . $albumName;
+                $coverDir = $albumDir . '/cover_photo';
+
+                // Créer les répertoires si nécessaires
+                if (!file_exists($userDir)) {
+                    mkdir($userDir, 0777, true);
+                }
+                if (!file_exists($albumDir)) {
+                    mkdir($albumDir, 0777, true);
+                }
+                if (!file_exists($coverDir)) {
+                    mkdir($coverDir, 0777, true);
+                }
+
                 // Générer un nom unique pour l'image et déplacer le fichier
                 $filename = uniqid() . '.' . $file->guessExtension();
-                $file->move($this->getParameter('photos_directory'), $filename);
+                $file->move($albumDir, $filename);
 
                 $photo->setFilePath($filename);
 
-                // Récupérer l'album sélectionné dans le formulaire
-                $album = $photo->getAlbum();
-
-                if ($album) {
-                    // Vérifier que l'album appartient à l'utilisateur connecté
-                    if ($album->getCreator() !== $user) {
-                        $this->addFlash('error', 'Vous ne pouvez pas ajouter une photo dans un album qui ne vous appartient pas.');
-
-                        // Rediriger l'utilisateur
-                        return $this->redirectToRoute('photo_upload');
-                    }
-
-                    $album->addPhoto($photo);
-
-                    // Mettre à jour le compteur de photos
-                    $album->setPhotoCount($album->getPhotoCount() + 1);
+                // Vérifier si l'album appartient à l'utilisateur
+                if ($album->getCreator() !== $user) {
+                    $this->addFlash('error', 'Vous ne pouvez pas ajouter une photo dans un album qui ne vous appartient pas.');
+                    return $this->redirectToRoute('photo_upload');
                 }
+
+                $album->addPhoto($photo);
+                $album->setPhotoCount($album->getPhotoCount() + 1); // Mettre à jour le compteur de photos
 
                 $em->persist($photo);
                 $em->persist($album);
@@ -125,14 +151,13 @@ class PhotoController extends AbstractController
 
                 return $this->redirectToRoute('photo_albums');
             }
-        } else {
-            $this->addFlash('error', 'Une erreur est survenue lors de l\'upload de votre photo.');
         }
 
         return $this->render('photo/upload.html.twig', [
             'form' => $form->createView(),
         ]);
     }
+
 
     /**
      * @Route("/photo/rename/{id}", name="rename_photo", requirements={"id"="\d+"})

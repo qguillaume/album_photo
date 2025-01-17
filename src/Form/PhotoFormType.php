@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Repository\AlbumRepository;
@@ -65,6 +66,7 @@ class PhotoFormType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Photo::class,
             'user' => null, // Ajouter un utilisateur en option
+            'album_id' => null, // album_id facultatif (existe en cas de choix prédéfini à partir d'un album vide)
         ]);
     }
 }

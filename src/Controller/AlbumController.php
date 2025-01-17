@@ -48,12 +48,29 @@ class AlbumController extends AbstractController
 
             if ($imageFile) {
                 try {
-                    // Générer un nom unique pour l'image et déplacer le fichier
+                    // Récupérer le chemin du répertoire de l'utilisateur
+                    $user = $this->getUser();
+                    $userDir = $this->getParameter('photos_directory') . '/' . $user->getId();
+                    $albumName = $album->getNomAlbum();
+                    $albumDir = $userDir . '/' . $albumName;
+                    $coverDir = $albumDir . '/cover_photo';
+
+                    // Créer les répertoires nécessaires si non existants
+                    if (!file_exists($userDir)) {
+                        mkdir($userDir, 0777, true); // Créer le dossier de l'utilisateur
+                    }
+
+                    if (!file_exists($albumDir)) {
+                        mkdir($albumDir, 0777, true); // Créer le dossier de l'album
+                    }
+
+                    if (!file_exists($coverDir)) {
+                        mkdir($coverDir, 0777, true); // Créer le dossier cover_photo
+                    }
+
+                    // Générer un nom unique pour l'image de couverture et déplacer le fichier
                     $newFilename = uniqid() . '.' . $imageFile->guessExtension();
-                    $imageFile->move(
-                        $this->getParameter('albums_directory'), // Définir le répertoire de destination
-                        $newFilename
-                    );
+                    $imageFile->move($coverDir, $newFilename);
 
                     // Définir le chemin de l'image dans l'entité Album
                     $album->setImagePath($newFilename);
@@ -74,7 +91,7 @@ class AlbumController extends AbstractController
             }
 
             // Associer l'album à l'utilisateur connecté
-            $user = $this->security->getUser();
+            $user = $this->getUser();
             if ($user) {
                 $album->setCreator($user); // Lier l'album à l'utilisateur
             }

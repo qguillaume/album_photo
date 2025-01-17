@@ -3,13 +3,22 @@
 {% block body %}
 <h2>{{ 'pictures_of_album'|trans }} {{ album.getNomAlbum() }}</h2>
 
+{% if is_owner %}
+    {% if photos|length == 0 %}
+        <p class="center">{{ 'no_photos_in_album'|trans }}.</p>
+        <a class="center" href="{{ path('photo_upload', {'albumId': album.id}) }}" class="btn btn-primary">
+            {{ 'upload_first_photo'|trans }}
+        </a>
+    {% endif %}
+{% endif %}
+
 {% for photo in photos %}
     {% if (photo.isVisible and photo.isApproved) or photo.album.creator.id == app.user.id %}
         <div class="card-container {% if not photo.isVisible or not photo.isApproved %}photo-transparent{% endif %}">
             <div class="card">
                 <!-- Face avant -->
                 <div class="card-front">
-                    <img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" class="photo-thumbnail">
+                    <img src="{{ asset('uploads/photos/' ~ photo.album.creator.id ~ '/' ~ album.getNomAlbum() ~ '/' ~ photo.filePath) }}" alt="{{ photo.title }}" class="photo-thumbnail">
                 </div>
                 <!-- Face arrière -->
                 <div class="card-back">
