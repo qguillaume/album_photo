@@ -10,7 +10,7 @@
                     <div class="card-folder-front">
                         {% if album.imagePath is not null %}
                             <img 
-                                src="{{ asset('uploads/albums/' ~ album.imagePath) }}" 
+                                src="{{ asset('uploads/photos/'~ album.creator.id ~ '/' ~ album.getNomAlbum() ~ '/cover_photo/' ~ album.imagePath) }}" 
                                 alt="Dossier"
                             >
                         {% endif %}

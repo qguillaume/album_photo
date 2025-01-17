@@ -23,6 +23,7 @@
     transform-style: preserve-3d;
     transition: transform 0.8s ease;
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); /* Ombre par défaut */
+    transform-origin: center;
 }
 
 .card-folder-container:hover .card-folder {
@@ -33,6 +34,8 @@
 .card-folder-front,
 .card-folder-back {
     position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
@@ -56,12 +59,16 @@
         100% 100%, 
         0 100%
     ); // Forme du dossier avec onglet
+    position: relative;
 }
 
 .card-folder-front img {
-    width: 80%;
-    height: 60%;
-    object-fit: cover;
+    position: absolute; // Pour s'assurer que l'image couvre toute la zone
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; // Pour s'assurer que l'image couvre l'ensemble du conteneur
 }
 
 .card-folder-back {
@@ -81,6 +88,9 @@
         100% 100%, 
         0 100%
     );
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .card-folder-name {
