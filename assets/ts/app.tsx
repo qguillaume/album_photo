@@ -19,10 +19,9 @@ import CommentTable from "../components/CommentTable";
 import ThemeTable from "../components/ThemeTable";
 import DashboardTabs from "../components/DashboardTabs";
 import ThemeToggle from "../components/ThemeToggle";
-
-import '../../public/i18n'; // Importer le fichier de configuration de i18next
-
-import TinyEditor from "./TinyEditor";  // Assurez-vous que le chemin est correct
+import Header from "../components/Header";
+import '../../public/i18n';
+import TinyEditor from "./TinyEditor";
 
 const App = () => {
   return (
@@ -32,7 +31,27 @@ const App = () => {
   );
 };
 
-export default App;
+const HeaderApp: React.FC = () => {
+  return (
+      <div className="App">
+          <Header />
+      </div>
+  );
+};
+
+export  { App, HeaderApp };
+
+
+const headerRootElement = document.getElementById("header-root");
+
+if (headerRootElement) {
+  const root = ReactDOM.createRoot(headerRootElement);
+  root.render(
+    <React.StrictMode>
+      <HeaderApp />
+    </React.StrictMode>
+  );
+}
 
 // Composant principal pour téléchargement du CV et contact
 const CVContact: React.FC = () => {
