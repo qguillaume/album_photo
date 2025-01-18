@@ -143,14 +143,29 @@ class AlbumController extends AbstractController
     /**
      * @Route("/album/rename/{id}", name="rename_album", requirements={"id"="\d+"})
      */
-    public function renameAlbum(Request $request, EntityManagerInterface $em, int $id): JsonResponse
+    public function renameAlbum(Request $request, EntityManagerInterface $em, int $id, KernelInterface $kernel): JsonResponse
     {
         $album = $em->getRepository(Album::class)->find($id);
         if (!$album) {
             return new JsonResponse(['message' => 'Album non trouvé'], 404);
         }
+
+        // Récupérer les données envoyées dans la requête (nouveau nom)
         $data = json_decode($request->getContent(), true);
-        $album->setNomAlbum($data['name']);
+        $newAlbumName = $data['name'];
+
+        // Récupérer le chemin du dossier actuel de l'album
+        $user = $album->getCreator();
+        $userDir = $kernel->getProjectDir() . $this->getParameter('public_directory') . '/uploads/photos/' . $user->getId();
+        $albumDir = $userDir . '/' . $album->getNomAlbum();
+
+        // Vérifier si le dossier existe
+        if (is_dir($albumDir)) {
+            $newAlbumDir = $userDir . '/' . $newAlbumName;
+            rename($albumDir, $newAlbumDir);
+        }
+
+        $album->setNomAlbum($newAlbumName);
         $em->flush();
         return new JsonResponse(['message' => 'Album renommé avec succès']);
     }
