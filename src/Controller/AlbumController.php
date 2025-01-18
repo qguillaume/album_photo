@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Security;
 use App\Service\AlbumVisibilityService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpKernel\KernelInterface;
+
 
 class AlbumController extends AbstractController
 {
@@ -156,15 +158,66 @@ class AlbumController extends AbstractController
     /**
      * @Route("/album/delete/{id}", name="delete_album", requirements={"id"="\d+"})
      */
-    public function deleteAlbum(EntityManagerInterface $em, int $id): JsonResponse
+    public function deleteAlbum(EntityManagerInterface $em, int $id, KernelInterface $kernel): JsonResponse
     {
+        // Trouver l'album
         $album = $em->getRepository(Album::class)->find($id);
         if (!$album) {
             return new JsonResponse(['message' => 'Album non trouvé'], 404);
         }
+
+        // Supprimer les photos associées à l'album avant de supprimer l'album
+        $photos = $album->getPhotos();
+        foreach ($photos as $photo) {
+            // Supprimer le fichier physique de la photo
+            $uploadDir = $kernel->getProjectDir() . $this->getParameter('public_directory') . '/uploads/photos/' . $photo->getAlbum()->getCreator()->getId() . '/' . $photo->getAlbum()->getNomAlbum() . '/';
+            $photoPath = $uploadDir . $photo->getFilePath();
+
+            // Supprimer le fichier physique
+            if (file_exists($photoPath)) {
+                unlink($photoPath);
+            }
+
+            // Supprimer la photo de la base de données
+            $em->remove($photo);
+        }
+
+        // Supprimer le dossier cover_photo
+        $coverDir = $kernel->getProjectDir() . $this->getParameter('public_directory') . '/uploads/photos/' . $album->getCreator()->getId() . '/' . $album->getNomAlbum() . '/cover_photo';
+        if (is_dir($coverDir)) {
+            $this->deleteDirectory($coverDir);
+        }
+
+        // Supprimer l'album
         $em->remove($album);
+
+        // Supprimer le dossier de l'album si vide
+        $albumDir = $kernel->getProjectDir() . $this->getParameter('public_directory') . '/uploads/photos/' . $album->getCreator()->getId() . '/' . $album->getNomAlbum();
+        if (is_dir($albumDir) && count(scandir($albumDir)) === 2) {
+            rmdir($albumDir);
+        }
+
         $em->flush();
-        return new JsonResponse(['message' => 'Album supprimé avec succès']);
+
+        return new JsonResponse(['message' => 'Album et photos supprimés avec succès']);
+    }
+
+    /**
+     * Fonction pour supprimer un répertoire et son contenu
+     */
+    private function deleteDirectory($dir)
+    {
+        if (!file_exists($dir)) {
+            return;
+        }
+
+        $files = array_diff(scandir($dir), array('.', '..'));
+        foreach ($files as $file) {
+            $filePath = $dir . '/' . $file;
+            is_dir($filePath) ? $this->deleteDirectory($filePath) : unlink($filePath);
+        }
+
+        rmdir($dir);
     }
 
     /**
