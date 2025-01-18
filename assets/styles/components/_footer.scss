@@ -1,4 +1,3 @@
-// src/styles/components/_footer.scss
 @use "../base/variables" as *;
 
 footer {
@@ -14,21 +13,40 @@ footer {
   p {
     font-size: 0.9rem; /* Taille de la police pour le texte du copyright */
     margin-top: $space-xs; /* Espace au-dessus du texte du copyright */
+
+    @media (max-width: 768px) {
+      font-size: 0.8rem; /* Réduction de la taille de la police sur les écrans de taille moyenne */
+    }
+
+    @media (max-width: 480px) {
+      font-size: 0.75rem; /* Réduction supplémentaire de la taille de la police sur les très petits écrans */
+    }
   }
-  
+
   a {
     color: white; /* Les liens dans le footer seront en blanc */
     text-decoration: underline; /* Souligne les liens */
+    font-size: 0.9rem; /* Taille du texte des liens */
+
+    @media (max-width: 480px) {
+      font-size: 0.8rem; /* Réduction de la taille du texte des liens sur les petits écrans */
+    }
   }
 }
-
-
 
 .social-icons {
   margin-top: 10px; /* Espace entre le texte du copyright et les icônes */
   display: flex; /* Utilise Flexbox pour aligner les icônes horizontalement */
   justify-content: center; /* Centre les icônes horizontalement */
   gap: 15px; /* Espace de 15px entre chaque icône */
+
+  @media (max-width: 768px) {
+    gap: 10px; /* Réduction de l'espacement entre les icônes sur les écrans moyens */
+  }
+
+  @media (max-width: 480px) {
+    gap: 5px; /* Réduction supplémentaire de l'espacement sur les très petits écrans */
+  }
 }
 
 .social-icon {
@@ -40,6 +58,16 @@ footer {
   padding: 5px; /* Espace autour de l'image pour que l'icône "respire" à l'intérieur du cercle */
   transition: transform 0.3s ease-in-out; /* Déclare une transition fluide sur l'élément qui sera activée lorsque l'élément sera survolé */
   overflow: hidden; /* Empêche les éléments enfants (les images) de dépasser du cercle */
+
+  @media (max-width: 768px) {
+    width: 35px; /* Réduction de la taille des icônes sur les écrans moyens */
+    height: 35px;
+  }
+
+  @media (max-width: 480px) {
+    width: 30px; /* Réduction supplémentaire sur les très petits écrans */
+    height: 30px;
+  }
 }
 
 .social-icon img {
