@@ -181,11 +181,11 @@ class AlbumController extends AbstractController
             return new JsonResponse(['message' => 'Album non trouvé'], 404);
         }
 
-        // Supprimer les photos associées à l'album avant de supprimer l'album
+        // 1. Supprimer les photos associées (BDD + fichiers)
         $photos = $album->getPhotos();
         foreach ($photos as $photo) {
             // Supprimer le fichier physique de la photo
-            $uploadDir = $kernel->getProjectDir() . $this->getParameter('public_directory') . '/uploads/photos/' . $photo->getAlbum()->getCreator()->getId() . '/' . $photo->getAlbum()->getNomAlbum() . '/';
+            $uploadDir = $kernel->getProjectDir() . $this->getParameter('public_directory') . '/uploads/photos/' . $album->getCreator()->getId() . '/' . $album->getNomAlbum() . '/';
             $photoPath = $uploadDir . $photo->getFilePath();
 
             // Supprimer le fichier physique
@@ -197,22 +197,24 @@ class AlbumController extends AbstractController
             $em->remove($photo);
         }
 
-        // Supprimer le dossier cover_photo
+        // Flusher après suppression des photos pour éviter les erreurs de clé étrangère
+        $em->flush();
+
+        // 2. Supprimer le dossier cover_photo
         $coverDir = $kernel->getProjectDir() . $this->getParameter('public_directory') . '/uploads/photos/' . $album->getCreator()->getId() . '/' . $album->getNomAlbum() . '/cover_photo';
         if (is_dir($coverDir)) {
             $this->deleteDirectory($coverDir);
         }
 
-        // Supprimer l'album
-        $em->remove($album);
-
-        // Supprimer le dossier de l'album si vide
+        // 3. Supprimer le dossier de l'album (contenu restant)
         $albumDir = $kernel->getProjectDir() . $this->getParameter('public_directory') . '/uploads/photos/' . $album->getCreator()->getId() . '/' . $album->getNomAlbum();
-        if (is_dir($albumDir) && count(scandir($albumDir)) === 2) {
-            rmdir($albumDir);
+        if (is_dir($albumDir)) {
+            $this->deleteDirectory($albumDir);
         }
 
-        $em->flush();
+        // 4. Supprimer l'album lui-même de la base de données
+        $em->remove($album);
+        $em->flush(); // Flusher après la suppression de l'album
 
         return new JsonResponse(['message' => 'Album et photos supprimés avec succès']);
     }
