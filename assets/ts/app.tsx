@@ -20,9 +20,10 @@ import ThemeTable from "../components/ThemeTable";
 import DashboardTabs from "../components/DashboardTabs";
 import ThemeToggle from "../components/ThemeToggle";
 import Header from "../components/Header";
+import { UserProvider } from '../context/UserContext';
 import '../../public/i18n';
 import TinyEditor from "./TinyEditor";
-
+/*
 const App = () => {
   return (
     <div>
@@ -30,16 +31,16 @@ const App = () => {
     </div>
   );
 };
-
+*/
 const HeaderApp: React.FC = () => {
   return (
-      <div className="App">
-          <Header />
-      </div>
+    <UserProvider>
+      <Header />
+    </UserProvider>
   );
 };
 
-export  { App, HeaderApp };
+export  { HeaderApp };
 
 
 const headerRootElement = document.getElementById("header-root");

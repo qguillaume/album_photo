@@ -1,16 +1,17 @@
+// src/components/Header.tsx
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useUser } from '../context/UserContext'; // Hook
 import '../styles/components/_header.scss';
-import '../styles/components/_menu.scss';
 
 const Header: React.FC = () => {
   const { t, i18n } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { user } = useUser(); 
 
-  const user = { username: 'Guillaume', role: 'ROLE_USER' };
-  const isAdmin = user.role === 'ROLE_ADMIN';
-  const isSuperAdmin = user.role === 'ROLE_SUPER_ADMIN';
-  const isLoggedIn = !!user.username;
+  const isLoggedIn = user !== null;
+  const isAdmin = isLoggedIn && user?.roles.includes('ROLE_ADMIN');
+  const isSuperAdmin = isLoggedIn && user?.roles.includes('ROLE_SUPER_ADMIN');
 
   // Basculer le menu burger
   const toggleMenu = () => {
@@ -38,11 +39,11 @@ const Header: React.FC = () => {
         <div className="header-left">
           <div className="custom-select">
             <div className="selected-option">
-              {['fr', 'en', 'es', 'de'].map((lang) => (
+              {['fr', 'gb', 'es', 'de'].map((lang) => (
                 <div key={lang}>
                   {i18n.language === lang && (
                     <img
-                      src={`images/${lang}.png`} 
+                      src={`images/${lang}.png`}
                       alt={`${lang} flag`}
                       className="flag-icon"
                     />
@@ -51,21 +52,28 @@ const Header: React.FC = () => {
               ))}
             </div>
             <ul className="options">
-              {['fr', 'en', 'es', 'de'].map((lang) => (
+              {['fr', 'gb', 'es', 'de'].map((lang) => (
                 <li key={lang}>
                   <button onClick={() => changeLanguage(lang)}>
-                    <img src={`images/${lang}.png`} alt={`${lang} flag`} className="flag-icon" />
+                    <img
+                      src={`images/${lang}.png`}
+                      alt={`${lang} flag`}
+                      className="flag-icon"
+                    />
                   </button>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Liens de navigation */}
-          <a href="/home" className={isLoggedIn ? 'active' : ''}>{t('home')}</a>
+          <a href="/home" className={isLoggedIn ? 'active' : ''}>
+            {t('home')}
+          </a>
 
           <div className="dropdown">
-            <a href="/photo_albums" className={isLoggedIn ? 'active' : ''}>{t('photos')}</a>
+            <a href="/photo_albums" className={isLoggedIn ? 'active' : ''}>
+              {t('photos')}
+            </a>
             {isLoggedIn && (
               <div className="dropdown-content">
                 <a href="/create_album">{t('create_album')}</a>
@@ -76,18 +84,25 @@ const Header: React.FC = () => {
 
           {isAdmin && (
             <div className="dropdown">
-              <a href="/articles" className={isLoggedIn ? 'active' : ''}>Articles</a>
+              <a href="/articles" className={isLoggedIn ? 'active' : ''}>
+                {t('articles')}
+              </a>
               <div className="dropdown-content">
-                <a href="/create_article">Nouvel article</a>
-                <a href="/create_theme">Nouveau thème</a>
+                <a href="/create_article">{t('new_article')}</a>
+                <a href="/create_theme">{t('new_theme')}</a>
               </div>
             </div>
           )}
 
           {isSuperAdmin && (
-            <a href="/references" className={isLoggedIn ? 'active' : ''}>{t('references')}</a>
+            <a href="/references" className={isLoggedIn ? 'active' : ''}>
+              {t('references')}
+            </a>
           )}
-          <a href="/contact" className={isLoggedIn ? 'active' : ''}>{t('contact')}</a>
+
+          <a href="/contact" className={isLoggedIn ? 'active' : ''}>
+            {t('contact')}
+          </a>
         </div>
 
         <div className="header-center">
@@ -100,7 +115,7 @@ const Header: React.FC = () => {
           {isLoggedIn ? (
             <div className="dropdown">
               <a href="#" className={isLoggedIn ? 'active' : ''}>
-                {t('welcome')} {user.username}!
+                {t('welcome')} {user?.username}!
               </a>
               <div className="dropdown-content">
                 {isAdmin && <a href="/dashboard">{t('dashboard')}</a>}

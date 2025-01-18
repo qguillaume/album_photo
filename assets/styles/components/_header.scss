@@ -2,8 +2,8 @@
 
 // Header transparent avec trois sections (gauche, centre, droite)
 header {
-  backdrop-filter: blur(8px); /* Effet de flou */
-  -webkit-backdrop-filter: blur(8px); /* Compatibilité Safari */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: white;
   position: fixed;
   top: 0;
@@ -18,14 +18,27 @@ header {
   transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 
-  // Section gauche : navigation principale
+  .hamburger-menu {
+    display: none;
+    font-size: 2rem;
+    cursor: pointer;
+  }
+
+  .nav-menu {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  }
+
   .header-left {
     display: flex;
-    gap: 30px; /* Espacement entre les liens */
+    gap: 30px;
     align-items: center;
 
     a {
-      color: $primary-color;
+      color: white;
       text-decoration: none;
       padding: 10px 15px;
       font-size: 1rem;
@@ -34,7 +47,7 @@ header {
 
       &:hover,
       &.active {
-        background-color: $primary-color; /* Couleur d'arrière-plan au survol */
+        background-color: transparent;
         color: white;
       }
     }
@@ -43,16 +56,16 @@ header {
   // Section centrale : logo
   .header-center {
     position: absolute;
-    top: calc(50% + 5px); /* Décalage de 10px vers le bas */
+    top: calc(50% + 5px);
     left: 50%;
-    transform: translate(-50%, -50%); /* Centre le logo indépendamment */
+    transform: translate(-50%, -50%);
     display: flex;
     justify-content: center;
     align-items: center;
 
     .logo img {
       width: 140px;
-      height: auto; /* Garde les proportions */
+      height: auto;
     }
   }
 
@@ -61,92 +74,58 @@ header {
     display: flex;
     align-items: center;
     gap: 15px;
-
-    a {
-      color: $primary-color;
-      text-decoration: none;
-      padding: 10px 15px;
-      font-size: 1rem;
-      border-radius: 8px;
-      transition: color 0.3s ease, background-color 0.3s ease;
-
-      &:hover {
-        background-color: $primary-color;
-        color: white;
-      }
-    }
-
-    // Bouton d'inscription
-    .register {
-      background-color: $secondary-color;
-      color: $header-bg-color;
-      border-radius: 8px;
-      padding: 10px 15px;
-      transition: background-color 0.3s ease, color 0.3s ease;
-
-      &:hover {
-        background-color: $secondary-color-hover;
-        color: white;
-      }
-    }
   }
 
-  // Section responsive
+  /* Burger menu responsive */
   @media (max-width: 768px) {
-    // Masquer les sections gauche et droite sur les petits écrans
-    .header-left,
-    .header-right {
-      display: none;
-    }
-
-    // Masquer le logo sur les petits écrans
-    .header-center {
-      .logo {
-        display: none;
-      }
-    }
-
-    // Ajouter le menu hamburger
     .hamburger-menu {
       display: block;
-      font-size: 2rem;
-      color: $primary-color;
-      cursor: pointer;
-      z-index: 2000;
     }
 
     // Navigation responsive
     .nav-menu {
-      display: none; // Masquée par défaut
-      flex-direction: column;
+      display: none;
       position: fixed;
       top: 70px;
       left: 0;
-      background-color: rgba(0, 0, 0, 0.9);
       width: 100%;
-      height: calc(100vh - 70px);
-      padding: 20px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      background-color: rgba(0, 0, 0, 0.9);
       z-index: 1500;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-
-      a {
-        color: white;
-        text-align: center;
-        padding: 15px 0;
-        font-size: 1.2rem;
-        transition: background-color 0.3s ease;
-
-        &:hover {
-          background-color: $primary-color;
-        }
-      }
     }
 
     .nav-menu.active {
       display: flex;
-      transform: translateY(0);
-      opacity: 1;
+      flex-direction: column;
+      padding: 20px;
+    }
+
+    .header-center .logo {
+      display: none;
+    }
+
+    .header-left .custom-select {
+      display: block;
+    }
+
+    .header-left .dropdown {
+      display: block;
+    }
+  }
+
+  /* Menu classique sur grand écran */
+  @media (min-width: 769px) {
+    .header-left {
+      display: flex;
+      gap: 30px;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 30px;
+    }
+
+    .header-center .logo {
+      display: block;
     }
   }
 }
