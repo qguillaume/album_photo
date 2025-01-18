@@ -400,12 +400,25 @@ document.addEventListener("DOMContentLoaded", () => {
           }}
           onDelete={(id) => {
             fetch(`${process.env.REACT_APP_API_URL}/album/delete/${id}`, { method: "DELETE" })
-              .then(() => {
-                alert("Album supprimé avec succès");
-                el.remove();
-                window.location.reload();
+              .then((response) => {
+                if (response.ok) {
+                  console.log("Album supprimé avec succès");
+                  alert("Album supprimé avec succès");
+          
+                  // Redirection après succès
+                  window.location.href = "/photos"; // Redirige vers la liste des albums
+                } else {
+                  // Gestion des erreurs renvoyées par le backend
+                  response.json().then((data) => {
+                    console.error("Erreur renvoyée par le backend :", data);
+                    alert(data.message || "Erreur inconnue lors de la suppression.");
+                  });
+                }
               })
-              .catch(() => alert("Erreur lors de la suppression de l'album."));
+              .catch((error) => {
+                console.error("Erreur :", error);
+                alert("Erreur lors de la suppression de l'album.");
+              });
           }}
         />
       );
