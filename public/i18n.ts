@@ -8,7 +8,7 @@ i18n
   .use(LanguageDetector) // Détecteur de langue du navigateur
   .use(initReactI18next) // Lier i18next avec react-i18next
   .init({
-    fallbackLng: 'de', // Langue par défaut si aucune langue n'est détectée
+    fallbackLng: 'fr', // Langue par défaut si aucune langue n'est détectée
     supportedLngs: ['fr', 'en', 'es', 'de'], // Langues supportées
     ns: ['translations'], // namespace "translations" pour correspondre au nom d dossier
     defaultNS: 'translations',

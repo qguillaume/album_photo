@@ -1,10 +1,11 @@
 <?php
+
 namespace App\Controller;
 
-use App\Form\ContactFormType;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -13,44 +14,55 @@ use Symfony\Component\Routing\Annotation\Route;
 class ContactController extends AbstractController
 {
     /**
-     * @Route("/contact", name="contact")
+     * @Route("/contact", name="contact", methods={"GET"})
      */
-    public function index(Request $request, MailerInterface $mailer, TranslatorInterface $translator): Response
+    public function index(): Response
     {
-        $form = $this->createForm(ContactFormType::class);
-        $form->handleRequest($request);
+        // Afficher le formulaire en utilisant Twig
+        return $this->render('contact/index.html.twig');
+    }
 
-        // if ($form->isSubmitted() && !$form->isValid()) {
-        //     // Traduction du message d'erreur dans addFlash
-        //     $this->addFlash('error', $translator->trans('Veuillez corriger les erreurs ci-dessous.'));
-        // }
+    /**
+     * @Route("/api/contact", name="api_contact", methods={"POST"})
+     */
+    public function contact(Request $request, MailerInterface $mailer, TranslatorInterface $translator): JsonResponse
+    {
+        // Récupérer les données envoyées en JSON
+        $data = json_decode($request->getContent(), true);
 
-        // Variable pour vérifier si le formulaire a des erreurs
-        $error = 0;
-
-        if ($form->isSubmitted() && !$form->isValid()) {
-            $error = 1;
+        // Vérifier si les données sont valides
+        if (!$data || !isset($data['name'], $data['email'], $data['message'])) {
+            return new JsonResponse(
+                ['message' => $translator->trans('form.incomplete_data')],
+                JsonResponse::HTTP_BAD_REQUEST
+            );
         }
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+        // Validation des données
+        if (empty($data['name']) || empty($data['email']) || empty($data['message'])) {
+            return new JsonResponse(
+                ['message' => $translator->trans('form.all_fields_required')],
+                JsonResponse::HTTP_BAD_REQUEST
+            );
+        }
 
-            $email = (new Email())
-                ->from($data['email'])
-                ->to('quesnel.guillaume.j@gmail.com')
-                ->subject('[Formulaire de contact] Message reçu de : ' . $data['name'])
-                ->text('Bonjour, vous avez reçu un message : ' . $data['message'])
-                ->html('<p>' . $data['message'] . '</p>');
+        // Créer l'email à envoyer
+        $email = (new Email())
+            ->from($data['email'])
+            ->to('quesnel.guillaume.j@gmail.com') // Destinataire
+            ->subject('[Formulaire de contact] Message reçu de : ' . $data['name'])
+            ->text('Bonjour, vous avez reçu un message : ' . $data['message'])
+            ->html('<p>' . $data['message'] . '</p>');
 
+        // Envoi de l'email
+        try {
             $mailer->send($email);
-            // Traduction du message de succès dans addFlash
-            $this->addFlash('success', $translator->trans('message_success'));
-            return $this->redirectToRoute('contact');
+            return new JsonResponse(['message' => $translator->trans('form.success_message')], JsonResponse::HTTP_OK);
+        } catch (\Exception $e) {
+            return new JsonResponse(
+                ['message' => $translator->trans('form.error_message')],
+                JsonResponse::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
-
-        return $this->render('contact/index.html.twig', [
-            'contactForm' => $form->createView(),
-            'error' => $error,
-        ]);
     }
 }

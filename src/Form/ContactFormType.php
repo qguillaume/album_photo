@@ -28,10 +28,10 @@ class ContactFormType extends AbstractType
                 'attr' => ['placeholder' => 'name'],
                 'label' => false,
                 'constraints' => [
-                    new Assert\NotBlank(['message' => 'name_required']),
+                    new Assert\NotBlank(['message' => 'form.name_required']),
                     new Assert\Length([
                         'min' => 3,
-                        'minMessage' => $this->translator->trans('name_min_length', ['{{ limit }}' => 3]),
+                        'minMessage' => $this->translator->trans('form.name_min_length', ['{{ limit }}' => 3]),
                     ]),
                 ],
             ])
@@ -39,23 +39,23 @@ class ContactFormType extends AbstractType
                 'attr' => ['placeholder' => 'email'],
                 'label' => false,
                 'constraints' => [
-                    new Assert\NotBlank(['message' => $this->translator->trans('email_required')]),
-                    new Assert\Email(['message' => $this->translator->trans('email_invalid')]),
+                    new Assert\NotBlank(['message' => $this->translator->trans('form.email_required')]),
+                    new Assert\Email(['message' => $this->translator->trans('form.email_invalid')]),
                 ],
             ])
             ->add('message', TextareaType::class, [
                 'attr' => ['placeholder' => 'message'],
                 'label' => false,
                 'constraints' => [
-                    new Assert\NotBlank(['message' => $this->translator->trans('message_required')]),
+                    new Assert\NotBlank(['message' => $this->translator->trans('form.message_required')]),
                     new Assert\Length([
                         'min' => 10,
-                        'minMessage' => $this->translator->trans('message_min_length', ['{{ limit }}' => 10]),
+                        'minMessage' => $this->translator->trans('form.message_min_length', ['{{ limit }}' => 10]),
                     ]),
                 ],
             ])
             ->add('send', SubmitType::class, [
-                'label' => 'send',
+                'label' => 'form.send',
             ]);
     }
 

@@ -39,7 +39,7 @@ const Header: React.FC = () => {
         <div className="header-left">
           <div className="custom-select">
             <div className="selected-option">
-              {['fr', 'gb', 'es', 'de'].map((lang) => (
+              {['fr', 'en', 'es', 'de'].map((lang) => (
                 <div key={lang}>
                   {i18n.language === lang && (
                     <img
@@ -52,7 +52,7 @@ const Header: React.FC = () => {
               ))}
             </div>
             <ul className="options">
-              {['fr', 'gb', 'es', 'de'].map((lang) => (
+              {['fr', 'en', 'es', 'de'].map((lang) => (
                 <li key={lang}>
                   <button onClick={() => changeLanguage(lang)}>
                     <img
@@ -66,18 +66,18 @@ const Header: React.FC = () => {
             </ul>
           </div>
 
-          <a href="/home" className={isLoggedIn ? 'active' : ''}>
+          <a href="/" className={isLoggedIn ? 'active' : ''}>
             {t('home')}
           </a>
 
           <div className="dropdown">
-            <a href="/photo_albums" className={isLoggedIn ? 'active' : ''}>
+            <a href="/photos" className={isLoggedIn ? 'active' : ''}>
               {t('photos')}
             </a>
             {isLoggedIn && (
               <div className="dropdown-content">
-                <a href="/create_album">{t('create_album')}</a>
-                <a href="/upload_photo">{t('upload_photo')}</a>
+                <a href="/album/new">{t('create_album')}</a>
+                <a href="/photo/upload">{t('upload_photo')}</a>
               </div>
             )}
           </div>
@@ -88,8 +88,8 @@ const Header: React.FC = () => {
                 {t('articles')}
               </a>
               <div className="dropdown-content">
-                <a href="/create_article">{t('new_article')}</a>
-                <a href="/create_theme">{t('new_theme')}</a>
+                <a href="/articles/new">{t('new_article')}</a>
+                <a href="/theme/create">{t('new_theme')}</a>
               </div>
             </div>
           )}
@@ -131,8 +131,8 @@ const Header: React.FC = () => {
                 {t('inscription')}
               </a>
             </>
-          )}
-          <div id="lightModeToggle" onClick={toggleDarkMode}></div>
+          )}ff
+          <div id="lightModeToggle" onClick={toggleDarkMode}></div>gg
         </div>
       </nav>
     </header>

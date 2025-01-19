@@ -1,44 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'contact'|trans}}{% endblock %}
+{% block title %}{{ 'form.contact_title'|trans }}{% endblock %}
 
 {% block body %}
-    <h2>{{ 'contact_form'|trans }}</h2>
-
-    {% for message in app.flashes('success') %}
-    <div class="form-group">
-        <div class="flash-success">
-            {{ message }}
-        </div>
-    </div>
-    {% endfor %}
-
-    {% if error == 1 %}
-    <div class="form-group">
-        <div class="flash-error">
-            {{ form_errors(contactForm.name) }}
-            {{ form_errors(contactForm.email) }}
-            {{ form_errors(contactForm.message) }}
-        </div></div>
-    {% endif %}
-
-    {{ form_start(contactForm) }}
-    
-        <div class="form-group">
-            {{ form_widget(contactForm.name, {'attr': {'class': 'form-control'}}) }}
-        </div>
-
-        <div class="form-group">
-            {{ form_widget(contactForm.email, {'attr': {'class': 'form-control'}}) }}
-        </div>
-
-        <div class="form-group">
-            {{ form_widget(contactForm.message, {'attr': {'class': 'form-control'}}) }}
-        </div>
-
-        <div class="form-group">
-            {{ form_widget(contactForm.send, {'attr': {'class': 'green-button'}}) }}
-        </div>
-
-    {{ form_end(contactForm) }}
+    <div id="contact-form-root"></div>
 {% endblock %}

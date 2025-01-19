@@ -21,6 +21,8 @@ import DashboardTabs from "../components/DashboardTabs";
 import ThemeToggle from "../components/ThemeToggle";
 import Header from "../components/Header";
 import { UserProvider } from '../context/UserContext';
+import Presentation from '../components/Presentation';
+import ContactForm from '../components/ContactForm'; 
 import '../../public/i18n';
 import TinyEditor from "./TinyEditor";
 /*
@@ -595,6 +597,16 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
+    // Ajouter le composant Presentation dans le DOM
+    const presentationRoot = document.getElementById("presentation-root");
+    if (presentationRoot) {
+      ReactDOM.createRoot(presentationRoot).render(
+        <BrowserRouter>
+          <Presentation />
+        </BrowserRouter>
+      );
+    }
+
   // Ajouter le composant carousel dans le DOM
   const carouselElement = document.getElementById('project-carousel');  // Récupère l'élément DOM
 
@@ -612,6 +624,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// Code pour rendre le formulaire dans l'élément du DOM
+const contactFormRoot = document.getElementById('contact-form-root');
 
+if (contactFormRoot) {
+  const root = ReactDOM.createRoot(contactFormRoot);
+  root.render(<ContactForm />); // Rendre le composant ContactForm
+}
 
 

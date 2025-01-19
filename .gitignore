@@ -36,7 +36,7 @@ yarn-error.log
 /.env-old
 
 !/public/images/fr.png
-!/public/images/gb.png
+!/public/images/en.png
 !/public/images/logo_github.png
 !/public/images/logo_instagram.png
 !/public/images/logo_linkedin.png
