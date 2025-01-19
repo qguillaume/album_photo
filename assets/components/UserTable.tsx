@@ -4,13 +4,14 @@ import { User } from "../ts/types";
 
 interface UserTableProps {
   users: User[];
+  updateUsers: () => void;
 }
 
-const UserTable: React.FC<UserTableProps> = ({ users }) => {
+const UserTable: React.FC<UserTableProps> = ({ users, updateUsers }) => {
   const [currentUserRoles, setCurrentUserRoles] = useState<string[]>([]);
   const [loading, setLoading] = useState(true); // État de chargement
   const [currentPage, setCurrentPage] = useState(1);
-  const [userList, setUserList] = useState(users);
+  const [userList, setUserList] = useState(users); // État local pour gérer les utilisateurs affichés
   const [notification, setNotification] = useState<string | null>(null); // Ajout de l'état pour la notification
   const [notificationClass, setNotificationClass] = useState<string>(""); // Ajout pour gérer les classes CSS
   const [sortConfig, setSortConfig] = useState<{ key: keyof User; direction: "asc" | "desc" }>({
@@ -42,6 +43,10 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
     fetchCurrentUser();
   }, []);
   
+  // Synchroniser `userList` avec la prop `users`
+  useEffect(() => {
+    setUserList(users);
+  }, [users]); // Met à jour `userList` chaque fois que `users` change
 
   if (loading) {
     return <div>Chargement...</div>; // Affiche un message pendant le chargement
@@ -122,6 +127,8 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
       // Cacher la notification après 5 secondes avec animation
       setTimeout(() => setNotificationClass("hide"), 5000);
 
+      // Appeler updateUsers pour rafraîchir les données globales
+      updateUsers();
     } catch (error) {
       console.error("Erreur lors de la mise à jour du rôle :", error);
     }
@@ -131,12 +138,9 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
   const handleBanChange = async (userId: number, isBanned: boolean) => {
     // Mise à jour du state local
     setUserList((prevList) =>
-      prevList.map((user) => {
-        if (user.id === userId) {
-          return { ...user, isBanned: isBanned }; // Mettre à jour l'état "banni"
-        }
-        return user;
-      })
+      prevList.map((user) =>
+        user.id === userId ? { ...user, isBanned } : user
+      )
     );
   
     try {
@@ -156,11 +160,14 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
       }
   
       // Afficher la notification de succès
-      setNotification(isBanned ? "Utilisateur banni avec succès." : "Utilisateur débanni avec succès.");
-      setNotificationClass("show"); // Afficher la notification
-  
-      // Cacher la notification après 5 secondes avec animation
+      setNotification(
+        isBanned ? "Utilisateur banni avec succès." : "Utilisateur débanni avec succès."
+      );
+      setNotificationClass("show");
       setTimeout(() => setNotificationClass("hide"), 5000);
+  
+      // Appeler updateUsers pour rafraîchir les données globales
+      updateUsers();
   
     } catch (error) {
       console.error("Erreur lors de la mise à jour du bannissement :", error);

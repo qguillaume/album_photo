@@ -216,16 +216,28 @@ const AlbumsTable = () => {
 const UsersTable = () => {
   const [users, setUsers] = useState<User[]>([]);
 
+  // Fonction pour récupérer les utilisateurs depuis l'API
+  const updateUsers = async () => {
+    try {
+      const response = await fetch(`/users_list`);
+      if (!response.ok) {
+        throw new Error("Erreur lors de la récupération des utilisateurs.");
+      }
+      const data = await response.json();
+      setUsers(data); // Met à jour la liste des utilisateurs dans l'état local
+    } catch (error) {
+      console.error("Erreur lors du fetch des utilisateurs :", error);
+    }
+  };
+
+  // Appel de fetchUsers lors du montage du composant
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/users_list`)
-      .then((response) => response.json())
-      .then((data) => setUsers(data))
-      .catch((error) => console.error("Erreur lors du fetch des utilisateurs", error));
+    updateUsers();
   }, []);
 
   return (
     <div>
-      <UserTable users={users} />
+      <UserTable users={users} updateUsers={updateUsers} />
     </div>
   );
 };

@@ -82,6 +82,12 @@ const DashboardTabs: React.FC = () => {
       .then((data) => setArticles(data));
   };
 
+  // Fonction pour mettre à jour les users
+  const updateUsers = () => {
+    fetch('/users_list')
+      .then((response) => response.json())
+      .then((data) => setUsers(data));
+  };
 
   // Éditer un thème
   const handleThemeEdit = async (id: number, newName: string) => {
@@ -161,7 +167,7 @@ const DashboardTabs: React.FC = () => {
             onAlbumsUpdate={handleAlbumsUpdate}
           />
         )}
-        {activeTab === 'users' && <UserTable users={users} />}
+        {activeTab === 'users' && <UserTable users={users} updateUsers={updateUsers} />}
         {activeTab === 'articles' && <ArticleTable articles={articles} updateArticles={updateArticles} />}
         {activeTab === 'comments' && <CommentTable comments={comments} updateComments={updateComments} />}
         {activeTab === 'themes' && <ThemeTable themes={themes} onEdit={handleThemeEdit} />}
