@@ -1,59 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Article } from "../ts/types";
 import Pagination from "./PaginationDashboard";
 
 interface ArticleTableProps {
   articles: Article[];
-  onEdit: (id: number, newContent: string) => void;
-  onDelete: (id: number) => void;
+  updateArticles: () => void;
 }
 
-const ArticleTable: React.FC<ArticleTableProps> = ({ articles, onEdit, onDelete }) => {
+const ArticleTable: React.FC<ArticleTableProps> = ({ articles, updateArticles }) => {
   const [editingArticleId, setEditingArticleId] = useState<number | null>(null);
   const [newArticleContents, setNewArticleContents] = useState<string>("");
-  const [currentPage, setCurrentPage] = useState(1); // Page actuelle
-  const articlesPerPage = 10; // Nombre d'articles par page
+  const [currentPage, setCurrentPage] = useState(1);
+  const articlesPerPage = 10;
+  const [articleList, setArticleList] = useState<Article[]>([]);
+  const [notification, setNotification] = useState<string | null>(null);
+  const [notificationClass, setNotificationClass] = useState<string>("");
+  
   const [sortConfig, setSortConfig] = useState<{ key: keyof Article; direction: "asc" | "desc" }>({
     key: "id",
     direction: "asc",
   });
 
+  // Synchronisation de articleList avec comments
+    useEffect(() => {
+      setArticleList(articles);
+    }, [articles]);
+
   // Fonction pour trier les articles
-  const sortedArticles = [...articles].sort((a, b) => {
-    let aValue: any = a[sortConfig.key];
-    let bValue: any = b[sortConfig.key];
+  const sortedArticles = [...articleList].sort((a, b) => {
+    const aValue = a[sortConfig.key]?.toString() || '';
+    const bValue = b[sortConfig.key]?.toString() || '';
 
-    if (sortConfig.key === "author") {
-      aValue = a.author.username;
-      bValue = b.author.username;
-    }
-
-    if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
-    if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
-    return 0;
+    return sortConfig.direction === 'asc'
+      ? aValue.localeCompare(bValue)
+      : bValue.localeCompare(aValue);
   });
 
-  // Calculer les articles à afficher pour la page courante
+  // Pagination : Calcul des indices de début et de fin des articles à afficher
   const indexOfLastArticle = currentPage * articlesPerPage;
   const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
   const currentArticles = sortedArticles.slice(indexOfFirstArticle, indexOfLastArticle);
 
+  // Calculer le nombre total de pages
+  const totalPages = Math.ceil(articleList.length / articlesPerPage);
+
   // Changer de page
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
-
-  // Déclencher la suppression
-  const handleDelete = (id: number) => {
-    if (window.confirm("Êtes-vous sûr de vouloir supprimer cet article ?")) {
-      onDelete(id);
-    }
-  };
-
-  // Déclencher la validation de la modification
-  const handleEdit = (id: number) => {
-    onEdit(id, newArticleContents);
-    setEditingArticleId(null);
-    setNewArticleContents("");
-  };
 
   // Gérer le tri par colonne
   const handleSort = (key: keyof Article) => {
@@ -63,8 +55,68 @@ const ArticleTable: React.FC<ArticleTableProps> = ({ articles, onEdit, onDelete 
     }));
   };
 
-  // Calculer le nombre total de pages
-  const totalPages = Math.ceil(articles.length / articlesPerPage);
+  // Déclencher la suppression d'un article
+  const handleDeleteArticle = (id: number) => {
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer cet article ?")) {
+      fetch(`/article/${id}/delete`, { method: "POST" })
+        .then((response) => {
+          if (response.ok) {
+            // Mettre à jour localement en supprimant l'article
+            setArticleList((prevArticles) =>
+              prevArticles.filter((article) => article.id !== id)
+            );
+            setNotification("Article supprimé avec succès !");
+            setNotificationClass("show");
+            setTimeout(() => setNotificationClass("hide"), 5000);
+            // Appeler la fonction updateArticles pour synchroniser avec l'API
+            updateArticles();
+          } else {
+            alert("Erreur lors de la suppression de l'article.");
+          }
+        })
+        .catch((error) => console.error("Erreur:", error));
+    }
+  };
+
+  // Déclencher la validation de la modification
+  const handleEditArticle = (id: number, newContent: string) => {
+    if (!newContent.trim()) {
+      setNotification("Le contenu de l'article ne peut pas être vide");
+      setNotificationClass("error");
+      return;
+    }
+
+    fetch(`/article/${id}/edit_dashboard`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ content: newContent }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          // Mettre à jour localement avec le nouveau contenu
+          setArticleList((prevArticles) =>
+            prevArticles.map((article) =>
+              article.id === id ? { ...article, content: newContent } : article
+            )
+          );
+          setEditingArticleId(null);
+          setNotification("Article mis à jour avec succès !");
+          setNotificationClass("show");
+          setTimeout(() => setNotificationClass("hide"), 5000);
+          // Appeler la fonction updateArticles pour synchroniser avec l'API
+          updateArticles();
+        } else {
+          alert("Erreur lors de la mise à jour de l'article.");
+        }
+      })
+      .catch((error) => console.error("Erreur:", error));
+  };
+
+  // Annuler l'édition
+  const handleCancelEdit = () => {
+    setEditingArticleId(null);
+    setNewArticleContents('');
+  };
 
   return (
     <div className="table-container">
@@ -140,13 +192,13 @@ const ArticleTable: React.FC<ArticleTableProps> = ({ articles, onEdit, onDelete 
                       <>
                         <button
                           className="validate"
-                          onClick={() => handleEdit(article.id)}
+                          onClick={() => handleEditArticle(article.id, newArticleContents)}
                         >
                           Valider
                         </button>
                         <button
                           className="cancel"
-                          onClick={() => setEditingArticleId(null)}
+                          onClick={handleCancelEdit}
                         >
                           Annuler
                         </button>
@@ -164,7 +216,7 @@ const ArticleTable: React.FC<ArticleTableProps> = ({ articles, onEdit, onDelete 
                         </button>
                         <button
                           className="delete"
-                          onClick={() => handleDelete(article.id)}
+                          onClick={() => handleDeleteArticle(article.id)}
                         >
                           Supprimer
                         </button>
@@ -180,6 +232,13 @@ const ArticleTable: React.FC<ArticleTableProps> = ({ articles, onEdit, onDelete 
 
       {/* Pagination en bas */}
       <Pagination currentPage={currentPage} totalPages={totalPages} onPaginate={paginate} />
+
+      {/* Affichage de la notification */}
+      {notification && (
+        <div className={`notification ${notificationClass}`}>
+          {notification}
+        </div>
+      )}
     </div>
   );
 };

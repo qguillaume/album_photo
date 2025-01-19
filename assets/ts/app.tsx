@@ -282,58 +282,51 @@ const UsersTable = () => {
   };
   
 
-const ArticlesTable = () => {
-  const [articles, setArticles] = useState<Article[]>([]);
-
-  // Charger les articles depuis l'API
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/articles_list`)
-      .then((response) => response.json())
-      .then((data) => setArticles(data))
-      .catch((error) => console.error("Erreur lors du fetch des articles", error));
-  }, []);
-
-  // Fonction pour éditer un article
-  const handleEdit = (id: number, newContent: string) => {
-    // 1. Mettre à jour localement l'article dans l'état
-    setArticles((prevArticles) =>
-      prevArticles.map((article) =>
-        article.id === id ? { ...article, content: newContent } : article
-      )
-    );
+  const ArticlesTable = () => {
+    const [articles, setArticles] = useState<Article[]>([]);
   
-    // 2. Mettre à jour l'article sur l'API
-    fetch(`${process.env.REACT_APP_API_URL}/article/${id}/edit`, {
-      method: "PUT", //test put au lieu de post
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ content: newContent }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Erreur lors de la mise à jour de l\'article');
+    // Charger les articles depuis l'API au montage du composant
+    useEffect(() => {
+      const fetchArticles = async () => {
+        try {
+          const response = await fetch('/articles_list');
+          if (!response.ok) {
+            throw new Error('Erreur lors du chargement des articles');
+          }
+          const data = await response.json();
+          setArticles(data);
+        } catch (error) {
+          console.error(error);
         }
-        alert("Article mis à jour avec succès !");
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la mise à jour de l'article :", error);
-        alert("Erreur lors de la mise à jour de l'article.");
-      });
+      };
+  
+      fetchArticles();
+    }, []);  // Le tableau vide signifie que cet effet se déclenche uniquement au premier rendu
+  
+    // Fonction pour rafraîchir les articles après modification/suppression
+    const updateArticles = async () => {
+      try {
+        const response = await fetch('/articles_list');
+        if (!response.ok) {
+          throw new Error('Erreur lors du rafraîchissement des articles');
+        }
+        const data = await response.json();
+        setArticles(data); // Mettre à jour les articles
+        console.log('Articles mis à jour:', data); // Debugging
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+    return (
+      <div>
+        <ArticleTable
+          articles={articles}
+          updateArticles={updateArticles}
+        />
+      </div>
+    );
   };
-
-  return (
-    <div>
-      <ArticleTable
-        articles={articles}
-        onEdit={handleEdit}
-        onDelete={(id) => {
-          console.log(`Deleting article ${id}`);
-        }}
-      />
-    </div>
-  );
-};
 
 const CommentsTable = () => {
   const [comments, setComments] = useState<Comment[]>([]);
