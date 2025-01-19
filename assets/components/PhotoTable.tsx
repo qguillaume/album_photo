@@ -28,7 +28,8 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
   const isSuperAdmin = currentUserRoles.includes("ROLE_SUPER_ADMIN");
   const isAdmin = currentUserRoles.includes("ROLE_ADMIN");
   const isUser = currentUserRoles.includes("ROLE_USER");
-
+  const [notification, setNotification] = useState<string | null>(null); // Ajout de l'état pour la notification
+  const [notificationClass, setNotificationClass] = useState<string>(""); // Ajout pour gérer les classes CSS
   const [sortConfig, setSortConfig] = useState<{ key: keyof Photo; direction: "asc" | "desc" }>({
     key: "id",
     direction: "asc",
@@ -97,7 +98,12 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
               onAlbumsUpdate(updatedAlbums);
             }
   
-            alert("Photo supprimée !");
+            // Afficher la notification de succès
+            setNotification("Photo supprimée avec succès !");
+            setNotificationClass("show"); // Afficher la notification
+
+            // Cacher la notification après 5 secondes avec animation
+            setTimeout(() => setNotificationClass("hide"), 5000);
           } else {
             alert("Erreur lors de la suppression.");
           }
@@ -124,7 +130,12 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
           );
           setEditingPhotoId(null); // Fermer le mode d'édition
           setNewTitle(""); // Réinitialiser le titre
-          alert("Photo mise à jour !");
+          // Afficher la notification de succès
+          setNotification("Photo mise à jour avec succès !");
+          setNotificationClass("show"); // Afficher la notification
+
+          // Cacher la notification après 5 secondes avec animation
+          setTimeout(() => setNotificationClass("hide"), 5000);
         } else {
           alert("Erreur lors de la mise à jour.");
         }
@@ -155,6 +166,12 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
           photo.id === photoId ? { ...photo, isVisible: newVisibility } : photo
         );
         onPhotosUpdate(updatedPhotos);
+        // Afficher la notification de succès
+        setNotification("Visibilité de la photo mise à jour avec succès !");
+        setNotificationClass("show"); // Afficher la notification
+
+        // Cacher la notification après 5 secondes avec animation
+        setTimeout(() => setNotificationClass("hide"), 5000);
       })
       .catch((error) => {
         console.error("Erreur lors de la mise à jour de la visibilité:", error);
@@ -174,6 +191,12 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
           photo.id === photoId ? { ...photo, isApproved: newApproval } : photo
         );
         onPhotosUpdate(updatedPhotos);
+        // Afficher la notification de succès
+        setNotification("Approbation de la photo mise à jour avec succès !");
+        setNotificationClass("show"); // Afficher la notification
+
+        // Cacher la notification après 5 secondes avec animation
+        setTimeout(() => setNotificationClass("hide"), 5000);
       })
       .catch((error) => {
         console.error("Erreur lors de la mise à jour de l'approbation:", error);
@@ -312,6 +335,12 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
         </tbody>
       </table>
       <Pagination currentPage={currentPage} totalPages={totalPages} onPaginate={paginate} />
+      {/* Affichage de la notification en bas à gauche */}
+      {notification && (
+        <div className={`notification ${notificationClass}`}>
+          {notification}
+        </div>
+      )}
     </div>
   );
 };

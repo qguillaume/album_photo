@@ -20,6 +20,8 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
   const isSuperAdmin = currentUserRoles.includes("ROLE_SUPER_ADMIN");
   const isAdmin = currentUserRoles.includes("ROLE_ADMIN");
   const isUser = currentUserRoles.includes("ROLE_USER");
+  const [notification, setNotification] = useState<string | null>(null); // Ajout de l'état pour la notification
+  const [notificationClass, setNotificationClass] = useState<string>(""); // Ajout pour gérer les classes CSS
   const [sortConfig, setSortConfig] = useState<{ key: keyof Album; direction: "asc" | "desc" }>({
     key: "id",
     direction: "asc",
@@ -75,7 +77,13 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
           if (response.ok) {
             const updatedAlbums = albums.filter((album) => album.id !== id);
             onAlbumsUpdate(updatedAlbums);
-            alert("Album supprimé !");
+            // Afficher la notification de succès
+            setNotification("Album supprimé avec succès.");
+            setNotificationClass("show"); // Afficher la notification
+
+            // Cacher la notification après 5 secondes avec animation
+            setTimeout(() => setNotificationClass("hide"), 5000);
+            //alert("Album supprimé !");
           } else {
             alert("Erreur lors de la suppression.");
           }
@@ -102,6 +110,12 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
           );
           setEditingAlbumId(null);
           setNewAlbumName("");
+          // Afficher la notification de succès
+          setNotification("L'album a été mis à jour avec succès.");
+          setNotificationClass("show"); // Afficher la notification
+
+          // Cacher la notification après 5 secondes avec animation
+          setTimeout(() => setNotificationClass("hide"), 5000);
           alert("Album mis à jour !");
         } else {
           alert("Erreur lors de la mise à jour de l'album.");
@@ -133,7 +147,12 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
             album.id === albumId ? { ...album, isVisible } : album
           );
           onAlbumsUpdate(updatedAlbums);
-          alert(`Visibilité de l'album mise à jour avec succès !`);
+          // Afficher la notification de succès
+          setNotification("Visibilité de l'album mise à jour avec succès !");
+          setNotificationClass("show"); // Afficher la notification
+
+          // Cacher la notification après 5 secondes avec animation
+          setTimeout(() => setNotificationClass("hide"), 5000);
         } else {
           alert("Erreur lors de la mise à jour de la visibilité.");
         }
@@ -156,6 +175,12 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
           album.id === albumId ? { ...album, isApproved: newApproval } : album
         );
         onAlbumsUpdate(updatedAlbums);
+        // Afficher la notification de succès
+        setNotification("Approbation de l'album mise à jour avec succès !");
+        setNotificationClass("show"); // Afficher la notification
+
+        // Cacher la notification après 5 secondes avec animation
+        setTimeout(() => setNotificationClass("hide"), 5000);
       })
       .catch((error) => {
         console.error("Erreur lors de la mise à jour de l'approbation:", error);
@@ -291,6 +316,12 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
         </tbody>
       </table>
       <Pagination currentPage={currentPage} totalPages={totalPages} onPaginate={paginate} />
+      {/* Affichage de la notification en bas à gauche */}
+      {notification && (
+        <div className={`notification ${notificationClass}`}>
+          {notification}
+        </div>
+      )}
     </div>
   );
 };
