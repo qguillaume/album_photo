@@ -6,7 +6,7 @@
     <div class="center">
         <div class="polaroid-images">
             <a href="#">
-                <img src="{{ asset('uploads/photos/' ~ photo.filePath) }}" alt="{{ photo.title }}" class="polaroid-thumbnail">
+                <img src="{{ asset('uploads/photos/' ~ photo.album.creator.id ~ '/' ~ photo.album.nomAlbum ~ '/' ~ photo.filePath) }}" alt="{{ photo.title }}" class="polaroid-thumbnail">
                 <div class="photo-title">{{ photo.title }}</div>
             </a>
         </div>
