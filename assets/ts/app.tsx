@@ -338,52 +338,26 @@ const ArticlesTable = () => {
 const CommentsTable = () => {
   const [comments, setComments] = useState<Comment[]>([]);
 
-  // Charger les commentaires depuis l'API
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/commentaires_list`)
-      .then((response) => response.json())
-      .then((data) => setComments(data))
-      .catch((error) => console.error("Erreur lors du fetch des commentaires", error));
+    const fetchComments = async () => {
+      const response = await fetch('/commentaires_list');
+      const data = await response.json();
+      setComments(data);
+    };
+
+    fetchComments();
   }, []);
 
-  // Fonction pour éditer un commentaire
-  const handleEdit = (id: number, newContent: string) => {
-    // 1. Mettre à jour localement le commentaire dans l'état
-    setComments((prevComments) =>
-      prevComments.map((comment) =>
-        comment.id === id ? { ...comment, content: newContent } : comment
-      )
-    );
-  
-    // 2. Mettre à jour le commentaire sur l'API
-    fetch(`${process.env.REACT_APP_API_URL}/comment/${id}/edit`, {
-      method: "PUT", //test put au lieu de post
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ content: newContent }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Erreur lors de la mise à jour du commentaire');
-        }
-        alert("Commentaire mis à jour avec succès !");
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la mise à jour du commentaire :", error);
-        alert("Erreur lors de la mise à jour du commentaire.");
-      });
+  // Fonction pour rafraîchir les commentaires après modification/suppression
+  const updateComments = () => {
+    fetch('/commentaires_list')
+      .then((response) => response.json())
+      .then((data) => setComments(data));
   };
 
   return (
     <div>
-      <CommentTable
-        comments={comments}
-        onEdit={handleEdit}
-        onDelete={(id) => {
-          console.log(`Deleting comment ${id}`);
-        }}
-      />
+      <CommentTable comments={comments} updateComments={updateComments} />
     </div>
   );
 };

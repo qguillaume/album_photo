@@ -68,6 +68,13 @@ const DashboardTabs: React.FC = () => {
     setAlbums(updatedAlbums);
   };
 
+  // Fonction pour mettre à jour les commentaires
+  const updateComments = () => {
+    fetch('/comments_list')
+      .then((response) => response.json())
+      .then((data) => setComments(data));
+  };
+  
   // Éditer un article
   const handleArticleEdit = (id: number, newContent: string) => {
     fetch(`/article/${id}/edit_dashboard`, {
@@ -106,45 +113,7 @@ const DashboardTabs: React.FC = () => {
       .catch((error) => console.error("Erreur :", error));
   };
 
-  // Éditer un commentaire
-  const handleCommentEdit = (id: number, newContent: string) => {
-    fetch(`/comment/${id}/edit_dashboard`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ content: newContent }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          setComments((prevComments) =>
-            prevComments.map((comment) =>
-              comment.id === id ? { ...comment, content: newContent } : comment
-            )
-          );
-          alert("Commentaire mis à jour !");
-        } else {
-          alert("Erreur lors de la mise à jour du commentaire.");
-        }
-      })
-      .catch((error) => console.error("Erreur :", error));
-  };
-
-  // Supprimer un commentaire
-  const handleCommentDelete = (id: number) => {
-    fetch(`/comment/${id}/delete_dashboard`, { method: "DELETE" })
-      .then((response) => {
-        if (response.ok) {
-          setComments((prevComments) =>
-            prevComments.filter((comment) => comment.id !== id)
-          );
-          alert("Commentaire supprimé !");
-        } else {
-          alert("Erreur lors de la suppression du commentaire.");
-        }
-      })
-      .catch((error) => console.error("Erreur :", error));
-  };
-
-  // Éditer un commentaire
+  // Éditer un thème
   const handleThemeEdit = async (id: number, newName: string) => {
     const response = await fetch(`/theme/${id}/edit_dashboard`, {
       method: 'PUT',
@@ -152,7 +121,7 @@ const DashboardTabs: React.FC = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        name: newName,  // Assure-toi que la clé ici est 'name'
+        name: newName,
       }),
     });
 
@@ -224,7 +193,7 @@ const DashboardTabs: React.FC = () => {
         )}
         {activeTab === 'users' && <UserTable users={users} />}
         {activeTab === 'articles' && <ArticleTable articles={articles} onEdit={handleArticleEdit} onDelete={handleArticleDelete} />}
-        {activeTab === 'comments' && <CommentTable comments={comments} onEdit={handleCommentEdit} onDelete={handleCommentDelete} />}
+        {activeTab === 'comments' && <CommentTable comments={comments} updateComments={updateComments} />}
         {activeTab === 'themes' && <ThemeTable themes={themes} onEdit={handleThemeEdit} />}
       </div>
     </div>
