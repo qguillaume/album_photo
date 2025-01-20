@@ -187,3 +187,29 @@ header {
     }
   }
 }
+
+/* Affichage sur les petits écrans (mobile) */
+@media (max-width: 768px) {
+  /* Cacher le header classique pour mobile */
+  .old-header {
+    display: none;
+  }
+
+  /* Afficher le header hamburger sur mobile */
+  #header-root.hamburger-header {
+    display: block;
+  }
+}
+
+/* Affichage sur les grands écrans (desktop) */
+@media (min-width: 769px) {
+  /* Cacher le menu hamburger sur desktop */
+  #header-root.hamburger-header {
+    display: none;
+  }
+
+  /* Afficher le header classique sur desktop */
+  .old-header {
+    display: block;
+  }
+}
