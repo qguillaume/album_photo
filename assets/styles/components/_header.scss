@@ -1,8 +1,8 @@
 @use "../base/variables" as *;
 
-// Header transparent avec trois sections (gauche, centre, droite)
+// Header principal (transparent, avec sections gauche, centre et droite)
 header {
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px); /* Effet de flou */
   -webkit-backdrop-filter: blur(8px);
   color: white;
   position: fixed;
@@ -10,7 +10,7 @@ header {
   left: 0;
   width: 100%;
   z-index: 1000;
-  padding: 30px 40px;
+  padding: 20px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -18,27 +18,26 @@ header {
   transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 
+  /* Menu hamburger pour mobile */
   .hamburger-menu {
     display: none;
     font-size: 2rem;
+    color: $primary-color;
     cursor: pointer;
+    z-index: 1500; /* Par-dessus le reste */
   }
 
+  /* Navigation principale */
   .nav-menu {
     display: flex;
     gap: 30px;
     align-items: center;
+    list-style: none;
     margin: 0;
     padding: 0;
-  }
-
-  .header-left {
-    display: flex;
-    gap: 30px;
-    align-items: center;
 
     a {
-      color: white;
+      color: $primary-color;
       text-decoration: none;
       padding: 10px 15px;
       font-size: 1rem;
@@ -47,16 +46,28 @@ header {
 
       &:hover,
       &.active {
-        background-color: transparent;
+        background-color: $primary-color; /* Couleur d'arrière-plan au survol */
         color: white;
       }
     }
   }
 
-  // Section centrale : logo
+  /* Section gauche : navigation et options */
+  .header-left {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+
+    .custom-select {
+      position: relative;
+      cursor: pointer;
+    }
+  }
+
+  /* Section centrale : logo */
   .header-center {
     position: absolute;
-    top: calc(50% + 5px);
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
@@ -69,63 +80,110 @@ header {
     }
   }
 
-  // Section droite : utilisateur et langue
+  /* Section droite : utilisateur et langue */
   .header-right {
     display: flex;
     align-items: center;
     gap: 15px;
+
+    .register {
+      background-color: $secondary-color;
+      color: white;
+      border-radius: 8px;
+      padding: 10px 15px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+
+      &:hover {
+        background-color: $secondary-color-hover;
+        color: white;
+      }
+    }
   }
 
-  /* Burger menu responsive */
-  @media (max-width: 768px) {
-    .hamburger-menu {
-      display: block;
+  /* Spinner overlay */
+  #spinner-overlay {
+    display: none; /* Par défaut, masqué */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .spinner {
+      border: 5px solid $secondary-color;
+      border-top: 5px solid $primary-color;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
     }
 
-    // Navigation responsive
+    .message {
+      margin-top: 20px;
+      color: white;
+      font-size: 1.2rem;
+    }
+  }
+
+  /* Animation du spinner */
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .hamburger-menu {
+      display: block; /* Visible sur mobile */
+    }
+
     .nav-menu {
-      display: none;
+      display: none; /* Masqué par défaut */
       position: fixed;
       top: 70px;
       left: 0;
       width: 100%;
       background-color: rgba(0, 0, 0, 0.9);
-      z-index: 1500;
+      flex-direction: column;
+      gap: 15px;
+      padding: 20px;
+      z-index: 1500; /* Par-dessus le reste */
     }
 
     .nav-menu.active {
-      display: flex;
-      flex-direction: column;
-      padding: 20px;
+      display: flex; /* Affiche le menu burger lorsqu'il est actif */
     }
 
-    .header-center .logo {
-      display: none;
-    }
-
-    .header-left .custom-select {
-      display: block;
-    }
-
-    .header-left .dropdown {
-      display: block;
+    .header-center {
+      .logo {
+        display: none; /* Cache le logo sur mobile */
+      }
     }
   }
 
-  /* Menu classique sur grand écran */
   @media (min-width: 769px) {
-    .header-left {
-      display: flex;
-      gap: 30px;
+    .hamburger-menu {
+      display: none; /* Cache le menu hamburger sur desktop */
     }
 
     .nav-menu {
-      display: flex;
-      gap: 30px;
+      display: flex; /* Navigation classique sur grand écran */
     }
 
-    .header-center .logo {
-      display: block;
+    .header-center {
+      .logo {
+        display: block; /* Affiche le logo sur desktop */
+      }
     }
   }
 }
