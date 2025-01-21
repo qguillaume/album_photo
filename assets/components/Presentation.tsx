@@ -22,21 +22,27 @@ const TextPresentation: React.FC = () => {
   if (!isReady) return <div>Loading...</div>;
 
   return (
-    <div className="presentation-container">
-      <div className="photo-presentation" data-aos="fade-right">
-        <img src="images/photo_presentation.jpg" alt="Photo de présentation" />
+    <>
+      <h1 data-aos="zoom-in">{t('main_title')}</h1>
+      <div className="separator"></div>
+      <div className="presentation-container">
+        <div className="photo-presentation" data-aos="fade-right">
+          <img src="images/photo_presentation.jpg" alt="Photo de présentation" />
+        </div>
+        <div className="texte" data-aos="fade-left">
+          <h2>{t('hello_welcome')}</h2>
+          <p><Trans>{t('presentation_text_1')}</Trans></p>
+          <p><Trans>{t('presentation_text_2')}</Trans></p>
+          <p><Trans>{t('presentation_text_3')}</Trans></p>
+          <p><Trans>{t('presentation_text_4')}</Trans></p>
+          <p><Trans>{t('presentation_text_5')}</Trans></p>
+          <p><Trans>{t('presentation_text_6')}</Trans></p>
+          <p><Trans>{t('presentation_text_7')}</Trans></p>
+        </div>
       </div>
-      <div className="texte" data-aos="fade-left">
-        <h2>{t('hello_welcome')}</h2>
-        <p><Trans>{t('presentation_text_1')}</Trans></p>
-        <p><Trans>{t('presentation_text_2')}</Trans></p>
-        <p><Trans>{t('presentation_text_3')}</Trans></p>
-        <p><Trans>{t('presentation_text_4')}</Trans></p>
-        <p><Trans>{t('presentation_text_5')}</Trans></p>
-        <p><Trans>{t('presentation_text_6')}</Trans></p>
-        <p><Trans>{t('presentation_text_7')}</Trans></p>
-      </div>
-    </div>
+      <div className="separator"></div>
+      <h2 id="skills" data-aos="zoom-in">{t('skills')}</h2>
+    </>
   );
 };
 

@@ -88,14 +88,18 @@ const CVContact: React.FC = () => {
   };
 
   return (
-    <div className="cv-contact">
-      <div className="cvc-buttons" data-aos="fade-up">
-        <ContactButton />
-        <button className="green-button" onClick={handleDownloadCV}>
-          {t('download_cv')} {/* Traduction pour le texte du bouton */}
-        </button>
+    <>
+      <h2 data-aos="zoom-in">{t('profile_interest')}</h2>
+      <p className="cv-p" data-aos="fade-up">{t('collab_sentence')}</p>
+      <div className="cv-contact">
+        <div className="cvc-buttons" data-aos="fade-up">
+          <ContactButton />
+          <button className="green-button" onClick={handleDownloadCV}>
+            {t('download_cv')} {/* Traduction pour le texte du bouton */}
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -70,5 +70,19 @@
     "message_required": "Nachricht ist erforderlich",
     "message_min_length": "Die Nachricht muss mindestens {{ limit }} Zeichen lang sein",
     "send": "Senden"
-  }
+  },
+  "bellon": "Fullstack-Entwickler - Gruppe Bellon",
+  "alphalives": "PHP-Entwickler, Laravel - Alphalives Multimedia",
+  "fnac": "PHP-Entwickler, Symfony - Gruppe Fnac-Darty",
+  "neuros": "PHP-Entwickler, SugarCRM - Neuros Assurance",
+  "sygedel": "PHP-Entwickler, Symfony - Sygedel Assurance",
+  "bnp_paribas": "Java-Forschungsingenieur - BNP Paribas",
+  "directgestion": "PHP-Entwickler - Directgestion",
+  "ajc_formation": "Schulung in XHTML/CSS, PHP, MySQL, JAVA, UML",
+  "paris_7": "Master in Informatik - Universität Paris 7",
+  "6_mois": "6 Monate",
+  "4_ans": "4 Jahre",
+  "2_ans": "2 Jahre",
+  "1_an": "1 Jahr",
+  "1_an_et_demi": "1 Jahr und ein halbes"
 }

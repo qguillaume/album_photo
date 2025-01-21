@@ -76,5 +76,19 @@
     "email_invalid": "L'email n'est pas valide",
     "message_required": "Le message est requis",
     "message_min_length": "Le message doit comporter au moins {{ limit }} caractères"
-  }
+  },
+  "bellon": "Développeur Fullstack - Groupe Bellon",
+  "alphalives": "Développeur PHP, Laravel - Alphalives Multimedia",
+  "fnac": "Développeur PHP, Symfony - Groupe Fnac-Darty",
+  "neuros": "Développeur PHP, SugarCRM - Neuros Assurance",
+  "sygedel": "Développeur PHP, Symfony - Sygedel Assurance",
+  "bnp_paribas": "Ingénieur d'études Java - BNP Paribas",
+  "directgestion": "Développeur PHP - Directgestion",
+  "ajc_formation": "Formation XHTML/CSS, PHP, MySQL, JAVA, UML",
+  "paris_7": "Maîtrise Informatique - Université Paris 7",
+  "6_mois": "6 mois",
+  "4_ans": "4 ans",
+  "2_ans": "2 ans",
+  "1_an":  "1 an",
+  "1_an_et_demi": "1 an et demi"
 }

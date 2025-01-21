@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../styles/components/_timeline.scss"; // Ajoute les styles nécessaires
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { useTranslation, Trans } from 'react-i18next'; // hook
 
 interface TimelineItem {
   year: string;
@@ -9,23 +10,24 @@ interface TimelineItem {
   duration: string;
 }
 
-const timelineData: TimelineItem[] = [
-  { year: "2024", description: "Développeur Fullstack - Groupe Bellon", duration: "6 mois"},
-  { year: "2019", description: "Développeur PHP, Laravel - Alphalives Multimedia", duration: "4 ans" },
-  { year: "2018", description: "Développeur PHP, Symfony - Groupe Fnac-Darty", duration: "1 an" },
-  { year: "2016", description: "Développeur PHP, SugarCRM - Neuros Assurance", duration: "1 an et demi" },
-  { year: "2015", description: "Développeur PHP, Symfony - Sygedel Assurance", duration: "1 an" },
-  { year: "2014", description: "Ingénieur d'études Java - BNP Paribas", duration: "1 an" },
-  { year: "2012", description: "Développeur PHP - Directgestion", duration: "2 ans" },
-  { year: "2011", description: "Formation XHTML/CSS, PHP, MySQL, JAVA, UML", duration: "6 mois" },
-  { year: "2009", description: "Maîtrise Informatique - Université Paris 7", duration: "" },
-];
-
 const Timeline: React.FC = () => {
   const [visibleItems, setVisibleItems] = useState<number[]>([]);
+  const { t, i18n } = useTranslation(); // Hook pour accéder aux traductions
+  const [isReady, setIsReady] = useState(false);
+
+const timelineData: TimelineItem[] = [
+  { year: "2024", description: t('bellon'), duration: t('6_mois') },
+  { year: "2019", description: t('alphalives'), duration: t('4_ans') },
+  { year: "2018", description: t('fnac'), duration: t('1_an') },
+  { year: "2016", description: t('neuros'), duration: t('1_an_et_demi') },
+  { year: "2015", description: t('sygedel'), duration: t('1_an') },
+  { year: "2014", description: t('bnp_paribas'), duration: t('1_an') },
+  { year: "2012", description: t('directgestion'), duration: t('2_ans') },
+  { year: "2011", description: t('ajc_formation'), duration: t('6_mois') },
+  { year: "2009", description: t('paris_7'), duration: "" },
+];
 
   useEffect(() => {
-    
     AOS.init({
       duration: 1000, // Durée de l'animation en millisecondes
       easing: 'ease-in-out', // Transition fluide
@@ -33,6 +35,12 @@ const Timeline: React.FC = () => {
       offset: 120, // Décalage avant déclenchement
       mirror: false, // Évite les répétitions inutiles
     });
+    if (i18n.isInitialized) {
+      setIsReady(true); // Marquer comme prêt une fois i18next initialisé
+    }
+  }, [i18n.isInitialized]);
+
+  useEffect(() => {
     const handleScroll = () => {
       const items = document.querySelectorAll(".timeline-item");
       items.forEach((item, index) => {
@@ -55,19 +63,24 @@ const Timeline: React.FC = () => {
   }, []);
 
   return (
-    <section className="timeline">
-      <div className="timeline-container">
-        {timelineData.map((item, index) => (
-          <div key={index} className="timeline-item" data-aos="zoom-in">
-            <div className="timeline-content">
-              <h3>{item.year}</h3>
-              <p>{item.description}</p>
-              <h4>{item.duration}</h4>
+    <>
+      <h2 data-aos="zoom-in">{t('journey')}</h2>
+      <section className="timeline">
+        <div className="timeline-container">
+          {timelineData.map((item, index) => (
+            <div key={index} className="timeline-item" data-aos="zoom-in">
+              <div className="timeline-content">
+                <h3>{item.year}</h3>
+                <p>{item.description}</p>
+                <h4>{item.duration}</h4>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-    </section>
+          ))}
+        </div>
+      </section>
+      <div className="separator"></div>
+      <h2 data-aos="zoom-in">{t('projects_title')}</h2>
+    </>
   );
 };
 

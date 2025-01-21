@@ -70,5 +70,19 @@
     "message_required": "Message is required",
     "message_min_length": "Message must be at least {{ limit }} characters long",
     "send": "Send"
-  }
+  },
+  "bellon": "Fullstack Developer - Groupe Bellon",
+  "alphalives": "PHP Developer, Laravel - Alphalives Multimedia",
+  "fnac": "PHP Developer, Symfony - Groupe Fnac-Darty",
+  "neuros": "PHP Developer, SugarCRM - Neuros Assurance",
+  "sygedel": "PHP Developer, Symfony - Sygedel Assurance",
+  "bnp_paribas": "Java Research Engineer - BNP Paribas",
+  "directgestion": "PHP Developer - Directgestion",
+  "ajc_formation": "Training in XHTML/CSS, PHP, MySQL, JAVA, UML",
+  "paris_7": "Master's Degree in Computer Science - University Paris 7",
+  "6_mois": "6 months",
+  "4_ans": "4 years",
+  "2_ans": "2 years",
+  "1_an": "1 year",
+  "1_an_et_demi": "1 year and a half"
 }

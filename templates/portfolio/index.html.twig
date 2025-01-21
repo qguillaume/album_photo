@@ -1,15 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1 data-aos="zoom-in">{{ 'main_title'|trans }}</h1>
-
-    <div class="separator"></div>
-
     <div id="presentation-root"></div>
 
-    <div class="separator"></div>
-
-    <h2 id=skills data-aos="zoom-in">{{ 'skills'|trans }}</h2>
     <div class="espacement"></div>
         <div class="presentation-container">
             <!-- Compétences à gauche -->
@@ -96,20 +89,15 @@
 
     <div class="separator"></div>
 
-    <h2 data-aos="zoom-in">{{ 'journey'|trans }}</h2>
     <div id="timeline-root"></div>
 
-    <div class="separator"></div>
-
-    <h2 data-aos="zoom-in">{{ 'projects_title'|trans }}</h2>
     <div class="project-carousel-container">
         <div id="project-carousel" data-aos="zoom-in"></div>
     </div>
 
     <div class="separator"></div>
 
-    <h2 data-aos="zoom-in">{{ 'profile_interest'|trans }}</h2>
-    <p class="cv-p" data-aos="fade-up">{{ 'collab_sentence'|trans }}</p>
+    
     <div id="cv_contact"></div>
 
 {% endblock %}
