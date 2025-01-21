@@ -20,6 +20,7 @@ import ThemeTable from "../components/ThemeTable";
 import DashboardTabs from "../components/DashboardTabs";
 import ThemeToggle from "../components/ThemeToggle";
 import Header from "../components/Header";
+import Languette from "../components/Languette";
 import { UserProvider } from '../context/UserContext';
 import Presentation from '../components/Presentation';
 import ContactForm from '../components/ContactForm'; 
@@ -611,4 +612,10 @@ if (contactFormRoot) {
   root.render(<ContactForm />); // Rendre le composant ContactForm
 }
 
+// Code pour rendre la languette dans l'élément du DOM
+const languetteRootElement = document.getElementById("languette-root");
 
+if (languetteRootElement) {
+  const root = ReactDOM.createRoot(languetteRootElement);
+  root.render(<Languette />);
+}

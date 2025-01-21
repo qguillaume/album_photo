@@ -1,0 +1,59 @@
+@use "../base/variables" as *;
+
+.languette-container {
+    position: fixed; /* Fixe la languette et le bouton au même endroit */
+    top: 0;
+    left: 0;
+    height: 100vh; /* Hauteur de la fenêtre */
+    width: 100vw; /* Largeur de la fenêtre */
+    z-index: 1000; /* Assure que la languette et le bouton sont au-dessus des autres éléments */
+  }
+  
+  /* Languette (container caché et qui s'affiche) */
+  .languette {
+    position: absolute;
+    top: 0;
+    left: -200px; /* Initialement caché à gauche */
+    width: 200px;
+    height: 100%;
+    background-color: $primary-color;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: left 0.3s ease; /* Déplacement de la languette */
+    z-index: 10000;
+  }
+  
+  /* Bouton qui sera à gauche au centre de l'écran */
+  button.languette-toggle {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%); /* Centre verticalement */
+    width: 30px;
+    height: 100px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    cursor: pointer;
+    z-index: 10000;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: left 0.3s ease; /* Déplacement du bouton */
+  }
+  
+  /* Si la languette est ouverte, la déplace */
+  .languette.open {
+    left: 0;
+  }
+  
+  /* Quand la languette est ouverte, déplace également le bouton */
+  button.languette-toggle.open {
+    left: 200px;
+  }
+  
