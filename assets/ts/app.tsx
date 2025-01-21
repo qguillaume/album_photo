@@ -21,6 +21,7 @@ import DashboardTabs from "../components/DashboardTabs";
 import ThemeToggle from "../components/ThemeToggle";
 import Header from "../components/Header";
 import Languette from "../components/Languette";
+import Footer from "../components/Footer";
 import { UserProvider } from '../context/UserContext';
 import Presentation from '../components/Presentation';
 import ContactForm from '../components/ContactForm'; 
@@ -622,4 +623,12 @@ const languetteRootElement = document.getElementById("languette-root");
 if (languetteRootElement) {
   const root = ReactDOM.createRoot(languetteRootElement);
   root.render(<Languette />);
+}
+
+// Code pour rendre la languette dans l'élément du DOM
+const footerRootElement = document.getElementById("footer-root");
+
+if (footerRootElement) {
+  const root = ReactDOM.createRoot(footerRootElement);
+  root.render(<Footer />);
 }
