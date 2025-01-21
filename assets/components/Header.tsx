@@ -18,16 +18,6 @@ const Header: React.FC = () => {
     setMenuOpen(!menuOpen);
   };
 
-  // Change la langue
-  const changeLanguage = (lang: string) => {
-    i18n.changeLanguage(lang);
-  };
-
-  // Basculer le mode sombre
-  const toggleDarkMode = () => {
-    document.body.classList.toggle('dark-mode');
-  };
-
   return (
     <header className="header">
       <div className="hamburger-menu" onClick={toggleMenu}>
@@ -37,35 +27,6 @@ const Header: React.FC = () => {
       {/* Menu de navigation affiché lorsque le menu burger est ouvert */}
       <nav className={`nav-menu ${menuOpen ? 'active' : ''}`}>
         <div className="header-left">
-          <div className="custom-select">
-            <div className="selected-option">
-              {['fr', 'en', 'es', 'de'].map((lang) => (
-                <div key={lang}>
-                  {i18n.language === lang && (
-                    <img
-                      src={`images/${lang}.png`}
-                      alt={`${lang} flag`}
-                      className="flag-icon"
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-            <ul className="options">
-              {['fr', 'en', 'es', 'de'].map((lang) => (
-                <li key={lang}>
-                  <button onClick={() => changeLanguage(lang)}>
-                    <img
-                      src={`images/${lang}.png`}
-                      alt={`${lang} flag`}
-                      className="flag-icon"
-                    />
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-
           <a href="/" className={isLoggedIn ? 'active' : ''}>
             {t('home')}
           </a>
@@ -131,8 +92,7 @@ const Header: React.FC = () => {
                 {t('inscription')}
               </a>
             </>
-          )}ff
-          <div id="lightModeToggle" onClick={toggleDarkMode}></div>gg
+          )}
         </div>
       </nav>
     </header>

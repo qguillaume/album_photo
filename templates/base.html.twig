@@ -14,56 +14,10 @@
     {% block head %}{% endblock %}
 </head>
 <body class="dark-mode">
-    <div id="languette-root"></div>
     <!-- Header classique pour desktop -->
     <header class="header old-header">
         <!-- Section gauche : navigation principale -->
         <nav class="header-left">
-            <form method="get" action="{{ path('change_locale') }}">
-                <div class="custom-select">
-                    <div class="selected-option">
-                        {% if app.request.locale == 'fr' %}
-                            <img src="{{ asset('images/fr.png') }}" alt="Français" class="flag-icon" />
-                        {% elseif app.request.locale == 'en' %}
-                            <img src="{{ asset('images/gb.png') }}" alt="English" class="flag-icon" />
-                        {% elseif app.request.locale == 'es' %}
-                            <img src="{{ asset('images/es.png') }}" alt="Espanol" class="flag-icon" />
-                        {% elseif app.request.locale == 'de' %}
-                            <img src="{{ asset('images/de.png') }}" alt="Deutsch" class="flag-icon" />
-                        {% endif %}
-                    </div>
-                    <ul class="options">
-                        {% if app.request.locale != 'fr' %}
-                            <li>
-                                <a href="{{ path('change_locale', {'locale': 'fr'}) }}">
-                                    <img src="{{ asset('images/fr.png') }}" alt="Français" class="flag-icon" />
-                                </a>
-                            </li>
-                        {% endif %}
-                        {% if app.request.locale != 'en' %}
-                            <li>
-                                <a href="{{ path('change_locale', {'locale': 'en'}) }}">
-                                    <img src="{{ asset('images/gb.png') }}" alt="English" class="flag-icon" />
-                                </a>
-                            </li>
-                        {% endif %}
-                        {% if app.request.locale != 'es' %}
-                            <li>
-                                <a href="{{ path('change_locale', {'locale': 'es'}) }}">
-                                    <img src="{{ asset('images/es.png') }}" alt="Espanol" class="flag-icon" />
-                                </a>
-                            </li>
-                        {% endif %}
-                        {% if app.request.locale != 'de' %}
-                            <li>
-                                <a href="{{ path('change_locale', {'locale': 'de'}) }}">
-                                    <img src="{{ asset('images/de.png') }}" alt="Deutsch" class="flag-icon" />
-                                </a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </form>
             <a href="{{ path('portfolio_home') }}" class="{% if app.request.attributes.get('_route') == 'portfolio_home' %}active{% endif %}">{{ 'home'|trans }}</a>
             <div class="dropdown">
                 <a href="{{ path('photo_albums') }}" class="{% if app.request.attributes.get('_route') == 'photo_albums' %}active{% endif %}">{{ 'photos'|trans }}</a>
@@ -119,7 +73,6 @@
                     {{ 'inscription'|trans }}
                 </a>
             {% endif %}
-            <div id="lightModeToggle"></div>
         </div>
     </header>
 
@@ -144,7 +97,7 @@
     </footer>
 
     <div id="cookie-consent"></div>
-
+    <div id="languette-root"></div>
     <!-- Spinner et message en overlay -->
     <div id="spinner-overlay">
         <div class="spinner"></div>

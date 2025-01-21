@@ -1,29 +1,35 @@
 @use "../base/variables" as *;
 
 .languette-container {
-    position: fixed; /* Fixe la languette et le bouton au même endroit */
+    position: fixed;
     top: 0;
     left: 0;
-    height: 100vh; /* Hauteur de la fenêtre */
-    width: 100vw; /* Largeur de la fenêtre */
-    z-index: 1000; /* Assure que la languette et le bouton sont au-dessus des autres éléments */
-  }
+    /* Réduire la zone de couverture au minimum nécessaire */
+    height: auto;
+    width: auto;
+    z-index: 100;
+    pointer-events: none; /* Désactiver les interactions par défaut */
+}
   
   /* Languette (container caché et qui s'affiche) */
   .languette {
-    position: absolute;
-    top: 0;
-    left: -200px; /* Initialement caché à gauche */
+    position: fixed;
+    left: -200px; /* Complètement hors de l'écran quand fermée */
     width: 200px;
-    height: 100%;
-    background-color: $primary-color;
-    color: white;
+    height: 100vh;
+    background-color: $languette-color;
+    color: $primary-color;
+    z-index: 110;
+    transition: left 0.3s ease; /* Animation pour l'ouverture */
+    pointer-events: auto;
+
+    /* Flexbox pour centrer les éléments */
     display: flex;
-    align-items: center;
+    flex-direction: column; /* Arrange les éléments en colonne */
     justify-content: center;
-    transition: left 0.3s ease; /* Déplacement de la languette */
-    z-index: 10000;
-  }
+    align-items: center;
+    gap: 20px; /* Espace entre les éléments */
+}
   
   /* Bouton qui sera à gauche au centre de l'écran */
   button.languette-toggle {
@@ -35,16 +41,17 @@
     height: 100px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
-    background-color: $primary-color;
-    color: white;
+    background-color: $languette-color;
+    color: $secondary-color;
     border: none;
     cursor: pointer;
-    z-index: 10000;
+    z-index: 10010;
     font-size: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: left 0.3s ease; /* Déplacement du bouton */
+    pointer-events: auto; /* S'assurer que les clics fonctionnent */
   }
   
   /* Si la languette est ouverte, la déplace */
