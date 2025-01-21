@@ -3,7 +3,7 @@
 {% block body %}
 <div class="card-folder-gallery">
     {% for album in albums %}
-        {% if (album.isVisible and album.isApproved) or album.creator.id == app.user.id %}
+        {% if (album.isVisible and album.isApproved) or (app.user and album.creator.id == app.user.id) %}
             <div class="card-folder-container">
                 <div class="card-folder">
                     <!-- Face avant -->
