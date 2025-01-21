@@ -63,6 +63,13 @@
   "album_name": "Albumname",
   "upload_valide": "Bitte laden Sie ein gültiges Bild hoch.",
   "form": {
+    "contact_title": "Kontaktformular",
+    "name": "Name",
+    "name_placeholder": "Geben Sie Ihren Namen ein",
+    "email": "E-Mail",
+    "email_placeholder": "Geben Sie Ihre E-Mail-Adresse ein",
+    "message": "Nachricht",
+    "message_placeholder": "Geben Sie Ihre Nachricht ein",
     "name_required": "Name ist erforderlich",
     "name_min_length": "Der Name muss mindestens {{ limit }} Zeichen lang sein",
     "email_required": "E-Mail ist erforderlich",

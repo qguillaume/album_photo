@@ -63,6 +63,13 @@
   "album_name": "Nombre del álbum",
   "upload_valide": "Por favor, sube una imagen válida.",
   "form": {
+    "contact_title": "Formulario de contacto",
+    "name": "Nombre",
+    "name_placeholder": "Ingrese su nombre",
+    "email": "Correo electrónico",
+    "email_placeholder": "Ingrese su correo electrónico",
+    "message": "Mensaje",
+    "message_placeholder": "Ingrese su mensaje",
     "name_required": "Se requiere nombre",
     "name_min_length": "El nombre debe tener al menos {{ limit }} caracteres",
     "email_required": "Se requiere correo electrónico",

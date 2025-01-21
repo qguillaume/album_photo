@@ -63,6 +63,13 @@
   "album_name": "Album name",
   "upload_valide": "Please upload a valid image.",
   "form": {
+    "contact_title": "Contact form",
+    "name": "Name",
+    "name_placeholder": "Enter your name",
+    "email": "Email",
+    "email_placeholder": "Enter your email",
+    "message": "Message",
+    "message_placeholder": "Enter your message",
     "name_required": "Name is required",
     "name_min_length": "Name must be at least {{ limit }} characters long",
     "email_required": "Email is required",
