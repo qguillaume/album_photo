@@ -3,19 +3,5 @@
 {% block title %}Télécharger une Photo{% endblock %}
 
 {% block body %}
-    <h2>{{ "publish_photo"|trans}}</h2>
-    {{ form_start(form) }}
-        <div class="form-group">
-            {{ form_widget(form.title) }}
-        </div>
-        <div class="form-group">
-            {{ form_widget(form.file) }}
-        </div>
-        <div class="form-group">
-            {{ form_widget(form.album) }}
-        </div>
-        <div class="form-group">
-            {{ form_widget(form.download_photo, {'attr': {'class': 'green-button'}}) }}
-        </div>
-    {{ form_end(form) }}
+    <div id="photo-form-root"></div>
 {% endblock %}

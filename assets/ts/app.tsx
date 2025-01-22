@@ -33,6 +33,7 @@ import ForgetPasswordForm from '../components/ForgetPasswordForm';
 import ArticleForm from '../components/ArticleForm';
 import ThemeForm from '../components/ThemeForm';
 import CommentForm from '../components/CommentForm';
+import ResetPasswordForm from '../components/ResetPasswordForm';
 import '../../public/i18n';
 import TinyEditor from "./TinyEditor";
 /*
@@ -673,7 +674,7 @@ if (photoFormRoot) {
   root.render(<PhotoForm />); // Rendre le composant PhotoForm
 }
 
-// Code pour rendre le formulaire d'inscription dans l'élément du DOM
+// Code pour rendre le formulaire d'oubli de mot de passe dans l'élément du DOM
 const forgetPasswordFormRoot = document.getElementById('forget-form-root');
 
 if (forgetPasswordFormRoot) {
@@ -703,4 +704,12 @@ const commentFormRoot = document.getElementById('comment-form-root');
 if (commentFormRoot) {
   const root = ReactDOM.createRoot(commentFormRoot);
   root.render(<CommentForm />); // Rendre le composant CommentForm
+}
+
+// Code pour rendre le formulaire de changement de mot de passe dans l'élément du DOM
+const resetFormRoot = document.getElementById('reset-form-root');
+
+if (resetFormRoot) {
+  const root = ReactDOM.createRoot(resetFormRoot);
+  root.render(<ResetPasswordForm />); // Rendre le composant ResetPasswordForm
 }

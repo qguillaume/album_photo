@@ -3,38 +3,7 @@
 {% block title %}Créer un nouvel article{% endblock %}
 
 {% block body %}
-    <h2>Rédiger un nouvel article</h2>
-
-    {{ form_start(form, { 'attr': { 'novalidate': 'novalidate' } }) }}
-        <div class="form-group">
-            {{ form_widget(form.author) }}
-        </div>
-        <div class="form-group">
-            {{ form_widget(form.title) }}
-        </div>
-        <div class="form-group">
-            {{ form_widget(form.theme) }}
-        </div>
-        <div>
-            {{ form_widget(form.content) }}
-        </div>
-        
-        <div class="form-group-wrapper">
-            <div class="form-group">
-                <label for="{{ form.published.vars.id }}">Publié :</label>
-                <div class="switch">
-                    {{ form_widget(form.published, {'attr': {'id': form.published.vars.id, 'class': 'switch-input'}}) }}
-                    <span class="slider"></span>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group-wrapper">
-            <div class="form-group mt-5">
-                {{ form_widget(form.save, {'attr': {class:'green-button'}}) }}
-            </div>
-        </div>
-    {{ form_end(form) }}
+    <div id="article-form-root"></div>
 
     {# Ajouter le script TinyMCE à la fin du formulaire #}
     <script src="https://cdn.tiny.cloud/1/kabvnq0v1wn1ibq3zfglnmtpeswg4pu9a7nh6vi8fmfrat8c/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>

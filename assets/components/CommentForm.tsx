@@ -4,35 +4,26 @@ import { useTranslation } from 'react-i18next';
 const CommentForm: React.FC = () => {
   const { t } = useTranslation();
 
-  // États pour les champs et erreurs du formulaire
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  
-  // État pour afficher les erreurs de validation
+  // États pour le formulaire et les erreurs
+  const [content, setContent] = useState('');
   const [errors, setErrors] = useState<any>({});
   const [flashMessages, setFlashMessages] = useState<string[]>([]);
 
   // Mettre à jour le `title` de la page
   useEffect(() => {
-    document.title = t('form.contact_title'); // Définit dynamiquement
+    document.title = t('form.comment_title');
   }, [t]);
 
   // Fonction pour gérer la soumission du formulaire
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Réinitialiser les erreurs
     const newErrors: any = {};
 
-    // Validation des champs
-    if (!name) newErrors.name = t('form.name_required');
-    if (!email) {
-      newErrors.email = t('form.email_required');
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = t('form.email_invalid');
+    // Validation du champ contenu
+    if (!content) {
+      newErrors.content = t('form.content_required');
     }
-    if (!message) newErrors.message = t('form.message_required');
 
     // Si des erreurs existent, on les affiche et on arrête la soumission
     if (Object.keys(newErrors).length > 0) {
@@ -42,8 +33,8 @@ const CommentForm: React.FC = () => {
 
     // Simuler un envoi de formulaire
     try {
-      const formData = { name, email, message };
-      const response = await fetch('/api/contact', {
+      const formData = { content };
+      const response = await fetch('/api/comment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -52,9 +43,7 @@ const CommentForm: React.FC = () => {
       if (!response.ok) throw new Error('Submission failed');
 
       setFlashMessages([t('form.success_message')]);
-      setName('');
-      setEmail('');
-      setMessage('');
+      setContent('');
       setErrors({});
     } catch (error) {
       setFlashMessages([t('form.error_message')]);
@@ -63,7 +52,7 @@ const CommentForm: React.FC = () => {
 
   return (
     <>
-      <h2>{t('contact_form')}</h2>
+      <h2>{t('form.leave_comment')}</h2>
 
       {/* Messages Flash */}
       <div className="form-group">
@@ -73,39 +62,37 @@ const CommentForm: React.FC = () => {
       </div>
 
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <input
-            className="form-control"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder={t('form.name_placeholder')}
-          />
-          {errors.name && <div className="error">{errors.name}</div>}
-        </div>
-        <div className="form-group">
-          <input
-            className="form-control"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder={t('form.email_placeholder')}
-          />
-          {errors.email && <div className="error">{errors.email}</div>}
-        </div>
+        {/* Contenu du commentaire */}
         <div className="form-group">
           <textarea
             className="form-control"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder={t('form.message_placeholder')}
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder={t('form.leave_comment_placeholder')}
           />
-          {errors.message && <div className="error">{errors.message}</div>}
+          {errors.content && <div className="error">{errors.content}</div>}
         </div>
+
+        {/* Bouton d'envoi */}
         <div className="form-group">
           <button type="submit" className="green-button">{t('form.send')}</button>
         </div>
       </form>
+
+      {/* Formulaire Twig simulé dans React */}
+      <h2>{t('form.comment_form')}</h2>
+      <div className="form-group">
+        {/* Commentaire dynamique */}
+        <textarea
+          className="form-control"
+          placeholder={t('form.leave_comment')}
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        />
+      </div>
+      <div className="form-group">
+        <button type="submit" className="green-button">{t('form.submit_comment')}</button>
+      </div>
     </>
   );
 };

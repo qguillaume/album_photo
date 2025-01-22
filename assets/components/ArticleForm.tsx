@@ -5,17 +5,19 @@ const ArticleForm: React.FC = () => {
   const { t } = useTranslation();
 
   // États pour les champs et erreurs du formulaire
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  
+  const [author, setAuthor] = useState('');
+  const [title, setTitle] = useState('');
+  const [theme, setTheme] = useState('');
+  const [content, setContent] = useState('');
+  const [published, setPublished] = useState(false);
+
   // État pour afficher les erreurs de validation
   const [errors, setErrors] = useState<any>({});
   const [flashMessages, setFlashMessages] = useState<string[]>([]);
 
   // Mettre à jour le `title` de la page
   useEffect(() => {
-    document.title = t('form.contact_title'); // Définit dynamiquement
+    document.title = t('form.article_title'); // Définit dynamiquement
   }, [t]);
 
   // Fonction pour gérer la soumission du formulaire
@@ -26,13 +28,10 @@ const ArticleForm: React.FC = () => {
     const newErrors: any = {};
 
     // Validation des champs
-    if (!name) newErrors.name = t('form.name_required');
-    if (!email) {
-      newErrors.email = t('form.email_required');
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = t('form.email_invalid');
-    }
-    if (!message) newErrors.message = t('form.message_required');
+    if (!author) newErrors.author = t('form.author_required');
+    if (!title) newErrors.title = t('form.title_required');
+    if (!theme) newErrors.theme = t('form.theme_required');
+    if (!content) newErrors.content = t('form.content_required');
 
     // Si des erreurs existent, on les affiche et on arrête la soumission
     if (Object.keys(newErrors).length > 0) {
@@ -42,8 +41,8 @@ const ArticleForm: React.FC = () => {
 
     // Simuler un envoi de formulaire
     try {
-      const formData = { name, email, message };
-      const response = await fetch('/api/contact', {
+      const formData = { author, title, theme, content, published };
+      const response = await fetch('/api/article', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -52,9 +51,11 @@ const ArticleForm: React.FC = () => {
       if (!response.ok) throw new Error('Submission failed');
 
       setFlashMessages([t('form.success_message')]);
-      setName('');
-      setEmail('');
-      setMessage('');
+      setAuthor('');
+      setTitle('');
+      setTheme('');
+      setContent('');
+      setPublished(false);
       setErrors({});
     } catch (error) {
       setFlashMessages([t('form.error_message')]);
@@ -63,7 +64,7 @@ const ArticleForm: React.FC = () => {
 
   return (
     <>
-      <h2>{t('contact_form')}</h2>
+      <h2>{t('form.article_form_title')}</h2>
 
       {/* Messages Flash */}
       <div className="form-group">
@@ -72,38 +73,76 @@ const ArticleForm: React.FC = () => {
         ))}
       </div>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
+        {/* Auteur */}
         <div className="form-group">
           <input
             className="form-control"
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder={t('form.name_placeholder')}
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
+            placeholder={t('form.author_placeholder')}
           />
-          {errors.name && <div className="error">{errors.name}</div>}
+          {errors.author && <div className="error">{errors.author}</div>}
         </div>
+
+        {/* Titre */}
         <div className="form-group">
           <input
             className="form-control"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder={t('form.email_placeholder')}
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder={t('form.title_placeholder')}
           />
-          {errors.email && <div className="error">{errors.email}</div>}
+          {errors.title && <div className="error">{errors.title}</div>}
         </div>
+
+        {/* Thème */}
+        <div className="form-group">
+          <input
+            className="form-control"
+            type="text"
+            value={theme}
+            onChange={(e) => setTheme(e.target.value)}
+            placeholder={t('form.theme_placeholder')}
+          />
+          {errors.theme && <div className="error">{errors.theme}</div>}
+        </div>
+
+        {/* Contenu */}
         <div className="form-group">
           <textarea
             className="form-control"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder={t('form.message_placeholder')}
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder={t('form.content_placeholder')}
           />
-          {errors.message && <div className="error">{errors.message}</div>}
+          {errors.content && <div className="error">{errors.content}</div>}
         </div>
-        <div className="form-group">
-          <button type="submit" className="green-button">{t('form.send')}</button>
+
+        {/* Switch "Publié" */}
+        <div className="form-group-wrapper">
+          <div className="form-group">
+            <label htmlFor="published">{t('form.published_label')}</label>
+            <div className="switch">
+              <input
+                type="checkbox"
+                id="published"
+                checked={published}
+                onChange={() => setPublished(!published)}
+                className="switch-input"
+              />
+              <span className="slider"></span>
+            </div>
+          </div>
+        </div>
+
+        {/* Bouton de soumission */}
+        <div className="form-group-wrapper">
+          <div className="form-group mt-5">
+            <button type="submit" className="green-button">{t('form.save')}</button>
+          </div>
         </div>
       </form>
     </>

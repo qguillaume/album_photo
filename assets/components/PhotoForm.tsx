@@ -5,56 +5,66 @@ const PhotoForm: React.FC = () => {
   const { t } = useTranslation();
 
   // États pour les champs et erreurs du formulaire
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
+  const [title, setTitle] = useState('');
+  const [file, setFile] = useState<any>(null);
+  const [album, setAlbum] = useState('');
+  const [albums, setAlbums] = useState<string[]>([]); // Pour stocker les albums dynamiques
   
   // État pour afficher les erreurs de validation
   const [errors, setErrors] = useState<any>({});
   const [flashMessages, setFlashMessages] = useState<string[]>([]);
 
-  // Mettre à jour le `title` de la page
+  // Charger dynamiquement les albums depuis l'API
   useEffect(() => {
-    document.title = t('form.contact_title'); // Définit dynamiquement
-  }, [t]);
+    const fetchAlbums = async () => {
+      try {
+        const response = await fetch('/api/albums');
+        if (response.ok) {
+          const data = await response.json();
+          setAlbums(data); // Supposons que la réponse contient un tableau d'albums
+        } else {
+          throw new Error('Failed to fetch albums');
+        }
+      } catch (error) {
+        console.error('Error fetching albums:', error);
+      }
+    };
+
+    fetchAlbums();
+  }, []); // Récupérer les albums au montage du composant
 
   // Fonction pour gérer la soumission du formulaire
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Réinitialiser les erreurs
     const newErrors: any = {};
 
-    // Validation des champs
-    if (!name) newErrors.name = t('form.name_required');
-    if (!email) {
-      newErrors.email = t('form.email_required');
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = t('form.email_invalid');
-    }
-    if (!message) newErrors.message = t('form.message_required');
+    if (!title) newErrors.title = t('form.title_required');
+    if (!file) newErrors.file = t('form.file_required');
+    if (!album) newErrors.album = t('form.album_required');
 
-    // Si des erreurs existent, on les affiche et on arrête la soumission
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
 
-    // Simuler un envoi de formulaire
     try {
-      const formData = { name, email, message };
-      const response = await fetch('/api/contact', {
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('file', file);
+      formData.append('album', album);
+
+      const response = await fetch('/api/photo', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: formData,
       });
 
       if (!response.ok) throw new Error('Submission failed');
 
       setFlashMessages([t('form.success_message')]);
-      setName('');
-      setEmail('');
-      setMessage('');
+      setTitle('');
+      setFile(null);
+      setAlbum('');
       setErrors({});
     } catch (error) {
       setFlashMessages([t('form.error_message')]);
@@ -63,7 +73,7 @@ const PhotoForm: React.FC = () => {
 
   return (
     <>
-      <h2>{t('contact_form')}</h2>
+      <h2>{t('form.publish_photo')}</h2>
 
       {/* Messages Flash */}
       <div className="form-group">
@@ -73,37 +83,51 @@ const PhotoForm: React.FC = () => {
       </div>
 
       <form onSubmit={handleSubmit}>
+        {/* Titre */}
         <div className="form-group">
           <input
             className="form-control"
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder={t('form.name_placeholder')}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder={t('form.title_placeholder')}
           />
-          {errors.name && <div className="error">{errors.name}</div>}
+          {errors.title && <div className="error">{errors.title}</div>}
         </div>
+
+        {/* Fichier photo */}
         <div className="form-group">
           <input
             className="form-control"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder={t('form.email_placeholder')}
+            type="file"
+            accept="image/*"
+            onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
           />
-          {errors.email && <div className="error">{errors.email}</div>}
+          {errors.file && <div className="error">{errors.file}</div>}
         </div>
+
+        {/* Album dynamique */}
         <div className="form-group">
-          <textarea
+          <select
             className="form-control"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder={t('form.message_placeholder')}
-          />
-          {errors.message && <div className="error">{errors.message}</div>}
+            value={album}
+            onChange={(e) => setAlbum(e.target.value)}
+          >
+            <option value="">{t('form.select_album')}</option>
+            {albums.length > 0 ? (
+              albums.map((albumOption, index) => (
+                <option key={index} value={albumOption}>{albumOption}</option>
+              ))
+            ) : (
+              <option value="">{t('form.no_albums')}</option>
+            )}
+          </select>
+          {errors.album && <div className="error">{errors.album}</div>}
         </div>
+
+        {/* Bouton de soumission */}
         <div className="form-group">
-          <button type="submit" className="green-button">{t('form.send')}</button>
+          <button type="submit" className="green-button">{t('form.upload_photo')}</button>
         </div>
       </form>
     </>

@@ -4,18 +4,15 @@ import { useTranslation } from 'react-i18next';
 const AlbumForm: React.FC = () => {
   const { t } = useTranslation();
 
-  // États pour les champs et erreurs du formulaire
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  
-  // État pour afficher les erreurs de validation
+  // États pour les champs du formulaire et les erreurs
+  const [albumName, setAlbumName] = useState('');
+  const [imagePath, setImagePath] = useState<File | null>(null);
   const [errors, setErrors] = useState<any>({});
   const [flashMessages, setFlashMessages] = useState<string[]>([]);
 
   // Mettre à jour le `title` de la page
   useEffect(() => {
-    document.title = t('form.contact_title'); // Définit dynamiquement
+    document.title = t('form.create_album_title');
   }, [t]);
 
   // Fonction pour gérer la soumission du formulaire
@@ -25,14 +22,9 @@ const AlbumForm: React.FC = () => {
     // Réinitialiser les erreurs
     const newErrors: any = {};
 
-    // Validation des champs
-    if (!name) newErrors.name = t('form.name_required');
-    if (!email) {
-      newErrors.email = t('form.email_required');
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = t('form.email_invalid');
-    }
-    if (!message) newErrors.message = t('form.message_required');
+    // Validation du nom de l'album et de l'image
+    if (!albumName) newErrors.albumName = t('form.album_name_required');
+    if (!imagePath) newErrors.imagePath = t('form.image_required');
 
     // Si des erreurs existent, on les affiche et on arrête la soumission
     if (Object.keys(newErrors).length > 0) {
@@ -40,30 +32,45 @@ const AlbumForm: React.FC = () => {
       return;
     }
 
-    // Simuler un envoi de formulaire
+    // Préparer les données du formulaire (multipart/form-data pour l'image)
+    const formData = new FormData();
+    formData.append('albumName', albumName);
+    // Vérifier si l'image est définie avant de l'ajouter à formData
+    if (imagePath) {
+        formData.append('imagePath', imagePath);
+    } else {
+        // Gérer le cas où l'image n'est pas présente
+        setErrors({ ...errors, imagePath: t('form.image_required') });
+        return;
+    }
+
     try {
-      const formData = { name, email, message };
-      const response = await fetch('/api/contact', {
+      const response = await fetch('/api/create-album', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: formData,
       });
 
-      if (!response.ok) throw new Error('Submission failed');
+      if (!response.ok) throw new Error('Album creation failed');
 
-      setFlashMessages([t('form.success_message')]);
-      setName('');
-      setEmail('');
-      setMessage('');
+      setFlashMessages([t('form.album_created_successfully')]);
+      setAlbumName('');
+      setImagePath(null);
       setErrors({});
     } catch (error) {
       setFlashMessages([t('form.error_message')]);
     }
   };
 
+  // Fonction pour gérer le changement d'image
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setImagePath(e.target.files[0]);
+    }
+  };
+
   return (
     <>
-      <h2>{t('contact_form')}</h2>
+      <h2>{t('form.create_new_album')}</h2>
 
       {/* Messages Flash */}
       <div className="form-group">
@@ -73,37 +80,70 @@ const AlbumForm: React.FC = () => {
       </div>
 
       <form onSubmit={handleSubmit}>
+        {/* Nom de l'album */}
         <div className="form-group">
           <input
             className="form-control"
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder={t('form.name_placeholder')}
+            value={albumName}
+            onChange={(e) => setAlbumName(e.target.value)}
+            placeholder={t('form.album_name_placeholder')}
           />
-          {errors.name && <div className="error">{errors.name}</div>}
+          {errors.albumName && <div className="error">{errors.albumName}</div>}
         </div>
+
+        {/* Image */}
         <div className="form-group">
           <input
             className="form-control"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder={t('form.email_placeholder')}
+            type="file"
+            onChange={handleImageChange}
           />
-          {errors.email && <div className="error">{errors.email}</div>}
+          {errors.imagePath && <div className="error">{errors.imagePath}</div>}
         </div>
+
+        {/* Bouton de création de l'album */}
         <div className="form-group">
-          <textarea
+          <button type="submit" className="green-button">{t('form.create_album_button')}</button>
+        </div>
+      </form>
+
+      {/* Formulaire Twig simulé dans React */}
+      <h2>{t('form.create_new_album')}</h2>
+
+      {/* Gestion des flash messages (succès/erreur) */}
+      <div className="form-group">
+        {flashMessages.length > 0 && flashMessages.map((msg, index) => (
+          <div key={index} className="flash-success">{msg}</div>
+        ))}
+      </div>
+
+      {/* Formulaire dynamique */}
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>{t('form.album_name')}</label>
+          <input
+            type="text"
             className="form-control"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder={t('form.message_placeholder')}
+            value={albumName}
+            onChange={(e) => setAlbumName(e.target.value)}
+            placeholder={t('form.album_name_placeholder')}
           />
-          {errors.message && <div className="error">{errors.message}</div>}
+          {errors.albumName && <div className="error">{errors.albumName}</div>}
         </div>
+
         <div className="form-group">
-          <button type="submit" className="green-button">{t('form.send')}</button>
+          <label>{t('form.image_upload')}</label>
+          <input
+            type="file"
+            className="form-control"
+            onChange={handleImageChange}
+          />
+          {errors.imagePath && <div className="error">{errors.imagePath}</div>}
+        </div>
+
+        <div className="form-group">
+          <button type="submit" className="green-button">{t('form.create_album_button')}</button>
         </div>
       </form>
     </>
