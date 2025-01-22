@@ -24,16 +24,23 @@ class ThemeController extends AbstractController
     }
 
     /**
-     * @Route("/themes", name="theme_index")
+     * @Route("/api/theme", name="api_theme_create", methods={"POST"})
      */
-    public function index(ThemeRepository $themeRepository): Response
+    public function apiCreate(Request $request): JsonResponse
     {
-        // Récupérer tous les thèmes depuis la base de données
-        $themes = $themeRepository->findAll();
+        $data = json_decode($request->getContent(), true);
 
-        return $this->render('theme/index.html.twig', [
-            'themes' => $themes,
-        ]);
+        $theme = new Theme();
+        $theme->setName($data['themename']);
+
+        try {
+            $this->entityManager->persist($theme);
+            $this->entityManager->flush();
+
+            return new JsonResponse(['message' => 'Theme created successfully'], 201);
+        } catch (\Exception $e) {
+            return new JsonResponse(['message' => 'Error creating theme'], 400);
+        }
     }
 
     /**
@@ -63,27 +70,36 @@ class ThemeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/theme/{id}/edit", name="theme_edit")
-     */
-    public function edit(Request $request, Theme $theme): Response
-    {
-        $form = $this->createForm(ThemeFormType::class, $theme);
 
-        $form->handleRequest($request);
+    // public function index(ThemeRepository $themeRepository): Response
+    // {
+    //     // Récupérer tous les thèmes depuis la base de données
+    //     $themes = $themeRepository->findAll();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Mise à jour du thème dans la base de données
-            $this->getDoctrine()->getManager()->flush();
+    //     return $this->render('theme/index.html.twig', [
+    //         'themes' => $themes,
+    //     ]);
+    // }
 
-            // Redirige vers la page de liste des thèmes
-            return $this->redirectToRoute('theme_index');
-        }
 
-        return $this->render('theme/edit.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
+    // public function edit(Request $request, Theme $theme): Response
+    // {
+    //     $form = $this->createForm(ThemeFormType::class, $theme);
+
+    //     $form->handleRequest($request);
+
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         // Mise à jour du thème dans la base de données
+    //         $this->getDoctrine()->getManager()->flush();
+
+    //         // Redirige vers la page de liste des thèmes
+    //         return $this->redirectToRoute('theme_index');
+    //     }
+
+    //     return $this->render('theme/edit.html.twig', [
+    //         'form' => $form->createView(),
+    //     ]);
+    // }
 
     /**
      * @Route("/theme/{id}/delete", name="theme_delete", methods="POST")
