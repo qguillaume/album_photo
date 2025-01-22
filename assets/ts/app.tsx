@@ -27,6 +27,12 @@ import Presentation from '../components/Presentation';
 import ContactForm from '../components/ContactForm';
 import ConnexionForm from '../components/ConnexionForm';
 import RegisterForm from '../components/RegisterForm';
+import AlbumForm from '../components/AlbumForm';
+import PhotoForm from '../components/PhotoForm';
+import ForgetPasswordForm from '../components/ForgetPasswordForm';
+import ArticleForm from '../components/ArticleForm';
+import ThemeForm from '../components/ThemeForm';
+import CommentForm from '../components/CommentForm';
 import '../../public/i18n';
 import TinyEditor from "./TinyEditor";
 /*
@@ -643,10 +649,58 @@ if (languetteRootElement) {
   root.render(<Languette />);
 }
 
-// Code pour rendre la languette dans l'élément du DOM
+// Code pour rendre le footer dans l'élément du DOM
 const footerRootElement = document.getElementById("footer-root");
 
 if (footerRootElement) {
   const root = ReactDOM.createRoot(footerRootElement);
   root.render(<Footer />);
+}
+
+// Code pour rendre le formulaire d'albums dans l'élément du DOM
+const albumFormRoot = document.getElementById('album-form-root');
+
+if (albumFormRoot) {
+  const root = ReactDOM.createRoot(albumFormRoot);
+  root.render(<AlbumForm />); // Rendre le composant AlbumForm
+}
+
+// Code pour rendre le formulaire de photos dans l'élément du DOM
+const photoFormRoot = document.getElementById('photo-form-root');
+
+if (photoFormRoot) {
+  const root = ReactDOM.createRoot(photoFormRoot);
+  root.render(<PhotoForm />); // Rendre le composant PhotoForm
+}
+
+// Code pour rendre le formulaire d'inscription dans l'élément du DOM
+const forgetPasswordFormRoot = document.getElementById('forget-form-root');
+
+if (forgetPasswordFormRoot) {
+  const root = ReactDOM.createRoot(forgetPasswordFormRoot);
+  root.render(<ForgetPasswordForm />); // Rendre le composant ForgetPasswordForm
+}
+
+// Code pour rendre le formulaire de contact dans l'élément du DOM
+const articleFormRoot = document.getElementById('article-form-root');
+
+if (articleFormRoot) {
+  const root = ReactDOM.createRoot(articleFormRoot);
+  root.render(<ArticleForm />); // Rendre le composant ArticleForm
+}
+
+// Code pour rendre le formulaire de themes dans l'élément du DOM
+const themeFormRoot = document.getElementById('theme-form-root');
+
+if (themeFormRoot) {
+  const root = ReactDOM.createRoot(themeFormRoot);
+  root.render(<ThemeForm />); // Rendre le composant ThemeForm
+}
+
+// Code pour rendre le formulaire de commentaires dans l'élément du DOM
+const commentFormRoot = document.getElementById('comment-form-root');
+
+if (commentFormRoot) {
+  const root = ReactDOM.createRoot(commentFormRoot);
+  root.render(<CommentForm />); // Rendre le composant CommentForm
 }
