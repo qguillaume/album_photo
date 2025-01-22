@@ -39,7 +39,7 @@ const ForgetPasswordForm: React.FC = () => {
     // Simuler un envoi de formulaire
     try {
       const formData = { email };
-      const response = await fetch('/api/forget-password', {
+      const response = await fetch('/api/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

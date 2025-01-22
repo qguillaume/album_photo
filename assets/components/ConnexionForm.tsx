@@ -96,6 +96,9 @@ useEffect(() => {
         <div className="form-group">
           <button type="submit" className="green-button">{t('form.send')}</button>
         </div>
+        <div className="form-group mt-2">
+          <a href="/forgot_password">{t('forgot_password')}</a>
+        </div>
       </form>
     </>
   );

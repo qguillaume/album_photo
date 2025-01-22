@@ -16,9 +16,44 @@ use App\Entity\User;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ForgotPasswordController extends AbstractController
 {
+    /**
+     * @Route("/api/forgot-password", name="api_forgot_password", methods={"POST"})
+     */
+    public function apiForgotPassword(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $email = $data['email'] ?? null;
+
+        if (!$email) {
+            return new JsonResponse(['error' => 'Email is required'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
+
+        if ($user) {
+            $token = new PasswordResetToken($email);
+            $entityManager->persist($token);
+            $entityManager->flush();
+
+            // Envoyer un email
+            $resetUrl = $this->generateUrl('reset_password', ['token' => $token->getToken()], true);
+
+            $email = (new Email())
+                ->from('no-reply@gqportfolio.com')
+                ->to($user->getEmail())
+                ->subject('Réinitialisation de votre mot de passe')
+                ->text("Cliquez sur le lien suivant pour réinitialiser votre mot de passe : $resetUrl");
+
+            $mailer->send($email);
+        }
+
+        return new JsonResponse(['message' => 'Si un compte existe avec cette adresse, un email a été envoyé.'], Response::HTTP_OK);
+    }
+
     /**
      * @Route("/forgot_password", name="forgot_password")
      */
