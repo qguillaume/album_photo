@@ -7,7 +7,7 @@ import PhotoTable from "../components/PhotoTable";
 import Timeline from "../components/Timeline";
 import ContactButton from "../components/ContactButton"; 
 import { Photo, Album, User, Article, Comment, Theme } from "./types";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useTranslation } from 'react-i18next'; // Importer useTranslation ici pour l'utiliser dans les composants
@@ -716,3 +716,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+const App: React.FC = () => {
+  return (
+    <BrowserRouter>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/reset_password/:token" element={<ResetPasswordForm />} />
+          <Route path="/login" element={<ConnexionForm />} />
+          <Route path="/forgot-password" element={<ForgotPasswordForm />} />
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
+  );
+};
+
+export default App;

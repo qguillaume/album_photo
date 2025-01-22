@@ -4,12 +4,29 @@ import { useTranslation } from 'react-i18next';
 const CommentForm: React.FC = () => {
   const { t } = useTranslation();
 
-  // États pour le formulaire et les erreurs
+  // États pour le formulaire, les erreurs, les messages flash, les commentaires et le chargement
   const [content, setContent] = useState('');
   const [errors, setErrors] = useState<any>({});
   const [flashMessages, setFlashMessages] = useState<string[]>([]);
+  const [comments, setComments] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);  // Etat pour le chargement
 
-  // Mettre à jour le `title` de la page
+  // Récupérer les commentaires existants de l'API Symfony
+  useEffect(() => {
+    setLoading(true);  // On commence par définir `loading` à true avant de récupérer les commentaires
+    fetch('/comments_list')
+      .then((response) => response.json())
+      .then((data) => {
+        setComments(data);
+        setLoading(false);  // Une fois les commentaires récupérés, on met `loading` à false
+      })
+      .catch((error) => {
+        console.error('Error fetching comments:', error);
+        setLoading(false);  // En cas d'erreur, on met aussi `loading` à false
+      });
+  }, []);
+
+  // Mettre à jour le titre de la page
   useEffect(() => {
     document.title = t('form.comment_title');
   }, [t]);
@@ -34,7 +51,7 @@ const CommentForm: React.FC = () => {
     // Simuler un envoi de formulaire
     try {
       const formData = { content };
-      const response = await fetch('/api/comment', {
+      const response = await fetch('/photo/124/comment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -42,7 +59,9 @@ const CommentForm: React.FC = () => {
 
       if (!response.ok) throw new Error('Submission failed');
 
+      const data = await response.json();
       setFlashMessages([t('form.success_message')]);
+      setComments([...comments, data.comment]);
       setContent('');
       setErrors({});
     } catch (error) {
@@ -51,7 +70,7 @@ const CommentForm: React.FC = () => {
   };
 
   return (
-    <>
+    <div>
       <h2>{t('form.leave_comment')}</h2>
 
       {/* Messages Flash */}
@@ -61,8 +80,27 @@ const CommentForm: React.FC = () => {
         ))}
       </div>
 
+      {/* Affichage des commentaires existants */}
+      <div className="comments-list">
+        {loading ? (
+          <p>{t('form.loading_comments')}</p>
+        ) : comments.length > 0 ? (
+          <ul>
+            {comments.map((comment) => (
+              <li key={comment.id}>
+                <strong>{comment.user.username}</strong>: {comment.content}
+                <br />
+                <small>Posté le {comment.createdAt}</small>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>{t('no_comment')}</p>
+        )}
+      </div>
+
+      {/* Formulaire de commentaire */}
       <form onSubmit={handleSubmit}>
-        {/* Contenu du commentaire */}
         <div className="form-group">
           <textarea
             className="form-control"
@@ -73,27 +111,11 @@ const CommentForm: React.FC = () => {
           {errors.content && <div className="error">{errors.content}</div>}
         </div>
 
-        {/* Bouton d'envoi */}
         <div className="form-group">
           <button type="submit" className="green-button">{t('form.send')}</button>
         </div>
       </form>
-
-      {/* Formulaire Twig simulé dans React */}
-      <h2>{t('form.comment_form')}</h2>
-      <div className="form-group">
-        {/* Commentaire dynamique */}
-        <textarea
-          className="form-control"
-          placeholder={t('form.leave_comment')}
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
-      </div>
-      <div className="form-group">
-        <button type="submit" className="green-button">{t('form.submit_comment')}</button>
-      </div>
-    </>
+    </div>
   );
 };
 

@@ -20,22 +20,6 @@
         {% else %}
             <p class="details-photo">Sans album</p>
         {% endif %}
-    
-    
-    <h2>{{"comments"|trans}}</h2>
-    {% if comments|length > 0 %}
-        <ul>
-            {% for comment in comments %}
-                <li>
-                    <strong>{{ comment.user.username }}</strong> : {{ comment.content }}
-                    <br>
-                    <small>Posté le {{ comment.createdAt|date('d/m/Y H:i') }}</small>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <div class="center"><p>{{"no_comment"|trans}}</p></div>
-    {% endif %}
 
     {% if app.user %}
         <div id="comment-form-root"></div>

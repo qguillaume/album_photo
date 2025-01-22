@@ -27,10 +27,11 @@ class CommentController extends AbstractController
     /**
      * @Route("/photo/{id}/comment", name="comment_add", methods={"POST"})
      */
-    public function addComment(Request $request, Photo $photo, EntityManagerInterface $em): Response
+    public function addComment(Request $request, Photo $photo, EntityManagerInterface $em): JsonResponse
     {
-        // Récupérer le contenu du commentaire depuis la requête
-        $content = $request->request->get('content');
+        // Décoder le JSON dans le corps de la requête
+        $data = json_decode($request->getContent(), true);
+        $content = $data['content'] ?? null;
 
         if (!$content) {
             return $this->json(['error' => 'Le contenu du commentaire ne peut pas être vide.'], 400);
@@ -40,6 +41,7 @@ class CommentController extends AbstractController
         $comment = new Comment();
         $comment->setContent($content);
         $comment->setPhoto($photo);
+        $comment->setUser($this->getUser());
 
         // Sauvegarder dans la base de données
         $em->persist($comment);
@@ -116,5 +118,31 @@ class CommentController extends AbstractController
         $em->flush();
 
         return new JsonResponse(['message' => 'Commentaire supprimé avec succès']);
+    }
+
+    /**
+     * @Route("/photo/{id}/comments", name="photo_comments", methods={"GET"})
+     */
+    public function getCommentsForPhoto(Photo $photo)
+    {
+        // Récupérer tous les commentaires associés à cette photo
+        $comments = $this->commentRepository->findBy(['photo' => $photo]);
+
+        $commentsData = [];
+        foreach ($comments as $comment) {
+            $commentsData[] = [
+                'id' => $comment->getId(),
+                'content' => $comment->getContent(),
+                'user' => [
+                    'username' => $comment->getUser()->getUsername(),
+                ],
+                'photo' => [
+                    'title' => $comment->getPhoto()->getTitle(),
+                ],
+                'createdAt' => $comment->getCreatedAt()->format('Y-m-d H:i:s'),
+            ];
+        }
+
+        return new JsonResponse($commentsData);
     }
 }

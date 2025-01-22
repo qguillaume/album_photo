@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const ResetPasswordForm: React.FC = () => {
   const { t } = useTranslation();
+  const { token } = useParams<{ token: string }>(); // Récupérer le token depuis l'URL
+  const navigate = useNavigate(); // Permet de naviguer après le succès
 
   // États pour les champs et erreurs du formulaire
   const [password, setPassword] = useState('');
@@ -41,23 +44,31 @@ const ResetPasswordForm: React.FC = () => {
       return;
     }
 
-    // Simuler un envoi de formulaire
     try {
-      const formData = { password };
-      const response = await fetch('/api/reset-password', {
+      // Envoi de la requête POST à l'API avec le token et le mot de passe
+      const response = await fetch(`/api/reset-password/${token}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ password }),
       });
 
-      if (!response.ok) throw new Error('Submission failed');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Erreur lors de la soumission');
+      }
 
-      setFlashMessages([t('form.success_message')]);
+      const data = await response.json();
+      setFlashMessages([data.message]);
       setPassword('');
       setConfirmPassword('');
       setErrors({});
-    } catch (error) {
-      setFlashMessages([t('form.error_message')]);
+
+      // Rediriger vers la page de connexion
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000);
+    } catch (error: any) {
+      setFlashMessages([error.message]);
     }
   };
 
@@ -66,11 +77,9 @@ const ResetPasswordForm: React.FC = () => {
       <h2>{t('form.reset_password_title')}</h2>
 
       {/* Messages Flash */}
-      <div className="form-group">
-        {flashMessages.map((msg, index) => (
-          <div key={index} className="flash-success">{msg}</div>
-        ))}
-      </div>
+      {flashMessages.map((msg, index) => (
+        <div key={index} className="flash-success">{msg}</div>
+      ))}
 
       <p>{t('form.reset_password_instruction')}</p>
 

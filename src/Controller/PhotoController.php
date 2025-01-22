@@ -441,25 +441,27 @@ class PhotoController extends AbstractController
     /**
      * @Route("/photo/{id}/comment", name="comment_add", methods={"POST"})
      */
-    public function addComment(Request $request, int $id, EntityManagerInterface $em): RedirectResponse
+    public function addComment(Request $request, int $id, EntityManagerInterface $em): JsonResponse
     {
         // Récupérer l'utilisateur connecté
         $user = $this->getUser();
         if (!$user) {
-            throw $this->createAccessDeniedException('Vous devez être connecté pour commenter.');
+            return new JsonResponse(['error' => 'Vous devez être connecté pour commenter.'], 403);
         }
 
         // Récupérer la photo
         $photo = $em->getRepository(Photo::class)->find($id);
         if (!$photo) {
-            throw $this->createNotFoundException('Photo non trouvée.');
+            return new JsonResponse(['error' => 'Photo non trouvée.'], 404);
         }
 
-        // Récupérer le contenu du commentaire depuis la requête POST
-        $content = $request->request->get('content');
+        // Récupérer le contenu du commentaire depuis la requête JSON
+        $data = json_decode($request->getContent(), true);
+        $content = $data['content'] ?? '';
+
+        // Validation : contenu vide
         if (empty($content)) {
-            $this->addFlash('error', 'Le contenu du commentaire ne peut pas être vide.');
-            return $this->redirectToRoute('photo_show', ['id' => $id]);
+            return new JsonResponse(['error' => 'Le contenu du commentaire ne peut pas être vide.'], 400);
         }
 
         // Créer et persister un nouveau commentaire
@@ -472,8 +474,8 @@ class PhotoController extends AbstractController
         $em->persist($comment);
         $em->flush();
 
-        // Rediriger vers la page de la photo
-        return $this->redirectToRoute('photo_show', ['id' => $id]);
+        // Retourner le commentaire créé dans la réponse JSON
+        return new JsonResponse(['success' => true, 'comment' => $comment], 201);
     }
 
     /**
