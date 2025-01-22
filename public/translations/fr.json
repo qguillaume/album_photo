@@ -28,7 +28,7 @@
   "password": "Mot de passe",
   "email": "Adresse email",
   "contact_form": "Formulaire de contact",
-  "connexion_form": "Formulaire de connxion",
+  "connexion_form": "Formulaire de connexion",
   "register_form": "Formulaire d'inscription",
   "message": "Message",
   "send": "Envoyer",
@@ -82,7 +82,10 @@
     "message_required": "Le message est requis",
     "message_min_length": "Le message doit comporter au moins {{ limit }} caractères",
     "username_placeholder": "Entrez votre identifiant",
-    "password_placeholder": "Entrez votre mot de passe"
+    "password_placeholder": "Entrez votre mot de passe",
+    "album_name_placeholder": "Entrez le nom de l'album",
+    "create_new_album": "Créer un nouvel album",
+    "create_album_button": "Créer un album"
   },
   "bellon": "Développeur Fullstack - Groupe Bellon",
   "alphalives": "Développeur PHP, Laravel - Alphalives Multimedia",

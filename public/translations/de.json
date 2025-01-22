@@ -82,7 +82,10 @@
     "message_min_length": "Die Nachricht muss mindestens {{ limit }} Zeichen lang sein",
     "send": "Senden",
     "username_placeholder": "Geben Sie Ihren Benutzernamen ein",
-    "password_placeholder": "Geben Sie Ihr Passwort ein"
+    "password_placeholder": "Geben Sie Ihr Passwort ein",
+    "album_name_placeholder": "Geben Sie den Albumnamen ein",
+    "create_new_album": "Neues Album erstellen",
+    "create_album_button": "Album erstellen"
   },
   "bellon": "Fullstack-Entwickler - Gruppe Bellon",
   "alphalives": "PHP-Entwickler, Laravel - Alphalives Multimedia",

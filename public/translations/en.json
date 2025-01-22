@@ -82,7 +82,10 @@
     "message_min_length": "Message must be at least {{ limit }} characters long",
     "send": "Send",
     "username_placeholder": "Enter your username",
-    "password_placeholder": "Enter your password"
+    "password_placeholder": "Enter your password",
+    "album_name_placeholder": "Enter the album name",
+    "create_new_album": "Create a new album",
+    "create_album_button": "Create album"
   },
   "bellon": "Fullstack Developer - Groupe Bellon",
   "alphalives": "PHP Developer, Laravel - Alphalives Multimedia",

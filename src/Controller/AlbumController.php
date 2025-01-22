@@ -32,6 +32,87 @@ class AlbumController extends AbstractController
         $this->security = $security;
     }
 
+    // Cette route est pour l'API (POST)
+    /**
+     * @Route("/api/create-album", name="api_create_album", methods={"POST"})
+     */
+    public function createAlbumApi(Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        // Vérifier si l'utilisateur est authentifié
+        if (!$this->getUser()) {
+            return new JsonResponse(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        // Récupérer les données du formulaire
+        $albumName = $request->request->get('albumName');
+        $imagePath = $request->files->get('imagePath');
+
+        // Validation du nom de l'album
+        if (empty($albumName)) {
+            return new JsonResponse(['error' => 'Album name is required'], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Créer l'album
+        $album = new Album();
+        $album->setNomAlbum($albumName);
+
+        // Récupérer l'utilisateur connecté
+        $user = $this->getUser();
+        if ($user) {
+            $album->setCreator($user); // Lier l'album à l'utilisateur
+        }
+
+        // Gérer l'image si présente
+        if ($imagePath) {
+            try {
+                // Récupérer le chemin du répertoire de l'utilisateur
+                $userDir = $this->getParameter('photos_directory') . '/' . $user->getId();
+                $albumDir = $userDir . '/' . $albumName;
+                $coverDir = $albumDir . '/cover_photo';
+
+                // Créer les répertoires nécessaires si non existants
+                if (!file_exists($userDir)) {
+                    mkdir($userDir, 0777, true); // Créer le dossier de l'utilisateur
+                }
+
+                if (!file_exists($albumDir)) {
+                    mkdir($albumDir, 0777, true); // Créer le dossier de l'album
+                }
+
+                if (!file_exists($coverDir)) {
+                    mkdir($coverDir, 0777, true); // Créer le dossier cover_photo
+                }
+
+                // Générer un nom unique pour l'image de couverture et déplacer le fichier
+                $newFilename = uniqid() . '.' . $imagePath->guessExtension();
+                $imagePath->move($coverDir, $newFilename);
+
+                // Définir le chemin de l'image dans l'entité Album
+                $album->setImagePath($newFilename);
+
+            } catch (\Exception $e) {
+                if ($this->getParameter('kernel.environment') === 'dev') {
+                    // Afficher l'erreur détaillée en mode développement
+                    return new JsonResponse(['error' => 'Erreur lors du téléchargement de l\'image : ' . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+                } else {
+                    // Afficher un message générique en mode production
+                    return new JsonResponse(['error' => 'Une erreur est survenue lors du téléchargement de l\'image.'], Response::HTTP_INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            // Utiliser l'image par défaut si aucune image n'est fournie
+            $album->setImagePath(NULL);
+        }
+
+        // Persister l'album dans la base de données
+        $em->persist($album);
+        $em->flush();
+
+        // Retourner la réponse au client
+        return new JsonResponse(['message' => 'Album created successfully'], Response::HTTP_OK);
+    }
+
+
     /**
      * @Route("/album/new", name="album_new")
      */
