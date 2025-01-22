@@ -32,6 +32,51 @@ class AlbumController extends AbstractController
         $this->security = $security;
     }
 
+    /**
+     * @Route("/api/albums", name="api_get_albums", methods={"GET"})
+     */
+    public function getAlbums(EntityManagerInterface $em): JsonResponse
+    {
+        // Récupérer l'utilisateur courant
+        $user = $this->getUser();
+
+        if (!$user) {
+            return new JsonResponse(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        // Récupérer les albums de l'utilisateur courant
+        $albums = $em->getRepository(Album::class)->findBy(['creator' => $user]);
+
+        if (empty($albums)) {
+            return new JsonResponse(['error' => 'No albums found'], Response::HTTP_NOT_FOUND);
+        }
+
+        // Mapper les albums et récupérer les photos
+        $albumData = array_map(function ($album) use ($em, $user) {
+            // Récupérer les photos de l'album
+            $photos = $em->getRepository(Photo::class)->findBy(['album' => $album]);
+
+            // Préparer les données des photos
+            $photoData = array_map(function ($photo) use ($user) {
+                return [
+                    'id' => $photo->getId(),
+                    'title' => $photo->getTitle(),
+                    'url' => $photo->getFilePath(),
+                    'likesCount' => $photo->getLikesCount(),
+                    'isOwner' => $photo->getAlbum()->getCreator() === $user,  // Vérifie si l'utilisateur courant est le créateur de l'album
+                ];
+            }, $photos);
+
+            return [
+                'id' => $album->getId(),
+                'nomAlbum' => $album->getNomAlbum(),
+                'photos' => $photoData,
+            ];
+        }, $albums);
+
+        return new JsonResponse(['albums' => $albumData], Response::HTTP_OK);
+    }
+
     // Cette route est pour l'API (POST)
     /**
      * @Route("/api/create-album", name="api_create_album", methods={"POST"})

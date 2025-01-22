@@ -77,6 +77,92 @@ class PhotoController extends AbstractController
     }
 
     /**
+     * @Route("/api/photo", name="create_photo", methods={"POST"})
+     */
+    public function createPhoto(Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        $user = $this->getUser();  // Récupérer l'utilisateur courant
+
+        if (!$user) {
+            return new JsonResponse(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        // Récupérer les données de la requête
+        $title = $request->get('title');
+        $albumId = $request->get('album');  // L'album choisi
+        $file = $request->files->get('file');  // Fichier photo
+
+        // Trouver l'album
+        $album = $em->getRepository(Album::class)->find($albumId);
+
+        if (!$album) {
+            return new JsonResponse(['error' => 'Album not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        // Vérifier que l'album appartient à l'utilisateur courant
+        if ($album->getCreator() !== $user) {
+            return new JsonResponse(['error' => 'Unauthorized access to this album'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        // Créer la photo
+        $photo = new Photo();
+        $photo->setTitle($title);
+
+        // Si un album est sélectionné, mettre à jour l'album de la photo
+        if ($album) {
+            // Vérifie que l'album appartient bien à l'utilisateur
+            if ($album->getCreator() !== $user) {
+                return new JsonResponse(['error' => 'You cannot add a photo to an album that doesn\'t belong to you.'], Response::HTTP_UNAUTHORIZED);
+            }
+            $photo->setAlbum($album);  // Mettre à jour l'album de la photo
+        }
+
+        // Si aucun album n'est sélectionné et qu'un album pré-sélectionné est disponible, le garder
+        if (!$album && $photo->getAlbum()) {
+            $album = $photo->getAlbum(); // Récupère l'album pré-sélectionné si rien n'est choisi
+        }
+
+        // Gérer le fichier téléchargé
+        if ($file) {
+            // Créer le répertoire pour l'utilisateur et l'album
+            $userDir = $this->getParameter('photos_directory') . '/' . $user->getId();
+            $albumName = $album->getNomAlbum();  // Utiliser le nom de l'album
+            $albumDir = $userDir . '/' . $albumName;
+            $coverDir = $albumDir . '/cover_photo';
+
+            // Créer les répertoires si nécessaires
+            if (!file_exists($userDir)) {
+                mkdir($userDir, 0777, true);
+            }
+            if (!file_exists($albumDir)) {
+                mkdir($albumDir, 0777, true);
+            }
+            if (!file_exists($coverDir)) {
+                mkdir($coverDir, 0777, true);
+            }
+
+            // Générer un nom unique pour l'image et déplacer le fichier
+            $filename = uniqid() . '.' . $file->guessExtension();
+            $file->move($albumDir, $filename);
+
+            // Mettre à jour le chemin du fichier dans l'objet Photo
+            $photo->setFilePath($filename);
+        }
+
+        // Ajouter la photo à l'album et mettre à jour le nombre de photos
+        $album->addPhoto($photo);
+        $album->setPhotoCount($album->getPhotoCount() + 1); // Mettre à jour le compteur de photos
+
+        // Sauvegarder la photo et l'album
+        $em->persist($photo);
+        $em->persist($album);
+        $em->flush();
+
+        // Retourner une réponse JSON avec un message de succès
+        return new JsonResponse(['message' => 'Photo created successfully!'], Response::HTTP_OK);
+    }
+
+    /**
      * @Route("photo/upload/{albumId}", name="photo_upload", defaults={"albumId"=null})
      */
     public function upload(Request $request, EntityManagerInterface $em, $albumId = null): Response

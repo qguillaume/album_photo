@@ -8,8 +8,8 @@ const PhotoForm: React.FC = () => {
   const [title, setTitle] = useState('');
   const [file, setFile] = useState<any>(null);
   const [album, setAlbum] = useState('');
-  const [albums, setAlbums] = useState<string[]>([]); // Pour stocker les albums dynamiques
-  
+  const [albums, setAlbums] = useState<any[]>([]);
+
   // État pour afficher les erreurs de validation
   const [errors, setErrors] = useState<any>({});
   const [flashMessages, setFlashMessages] = useState<string[]>([]);
@@ -21,7 +21,11 @@ const PhotoForm: React.FC = () => {
         const response = await fetch('/api/albums');
         if (response.ok) {
           const data = await response.json();
-          setAlbums(data); // Supposons que la réponse contient un tableau d'albums
+          if (data && data.albums) {
+            setAlbums(data.albums);
+          } else {
+            throw new Error('Invalid album data structure');
+          }
         } else {
           throw new Error('Failed to fetch albums');
         }
@@ -115,8 +119,10 @@ const PhotoForm: React.FC = () => {
           >
             <option value="">{t('form.select_album')}</option>
             {albums.length > 0 ? (
-              albums.map((albumOption, index) => (
-                <option key={index} value={albumOption}>{albumOption}</option>
+              albums.map((albumOption: { id: string; nomAlbum: string }, index) => (
+                <option key={index} value={albumOption.id}>
+                  {albumOption.nomAlbum}
+                </option>
               ))
             ) : (
               <option value="">{t('form.no_albums')}</option>
