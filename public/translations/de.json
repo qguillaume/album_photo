@@ -28,6 +28,8 @@
   "password": "Passwort",
   "email": "E-Mail",
   "contact_form": "Kontaktformular",
+  "connexion_form": "Anmeldeformular",
+  "register_form": "Registrierungsformular",
   "message": "Nachricht",
   "send": "Senden",
   "name": "Name",
@@ -64,6 +66,8 @@
   "upload_valide": "Bitte laden Sie ein gültiges Bild hoch.",
   "form": {
     "contact_title": "Kontaktformular",
+    "connexion_title": "Anmeldeformular",
+    "register_title": "Registrierungsformular",
     "name": "Name",
     "name_placeholder": "Geben Sie Ihren Namen ein",
     "email": "E-Mail",
@@ -76,7 +80,9 @@
     "email_invalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
     "message_required": "Nachricht ist erforderlich",
     "message_min_length": "Die Nachricht muss mindestens {{ limit }} Zeichen lang sein",
-    "send": "Senden"
+    "send": "Senden",
+    "username_placeholder": "Geben Sie Ihren Benutzernamen ein",
+    "password_placeholder": "Geben Sie Ihr Passwort ein"
   },
   "bellon": "Fullstack-Entwickler - Gruppe Bellon",
   "alphalives": "PHP-Entwickler, Laravel - Alphalives Multimedia",

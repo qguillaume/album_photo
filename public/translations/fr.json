@@ -28,6 +28,8 @@
   "password": "Mot de passe",
   "email": "Adresse email",
   "contact_form": "Formulaire de contact",
+  "connexion_form": "Formulaire de connxion",
+  "register_form": "Formulaire d'inscription",
   "message": "Message",
   "send": "Envoyer",
   "name": "Nom",
@@ -64,6 +66,8 @@
   "upload_valide": "Veuillez télécharger une image valide.",
   "form": {
     "contact_title": "Formulaire de contact",
+    "connexion_title": "Formulaire de connexion",
+    "register_title": "Formulaire d'inscription",
     "name": "Nom",
     "name_placeholder": "Entrez votre nom",
     "email": "Email",
@@ -76,7 +80,9 @@
     "email_required": "L'email est requis",
     "email_invalid": "L'email n'est pas valide",
     "message_required": "Le message est requis",
-    "message_min_length": "Le message doit comporter au moins {{ limit }} caractères"
+    "message_min_length": "Le message doit comporter au moins {{ limit }} caractères",
+    "username_placeholder": "Entrez votre identifiant",
+    "password_placeholder": "Entrez votre mot de passe"
   },
   "bellon": "Développeur Fullstack - Groupe Bellon",
   "alphalives": "Développeur PHP, Laravel - Alphalives Multimedia",

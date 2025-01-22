@@ -1,10 +1,18 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const ConnexionForm: React.FC = () => {
+  const { t } = useTranslation();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<any>({});
   const [flashMessages, setFlashMessages] = useState<string[]>([]);
+
+// Mettre à jour le `title` de la page
+useEffect(() => {
+    document.title = t('form.connexion_title'); // Définit dynamiquement
+}, [t]);
 
   // Fonction de soumission
   const handleSubmit = async (e: FormEvent) => {
@@ -50,35 +58,46 @@ const ConnexionForm: React.FC = () => {
   
 
   return (
-    <form onSubmit={handleSubmit}>
-  <input
-    type="text"
-    name="login_form[username]"
-    placeholder="Nom d'utilisateur"
-    value={username}
-    onChange={(e) => setUsername(e.target.value)}
-  />
-  {errors.username && <div className="error">{errors.username}</div>}
 
-  <input
-    type="password"
-    name="login_form[password]"
-    placeholder="Mot de passe"
-    value={password}
-    onChange={(e) => setPassword(e.target.value)}
-  />
-  {errors.password && <div className="error">{errors.password}</div>}
 
-  <button type="submit">Se connecter</button>
+    <>
+      <h2>{t('connexion_form')}</h2>
 
-  {flashMessages.length > 0 && (
-    <div>
-      {flashMessages.map((msg, index) => (
-        <div key={index} className="flash-message">{msg}</div>
-      ))}
-    </div>
-  )}
-</form>
+      <div className="form-group">
+        {flashMessages.map((msg, index) => (
+          <div key={index} className="flash-success">{msg}</div>
+        ))}
+      </div>
+
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <input
+            className="form-control"
+            type="text"
+            name="login_form[username]"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder={t('form.username_placeholder')}
+          />
+          {errors.username && <div className="error">{errors.username}</div>}
+        </div>
+
+        <div className="form-group">
+          <input
+            className="form-control"
+            type="password"
+            name="login_form[password]"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder={t('form.password_placeholder')}
+          />
+          {errors.password && <div className="error">{errors.password}</div>}
+        </div>
+        <div className="form-group">
+          <button type="submit" className="green-button">{t('form.send')}</button>
+        </div>
+      </form>
+    </>
   );
 };
 
