@@ -5,37 +5,5 @@
 {% block title %}{{ 'inscription'|trans }}{% endblock %}
 
 {% block body %}
-    <h2>{{ 'inscription'|trans }}</h2>
-
-    {% if error == 1 %}
-        <div class="form-group">
-            <div class="flash-error">
-                {{ form_errors(registrationForm.username) }}
-                {{ form_errors(registrationForm.email) }}
-                {{ form_errors(registrationForm.password) }}
-            </div>
-        </div>
-    {% endif %}
-    
-
-    {{ form_start(registrationForm) }}
-    
-        {# Champs du formulaire avec placeholders uniquement #}
-        <div class="form-group">
-            {{ form_widget(registrationForm.username) }}
-        </div>
-
-        <div class="form-group">
-            {{ form_widget(registrationForm.email) }}
-        </div>
-
-        <div class="form-group">
-            {{ form_widget(registrationForm.password) }}
-        </div>
-
-        <div class="form-group">
-            {{ form_widget(registrationForm.register, {'attr': {'class': 'green-button'}}) }}
-        </div>
-
-    {{ form_end(registrationForm) }}
+    <div id="register-form-root"></div>
 {% endblock %}

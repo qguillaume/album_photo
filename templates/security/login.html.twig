@@ -3,42 +3,5 @@
 {% block title %}{{ 'connexion'|trans }}{% endblock %}
 
 {% block body %}
-    <h2>{{ 'connexion'|trans }}</h2>
-
-    {# Gestion des erreurs de connexion #}
-    {% if error is defined and error %}
-        <div class="form-group">
-            <div class="flash-error">
-                {{ error.messageKey|trans(error.messageData, 'security') }}
-            </div>
-        </div>
-    {% endif %}
-
-    {# Affichage des messages flash de succès #}
-    {% for message in app.flashes('success') %}
-        <div class="form-group">
-            <div class="flash-success">
-                {{ message|trans }}
-            </div>
-        </div>
-    {% endfor %}
-
-    {# Formulaire de connexion #}
-    {{ form_start(loginForm) }}
-        <div class="form-group">
-            {{ form_widget(loginForm.username) }}
-        </div>
-
-        <div class="form-group">
-            {{ form_widget(loginForm.password) }}
-        </div>
-
-        <div class="form-group">
-            {{ form_widget(loginForm.login, {'attr': {'class': 'green-button'}}) }}
-        </div>
-
-        <div class="form-group mt-2">
-            <a href="{{ path('forgot_password') }}" >Mot de passe oublié ?</a>
-        </div>
-    {{ form_end(loginForm) }}
+    <div id="connexion-form-root"></div>
 {% endblock %}

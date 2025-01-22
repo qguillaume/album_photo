@@ -43,7 +43,7 @@ const RegisterForm: React.FC = () => {
     // Simuler un envoi de formulaire
     try {
       const formData = { username, email, password };
-      const response = await fetch('/register', {
+      const response = await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

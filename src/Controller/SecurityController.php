@@ -27,45 +27,64 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * @Route("/api/login", name="api_login", methods={"POST"})
+     */
+    public function apiLogin(Request $request): Response
+    {
+        // Récupérer les données JSON envoyées par le frontend
+        $data = json_decode($request->getContent(), true);
+        $username = $data['username'] ?? null;
+        $password = $data['password'] ?? null;
+
+        if (!$username || !$password) {
+            return new Response('Nom d\'utilisateur ou mot de passe manquant', Response::HTTP_BAD_REQUEST);
+        }
+
+        // Recherche de l'utilisateur dans la base de données
+        $userRepository = $this->getDoctrine()->getRepository(User::class);
+        $user = $userRepository->findOneBy(['username' => $username]);
+
+        if ($user && $this->passwordHasher->isPasswordValid($user, $password)) {
+            // Connexion réussie, retourne une réponse 200
+            return new Response('Connexion réussie', Response::HTTP_OK);
+        }
+
+        // Erreur de connexion : nom d'utilisateur ou mot de passe incorrect
+        return new Response('Nom d\'utilisateur ou mot de passe incorrect.', Response::HTTP_UNAUTHORIZED);
+    }
+
+
+
+    /**
      * @Route("/login", name="login")
      */
     public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
     {
-        //dd($request->request->all());
-        // Récupère les erreurs de connexion (si présentes)
+        // Récupère les erreurs de connexion
         $error = $authenticationUtils->getLastAuthenticationError();
-        // Récupère le dernier nom d'utilisateur soumis (pour préremplir le champ)
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        // Créer un objet User vide
         $user = new User();
-        $user->setUsername($lastUsername);  // On préremplir avec le dernier nom d'utilisateur
+        $user->setUsername($lastUsername); // préremplir avec le dernier nom d'utilisateur
 
-        // Créer le formulaire de connexion en liant l'entité User
-        $form = $this->createForm(LoginFormType::class, $user, [
-            'method' => 'POST'
-        ]);
+        $form = $this->createForm(LoginFormType::class, $user);
 
-        // Si le formulaire est soumis et valide
         $form->handleRequest($request);
 
-        //dd($form->getData());  // Pour inspecter les données du formulaire
-
         if ($form->isSubmitted() && $form->isValid()) {
-            // Recherche utilisateur dans la base de données
+            // Recherche utilisateur et validation du mot de passe
             $userRepository = $this->getDoctrine()->getRepository(User::class);
-            $user = $userRepository->findOneBy(['username' => $form->get('login_form[username]')->getData()]);// Faire bien attention à cette ligne
+            $user = $userRepository->findOneBy(['username' => $form->get('username')->getData()]);
 
             if ($user && $this->passwordHasher->isPasswordValid($user, $form->get('password')->getData())) {
-                // Authentification réussie
+                // Authentification réussie, Symfony gère la session automatiquement
                 return $this->redirectToRoute('portfolio_home');
             }
 
-            // Si l'utilisateur ou le mot de passe est incorrect
+            // Si utilisateur ou mot de passe incorrect
             $error = 'Nom d\'utilisateur ou mot de passe incorrect.';
         }
 
-        // Afficher la page de connexion
         return $this->render('security/login.html.twig', [
             'loginForm' => $form->createView(),
             'error' => $error,

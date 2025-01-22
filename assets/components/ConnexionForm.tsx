@@ -1,121 +1,84 @@
-import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useState, FormEvent } from 'react';
 
 const ConnexionForm: React.FC = () => {
-  const { t } = useTranslation();
-
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<any>({});
   const [flashMessages, setFlashMessages] = useState<string[]>([]);
 
-  useEffect(() => {
-    console.log('Mise à jour du titre de la page :', t('form.connexion_title'));
-    document.title = t('form.connexion_title');
-  }, [t]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Fonction de soumission
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log('Soumission du formulaire...');
-
+  
     const newErrors: any = {};
-
     if (!username) {
-      newErrors.username = t('form.username_required');
+      newErrors.username = 'Nom d\'utilisateur requis';
     }
     if (!password) {
-      newErrors.password = t('form.password_required');
+      newErrors.password = 'Mot de passe requis';
     }
-
+  
     if (Object.keys(newErrors).length > 0) {
-      console.log('Validation échouée avec les erreurs :', newErrors);
       setErrors(newErrors);
       return;
     }
-
+  
     try {
-      const formData = { username, password };
-      console.log('Données envoyées au backend :', formData);
-
-      const response = await fetch('/login', {
+      // On utilise URLSearchParams pour envoyer les données sous forme de paramètres de formulaire
+      const formData = new URLSearchParams();
+      formData.append('login_form[username]', username);
+      formData.append('login_form[password]', password);
+  
+      // Envoi des données au backend
+      const response = await fetch('/api/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
+        body: formData, // Pas besoin d'ajouter headers 'Content-Type', car c'est automatiquement détecté
+        credentials: 'include',  // Permet d'inclure les cookies dans la requête
       });
-
-      const responseText = await response.text();
-      console.log('Réponse du serveur:', responseText);
-
+  
       if (response.ok) {
-        const data = await response.json();
-        console.log('Données reçues du serveur:', data);
-        setFlashMessages([t('form.success_message')]);
-        setUsername('');
-        setPassword('');
-        setErrors({});
+        setFlashMessages(['Connexion réussie']);
+        // Gérer l'état de l'utilisateur connecté, rediriger ou mettre à jour le state global
       } else {
-        const errorData = await response.json();
-        console.log('Erreur du backend :', errorData);
-        setFlashMessages([t('form.error_message')]);
+        setFlashMessages(['Nom d\'utilisateur ou mot de passe incorrect']);
       }
     } catch (error) {
-      console.error('Erreur lors de la soumission du formulaire :', error);
-      setFlashMessages([t('form.error_message')]);
+      console.error('Erreur lors de la soumission:', error);
+      setFlashMessages(['Erreur lors de la connexion']);
     }
   };
+  
 
   return (
-    <>
-      <h2>{t('connexion_form')}</h2>
+    <form onSubmit={handleSubmit}>
+  <input
+    type="text"
+    name="login_form[username]"
+    placeholder="Nom d'utilisateur"
+    value={username}
+    onChange={(e) => setUsername(e.target.value)}
+  />
+  {errors.username && <div className="error">{errors.username}</div>}
 
-      <div className="form-group">
-        {flashMessages.map((msg, index) => (
-          <div key={index} className="flash-success">{msg}</div>
-        ))}
-      </div>
+  <input
+    type="password"
+    name="login_form[password]"
+    placeholder="Mot de passe"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+  />
+  {errors.password && <div className="error">{errors.password}</div>}
 
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="username">{t('form.username_placeholder')}</label>
-          <input
-            id="username"
-            className="form-control"
-            type="text"
-            value={username}
-            onChange={(e) => {
-              console.log('Nom d\'utilisateur modifié :', e.target.value);
-              setUsername(e.target.value);
-            }}
-            placeholder={t('form.username_placeholder')}
-          />
-          {errors.username && <div className="error">{errors.username}</div>}
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">{t('form.password_placeholder')}</label>
-          <input
-            id="password"
-            className="form-control"
-            type="password"
-            value={password}
-            onChange={(e) => {
-              console.log('Mot de passe modifié :', e.target.value);
-              setPassword(e.target.value);
-            }}
-            placeholder={t('form.password_placeholder')}
-          />
-          {errors.password && <div className="error">{errors.password}</div>}
-        </div>
-        <div className="form-group">
-          <button type="submit" className="green-button">
-            {t('form.send')}
-          </button>
-        </div>
+  <button type="submit">Se connecter</button>
 
-        <div className="form-group mt-2">
-          <a href="/forgot_password">{t('forgot_password')}</a>
-        </div>
-      </form>
-    </>
+  {flashMessages.length > 0 && (
+    <div>
+      {flashMessages.map((msg, index) => (
+        <div key={index} className="flash-message">{msg}</div>
+      ))}
+    </div>
+  )}
+</form>
   );
 };
 

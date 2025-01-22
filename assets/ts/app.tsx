@@ -24,7 +24,9 @@ import Languette from "../components/Languette";
 import Footer from "../components/Footer";
 import { UserProvider } from '../context/UserContext';
 import Presentation from '../components/Presentation';
-import ContactForm from '../components/ContactForm'; 
+import ContactForm from '../components/ContactForm';
+import ConnexionForm from '../components/ConnexionForm';
+import RegisterForm from '../components/RegisterForm';
 import '../../public/i18n';
 import TinyEditor from "./TinyEditor";
 /*
@@ -609,12 +611,28 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// Code pour rendre le formulaire dans l'élément du DOM
+// Code pour rendre le formulaire de contact dans l'élément du DOM
 const contactFormRoot = document.getElementById('contact-form-root');
 
 if (contactFormRoot) {
   const root = ReactDOM.createRoot(contactFormRoot);
   root.render(<ContactForm />); // Rendre le composant ContactForm
+}
+
+// Code pour rendre le formulaire de connexion dans l'élément du DOM
+const connexionFormRoot = document.getElementById('connexion-form-root');
+
+if (connexionFormRoot) {
+  const root = ReactDOM.createRoot(connexionFormRoot);
+  root.render(<ConnexionForm />); // Rendre le composant ConnexionForm
+}
+
+// Code pour rendre le formulaire d'inscription dans l'élément du DOM
+const registerFormRoot = document.getElementById('register-form-root');
+
+if (registerFormRoot) {
+  const root = ReactDOM.createRoot(registerFormRoot);
+  root.render(<RegisterForm />); // Rendre le composant RegisterForm
 }
 
 // Code pour rendre la languette dans l'élément du DOM
