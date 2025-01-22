@@ -13,9 +13,18 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\UserRepository;
 
 class RegistrationController extends AbstractController
 {
+    private $passwordHasher;
+
+    // Injection du service de hachage du mot de passe
+    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    {
+        $this->passwordHasher = $passwordHasher;
+    }
+
     /**
      * @Route("/register", name="register")
      */
@@ -68,5 +77,53 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form->createView(),
             'error' => $error
         ]);
+    }
+
+    /**
+     * @Route("/api/register", name="api_register", methods={"POST"})
+     */
+    public function apiRegister(Request $request, UserRepository $userRepository, MailerInterface $mailer): Response
+    {
+        // Récupérer les données envoyées par le frontend
+        $data = json_decode($request->getContent(), true);
+
+        $username = $data['username'] ?? null;
+        $email = $data['email'] ?? null;
+        $password = $data['password'] ?? null;
+
+        // Validation basique des données
+        if (!$username || !$email || !$password) {
+            return new Response('Tous les champs sont requis.', Response::HTTP_BAD_REQUEST);
+        }
+
+        // Vérifier si l'utilisateur existe déjà
+        $existingUser = $userRepository->findOneBy(['email' => $email]);
+        if ($existingUser) {
+            return new Response('Un utilisateur avec cet email existe déjà.', Response::HTTP_CONFLICT);
+        }
+
+        // Créer un nouvel utilisateur
+        $user = new User();
+        $user->setUsername($username);
+        $user->setEmail($email);
+        $user->setPassword($this->passwordHasher->hashPassword($user, $password));
+
+        // Sauvegarder l'utilisateur dans la base de données
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        // Envoi de l'email de confirmation
+        $emailAdress = (new Email())
+            ->from('noreply@gqportfolio.com') // L'expéditeur
+            ->to($user->getEmail()) // L'adresse de l'utilisateur
+            ->subject('Merci pour votre inscription !')
+            ->text('Bonjour ' . $user->getUsername() . ', merci pour votre inscription sur notre site.')
+            ->html('<p>Bonjour ' . $user->getUsername() . ',</p><p>Merci pour votre inscription sur notre site.</p>');
+
+        $mailer->send($emailAdress);
+
+        // Réponse de succès
+        return new Response('Utilisateur enregistré avec succès', Response::HTTP_CREATED);
     }
 }
