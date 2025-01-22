@@ -3,8 +3,15 @@ import { useTranslation } from 'react-i18next';
 
 const CommentForm: React.FC = () => {
   const { t } = useTranslation();
+  
+  // Récupérer l'ID de la photo depuis l'attribut data-photo-id de l'élément div
+  const photoId = (document.getElementById('comment-form-root') as HTMLElement)?.getAttribute('data-photo-id');
+  
+  // Vérifier si l'ID est valide
+  if (!photoId) {
+    return <div>{t('form.photo_not_found')}</div>;  // Message d'erreur si l'ID est manquant
+  }
 
-  // États pour le formulaire, les erreurs, les messages flash, les commentaires et le chargement
   const [content, setContent] = useState('');
   const [errors, setErrors] = useState<any>({});
   const [flashMessages, setFlashMessages] = useState<string[]>([]);
@@ -14,7 +21,7 @@ const CommentForm: React.FC = () => {
   // Récupérer les commentaires existants de l'API Symfony
   useEffect(() => {
     setLoading(true);  // On commence par définir `loading` à true avant de récupérer les commentaires
-    fetch('/comments_list')
+    fetch(`/photo/${photoId}/comments`)  // Utiliser photoId ici pour récupérer les commentaires
       .then((response) => response.json())
       .then((data) => {
         setComments(data);
@@ -24,12 +31,7 @@ const CommentForm: React.FC = () => {
         console.error('Error fetching comments:', error);
         setLoading(false);  // En cas d'erreur, on met aussi `loading` à false
       });
-  }, []);
-
-  // Mettre à jour le titre de la page
-  useEffect(() => {
-    document.title = t('form.comment_title');
-  }, [t]);
+  }, [photoId]);
 
   // Fonction pour gérer la soumission du formulaire
   const handleSubmit = async (e: React.FormEvent) => {
@@ -48,10 +50,9 @@ const CommentForm: React.FC = () => {
       return;
     }
 
-    // Simuler un envoi de formulaire
     try {
       const formData = { content };
-      const response = await fetch('/photo/124/comment', {
+      const response = await fetch(`/photo/${photoId}/comment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -80,7 +81,7 @@ const CommentForm: React.FC = () => {
         ))}
       </div>
 
-      {/* Affichage des commentaires existants */}
+      {/* Affichage des commentaires */}
       <div className="comments-list">
         {loading ? (
           <p>{t('form.loading_comments')}</p>
