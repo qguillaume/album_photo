@@ -13,16 +13,19 @@ use App\Form\ArticleFormType;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Security\Core\Security;
 
 class ArticleController extends AbstractController
 {
     private $articleRepository;
     private $entityManager;
+    private $security;
 
-    public function __construct(ArticleRepository $articleRepository, EntityManagerInterface $entityManager)
+    public function __construct(ArticleRepository $articleRepository, EntityManagerInterface $entityManager, Security $security)
     {
         $this->articleRepository = $articleRepository;
         $this->entityManager = $entityManager;
+        $this->security = $security;
     }
 
     /**
@@ -130,7 +133,8 @@ class ArticleController extends AbstractController
         }
 
         return $this->render('article/create.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'user' => $user,
         ]);
     }
 

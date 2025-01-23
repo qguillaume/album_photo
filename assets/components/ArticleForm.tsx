@@ -10,14 +10,34 @@ const ArticleForm: React.FC = () => {
   const [theme, setTheme] = useState('');
   const [content, setContent] = useState('');
   const [published, setPublished] = useState(false);
-
-  // État pour afficher les erreurs de validation
+  const [themes, setThemes] = useState<{ id: string; name: string }[]>([]);
   const [errors, setErrors] = useState<any>({});
   const [flashMessages, setFlashMessages] = useState<string[]>([]);
 
-  // Mettre à jour le `title` de la page
+  // Récupérer l'utilisateur connecté et les thèmes au chargement du composant
   useEffect(() => {
-    document.title = t('form.article_title'); // Définit dynamiquement
+    document.title = t('form.article_title'); // Met à jour le titre de la page
+
+    // Récupérer l'utilisateur connecté
+    const fetchUser = async () => {
+      const userResponse = await fetch('/api/user');
+      if (userResponse.ok) {
+        const userData = await userResponse.json();
+        setAuthor(userData.username);  // Remplir avec le nom d'utilisateur
+      }
+    };
+
+    // Récupérer les thèmes depuis l'API
+    const fetchThemes = async () => {
+      const themesResponse = await fetch('/themes_list');
+      if (themesResponse.ok) {
+        const themesData = await themesResponse.json();
+        setThemes(themesData);  // Mettre à jour l'état des thèmes
+      }
+    };
+
+    fetchUser();
+    fetchThemes();
   }, [t]);
 
   // Fonction pour gérer la soumission du formulaire
@@ -76,13 +96,14 @@ const ArticleForm: React.FC = () => {
       <form onSubmit={handleSubmit} noValidate>
         {/* Auteur */}
         <div className="form-group">
-          <input
+          <select
             className="form-control"
-            type="text"
             value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-            placeholder={t('form.author_placeholder')}
-          />
+            disabled // Empêcher la modification du nom de l'auteur
+          >
+            <option value="">{t('form.author_placeholder')}</option>
+            <option value={author}>{author}</option>
+          </select>
           {errors.author && <div className="error">{errors.author}</div>}
         </div>
 
@@ -100,13 +121,18 @@ const ArticleForm: React.FC = () => {
 
         {/* Thème */}
         <div className="form-group">
-          <input
+          <select
             className="form-control"
-            type="text"
             value={theme}
             onChange={(e) => setTheme(e.target.value)}
-            placeholder={t('form.theme_placeholder')}
-          />
+          >
+            <option value="">{t('form.theme_placeholder')}</option> {/* Placeholder pour les thèmes */}
+            {themes.map((themeOption) => (
+              <option key={themeOption.id} value={themeOption.id}>
+                {themeOption.name}
+              </option>
+            ))}
+          </select>
           {errors.theme && <div className="error">{errors.theme}</div>}
         </div>
 

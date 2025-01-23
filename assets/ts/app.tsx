@@ -683,7 +683,7 @@ document.addEventListener("DOMContentLoaded", () => {
     root.render(<ForgotPasswordForm />); // Rendre le composant ForgotPasswordForm
   }
 
-  // Code pour rendre le formulaire de contact dans l'élément du DOM
+  // Code pour rendre le formulaire des articles dans l'élément du DOM
   const articleFormRoot = document.getElementById('article-form-root');
 
   if (articleFormRoot) {
