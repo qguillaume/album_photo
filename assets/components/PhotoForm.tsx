@@ -94,7 +94,7 @@ const PhotoForm: React.FC = () => {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder={t('form.title_placeholder')}
+            placeholder={t('form.photo_title_placeholder')}
           />
           {errors.title && <div className="error">{errors.title}</div>}
         </div>

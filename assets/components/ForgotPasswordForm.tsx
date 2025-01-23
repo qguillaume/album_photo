@@ -57,7 +57,7 @@ const ForgetPasswordForm: React.FC = () => {
 
   return (
     <>
-      <h2>{t('form.forget_password_title')}</h2>
+      <h2>{t('form.forget_password_h2')}</h2>
 
       {/* Messages Flash */}
       <div className="form-group">
@@ -66,7 +66,7 @@ const ForgetPasswordForm: React.FC = () => {
         ))}
       </div>
 
-      <p>{t('form.forget_password_instruction')}</p>
+      <p className="center">{t('form.forget_password_instruction')}</p>
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -82,10 +82,12 @@ const ForgetPasswordForm: React.FC = () => {
         <div className="form-group">
           <button type="submit" className="green-button">{t('form.send')}</button>
         </div>
+        <div className="form-group mt-2">
+          <a href="/login">{t('form.back_to_login')}</a>
+        </div>
       </form>
 
-      {/* Lien vers la page de connexion */}
-      <a href="/login">{t('form.back_to_login')}</a>
+      
     </>
   );
 };

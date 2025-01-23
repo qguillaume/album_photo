@@ -120,7 +120,7 @@ const ArticleForm: React.FC = () => {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder={t('form.title_placeholder')}
+            placeholder={t('form.article_title_placeholder')}
           />
           {errors.title && <div className="error">{errors.title}</div>}
         </div>
@@ -132,7 +132,7 @@ const ArticleForm: React.FC = () => {
             value={theme}
             onChange={(e) => setTheme(e.target.value)}
           >
-            <option value="">{t('form.theme_placeholder')}</option> {/* Placeholder pour les thèmes */}
+            <option value="">{t('form.article_theme_placeholder')}</option>
             {themes.map((themeOption) => (
               <option key={themeOption.id} value={themeOption.id}>
                 {themeOption.name}
@@ -148,7 +148,7 @@ const ArticleForm: React.FC = () => {
             className="form-control"
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            placeholder={t('form.content_placeholder')}
+            placeholder={t('form.article_content_placeholder')}
           />
           {errors.content && <div className="error">{errors.content}</div>}
         </div>
@@ -156,7 +156,7 @@ const ArticleForm: React.FC = () => {
         {/* Switch "Publié" */}
         <div className="form-group-wrapper">
           <div className="form-group">
-            <label htmlFor="published">{t('form.published_label')}</label>
+            <label htmlFor="published">{t('form.article_published_label')}</label>
             <div className="switch">
               <input
                 type="checkbox"
@@ -173,7 +173,7 @@ const ArticleForm: React.FC = () => {
         {/* Bouton de soumission */}
         <div className="form-group-wrapper">
           <div className="form-group mt-5">
-            <button type="submit" className="green-button">{t('form.save')}</button>
+            <button type="submit" className="green-button">{t('form.validate')}</button>
           </div>
         </div>
       </form>
