@@ -29,6 +29,47 @@ class ArticleController extends AbstractController
     }
 
     /**
+     * @Route("/api/article", name="api_article_create", methods={"POST"})
+     */
+    public function apiCreateArticle(Request $request): JsonResponse
+    {
+        // Vérifier que l'utilisateur est connecté
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        // Récupérer les données envoyées dans le corps de la requête
+        $data = json_decode($request->getContent(), true);
+
+        // Créer un nouvel article
+        $article = new Article();
+        $article->setTitle($data['title']);
+        $article->setContent($data['content']);
+        $article->setPublished($data['published']);
+
+        // Assigner l'auteur (l'utilisateur connecté)
+        $user = $this->getUser();
+        if ($user) {
+            $article->setAuthor($user);
+        }
+
+        // Sauvegarder l'article
+        $this->entityManager->persist($article);
+        $this->entityManager->flush();
+
+        // Retourner une réponse JSON avec les détails de l'article créé
+        return new JsonResponse([
+            'message' => 'Article créé avec succès',
+            'article' => [
+                'id' => $article->getId(),
+                'title' => $article->getTitle(),
+                'content' => $article->getContent(),
+                'author' => $article->getAuthor()->getUsername(),
+                'createdAt' => $article->getCreatedAt()->format('Y-m-d H:i:s'),
+                'published' => $article->isPublished(),
+            ]
+        ], Response::HTTP_CREATED);
+    }
+
+    /**
      * @Route("/articles_list", name="articles_list", methods={"GET"})
      */
     public function list()
