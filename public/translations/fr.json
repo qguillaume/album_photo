@@ -83,6 +83,7 @@
     "message_min_length": "Le message doit comporter au moins {{ limit }} caractères",
     "username_placeholder": "Entrez votre identifiant",
     "password_placeholder": "Entrez votre mot de passe",
+    "create_album_title": "Créer un album photo",
     "album_name_placeholder": "Entrez le nom de l'album",
     "create_new_album": "Créer un nouvel album",
     "create_album_button": "Créer un album",

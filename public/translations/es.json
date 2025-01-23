@@ -83,6 +83,7 @@
     "send": "Enviar",
     "username_placeholder": "Ingrese su nombre de usuario",
     "password_placeholder": "Ingrese su contraseña",
+    "create_album_title": "Crear un álbum de fotos",
     "album_name_placeholder": "Ingrese el nombre del álbum",
     "create_new_album": "Crear un nuevo álbum",
     "create_album_button": "Crear álbum",

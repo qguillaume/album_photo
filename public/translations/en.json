@@ -83,6 +83,7 @@
     "send": "Send",
     "username_placeholder": "Enter your username",
     "password_placeholder": "Enter your password",
+    "create_album_title": "Create a photo album",
     "album_name_placeholder": "Enter the album name",
     "create_new_album": "Create a new album",
     "create_album_button": "Create album",
