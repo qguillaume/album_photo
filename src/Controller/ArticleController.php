@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Theme;
 use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,6 +52,18 @@ class ArticleController extends AbstractController
             $article->setAuthor($user);
         }
 
+        // Vérification et association du thème
+        if (isset($data['theme']) && !empty($data['theme'])) {
+            $theme = $this->entityManager->getRepository(Theme::class)->find($data['theme']);
+            if ($theme) {
+                $article->setTheme($theme);  // Assigner le thème à l'article
+            } else {
+                return new JsonResponse(['message' => 'Thème introuvable'], Response::HTTP_BAD_REQUEST);
+            }
+        } else {
+            $article->setTheme(null);
+        }
+
         // Sauvegarder l'article
         $this->entityManager->persist($article);
         $this->entityManager->flush();
@@ -65,6 +78,7 @@ class ArticleController extends AbstractController
                 'author' => $article->getAuthor()->getUsername(),
                 'createdAt' => $article->getCreatedAt()->format('Y-m-d H:i:s'),
                 'published' => $article->isPublished(),
+                'theme' => $article->getTheme() ? $article->getTheme()->getName() : null,
             ]
         ], Response::HTTP_CREATED);
     }

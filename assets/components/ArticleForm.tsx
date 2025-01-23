@@ -50,18 +50,24 @@ const ArticleForm: React.FC = () => {
     // Validation des champs
     if (!author) newErrors.author = t('form.author_required');
     if (!title) newErrors.title = t('form.title_required');
-    if (!theme) newErrors.theme = t('form.theme_required');
     if (!content) newErrors.content = t('form.content_required');
-
+  
+    // Validation du thème
+    if (!theme) {
+      newErrors.theme = t('form.theme_required');  // Si aucun thème n'est sélectionné
+    }
+  
     // Si des erreurs existent, on les affiche et on arrête la soumission
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-
-    // Simuler un envoi de formulaire
+  
+    // Préparer les données du formulaire (s'assurer que l'ID du thème est envoyé)
+    const formData = { author, title, theme, content, published };
+  
+    // Envoi de la requête POST pour créer l'article
     try {
-      const formData = { author, title, theme, content, published };
       const response = await fetch('/api/article', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
