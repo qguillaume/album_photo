@@ -1,67 +1,96 @@
-// src/styles/base/_body.scss
 @use "./variables" as *;
 
-html, body { 
-    font-family: 'Cambria Math', 'Cambria', serif;
-    height: 100%; /* L'élément html et le body occupent toute la hauteur de la page */
-    margin: 0; /* Retire toute marge par défaut autour du body */
-    padding: 0; /* Retire tout le padding par défaut autour du body */
-    display: flex; /* Utilise Flexbox pour la mise en page du body */
-    flex-direction: column; /* Aligne les éléments enfants (comme header, main, footer) dans une direction verticale (colonne) */
+/* Style global */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: 'Cambria Math', 'Cambria', serif;
+  height: 100%; /* L'élément html et le body occupent toute la hauteur de la page */
+  margin: 0; /* Retire toute marge par défaut */
+  padding: 0; /* Retire tout le padding par défaut */
+  display: flex; /* Utilise Flexbox pour la mise en page du body */
+  flex-direction: column; /* Aligne les éléments enfants en colonne */
 }
 
 .main-content-wrapper {
-    flex: 1;
-    padding: 150px 200px 0 200px; /* Padding appliqué uniquement au contenu principal */
-    box-sizing: border-box;
-    margin-bottom: 50px; /* Ajoute un espace fixe avant le footer */
+  flex: 1;
+  padding: 100px 50px; /* Padding initial */
+  box-sizing: border-box;
+  margin-bottom: 50px; /* Espacement avant le footer */
+  width: 100%;
 }
 
 main {
-    padding: 0;
+  padding: 0;
 }
 
+/* Titres */
 h1, h2, h3, h4 {
-    font-weight: bold;
-    text-decoration: underline; /* Ajoute une ligne de soulignement */
-    color: $primary-color;
-    text-decoration-color: $secondary-color; /* Définit la couleur du soulignement */
-    text-decoration-thickness: 2px; /* Épaisseur de la ligne de soulignement */
-    text-underline-offset: 8px; /* Décalage de la ligne par rapport au texte */
-    margin-bottom: 30px;
-    margin-top: 30px;
+  font-weight: bold;
+  text-decoration: underline;
+  color: $primary-color;
+  text-decoration-color: $secondary-color;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 8px;
+  margin: 30px 0;
 }
 
 h1 {
-    font-size: 3.5rem;
-    text-align: center;
+  font-size: 3.5rem;
+  text-align: center;
 }
 
 h2 {
-    font-size: 2.5rem;
-    text-align: center;
+  font-size: 2.5rem;
+  text-align: center;
 }
 
-/* Paragraphe */
-p {
-    font-size: 1.5rem; /* Taille du texte */
-    line-height: 1.6; /* Hauteur de ligne */
-
-    a {
-        color: $primary-color;
-    }
-
-    &.details-photo {
-        text-align: center;
-    }
+h3 {
+  font-size: 2rem;
+  text-align: left;
 }
 
 h4 {
-    color: $secondary-color;
-    font-size: 1.2rem;
-    margin: 0;
+  color: $secondary-color;
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+/* Paragraphes */
+p {
+  font-size: 1.5rem;
+  line-height: 1.6;
+
+  a {
+    color: $primary-color;
+  }
+
+  &.details-photo {
+    text-align: center;
+  }
 }
 
 .espacement {
-    height: 40px;
+  height: 40px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-content-wrapper {
+    padding: 50px 20px; /* Réduction des marges pour tablettes */
+  }
+
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  p {
+    font-size: 1.2rem;
+  }
 }
