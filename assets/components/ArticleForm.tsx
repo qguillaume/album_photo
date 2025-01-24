@@ -54,10 +54,9 @@ const ArticleForm: React.FC = () => {
     const newErrors: string[] = [];
 
     // Validation des champs
-    if (!author) newErrors.push(t('form.author_required'));
-    if (!title) newErrors.push(t('form.title_required'));
-    if (!theme) newErrors.push(t('form.theme_required'));
-    if (!content) newErrors.push(t('form.content_required'));
+    if (!author) newErrors.push(t('form.article_author_required'));
+    if (!title) newErrors.push(t('form.article_title_required'));
+    if (!content) newErrors.push(t('form.article_content_required'));
 
     // Si des erreurs existent, les afficher et arrêter la soumission
     if (newErrors.length > 0) {

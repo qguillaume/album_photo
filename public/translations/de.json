@@ -52,10 +52,7 @@
   "email_invalid": "Die E-Mail ist ungültig!",
   "message_required": "Die Nachricht ist erforderlich!",
   "message_min_length": "Die Nachricht muss mindestens {{ limit }} Zeichen lang sein!",
-  "username_required": "Benutzername ist erforderlich!",
-  "username_min_length": "Der Benutzername muss mindestens {{ limit }} Zeichen enthalten!",
-  "password_required": "Passwort ist erforderlich!",
-  "password_min_length": "Das Passwort muss mindestens {{ limit }} Zeichen enthalten!",
+
   "inscription_successful": "Ihre Registrierung wurde erfolgreich abgeschlossen. Eine E-Mail wurde an Sie gesendet. Sie können sich jetzt anmelden und auf alle Funktionen der Website zugreifen!",
   "comments": "Kommentare",
   "leave_comment": "Kommentar hinterlassen",
@@ -112,7 +109,20 @@
     "photo_file_required": "Das Foto ist erforderlich!",
     "photo_album_required": "Wählen Sie ein Album aus",
     "article_title_required": "Der Artikelname ist erforderlich!",
-    "article_content_required": "Bitte geben Sie Artikelinhalt ein!"
+    "article_content_required": "Bitte geben Sie Artikelinhalt ein!",
+
+    "article_success_message": "Artikel hinzugefügt!",
+    "comment_success_message": "Kommentar hinzugefügt!",
+    "contact_success_message": "Nachricht gesendet!",
+    "forget_password_success_message": "Eine Passwort-Wiederherstellungs-E-Mail wurde erfolgreich an Ihr Postfach gesendet!",
+    "photo_success_message": "Das Foto wurde erfolgreich gepostet!",
+    "register_success_message": "Ihr Konto wurde erfolgreich erstellt, eine Bestätigungs-E-Mail wurde gesendet!",
+    "theme_success_message": "Ein neues Artikelthema wurde erfolgreich erstellt",
+
+    "username_required": "Benutzername ist erforderlich!",
+    "username_min_length": "Der Benutzername muss mindestens {{ limit }} Zeichen enthalten!",
+    "password_required": "Passwort ist erforderlich!",
+    "password_min_length": "Das Passwort muss mindestens {{ limit }} Zeichen enthalten!"
   },
   "forgot_password": "Passwort vergessen?",
   "bellon": "Fullstack-Entwickler - Gruppe Bellon",

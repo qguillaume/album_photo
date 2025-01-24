@@ -22,10 +22,10 @@ const ConnexionForm: React.FC = () => {
 
     // Vérification des champs
     if (!username) {
-      newErrors.push(t('form.username_required') || 'Nom d\'utilisateur requis');
+      newErrors.push(t('form.username_required'));
     }
     if (!password) {
-      newErrors.push(t('form.password_required') || 'Mot de passe requis');
+      newErrors.push(t('form.password_required'));
     }
 
     // Si des erreurs existent, les afficher sous forme de flash error

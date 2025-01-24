@@ -52,10 +52,6 @@
   "email_invalid": "¡El correo electrónico no es válido!",
   "message_required": "¡El mensaje es obligatorio!",
   "message_min_length": "¡El mensaje debe contener al menos {{ limit }} caracteres!",
-  "username_required": "¡El nombre de usuario es obligatorio!",
-  "username_min_length": "¡El nombre de usuario debe contener al menos {{ limit }} caracteres!",
-  "password_required": "¡La contraseña es obligatoria!",
-  "password_min_length": "¡La contraseña debe contener al menos {{ limit }} caracteres!",
   "inscription_successful": "Su registro se ha completado con éxito. Se le ha enviado un correo electrónico. ¡Ahora puede iniciar sesión y acceder a todas las funciones del sitio!",
   "comments": "Comentarios",
   "leave_comment": "Dejar un comentario",
@@ -112,7 +108,20 @@
     "photo_file_required": "¡La foto es obligatoria!",
     "photo_album_required": "Elige un álbum",
     "article_title_required": "¡El título del artículo es obligatorio!",
-    "article_content_required": "¡Por favor, ingrese el contenido del artículo!"
+    "article_content_required": "¡Por favor, ingrese el contenido del artículo!",
+
+    "article_success_message": "¡Artículo añadido!",
+    "comment_success_message": "¡Comentario añadido!",
+    "contact_success_message": "¡Mensaje enviado!",
+    "forget_password_success_message": "¡Un correo electrónico de recuperación de cuenta ha sido enviado correctamente a tu bandeja de entrada!",
+    "photo_success_message": "¡La foto se ha publicado correctamente!",
+    "register_success_message": "¡Tu cuenta se ha creado correctamente, un correo de confirmación ha sido enviado!",
+    "theme_success_message": "¡Se ha creado correctamente un nuevo tema de artículo!",
+
+    "username_required": "¡El nombre de usuario es obligatorio!",
+    "username_min_length": "¡El nombre de usuario debe contener al menos {{ limit }} caracteres!",
+    "password_required": "¡La contraseña es obligatoria!",
+    "password_min_length": "¡La contraseña debe contener al menos {{ limit }} caracteres!"
   },
   "forgot_password": "¿Olvidaste tu contraseña?",
   "bellon": "Desarrollador Fullstack - Grupo Bellon",

@@ -52,10 +52,7 @@
   "email_invalid": "The email is not valid!",
   "message_required": "The message is required!",
   "message_min_length": "The message must be at least {{ limit }} characters long!",
-  "username_required": "The username is required !",
-  "username_min_length": "The username must be at least {{ limit }} characters long!",
-  "password_required": "The password is required !",
-  "password_min_length": "The password must be at least {{ limit }} characters long!",
+
   "inscription_successful": "Your registration has been successfully completed. An email has been sent to you. You can now log in and access all the features of the site!",
   "comments": "Comments",
   "leave_comment": "Leave a comment",
@@ -112,7 +109,20 @@
     "photo_file_required": "The photo is required!",
     "photo_album_required": "Choose an album",
     "article_title_required": "The article title is required!",
-    "article_content_required": "Please enter article content!"
+    "article_content_required": "Please enter article content!",
+
+    "article_success_message": "Article added!",
+    "comment_success_message": "Comment added!",
+    "contact_success_message": "Message sent!",
+    "forget_password_success_message": "A password recovery email has been successfully sent to your inbox!",
+    "photo_success_message": "The photo has been successfully posted!",
+    "register_success_message": "Your account has been created successfully, a confirmation email has been sent!",
+    "theme_success_message": "A new article theme has been successfully created",
+
+    "username_required": "The username is required !",
+    "username_min_length": "The username must be at least {{ limit }} characters long!",
+    "password_required": "The password is required !",
+    "password_min_length": "The password must be at least {{ limit }} characters long!"
   },
   "forgot_password": "Forgot your password?",
   "bellon": "Fullstack Developer - Groupe Bellon",

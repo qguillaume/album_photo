@@ -90,7 +90,7 @@ const PhotoForm: React.FC = () => {
 
   return (
     <>
-      <h2>{t('form.publish_photo')}</h2>
+      <h2>{t('publish_photo')}</h2>
 
       {/* Flash errors pour les erreurs de validation */}
       {errors.length > 0 && (
