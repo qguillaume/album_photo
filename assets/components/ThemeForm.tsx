@@ -6,14 +6,12 @@ const ThemeForm: React.FC = () => {
 
   // États pour les champs et erreurs du formulaire
   const [themename, setThemename] = useState('');
-  
-  // État pour afficher les erreurs de validation
-  const [errors, setErrors] = useState<any>({});
+  const [errors, setErrors] = useState<string[]>([]);
   const [flashMessages, setFlashMessages] = useState<string[]>([]);
 
-  // Mettre à jour le `title` de la page
+  // Mettre à jour dynamiquement le titre de la page
   useEffect(() => {
-    document.title = t('form.theme_title'); // Définit dynamiquement
+    document.title = t('form.theme_title');
   }, [t]);
 
   // Fonction pour gérer la soumission du formulaire
@@ -21,18 +19,20 @@ const ThemeForm: React.FC = () => {
     e.preventDefault();
 
     // Réinitialiser les erreurs
-    const newErrors: any = {};
+    const newErrors: string[] = [];
 
     // Validation des champs
-    if (!themename) newErrors.themename = t('form.themename_required');
+    if (!themename) newErrors.push(t('form.themename_required'));
 
-    // Si des erreurs existent, on les affiche et on arrête la soumission
-    if (Object.keys(newErrors).length > 0) {
+    // Si des erreurs existent, les afficher et arrêter la soumission
+    if (newErrors.length > 0) {
       setErrors(newErrors);
       return;
     }
 
-    // Simuler un envoi de formulaire
+    // Réinitialiser les erreurs si tout est valide
+    setErrors([]);
+
     try {
       const formData = { themename };
       const response = await fetch('/api/theme', {
@@ -43,11 +43,10 @@ const ThemeForm: React.FC = () => {
 
       if (!response.ok) throw new Error('Submission failed');
 
-      setFlashMessages([t('form.success_message')]);
-      setThemename('');
-      setErrors({});
+      setFlashMessages([t('form.theme_success_message')]);
+      setThemename(''); // Réinitialiser le champ après un envoi réussi
     } catch (error) {
-      setFlashMessages([t('form.error_message')]);
+      setFlashMessages([t('form.theme_error_message')]);
     }
   };
 
@@ -55,27 +54,48 @@ const ThemeForm: React.FC = () => {
     <>
       <h2>{t('theme_form')}</h2>
 
-      {/* Messages Flash */}
-      <div className="form-group">
-        {flashMessages.map((msg, index) => (
-          <div key={index} className="flash-success">{msg}</div>
-        ))}
-      </div>
+      {/* Flash errors pour les erreurs de validation */}
+      {errors.length > 0 && (
+        <div className="center">
+          <div className="flash-error">
+            <ul>
+              {errors.map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+
+      {/* Flash success/error pour les messages globaux */}
+      {flashMessages.length > 0 && (
+        <div className="center">
+          <div className="flash-success">
+            {flashMessages.map((msg, index) => (
+              <div key={index}>{msg}</div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit}>
+        {/* Champ Nom du thème */}
         <div className="form-group">
           <input
             className="form-control"
             type="text"
+            name="theme_form[themename]"
             value={themename}
             onChange={(e) => setThemename(e.target.value)}
             placeholder={t('form.themename_placeholder')}
           />
-          {errors.themename && <div className="error">{errors.themename}</div>}
         </div>
 
+        {/* Bouton de soumission */}
         <div className="form-group">
-          <button type="submit" className="green-button">{t('form.save')}</button>
+          <button type="submit" className="green-button">
+            {t('form.save')}
+          </button>
         </div>
       </form>
     </>

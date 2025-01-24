@@ -4,35 +4,41 @@ import { useTranslation } from 'react-i18next';
 const ArticleForm: React.FC = () => {
   const { t } = useTranslation();
 
-  // États pour les champs et erreurs du formulaire
+  // États pour les champs du formulaire et les erreurs
   const [author, setAuthor] = useState('');
   const [title, setTitle] = useState('');
   const [theme, setTheme] = useState('');
   const [content, setContent] = useState('');
   const [published, setPublished] = useState(false);
   const [themes, setThemes] = useState<{ id: string; name: string }[]>([]);
-  const [errors, setErrors] = useState<any>({});
+  const [errors, setErrors] = useState<string[]>([]);
   const [flashMessages, setFlashMessages] = useState<string[]>([]);
 
-  // Récupérer l'utilisateur connecté et les thèmes au chargement du composant
+  // Récupérer les données utilisateur et les thèmes au chargement
   useEffect(() => {
-    document.title = t('form.article_title'); // Met à jour le titre de la page
+    document.title = t('form.article_title');
 
-    // Récupérer l'utilisateur connecté
     const fetchUser = async () => {
-      const userResponse = await fetch('/api/user');
-      if (userResponse.ok) {
-        const userData = await userResponse.json();
-        setAuthor(userData.username);  // Remplir avec le nom d'utilisateur
+      try {
+        const response = await fetch('/api/user');
+        if (response.ok) {
+          const userData = await response.json();
+          setAuthor(userData.username);
+        }
+      } catch (error) {
+        console.error('Error fetching user:', error);
       }
     };
 
-    // Récupérer les thèmes depuis l'API
     const fetchThemes = async () => {
-      const themesResponse = await fetch('/themes_list');
-      if (themesResponse.ok) {
-        const themesData = await themesResponse.json();
-        setThemes(themesData);  // Mettre à jour l'état des thèmes
+      try {
+        const response = await fetch('/themes_list');
+        if (response.ok) {
+          const themesData = await response.json();
+          setThemes(themesData);
+        }
+      } catch (error) {
+        console.error('Error fetching themes:', error);
       }
     };
 
@@ -45,29 +51,26 @@ const ArticleForm: React.FC = () => {
     e.preventDefault();
 
     // Réinitialiser les erreurs
-    const newErrors: any = {};
+    const newErrors: string[] = [];
 
     // Validation des champs
-    if (!author) newErrors.author = t('form.author_required');
-    if (!title) newErrors.title = t('form.title_required');
-    if (!content) newErrors.content = t('form.content_required');
-  
-    // Validation du thème
-    if (!theme) {
-      newErrors.theme = t('form.theme_required');  // Si aucun thème n'est sélectionné
-    }
-  
-    // Si des erreurs existent, on les affiche et on arrête la soumission
-    if (Object.keys(newErrors).length > 0) {
+    if (!author) newErrors.push(t('form.author_required'));
+    if (!title) newErrors.push(t('form.title_required'));
+    if (!theme) newErrors.push(t('form.theme_required'));
+    if (!content) newErrors.push(t('form.content_required'));
+
+    // Si des erreurs existent, les afficher et arrêter la soumission
+    if (newErrors.length > 0) {
       setErrors(newErrors);
       return;
     }
-  
-    // Préparer les données du formulaire (s'assurer que l'ID du thème est envoyé)
-    const formData = { author, title, theme, content, published };
-  
-    // Envoi de la requête POST pour créer l'article
+
+    // Réinitialiser les erreurs
+    setErrors([]);
+
+    // Préparer les données et envoyer la requête
     try {
+      const formData = { author, title, theme, content, published };
       const response = await fetch('/api/article', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -76,15 +79,14 @@ const ArticleForm: React.FC = () => {
 
       if (!response.ok) throw new Error('Submission failed');
 
-      setFlashMessages([t('form.success_message')]);
+      setFlashMessages([t('form.article_success_message')]);
       setAuthor('');
       setTitle('');
       setTheme('');
       setContent('');
       setPublished(false);
-      setErrors({});
     } catch (error) {
-      setFlashMessages([t('form.error_message')]);
+      setFlashMessages([t('form.article_error_message')]);
     }
   };
 
@@ -92,25 +94,41 @@ const ArticleForm: React.FC = () => {
     <>
       <h2>{t('form.article_form_title')}</h2>
 
-      {/* Messages Flash */}
-      <div className="form-group">
-        {flashMessages.map((msg, index) => (
-          <div key={index} className="flash-success">{msg}</div>
-        ))}
-      </div>
+      {/* Flash errors pour les erreurs de validation */}
+      {errors.length > 0 && (
+        <div className="center">
+          <div className="flash-error">
+            <ul>
+              {errors.map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
 
-      <form onSubmit={handleSubmit} noValidate>
+      {/* Flash success/error pour les messages globaux */}
+      {flashMessages.length > 0 && (
+        <div className="center">
+          <div className="flash-success">
+            {flashMessages.map((msg, index) => (
+              <div key={index}>{msg}</div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit}>
         {/* Auteur */}
         <div className="form-group">
           <select
             className="form-control"
             value={author}
-            disabled // Empêcher la modification du nom de l'auteur
+            disabled
           >
             <option value="">{t('form.author_placeholder')}</option>
             <option value={author}>{author}</option>
           </select>
-          {errors.author && <div className="error">{errors.author}</div>}
         </div>
 
         {/* Titre */}
@@ -122,7 +140,6 @@ const ArticleForm: React.FC = () => {
             onChange={(e) => setTitle(e.target.value)}
             placeholder={t('form.article_title_placeholder')}
           />
-          {errors.title && <div className="error">{errors.title}</div>}
         </div>
 
         {/* Thème */}
@@ -139,7 +156,6 @@ const ArticleForm: React.FC = () => {
               </option>
             ))}
           </select>
-          {errors.theme && <div className="error">{errors.theme}</div>}
         </div>
 
         {/* Contenu */}
@@ -150,10 +166,9 @@ const ArticleForm: React.FC = () => {
             onChange={(e) => setContent(e.target.value)}
             placeholder={t('form.article_content_placeholder')}
           />
-          {errors.content && <div className="error">{errors.content}</div>}
         </div>
 
-        {/* Switch "Publié" */}
+        {/* Switch "Publié" 
         <div className="form-group-wrapper">
           <div className="form-group">
             <label htmlFor="published">{t('form.article_published_label')}</label>
@@ -168,13 +183,13 @@ const ArticleForm: React.FC = () => {
               <span className="slider"></span>
             </div>
           </div>
-        </div>
+        </div>*/}
 
         {/* Bouton de soumission */}
-        <div className="form-group-wrapper">
-          <div className="form-group mt-5">
-            <button type="submit" className="green-button">{t('form.validate')}</button>
-          </div>
+        <div className="form-group">
+          <button type="submit" className="green-button">
+            {t('form.validate')}
+          </button>
         </div>
       </form>
     </>

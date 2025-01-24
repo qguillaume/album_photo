@@ -54,12 +54,12 @@ const RegisterForm: React.FC = () => {
 
       if (!response.ok) throw new Error('Submission failed');
 
-      setFlashMessages([t('form.success_message') || 'Inscription réussie']);
+      setFlashMessages([t('form.register_success_message')]);
       setName('');
       setEmail('');
       setPassword('');
     } catch (error) {
-      setFlashMessages([t('form.error_message') || 'Erreur lors de l\'inscription']);
+      setFlashMessages([t('form.register_error_message')]);
     }
   };
 

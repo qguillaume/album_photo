@@ -61,12 +61,12 @@ const CommentForm: React.FC = () => {
       if (!response.ok) throw new Error('Submission failed');
 
       const data = await response.json();
-      setFlashMessages([t('form.success_message')]);
+      setFlashMessages([t('form.comment_success_message')]);
       setComments([...comments, data.comment]);
       setContent('');
       setErrors({});
     } catch (error) {
-      setFlashMessages([t('form.error_message')]);
+      setFlashMessages([t('form.comment_error_message')]);
     }
   };
 

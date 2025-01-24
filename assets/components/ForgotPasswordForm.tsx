@@ -47,11 +47,11 @@ const ForgetPasswordForm: React.FC = () => {
 
       if (!response.ok) throw new Error('Submission failed');
 
-      setFlashMessages([t('form.success_message')]);
+      setFlashMessages([t('form.forget_password_success_message')]);
       setEmail('');
       setErrors({});
     } catch (error) {
-      setFlashMessages([t('form.error_message')]);
+      setFlashMessages([t('form.forget_password_error_message')]);
     }
   };
 
