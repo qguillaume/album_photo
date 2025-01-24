@@ -158,6 +158,13 @@ header {
       gap: 15px;
       padding: 20px;
       z-index: 1500; /* Par-dessus le reste */
+
+      .header-center {
+        .logo img {
+          display: block;
+          margin-bottom: 20px;
+        }
+      }
     }
 
     .nav-menu.active {
@@ -179,37 +186,24 @@ header {
     .nav-menu {
       display: flex; /* Navigation classique sur grand écran */
     }
+  }
 
-    .header-center {
-      .logo {
-        display: block; /* Affiche le logo sur desktop */
-      }
+  .old-header {
+    display: flex; /* Visible sur grand écran */
+  }
+
+  .hamburger-header {
+    display: none; /* Caché par défaut */
+  }
+
+  /* Responsive : sur petits écrans, on inverse */
+  @media (max-width: 768px) {
+    .old-header {
+      display: none; /* Cache le header classique */
     }
-  }
-}
 
-/* Affichage sur les petits écrans (mobile) */
-@media (max-width: 768px) {
-  /* Cacher le header classique pour mobile */
-  .old-header {
-    display: none;
-  }
-
-  /* Afficher le header hamburger sur mobile */
-  #header-root.hamburger-header {
-    display: block;
-  }
-}
-
-/* Affichage sur les grands écrans (desktop) */
-@media (min-width: 769px) {
-  /* Cacher le menu hamburger sur desktop */
-  #header-root.hamburger-header {
-    display: none;
-  }
-
-  /* Afficher le header classique sur desktop */
-  .old-header {
-    display: block;
+    .hamburger-header {
+      display: block; /* Affiche le header hamburger */
+    }
   }
 }
