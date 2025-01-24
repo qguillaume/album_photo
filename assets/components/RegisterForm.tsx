@@ -10,12 +10,12 @@ const RegisterForm: React.FC = () => {
   const [password, setPassword] = useState('');
   
   // État pour afficher les erreurs de validation
-  const [errors, setErrors] = useState<any>({});
+  const [errors, setErrors] = useState<string[]>([]);
   const [flashMessages, setFlashMessages] = useState<string[]>([]);
 
-  // Mettre à jour le `title` de la page
+  // Mettre à jour dynamiquement le `title` de la page
   useEffect(() => {
-    document.title = t('form.register_title'); // Définit dynamiquement
+    document.title = t('form.register_title');
   }, [t]);
 
   // Fonction pour gérer la soumission du formulaire
@@ -23,22 +23,25 @@ const RegisterForm: React.FC = () => {
     e.preventDefault();
 
     // Réinitialiser les erreurs
-    const newErrors: any = {};
+    const newErrors: string[] = [];
 
     // Validation des champs
-    if (!username) newErrors.username = t('form.username_required');
+    if (!username) newErrors.push(t('form.username_required') || 'Nom d\'utilisateur requis');
     if (!email) {
-      newErrors.email = t('form.email_required');
+      newErrors.push(t('form.email_required') || 'Adresse e-mail requise');
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = t('form.email_invalid');
+      newErrors.push(t('form.email_invalid') || 'Adresse e-mail invalide');
     }
-    if (!password) newErrors.password = t('form.password_required');
+    if (!password) newErrors.push(t('form.password_required') || 'Mot de passe requis');
 
     // Si des erreurs existent, on les affiche et on arrête la soumission
-    if (Object.keys(newErrors).length > 0) {
+    if (newErrors.length > 0) {
       setErrors(newErrors);
       return;
     }
+
+    // Réinitialiser les erreurs
+    setErrors([]);
 
     // Simuler un envoi de formulaire
     try {
@@ -51,13 +54,12 @@ const RegisterForm: React.FC = () => {
 
       if (!response.ok) throw new Error('Submission failed');
 
-      setFlashMessages([t('form.success_message')]);
+      setFlashMessages([t('form.success_message') || 'Inscription réussie']);
       setName('');
       setEmail('');
       setPassword('');
-      setErrors({});
     } catch (error) {
-      setFlashMessages([t('form.error_message')]);
+      setFlashMessages([t('form.error_message') || 'Erreur lors de l\'inscription']);
     }
   };
 
@@ -65,13 +67,31 @@ const RegisterForm: React.FC = () => {
     <>
       <h2>{t('register_form')}</h2>
 
-      {/* Messages Flash */}
-      <div className="form-group">
-        {flashMessages.map((msg, index) => (
-          <div key={index} className="flash-success">{msg}</div>
-        ))}
-      </div>
+      {/* Flash errors pour les erreurs de validation */}
+      {errors.length > 0 && (
+        <div className="center">
+          <div className="flash-error">
+            <ul>
+              {errors.map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
 
+      {/* Flash success pour les messages globaux */}
+      {flashMessages.length > 0 && (
+        <div className="center">
+          <div className="flash-success">
+            {flashMessages.map((msg, index) => (
+              <div key={index}>{msg}</div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Formulaire d'inscription */}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <input
@@ -81,7 +101,6 @@ const RegisterForm: React.FC = () => {
             onChange={(e) => setName(e.target.value)}
             placeholder={t('form.username_placeholder')}
           />
-          {errors.username && <div className="error">{errors.username}</div>}
         </div>
         <div className="form-group">
           <input
@@ -91,7 +110,6 @@ const RegisterForm: React.FC = () => {
             onChange={(e) => setEmail(e.target.value)}
             placeholder={t('form.email_placeholder')}
           />
-          {errors.email && <div className="error">{errors.email}</div>}
         </div>
         <div className="form-group">
           <input
@@ -101,7 +119,6 @@ const RegisterForm: React.FC = () => {
             onChange={(e) => setPassword(e.target.value)}
             placeholder={t('form.password_placeholder')}
           />
-          {errors.password && <div className="error">{errors.password}</div>}
         </div>
         <div className="form-group">
           <button type="submit" className="green-button">{t('form.send')}</button>

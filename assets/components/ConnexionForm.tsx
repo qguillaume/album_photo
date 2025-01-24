@@ -1,6 +1,5 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import '../styles/base/_forms.scss';
 
 const ConnexionForm: React.FC = () => {
   const { t } = useTranslation();
