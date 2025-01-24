@@ -7,7 +7,7 @@ const AlbumForm: React.FC = () => {
   // États pour les champs du formulaire et les erreurs
   const [albumName, setAlbumName] = useState('');
   const [imagePath, setImagePath] = useState<File | null>(null);
-  const [errors, setErrors] = useState<any>({});
+  const [errors, setErrors] = useState<string[]>([]);
   const [flashMessages, setFlashMessages] = useState<string[]>([]);
 
   // Mettre à jour le `title` de la page
@@ -20,16 +20,19 @@ const AlbumForm: React.FC = () => {
     e.preventDefault();
 
     // Réinitialiser les erreurs
-    const newErrors: any = {};
+    const newErrors: string[] = [];
 
     // Validation du nom de l'album
-    if (!albumName) newErrors.albumName = t('form.album_name_required');
+    if (!albumName) newErrors.push(t('form.album_name_required'));
 
-    // Si des erreurs existent, on les affiche et on arrête la soumission
-    if (Object.keys(newErrors).length > 0) {
+    // Si des erreurs existent, on les affiche sous forme de flash et on arrête la soumission
+    if (newErrors.length > 0) {
       setErrors(newErrors);
       return;
     }
+
+    // Réinitialiser les erreurs
+    setErrors([]);
 
     // Préparer les données du formulaire (multipart/form-data pour l'image)
     const formData = new FormData();
@@ -50,7 +53,6 @@ const AlbumForm: React.FC = () => {
       setFlashMessages([t('form.album_created_successfully')]);
       setAlbumName('');
       setImagePath(null);
-      setErrors({});
     } catch (error) {
       setFlashMessages([t('form.error_message')]);
     }
@@ -69,12 +71,29 @@ const AlbumForm: React.FC = () => {
     <>
       <h2>{t('form.create_new_album')}</h2>
 
-      {/* Messages Flash */}
-      <div className="form-group">
-        {flashMessages.map((msg, index) => (
-          <div key={index} className="flash-success">{msg}</div>
-        ))}
-      </div>
+      {/* Flash errors pour les erreurs de validation */}
+      {errors.length > 0 && (
+        <div className="center">
+          <div className="flash-error">
+            <ul>
+              {errors.map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+
+      {/* Flash success/error pour les messages globaux */}
+      {flashMessages.length > 0 && (
+        <div className="center">
+          <div className="flash-success">
+            {flashMessages.map((msg, index) => (
+              <div key={index}>{msg}</div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit}>
         {/* Nom de l'album */}
@@ -87,7 +106,6 @@ const AlbumForm: React.FC = () => {
             onChange={(e) => setAlbumName(e.target.value)}
             placeholder={t('form.album_name_placeholder')}
           />
-          {errors.albumName && <div className="error">{errors.albumName}</div>}
         </div>
 
         {/* Image */}
@@ -98,12 +116,13 @@ const AlbumForm: React.FC = () => {
             name="album_form[imagePath]"
             onChange={handleImageChange}
           />
-          {errors.imagePath && <div className="error">{errors.imagePath}</div>}
         </div>
 
         {/* Bouton de création de l'album */}
         <div className="form-group">
-          <button type="submit" className="green-button">{t('form.create_album_button')}</button>
+          <button type="submit" className="green-button">
+            {t('form.create_album_button')}
+          </button>
         </div>
       </form>
     </>

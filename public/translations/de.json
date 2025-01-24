@@ -104,7 +104,15 @@
     "upload_photo": "Laden Sie das Foto hoch!",
     "theme_title": "Neues Thema erstellen",
     "theme_form": "Erstellen Sie ein neues Thema für Artikel",
-    "themename_placeholder": "Geben Sie den Namen des Themas ein"
+    "themename_placeholder": "Geben Sie den Namen des Themas ein",
+    "themename_required": "Der Themenname ist erforderlich!",
+    "album_name_required": "Der Albumname ist erforderlich!",
+    "album_created_successfully": "Das Album wurde erfolgreich erstellt!",
+    "photo_title_required": "Der Fototitel ist erforderlich!",
+    "photo_file_required": "Das Foto ist erforderlich!",
+    "photo_album_required": "Wählen Sie ein Album aus",
+    "article_title_required": "Der Artikelname ist erforderlich!",
+    "article_content_required": "Bitte geben Sie Artikelinhalt ein!"
   },
   "forgot_password": "Passwort vergessen?",
   "bellon": "Fullstack-Entwickler - Gruppe Bellon",

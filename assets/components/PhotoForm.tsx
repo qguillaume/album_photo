@@ -4,14 +4,12 @@ import { useTranslation } from 'react-i18next';
 const PhotoForm: React.FC = () => {
   const { t } = useTranslation();
 
-  // États pour les champs et erreurs du formulaire
+  // États pour les champs du formulaire et les erreurs
   const [title, setTitle] = useState('');
-  const [file, setFile] = useState<any>(null);
+  const [file, setFile] = useState<File | null>(null);
   const [album, setAlbum] = useState('');
   const [albums, setAlbums] = useState<any[]>([]);
-
-  // État pour afficher les erreurs de validation
-  const [errors, setErrors] = useState<any>({});
+  const [errors, setErrors] = useState<string[]>([]);
   const [flashMessages, setFlashMessages] = useState<string[]>([]);
 
   // Charger dynamiquement les albums depuis l'API
@@ -41,37 +39,52 @@ const PhotoForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const newErrors: any = {};
+    // Réinitialiser les erreurs
+    const newErrors: string[] = [];
 
-    if (!title) newErrors.title = t('form.title_required');
-    if (!file) newErrors.file = t('form.file_required');
-    if (!album) newErrors.album = t('form.album_required');
+    // Validation des champs du formulaire
+    if (!title) newErrors.push(t('form.photo_title_required'));
+    if (!file) newErrors.push(t('form.photo_file_required'));
+    if (!album) newErrors.push(t('form.photo_album_required'));
 
-    if (Object.keys(newErrors).length > 0) {
+    // Si des erreurs existent, les afficher sous forme de flash et arrêter la soumission
+    if (newErrors.length > 0) {
       setErrors(newErrors);
       return;
     }
 
-    try {
-      const formData = new FormData();
-      formData.append('title', title);
-      formData.append('file', file);
-      formData.append('album', album);
+    // Réinitialiser les erreurs
+    setErrors([]);
 
+    // Préparer les données du formulaire (multipart/form-data pour l'image)
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('file', file as Blob);
+    formData.append('album', album);
+
+    try {
       const response = await fetch('/api/photo', {
         method: 'POST',
         body: formData,
       });
 
-      if (!response.ok) throw new Error('Submission failed');
+      if (!response.ok) throw new Error('Photo upload failed');
 
-      setFlashMessages([t('form.success_message')]);
+      setFlashMessages([t('form.photo_success_message')]);
       setTitle('');
       setFile(null);
       setAlbum('');
-      setErrors({});
     } catch (error) {
-      setFlashMessages([t('form.error_message')]);
+      setFlashMessages([t('form.photo_error_message')]);
+    }
+  };
+
+  // Fonction pour gérer le changement de fichier
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
+    } else {
+      setFile(null);
     }
   };
 
@@ -79,12 +92,29 @@ const PhotoForm: React.FC = () => {
     <>
       <h2>{t('form.publish_photo')}</h2>
 
-      {/* Messages Flash */}
-      <div className="form-group">
-        {flashMessages.map((msg, index) => (
-          <div key={index} className="flash-success">{msg}</div>
-        ))}
-      </div>
+      {/* Flash errors pour les erreurs de validation */}
+      {errors.length > 0 && (
+        <div className="center">
+          <div className="flash-error">
+            <ul>
+              {errors.map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+
+      {/* Flash success/error pour les messages globaux */}
+      {flashMessages.length > 0 && (
+        <div className="center">
+          <div className="flash-success">
+            {flashMessages.map((msg, index) => (
+              <div key={index}>{msg}</div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit}>
         {/* Titre */}
@@ -92,11 +122,11 @@ const PhotoForm: React.FC = () => {
           <input
             className="form-control"
             type="text"
+            name="photo_form[title]"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder={t('form.photo_title_placeholder')}
           />
-          {errors.title && <div className="error">{errors.title}</div>}
         </div>
 
         {/* Fichier photo */}
@@ -104,16 +134,17 @@ const PhotoForm: React.FC = () => {
           <input
             className="form-control"
             type="file"
+            name="photo_form[file]"
             accept="image/*"
-            onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
+            onChange={handleFileChange}
           />
-          {errors.file && <div className="error">{errors.file}</div>}
         </div>
 
         {/* Album dynamique */}
         <div className="form-group">
           <select
             className="form-control"
+            name="photo_form[album]"
             value={album}
             onChange={(e) => setAlbum(e.target.value)}
           >
@@ -128,12 +159,13 @@ const PhotoForm: React.FC = () => {
               <option value="">{t('form.no_albums')}</option>
             )}
           </select>
-          {errors.album && <div className="error">{errors.album}</div>}
         </div>
 
         {/* Bouton de soumission */}
         <div className="form-group">
-          <button type="submit" className="green-button">{t('form.upload_photo')}</button>
+          <button type="submit" className="green-button">
+            {t('form.upload_photo')}
+          </button>
         </div>
       </form>
     </>

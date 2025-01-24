@@ -104,7 +104,15 @@
     "upload_photo": "¡Sube la foto!",
     "theme_title": "Crear un nuevo tema",
     "theme_form": "Crear un nuevo tema para los artículos",
-    "themename_placeholder": "Ingresa el nombre del tema"
+    "themename_placeholder": "Ingresa el nombre del tema",
+    "themename_required": "¡El nombre del tema es obligatorio!",
+    "album_name_required": "¡El nombre del álbum es obligatorio!",
+    "album_created_successfully": "¡El álbum se ha creado con éxito!",
+    "photo_title_required": "¡El título de la foto es obligatorio!",
+    "photo_file_required": "¡La foto es obligatoria!",
+    "photo_album_required": "Elige un álbum",
+    "article_title_required": "¡El título del artículo es obligatorio!",
+    "article_content_required": "¡Por favor, ingrese el contenido del artículo!"
   },
   "forgot_password": "¿Olvidaste tu contraseña?",
   "bellon": "Desarrollador Fullstack - Grupo Bellon",
