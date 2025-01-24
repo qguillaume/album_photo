@@ -11,14 +11,17 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Response;
+use Psr\Log\LoggerInterface;
 
 class UserController extends AbstractController
 {
     private $entityManager;
+    private LoggerInterface $logger;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, LoggerInterface $logger)
     {
         $this->entityManager = $entityManager;
+        $this->logger = $logger;
     }
 
     /**
@@ -29,12 +32,21 @@ class UserController extends AbstractController
         $user = $this->getUser();
 
         if (!$user) {
+            $this->logger->error('Aucun utilisateur authentifié trouvé.');
             return new JsonResponse(['error' => 'Utilisateur non authentifié'], Response::HTTP_UNAUTHORIZED);
         }
+
+        // Log des informations utilisateur
+        $this->logger->info('Utilisateur authentifié :', [
+            'id' => $user->getId(),
+            'username' => $user->getUsername(),
+            'roles' => $user->getRoles()
+        ]);
 
         return new JsonResponse([
             'id' => $user->getId(),
             'username' => $user->getUsername(),
+            'roles' => $user->getRoles(),
         ]);
     }
 

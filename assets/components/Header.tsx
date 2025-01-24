@@ -6,39 +6,34 @@ import '../styles/components/_header.scss';
 const Header: React.FC = () => {
   const { t } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
-  const { user } = useUser();
+  const { user } = useUser(); // Récupère l'utilisateur depuis le contexte.
 
+  // Vérifications des rôles
   const isLoggedIn = !!user;
-  const isAdmin = isLoggedIn && user?.roles.includes('ROLE_ADMIN');
-  const isSuperAdmin = isLoggedIn && user?.roles.includes('ROLE_SUPER_ADMIN');
+  const isAdmin = isLoggedIn && user?.roles?.includes('ROLE_ADMIN');
+  const isSuperAdmin = isLoggedIn && user?.roles?.includes('ROLE_SUPER_ADMIN');
 
   // Basculer le menu burger
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
-  alert("isLoggedIn : "+isLoggedIn);
-  alert("isAdmin : "+isAdmin);
-  alert("isSuperAdmin : "+isSuperAdmin);
   return (
-    <header className="header">
+    <header className="header old-header">
       <div className="hamburger-menu" onClick={toggleMenu}>
         ☰
       </div>
 
-      {/* Menu de navigation affiché lorsque le menu burger est ouvert */}
+      {/* Menu de navigation */}
       <nav className={`nav-menu ${menuOpen ? 'active' : ''}`}>
-        <div className="header-center">
-          <a href="/" className="logo">
-            <img src="images/logoGQ.png" alt="logo GQ" />
-          </a>
-        </div>
-
         <div className="header-left">
-          <a href="/">{t('home')}</a>
-
+          <a href="/" className={window.location.pathname === '/' ? 'active' : ''}>
+            {t('home')}
+          </a>
           <div className="dropdown">
-            <a href="/photos">{t('photos')}</a>
+            <a href="/photos" className={window.location.pathname === '/photos' ? 'active' : ''}>
+              {t('photos')}
+            </a>
             {isLoggedIn && (
               <div className="dropdown-content">
                 <a href="/album/new">{t('create_album')}</a>
@@ -49,34 +44,56 @@ const Header: React.FC = () => {
 
           {isAdmin && (
             <div className="dropdown">
-              <a href="/articles">{t('articles')}</a>
+              <a href="/articles" className={window.location.pathname === '/articles' ? 'active' : ''}>
+                {t('articles')}
+              </a>
               <div className="dropdown-content">
-                <a href="/articles/new">{t('new_article')}</a>
+                <a href="/article/create">{t('new_article')}</a>
                 <a href="/theme/create">{t('new_theme')}</a>
               </div>
             </div>
           )}
 
           {isSuperAdmin && (
-            <a href="/references">{t('references')}</a>
+            <a href="/references" className={window.location.pathname === '/references' ? 'active' : ''}>
+              {t('references')}
+            </a>
           )}
 
-          <a href="/contact">{t('contact')}</a>
+          <a href="/contact" className={window.location.pathname === '/contact' ? 'active' : ''}>
+            {t('contact')}
+          </a>
         </div>
 
+        {/* Section centrale : logo */}
+        <div className="header-center">
+          <a className="logo" href="/">
+            <img src="images/logoGQ.png" alt="logo GQ" />
+          </a>
+        </div>
+
+        {/* Section droite : utilisateur et langue */}
         <div className="header-right">
           {isLoggedIn ? (
             <div className="dropdown">
-              <a href="#">{t('welcome')} {user.username}</a>
+              <a href="#" className={window.location.pathname === '/logout' ? 'active' : ''}>
+                {t('welcome')} {user.username}!
+              </a>
               <div className="dropdown-content">
-                {(isAdmin || isSuperAdmin) && <a href="/dashboard">{t('dashboard')}</a>}
+                {isAdmin || isSuperAdmin ? (
+                  <a href="/dashboard">{t('dashboard')}</a>
+                ) : null}
                 <a href="/logout">{t('disconnection')}</a>
               </div>
             </div>
           ) : (
             <>
-              <a href="/login">{t('connexion')}</a>
-              <a href="/register" className="register">{t('inscription')}</a>
+              <a href="/login" className={window.location.pathname === '/login' ? 'active' : ''}>
+                {t('connexion')}
+              </a>
+              <a href="/register" className={`register ${window.location.pathname === '/register' ? 'active' : ''}`}>
+                {t('inscription')}
+              </a>
             </>
           )}
         </div>
