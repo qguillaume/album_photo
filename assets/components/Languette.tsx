@@ -33,7 +33,7 @@ const Languette: React.FC = () => {
                 <div key={lang}>
                   {i18n.language === lang && (
                     <img
-                      src={`images/${lang}.png`} 
+                      src={`/images/${lang}.png`} 
                       alt={`${lang} flag`}
                       className="flag-icon"
                     />
@@ -45,7 +45,7 @@ const Languette: React.FC = () => {
               {['fr', 'en', 'es', 'de'].map((lang) => (
                 <li key={lang}>
                   <button onClick={() => changeLanguage(lang)}>
-                    <img src={`images/${lang}.png`} alt={`${lang} flag`} className="flag-icon" />
+                    <img src={`/images/${lang}.png`} alt={`${lang} flag`} className="flag-icon" />
                   </button>
                 </li>
               ))}

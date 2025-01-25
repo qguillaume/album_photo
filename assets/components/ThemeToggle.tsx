@@ -52,7 +52,8 @@ const ThemeToggle: React.FC = () => {
           style={{
             width: "24px",
             height: "24px",
-            transition: "color 0.5s ease", // Transition fluide
+            opacity: isDarkMode ? 1 : 0.5, // La lune devient plus sombre en light mode
+            transition: "opacity 0.5s ease", // Transition fluide
           }}
         />
       </label>
@@ -84,7 +85,7 @@ const ThemeToggle: React.FC = () => {
           style={{
             width: "24px",
             height: "24px",
-            opacity: isDarkMode ? 0.5 : 1, // Opacité pour indiquer le mode
+            opacity: isDarkMode ? 0.5 : 1, // Le soleil devient plus sombre en dark mode
             transition: "opacity 0.5s ease", // Transition fluide
           }}
         />

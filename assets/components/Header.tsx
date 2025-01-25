@@ -68,7 +68,7 @@ const Header: React.FC = () => {
         {/* Section centrale : logo */}
         <div className="header-center">
           <a className="logo" href="/">
-            <img src="images/logoGQ.png" alt="logo GQ" />
+            <img src="/images/logoGQ.png" alt="logo GQ" />
           </a>
         </div>
 
