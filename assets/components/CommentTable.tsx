@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Comment } from '../ts/types';
 import Pagination from './PaginationDashboard';
+import { useTranslation } from 'react-i18next';
 
 interface CommentTableProps {
   comments: Comment[];
@@ -8,6 +9,7 @@ interface CommentTableProps {
 }
 
 const CommentTable: React.FC<CommentTableProps> = ({ comments, updateComments }) => {
+  const { t } = useTranslation(); // Hook pour les traductions
   const [currentPage, setCurrentPage] = useState(1);
   const commentsPerPage = 5;
   const [commentList, setCommentList] = useState<Comment[]>([]);
@@ -113,7 +115,7 @@ const CommentTable: React.FC<CommentTableProps> = ({ comments, updateComments })
 
   return (
     <div className="table-container">
-      <h2>Liste des Commentaires</h2>
+      <h2>{t("admin.comments_list")}</h2>
       <Pagination currentPage={currentPage} totalPages={totalPages} onPaginate={paginate} />
       <table className="dashboard-table">
         <thead>
@@ -122,16 +124,16 @@ const CommentTable: React.FC<CommentTableProps> = ({ comments, updateComments })
               ID {sortConfig.key === 'id' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
             </th>
             <th onClick={() => handleSort("user")}>
-              Utilisateur {sortConfig.key === "user" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+              {t("admin.username")} {sortConfig.key === "user" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
-            <th>Contenu</th>
+            <th>{t("admin.content")}</th>
             <th onClick={() => handleSort("photo")}>
-              Photo concernée {sortConfig.key === "photo" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+              {t("admin.concerned_photo")} {sortConfig.key === "photo" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
             <th onClick={() => handleSort("createdAt")}>
-              Créé le {sortConfig.key === "createdAt" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+              {t("admin.created_at")} {sortConfig.key === "createdAt" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
-            <th>Actions</th>
+            <th>{t("admin.actions")}</th>
           </tr>
         </thead>
         <tbody>
@@ -176,10 +178,10 @@ const CommentTable: React.FC<CommentTableProps> = ({ comments, updateComments })
                   {editingCommentId === comment.id ? (
                     <div className="crud-buttons">
                       <button className="validate" onClick={() => handleCommentEdit(comment.id, newCommentContents)}>
-                        Valider
+                        {t("admin.validate")}
                       </button>
                       <button className="cancel" onClick={handleCancelEdit}>
-                        Annuler
+                        {t("admin.cancel")}
                       </button>
                     </div>
                   ) : (
@@ -191,13 +193,13 @@ const CommentTable: React.FC<CommentTableProps> = ({ comments, updateComments })
                           setNewCommentContents(comment.content);
                         }}
                       >
-                        Modifier
+                        {t("admin.update")}
                       </button>
                       <button
                         className="delete"
                         onClick={() => handleDeleteComment(comment.id)}
                       >
-                        Supprimer
+                        {t("admin.delete")}
                       </button>
                     </div>
                   )}

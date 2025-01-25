@@ -216,7 +216,7 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
 
   return (
     <div className="table-container">
-      <h2>Liste des Albums</h2>
+      <h2>{t("admin.albums_list")}</h2>
       <Pagination currentPage={currentPage} totalPages={totalPages} onPaginate={paginate} />
       <table className="dashboard-table">
         <thead>

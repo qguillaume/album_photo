@@ -22,6 +22,20 @@ const DashboardTabs: React.FC = () => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [themes, setThemes] = useState<Theme[]>([]);
 
+  // Mise à jour du titre de la page en fonction de l'onglet actif
+  useEffect(() => {
+    const tabTitles: Record<typeof activeTab, string> = {
+      albums: t('admin.albums'),
+      photos: t('admin.photos'),
+      users: t('admin.users'),
+      articles: t('admin.articles'),
+      comments: t('admin.comments'),
+      themes: t('admin.themes'),
+    };
+
+    document.title = `${t('admin.dashboard')} - ${tabTitles[activeTab]}`;
+  }, [activeTab, t]); // Réexécute si l'onglet actif ou la langue change
+
   // Vérifier si les données ont déjà été chargées pour éviter de refaire les requêtes
   useEffect(() => {
     // Si les données ne sont pas encore chargées, on les charge
@@ -119,6 +133,7 @@ const DashboardTabs: React.FC = () => {
 
   return (
     <div>
+      <h2>{t('admin.dashboard')}</h2>
       <div className="tabs">
         <button
           className={`tab-button albums ${activeTab === 'albums' ? 'active' : ''}`}

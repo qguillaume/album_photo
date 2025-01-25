@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Photo, Album, User } from "../ts/types";
 import Pagination from "./PaginationDashboard";
+import { useTranslation } from 'react-i18next';
 
 interface PhotoTableProps {
   photos: Photo[];
@@ -17,6 +18,7 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
   onPhotosUpdate,
   onAlbumsUpdate,
 }) => {
+  const { t } = useTranslation(); // Hook pour les traductions
   const [currentUserRoles, setCurrentUserRoles] = useState<string[]>([]);
   const [currentUserId, setCurrentUserId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
@@ -56,7 +58,7 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
   }, []);
 
   if (loading) {
-    return <div>Chargement...</div>;
+    return <div>{t("admin.loading")}</div>;
   }
 
   // Fonction pour trier les photos
@@ -208,7 +210,7 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
 
   return (
     <div className="table-container">
-      <h2>Liste des Photos</h2>
+      <h2>{t("admin.photos_list")}</h2>
       <Pagination currentPage={currentPage} totalPages={totalPages} onPaginate={paginate} />
       <table className="dashboard-table">
         <thead>
@@ -217,20 +219,20 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
               ID {sortConfig.key === "id" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
             <th onClick={() => handleSort("title")}>
-              Titre de la photo {sortConfig.key === "title" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+              {t("admin.photo_title")} {sortConfig.key === "title" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
             <th onClick={() => handleSort("album")}>
-              Album associé {sortConfig.key === "album" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+              {t("admin.associate_album")} {sortConfig.key === "album" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
             <th onClick={() => handleSort("likesCount")}>
-              Nombre de likes {sortConfig.key === "likesCount" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+              {t("admin.likes_number")} {sortConfig.key === "likesCount" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
             <th onClick={() => handleSort("commentsCount")}>
-              Nombre de commentaires {sortConfig.key === "commentsCount" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+              {t("admin.comments_number")} {sortConfig.key === "commentsCount" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
             {(isSuperAdmin || isAdmin) && (<th>Approbation</th>)}
-            <th>Visibilité</th>
-            <th>Actions</th>
+            <th>{t("admin.visible")}</th>
+            <th>{t("admin.actions")}</th>
           </tr>
         </thead>
         <tbody>
@@ -297,13 +299,13 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
                               className="validate"
                               onClick={() => handleEdit(photo.id)}
                             >
-                              Valider
+                              {t("admin.validate")}
                             </button>
                             <button
                               className="cancel"
                               onClick={() => setEditingPhotoId(null)}
                             >
-                              Annuler
+                              {t("admin.cancel")}
                             </button>
                           </>
                         ) : (
@@ -315,13 +317,13 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
                                 setNewTitle(photo.title);
                               }}
                             >
-                              Modifier
+                              {t("admin.update")}
                             </button>
                             <button
                               className="delete"
                               onClick={() => handleDelete(photo.id, photo.albumId, albumCreatorId || 0)}
                             >
-                              Supprimer
+                              {t("admin.delete")}
                             </button>
                           </>
                         )}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Article } from "../ts/types";
 import Pagination from "./PaginationDashboard";
+import { useTranslation } from 'react-i18next';
 
 interface ArticleTableProps {
   articles: Article[];
@@ -8,6 +9,7 @@ interface ArticleTableProps {
 }
 
 const ArticleTable: React.FC<ArticleTableProps> = ({ articles, updateArticles }) => {
+  const { t } = useTranslation(); // Hook pour les traductions
   const [editingArticleId, setEditingArticleId] = useState<number | null>(null);
   const [newArticleContents, setNewArticleContents] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -120,7 +122,7 @@ const ArticleTable: React.FC<ArticleTableProps> = ({ articles, updateArticles })
 
   return (
     <div className="table-container">
-      <h2>Liste des Articles</h2>
+      <h2>{t("admin.articles_list")}</h2>
       
       {/* Pagination en haut */}
       <Pagination currentPage={currentPage} totalPages={totalPages} onPaginate={paginate} />
@@ -132,22 +134,22 @@ const ArticleTable: React.FC<ArticleTableProps> = ({ articles, updateArticles })
               ID {sortConfig.key === "id" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
             <th onClick={() => handleSort("title")}>
-              Titre {sortConfig.key === "title" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+              {t("admin.article_title")} {sortConfig.key === "title" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
             <th onClick={() => handleSort("author")}>
-              Auteur {sortConfig.key === "author" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+              {t("admin.username")} {sortConfig.key === "author" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
-            <th>Contenu</th>
+            <th>{t("admin.content")}</th>
             <th onClick={() => handleSort("createdAt")}>
-              Créé le {sortConfig.key === "createdAt" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+              {t("admin.created_at")} {sortConfig.key === "createdAt" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
             <th onClick={() => handleSort("updatedAt")}>
-              Modifié le {sortConfig.key === "updatedAt" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+              {t("admin.updated_at")} {sortConfig.key === "updatedAt" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
             <th onClick={() => handleSort("published")}>
-              Publié {sortConfig.key === "published" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+              {t("admin.published")} {sortConfig.key === "published" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
-            <th>Actions</th>
+            <th>{t("admin.actions")}</th>
           </tr>
         </thead>
         <tbody>
@@ -194,13 +196,13 @@ const ArticleTable: React.FC<ArticleTableProps> = ({ articles, updateArticles })
                           className="validate"
                           onClick={() => handleEditArticle(article.id, newArticleContents)}
                         >
-                          Valider
+                          {t("admin.validate")}
                         </button>
                         <button
                           className="cancel"
                           onClick={handleCancelEdit}
                         >
-                          Annuler
+                          {t("admin.cancel")}
                         </button>
                       </>
                     ) : (
@@ -212,13 +214,13 @@ const ArticleTable: React.FC<ArticleTableProps> = ({ articles, updateArticles })
                             setNewArticleContents(article.content);
                           }}
                         >
-                          Modifier
+                          {t("admin.update")}
                         </button>
                         <button
                           className="delete"
                           onClick={() => handleDeleteArticle(article.id)}
                         >
-                          Supprimer
+                          {t("admin.delete")}
                         </button>
                       </>
                     )}

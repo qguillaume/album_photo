@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Pagination from "./PaginationDashboard";
 import { User } from "../ts/types";
+import { useTranslation } from 'react-i18next';
 
 interface UserTableProps {
   users: User[];
@@ -8,6 +9,7 @@ interface UserTableProps {
 }
 
 const UserTable: React.FC<UserTableProps> = ({ users, updateUsers }) => {
+  const { t } = useTranslation(); // Hook pour les traductions
   const [currentUserRoles, setCurrentUserRoles] = useState<string[]>([]);
   const [loading, setLoading] = useState(true); // État de chargement
   const [currentPage, setCurrentPage] = useState(1);
@@ -49,7 +51,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, updateUsers }) => {
   }, [users]); // Met à jour `userList` chaque fois que `users` change
 
   if (loading) {
-    return <div>Chargement...</div>; // Affiche un message pendant le chargement
+    return <div>{t("admin.loading")}</div>; // Affiche un message pendant le chargement
   }
 
   const sortedUsers = [...userList].sort((a, b) => {
@@ -177,7 +179,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, updateUsers }) => {
 
   return (
     <div className="table-container">
-      <h2>Liste des Utilisateurs</h2>
+      <h2>{t("admin.users_list")}</h2>
       <Pagination currentPage={currentPage} totalPages={totalPages} onPaginate={paginate} />
       <table className="dashboard-table">
         <thead>
@@ -186,13 +188,13 @@ const UserTable: React.FC<UserTableProps> = ({ users, updateUsers }) => {
               ID {sortConfig.key === "id" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
             <th onClick={() => handleSort("username")}>
-              Nom d'utilisateur {sortConfig.key === "username" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+              {t("admin.username")} {sortConfig.key === "username" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
             <th onClick={() => handleSort("email")}>
-              Email {sortConfig.key === "email" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+              {t("admin.email")} {sortConfig.key === "email" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
-            {isSuperAdmin && (<th>Rôle Admin</th>)}
-            {(isSuperAdmin || isAdmin) && (<th>Est Banni</th>)}
+            {isSuperAdmin && (<th>{t("admin.admin_role")}</th>)}
+            {(isSuperAdmin || isAdmin) && (<th>{t("admin.is_banned")}</th>)}
           </tr>
         </thead>
         <tbody>

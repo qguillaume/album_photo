@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Pagination from "./PaginationDashboard";
 import { Theme } from "../ts/types";
+import { useTranslation } from 'react-i18next';
 
 interface ThemeTableProps {
   themes: Theme[];
@@ -8,6 +9,7 @@ interface ThemeTableProps {
 }
 
 const ThemeTable: React.FC<ThemeTableProps> = ({ themes, onEdit }) => {
+  const { t } = useTranslation(); // Hook pour les traductions
   const [currentPage, setCurrentPage] = useState(1);
   const themesPerPage = 10;
   const [themeList, setThemeList] = useState<Theme[]>([]);
@@ -79,7 +81,7 @@ const ThemeTable: React.FC<ThemeTableProps> = ({ themes, onEdit }) => {
 
   return (
     <div className="table-container">
-      <h2>Liste des Thèmes</h2>
+      <h2>{t("admin.themes_list")}</h2>
       <Pagination currentPage={currentPage} totalPages={totalPages} onPaginate={paginate} />
       <table className="dashboard-table">
         <thead>
@@ -88,9 +90,9 @@ const ThemeTable: React.FC<ThemeTableProps> = ({ themes, onEdit }) => {
               ID {sortConfig.key === "id" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
             <th onClick={() => handleSort("name")}>
-              Nom du thème {sortConfig.key === "name" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+            {t("admin.theme_name")} {sortConfig.key === "name" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
-            <th>Actions</th>
+            <th>{t("admin.actions")}</th>
           </tr>
         </thead>
         <tbody>
@@ -116,10 +118,10 @@ const ThemeTable: React.FC<ThemeTableProps> = ({ themes, onEdit }) => {
                     {editingThemeId === theme.id ? (
                       <>
                         <button className="validate" onClick={() => handleEdit(theme.id)}>
-                          Valider
+                        {t("admin.validate")}
                         </button>
                         <button className="cancel" onClick={() => setEditingThemeId(null)}>
-                          Annuler
+                        {t("admin.cancel")}
                         </button>
                       </>
                     ) : (
@@ -130,7 +132,7 @@ const ThemeTable: React.FC<ThemeTableProps> = ({ themes, onEdit }) => {
                           setNewThemeName(theme.name || "");
                         }}
                       >
-                        Modifier
+                        {t("admin.update")}
                       </button>
                     )}
                   </div>
