@@ -323,5 +323,33 @@
       "title": "9. Contact",
       "text": "Pour toute question concernant cette politique de confidentialité, veuillez nous contacter à l'adresse suivante : [adresse e-mail de contact]."
     }
+  },
+
+  "moderation": {
+    "title": "Modération des contenus",
+    "comment_moderation": {
+      "title": "Modération des commentaires",
+      "text": "Les commentaires publiés sur notre site doivent respecter les normes de conduite et de respect. Nous nous réservons le droit de modérer tout commentaire inapproprié ou non conforme aux règles de la communauté. Les commentaires offensants, haineux ou discriminatoires seront supprimés."
+    },
+    "photo_moderation": {
+      "title": "Modération des photos",
+      "text": "Les photos téléchargées doivent respecter les droits d'auteur et ne doivent pas être choquantes ou inappropriées. Toute photo enfreignant les règles de notre plateforme sera supprimée, et l'utilisateur peut être sanctionné."
+    }
+  },
+
+  "droits_auteur": {
+    "title": "Respect des droits d'auteur",
+    "respect_title": "Respect des droits d'auteur",
+    "respect_text": "Les contenus publiés sur notre site doivent respecter les droits d'auteur et la propriété intellectuelle. Toute utilisation non autorisée de contenu protégé par des droits d'auteur, y compris les images, vidéos et textes, est interdite.",
+    "protection_title": "Protection des droits d'auteur",
+    "protection_text": "Nous prenons des mesures pour protéger les droits des auteurs et nous engageons à retirer tout contenu qui enfreint les droits d'auteur. Les utilisateurs qui enfreignent les droits d'auteur peuvent être sanctionnés."
+  },
+
+  "footer": {
+    "cgu": "Conditions générales d'utilisation",
+    "legal_mentions": "Mentions légales",
+    "confidentiality": "Politique de confidentialité",
+    "moderation": "Modération",
+    "copyright_author": "Droits d'auteur"
   }
 }

@@ -37,6 +37,8 @@ import ResetPasswordForm from '../components/ResetPasswordForm';
 import CGU from '../components/Cgu';
 import MentionsLegales from '../components/MentionsLegales';
 import PolitiqueConfidentialite from '../components/PolitiqueConfidentialite';
+import Moderation from '../components/Moderation';
+import DroitsAuteur from '../components/DroitsAuteur';
 import '../../public/i18n';
 import TinyEditor from "./TinyEditor";
 /*
@@ -740,6 +742,22 @@ document.addEventListener("DOMContentLoaded", () => {
   if (PolitiqueRoot) {
     const root = ReactDOM.createRoot(PolitiqueRoot);
     root.render(<PolitiqueConfidentialite />); // Rendre le composant PolitiqueConfidentialite
+  }
+
+    // Code pour rendre la modération dans l'élément du DOM
+    const ModerationRoot = document.getElementById('moderation-root');
+
+    if (ModerationRoot) {
+      const root = ReactDOM.createRoot(ModerationRoot);
+      root.render(<Moderation />); // Rendre le composant Moderation
+    }
+
+      // Code pour rendre les droits d'auteur dans l'élément du DOM
+  const DroitsRoot = document.getElementById('droits-root');
+
+  if (DroitsRoot) {
+    const root = ReactDOM.createRoot(DroitsRoot);
+    root.render(<DroitsAuteur />); // Rendre le composant DroitsAuteur
   }
 });
 

@@ -314,5 +314,33 @@
       "title": "9. Contact",
       "text": "For any questions regarding this privacy policy, please contact us at the following address: [contact email address]."
     }
+  },
+
+  "moderation": {
+    "title": "Content Moderation",
+    "comment_moderation": {
+      "title": "Comment Moderation",
+      "text": "Comments posted on our website must follow the standards of conduct and respect. We reserve the right to moderate any inappropriate comment or comment that does not comply with the community rules. Offensive, hateful, or discriminatory comments will be deleted."
+    },
+    "photo_moderation": {
+      "title": "Photo Moderation",
+      "text": "Uploaded photos must respect copyright and should not be shocking or inappropriate. Any photo violating our platform's rules will be removed, and the user may face sanctions."
+    }
+  },
+
+  "droits_auteur": {
+    "title": "Copyright Compliance",
+    "respect_title": "Respect for Copyright",
+    "respect_text": "Content published on our site must respect copyright and intellectual property rights. Any unauthorized use of copyrighted content, including images, videos, and text, is prohibited.",
+    "protection_title": "Protection of Copyright",
+    "protection_text": "We take measures to protect authors' rights and are committed to removing any content that infringes copyright. Users who violate copyright laws may face penalties."
+  },
+
+  "footer": {
+    "cgu": "Terms and Conditions",
+    "legal_mentions": "Legal Notice",
+    "confidentiality": "Privacy Policy",
+    "moderation": "Moderation",
+    "copyright_author": "Copyright"
   }
 }

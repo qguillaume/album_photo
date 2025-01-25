@@ -314,5 +314,33 @@
       "title": "9. Kontakt",
       "text": "Für Fragen zu dieser Datenschutzrichtlinie kontaktieren Sie uns bitte unter folgender Adresse: [E-Mail-Adresse]."
     }
+  },
+
+  "moderation": {
+    "title": "Inhaltsmoderation",
+    "comment_moderation": {
+      "title": "Kommentar Moderation",
+      "text": "Kommentare, die auf unserer Website veröffentlicht werden, müssen den Verhaltens- und Respektsstandards entsprechen. Wir behalten uns das Recht vor, unangemessene Kommentare oder Kommentare, die nicht den Gemeinschaftsregeln entsprechen, zu moderieren. Beleidigende, hasserfüllte oder diskriminierende Kommentare werden gelöscht."
+    },
+    "photo_moderation": {
+      "title": "Foto Moderation",
+      "text": "Hochgeladene Fotos müssen das Urheberrecht respektieren und dürfen nicht schockierend oder unangemessen sein. Fotos, die gegen die Regeln unserer Plattform verstoßen, werden entfernt und der Nutzer kann bestraft werden."
+    }
+  },
+
+  "droits_auteur": {
+    "title": "Urheberrechtskonformität",
+    "respect_title": "Respekt vor Urheberrecht",
+    "respect_text": "Die auf unserer Website veröffentlichten Inhalte müssen das Urheberrecht und geistige Eigentumsrechte respektieren. Jede unbefugte Nutzung von urheberrechtlich geschützten Inhalten, einschließlich Bildern, Videos und Texten, ist verboten.",
+    "protection_title": "Schutz des Urheberrechts",
+    "protection_text": "Wir ergreifen Maßnahmen, um die Rechte der Autoren zu schützen und verpflichten uns, Inhalte zu entfernen, die gegen das Urheberrecht verstoßen. Nutzer, die gegen das Urheberrecht verstoßen, können bestraft werden."
+  },
+
+  "footer": {
+    "cgu": "Nutzungsbedingungen",
+    "legal_mentions": "Impressum",
+    "confidentiality": "Datenschutzerklärung",
+    "moderation": "Moderation",
+    "copyright_author": "Urheberrecht"
   }
 }
