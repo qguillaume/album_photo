@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+
+type FlashMessage = {
+  type: string;
+  message: string;
+};
 
 const ResetPasswordForm: React.FC = () => {
   const { t } = useTranslation();
-  const { token } = useParams<{ token: string }>(); // Récupérer le token depuis l'URL
-  //const navigate = useNavigate(); // Permet de naviguer après le succès
+  const { token } = useParams<{ token: string }>();
 
   // États pour les champs et erreurs du formulaire
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   
-  // État pour afficher les erreurs de validation
+  // Mise à jour de flashMessages pour gérer le type et le message
+  const [flashMessages, setFlashMessages] = useState<FlashMessage[]>([]);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [flashMessages, setFlashMessages] = useState<string[]>([]);
 
   // Mettre à jour le `title` de la page
   useEffect(() => {
@@ -24,11 +28,10 @@ const ResetPasswordForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Réinitialiser les erreurs
-    const newErrors: any = {};
+    const newErrors: { [key: string]: string } = {};
 
     if (!token) {
-      setFlashMessages(['Token manquant ou invalide']);
+      setFlashMessages([{ type: 'error', message: 'Token manquant ou invalide' }]);
       return;
     }
     
@@ -63,7 +66,7 @@ const ResetPasswordForm: React.FC = () => {
       }
 
       const data = await response.json();
-      setFlashMessages([data.message]);
+      setFlashMessages([{ type: 'success', message: data.message }]);
       setPassword('');
       setConfirmPassword('');
       setErrors({});
@@ -73,7 +76,7 @@ const ResetPasswordForm: React.FC = () => {
       //   navigate('/login');
       // }, 2000);
     } catch (error: any) {
-      setFlashMessages([error.message]);
+      setFlashMessages([{ type: 'error', message: error.message }]);
     }
   };
 
@@ -93,14 +96,14 @@ const ResetPasswordForm: React.FC = () => {
         </div>
       )}
 
-      {/* Flash success/error pour les messages globaux */}
+      {/* Flash messages (success/error) */}
       {flashMessages.length > 0 && (
         <div className="center">
-          <div className="flash-success">
-            {flashMessages.map((msg, index) => (
-              <div key={index}>{msg}</div>
-            ))}
-          </div>
+          {flashMessages.map((msg, index) => (
+            <div key={index} className={`flash-${msg.type}`}>
+              {msg.message}
+            </div>
+          ))}
         </div>
       )}
       <p className="center">{t('form.reset_password_instruction')}</p>
