@@ -201,5 +201,49 @@
 
     "themes_list": "Liste des Thèmes",
     "theme_name": "Nom du thème"
+  },
+
+  "conditions": {
+    "title": "Conditions Générales d'Utilisation",
+    "introduction": "1. Introduction",
+    "intro_text": "Les présentes conditions générales d'utilisation (CGU) régissent l'accès et l'utilisation du site web guillaume-quesnel.com accessible à l'adresse suivante : https://guillaume-quesnel.com. En utilisant ce site, vous acceptez les termes et conditions énoncés ci-dessous.",
+    "acceptance": {
+      "title": "2. Acceptation des Conditions",
+      "text": "En accédant ou en utilisant ce site, vous acceptez ces CGU. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser ce site."
+    },
+    "access": {
+      "title": "3. Accès au Site",
+      "text": "L'accès au site est gratuit, mais il peut être soumis à des restrictions. Nous nous réservons le droit de restreindre l'accès à certaines sections ou à l'intégralité du site pour des raisons techniques ou juridiques."
+    },
+    "intellectual_property": {
+      "title": "4. Propriété Intellectuelle",
+      "text": "Tout le contenu présent sur le site guillaume-quesnel.com (textes, images, logos, vidéos, etc.) est protégé par les droits d'auteur et la législation sur la propriété intellectuelle. Toute reproduction ou utilisation non autorisée du contenu est interdite."
+    },
+    "responsibility": {
+      "title": "5. Responsabilités",
+      "text": "Le site guillaume-quesnel.com ne saurait être tenu responsable des dommages directs ou indirects résultant de l'utilisation de ce site, notamment en cas d'erreurs dans le contenu, d'interruption du service ou de perte de données."
+    },
+    "personal_data": {
+      "title": "6. Données Personnelles",
+      "text": "Le site collecte des données personnelles uniquement dans le cadre des fonctionnalités proposées par le site. Les informations collectées sont traitées conformément à la politique de confidentialité du site."
+    },
+    "cookies": {
+      "title": "7. Cookies",
+      "text": "Le site utilise des cookies pour améliorer l'expérience utilisateur. En continuant à naviguer sur ce site, vous acceptez l'utilisation de ces cookies."
+    },
+    "modification": {
+      "title": "8. Modification des CGU",
+      "text": "Le site se réserve le droit de modifier ces Conditions Générales d'Utilisation à tout moment. Toute modification sera publiée sur cette page et prendra effet immédiatement."
+    },
+    "law": {
+      "title": "9. Loi Applicable",
+      "text": "Les présentes CGU sont régies par la législation française. En cas de litige, les tribunaux compétents seront ceux du ressort du siège social du site."
+    },
+    "contact": {
+      "title": "10. Contact",
+      "text": "Pour toute question concernant ces Conditions Générales d'Utilisation, veuillez nous contacter via le formulaire de contact."
+    }
   }
+  
+  
 }

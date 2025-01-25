@@ -44,6 +44,9 @@ const Footer: React.FC = () => {
       <div className="footer-right">
         <ul>
           <li>
+            <a href="/cgu">{t('footer.cgu')}</a>
+          </li>
+          <li>
             <a href="/mentions-legales">{t('footer.legal_mentions')}</a>
           </li>
           <li>

@@ -191,5 +191,47 @@
 
     "themes_list": "Lista de Temas",
     "theme_name": "Nombre del Tema"
+  },
+
+  "conditions": {
+    "title": "Términos y Condiciones",
+    "introduction": "1. Introducción",
+    "intro_text": "Estos Términos y Condiciones (T&C) rigen el acceso y uso del sitio web [Nombre del sitio web] accesible en [URL del sitio web]. Al utilizar este sitio web, acepta los términos y condiciones establecidos a continuación.",
+    "acceptance": {
+      "title": "2. Aceptación de los Términos",
+      "text": "Al acceder o utilizar este sitio web, acepta estos T&C. Si no está de acuerdo con estos términos, no utilice este sitio web."
+    },
+    "access": {
+      "title": "3. Acceso al Sitio Web",
+      "text": "El acceso al sitio web es gratuito, pero puede estar sujeto a restricciones. Nos reservamos el derecho de restringir el acceso a ciertas secciones o al sitio completo por razones técnicas o legales."
+    },
+    "intellectual_property": {
+      "title": "4. Propiedad Intelectual",
+      "text": "Todo el contenido en el sitio web [Nombre del sitio web] (textos, imágenes, logotipos, videos, etc.) está protegido por derechos de autor y leyes de propiedad intelectual. Se prohíbe la reproducción o el uso no autorizado del contenido."
+    },
+    "responsibility": {
+      "title": "5. Responsabilidad",
+      "text": "El sitio web [Nombre del sitio web] no será responsable de ningún daño directo o indirecto que resulte del uso de este sitio web, incluidos errores en el contenido, interrupciones del servicio o pérdida de datos."
+    },
+    "personal_data": {
+      "title": "6. Datos Personales",
+      "text": "El sitio web recopila datos personales únicamente en el marco de las funcionalidades ofrecidas por el sitio. La información recopilada se procesa de acuerdo con la política de privacidad del sitio."
+    },
+    "cookies": {
+      "title": "7. Cookies",
+      "text": "El sitio web utiliza cookies para mejorar la experiencia del usuario. Al continuar navegando en este sitio, acepta el uso de estas cookies."
+    },
+    "modification": {
+      "title": "8. Modificación de los T&C",
+      "text": "El sitio web se reserva el derecho de modificar estos Términos y Condiciones en cualquier momento. Cualquier cambio será publicado en esta página y entrará en vigor inmediatamente."
+    },
+    "law": {
+      "title": "9. Ley Aplicable",
+      "text": "Estos T&C están regidos por la ley francesa. En caso de disputa, los tribunales competentes serán los ubicados en la jurisdicción de la sede social del sitio."
+    },
+    "contact": {
+      "title": "10. Contacto",
+      "text": "Para cualquier pregunta sobre estos Términos y Condiciones, por favor contáctenos a través del formulario de contacto."
+    }
   }
 }

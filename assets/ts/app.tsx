@@ -34,6 +34,7 @@ import ArticleForm from '../components/ArticleForm';
 import ThemeForm from '../components/ThemeForm';
 import CommentForm from '../components/CommentForm';
 import ResetPasswordForm from '../components/ResetPasswordForm';
+import CGU from '../components/Cgu';
 import '../../public/i18n';
 import TinyEditor from "./TinyEditor";
 /*
@@ -713,6 +714,14 @@ document.addEventListener("DOMContentLoaded", () => {
   if (resetFormRoot) {
     const root = ReactDOM.createRoot(resetFormRoot);
     root.render(<ResetPasswordForm />); // Rendre le composant ResetPasswordForm
+  }
+
+  // Code pour rendre les CGU dans l'élément du DOM
+  const CGURoot = document.getElementById('cgu-root');
+
+  if (CGURoot) {
+    const root = ReactDOM.createRoot(CGURoot);
+    root.render(<CGU />); // Rendre le composant CGU
   }
 });
 

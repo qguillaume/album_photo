@@ -192,5 +192,47 @@
 
     "themes_list": "Themenliste",
     "theme_name": "Themenname"
+  },
+
+  "conditions": {
+    "title": "Allgemeine Geschäftsbedingungen",
+    "introduction": "1. Einleitung",
+    "intro_text": "Diese Allgemeinen Geschäftsbedingungen (AGB) regeln den Zugang und die Nutzung der Website [Website-Name], die unter [Website-URL] zugänglich ist. Durch die Nutzung dieser Website akzeptieren Sie die unten aufgeführten Bedingungen.",
+    "acceptance": {
+      "title": "2. Akzeptanz der Bedingungen",
+      "text": "Durch den Zugriff auf oder die Nutzung dieser Website akzeptieren Sie diese AGB. Wenn Sie diesen Bedingungen nicht zustimmen, verwenden Sie diese Website bitte nicht."
+    },
+    "access": {
+      "title": "3. Zugang zur Website",
+      "text": "Der Zugang zur Website ist kostenlos, kann jedoch Einschränkungen unterliegen. Wir behalten uns das Recht vor, den Zugang zu bestimmten Abschnitten oder zur gesamten Website aus technischen oder rechtlichen Gründen einzuschränken."
+    },
+    "intellectual_property": {
+      "title": "4. Geistiges Eigentum",
+      "text": "Alle Inhalte auf der Website [Website-Name] (Texte, Bilder, Logos, Videos usw.) sind durch Urheberrechte und geistige Eigentumsrechte geschützt. Jede unbefugte Vervielfältigung oder Nutzung der Inhalte ist untersagt."
+    },
+    "responsibility": {
+      "title": "5. Verantwortung",
+      "text": "Die Website [Website-Name] haftet nicht für direkte oder indirekte Schäden, die aus der Nutzung dieser Website entstehen, einschließlich Fehlern im Inhalt, Unterbrechungen des Dienstes oder Datenverlust."
+    },
+    "personal_data": {
+      "title": "6. Persönliche Daten",
+      "text": "Die Website sammelt nur personenbezogene Daten im Zusammenhang mit den auf der Seite angebotenen Funktionen. Die gesammelten Informationen werden gemäß der Datenschutzrichtlinie der Website verarbeitet."
+    },
+    "cookies": {
+      "title": "7. Cookies",
+      "text": "Die Website verwendet Cookies, um die Benutzererfahrung zu verbessern. Wenn Sie weiterhin auf dieser Website surfen, stimmen Sie der Verwendung dieser Cookies zu."
+    },
+    "modification": {
+      "title": "8. Änderung der AGB",
+      "text": "Die Website behält sich das Recht vor, diese Allgemeinen Geschäftsbedingungen jederzeit zu ändern. Änderungen werden auf dieser Seite veröffentlicht und treten sofort in Kraft."
+    },
+    "law": {
+      "title": "9. Anwendbares Recht",
+      "text": "Diese AGB unterliegen dem französischen Recht. Im Falle eines Rechtsstreits sind die zuständigen Gerichte die in der Gerichtsbarkeit des Hauptsitzes der Website."
+    },
+    "contact": {
+      "title": "10. Kontakt",
+      "text": "Für Fragen zu diesen Allgemeinen Geschäftsbedingungen kontaktieren Sie uns bitte über das Kontaktformular."
+    }
   }
 }

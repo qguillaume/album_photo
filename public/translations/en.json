@@ -192,5 +192,49 @@
 
     "themes_list": "Themes List",
     "theme_name": "Theme Name"
+  },
+
+  "conditions": {
+    "title": "Terms and Conditions",
+    "introduction": "1. Introduction",
+    "intro_text": "These Terms and Conditions (T&Cs) govern access to and use of the website guillaume-quesnel.com accessible at https://guillaume-quesnel.com. By using this website, you agree to the terms and conditions outlined below.",
+    "acceptance": {
+      "title": "2. Acceptance of Terms",
+      "text": "By accessing or using this website, you accept these T&Cs. If you do not agree with these terms, please do not use this website."
+    },
+    "access": {
+      "title": "3. Access to the Website",
+      "text": "Access to the website is free, but it may be subject to restrictions. We reserve the right to restrict access to certain sections or the entire website for technical or legal reasons."
+    },
+    "intellectual_property": {
+      "title": "4. Intellectual Property",
+      "text": "All content on the website guillaume-quesnel.com (texts, images, logos, videos, etc.) is protected by copyright and intellectual property laws. Any unauthorized reproduction or use of the content is prohibited."
+    },
+    "responsibility": {
+      "title": "5. Responsibility",
+      "text": "The website guillaume-quesnel.com cannot be held responsible for any direct or indirect damages resulting from the use of this website, including errors in the content, service interruptions, or data loss."
+    },
+    "personal_data": {
+      "title": "6. Personal Data",
+      "text": "The website collects personal data only in connection with the functionalities offered by the site. The information collected is processed in accordance with the website's privacy policy."
+    },
+    "cookies": {
+      "title": "7. Cookies",
+      "text": "The website uses cookies to improve user experience. By continuing to browse this site, you consent to the use of these cookies."
+    },
+    "modification": {
+      "title": "8. Modification of T&Cs",
+      "text": "The website reserves the right to modify these Terms and Conditions at any time. Any changes will be published on this page and will take effect immediately."
+    },
+    "law": {
+      "title": "9. Applicable Law",
+      "text": "These T&Cs are governed by French law. In the event of a dispute, the competent courts will be those located in the jurisdiction of the website's headquarters."
+    },
+    "contact": {
+      "title": "10. Contact",
+      "text": "For any questions regarding these Terms and Conditions, please contact us from our contact form."
+    }
   }
+  
+  
 }
