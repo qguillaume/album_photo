@@ -19,7 +19,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="header old-header">
+    <header className="header">
       <div className="hamburger-menu" onClick={toggleMenu}>
         ☰
       </div>

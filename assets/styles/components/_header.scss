@@ -35,6 +35,7 @@ header {
     list-style: none;
     margin: 0;
     padding: 0;
+    width: 100%; /* Prend toute la largeur pour assurer que les sections se placent correctement */
 
     a {
       color: $primary-color;
@@ -52,27 +53,19 @@ header {
     }
   }
 
-  /* Section gauche : navigation et options */
   .header-left {
     display: flex;
     gap: 30px;
     align-items: center;
-
-    .custom-select {
-      position: relative;
-      cursor: pointer;
-    }
+    justify-content: flex-start;
+    flex: 1; /* Permet de s'assurer que cette section prend bien l'espace à gauche */
   }
 
-  /* Section centrale : logo */
   .header-center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     display: flex;
     justify-content: center;
     align-items: center;
+    flex: 1; /* Permet de s'assurer que cette section prend bien l'espace central */
 
     .logo img {
       width: 140px;
@@ -80,11 +73,12 @@ header {
     }
   }
 
-  /* Section droite : utilisateur et langue */
   .header-right {
     display: flex;
     align-items: center;
     gap: 15px;
+    justify-content: flex-end;
+    flex: 1; /* Permet de s'assurer que cette section prend bien l'espace à droite */
 
     .register {
       background-color: $secondary-color;
@@ -92,7 +86,7 @@ header {
       border-radius: 8px;
       padding: 10px 15px;
       transition: background-color 0.3s ease, color 0.3s ease;
-
+      
       &:hover {
         background-color: $secondary-color-hover;
         color: white;
@@ -183,11 +177,27 @@ header {
       display: none; /* Cache le menu hamburger sur desktop */
     }
 
-    .nav-menu {
-      display: flex; /* Navigation classique sur grand écran */
+    /* Utilisation de flexbox pour disposer les sections */
+    display: flex;
+    justify-content: space-between; /* Espacer les sections de manière égale */
+    align-items: center;
+    width: 100%; /* Prendre toute la largeur */
+    
+    .header-left {
+      justify-content: flex-start; /* Aligner à gauche */
+    }
+
+    .header-center {
+      justify-content: center; /* Centrer le logo */
+      align-items: center;
+    }
+
+    .header-right {
+      justify-content: flex-end; /* Aligner à droite */
     }
   }
-
+  
+  /* Ancien comportement du header */
   .old-header {
     display: flex; /* Visible sur grand écran */
   }
