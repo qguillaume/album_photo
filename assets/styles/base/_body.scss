@@ -9,7 +9,7 @@ html, body {
   font-family: 'Cambria Math', 'Cambria', serif;
   height: 100%; /* L'élément html et le body occupent toute la hauteur de la page */
   margin: 0; /* Retire toute marge par défaut */
-  padding: 0; /* Retire tout le padding par défaut */
+  padding-top: 50px;
   display: flex; /* Utilise Flexbox pour la mise en page du body */
   flex-direction: column; /* Aligne les éléments enfants en colonne */
 }

@@ -10,13 +10,14 @@ header {
   left: 0;
   width: 100%;
   z-index: 1000;
-  padding: 20px 40px;
+  padding: 15px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
   transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
 
   /* Menu hamburger pour mobile */
   .hamburger-menu {
@@ -67,9 +68,22 @@ header {
     align-items: center;
     flex: 1; /* Permet de s'assurer que cette section prend bien l'espace central */
 
-    .logo img {
-      width: 140px;
-      height: auto;
+    .logo {
+      a {
+        display: block; /* Assure que le lien est cliquable */
+        pointer-events: auto;
+      }
+
+      img {
+        width: 140px;
+        height: auto;
+      }
+
+      /* Empêche l'effet de survol sur le logo */
+      &:hover {
+        background-color: transparent;
+        color: inherit;
+      }
     }
   }
 
