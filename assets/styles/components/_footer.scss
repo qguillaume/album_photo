@@ -1,36 +1,71 @@
 @use "../base/variables" as *;
 
 footer {
-  background-color: $primary-color;
-  color: white; /* Le texte du footer sera blanc */
-  padding: $space-sm $space-md; /* Ajoute un padding interne, avec des valeurs définies dans les variables $space-sm et $space-md pour la hauteur et la largeur */
-  text-align: center; /* Aligne le texte au centre (utile pour le copyright) */
-  margin-top: auto; /* Pousse le footer en bas de la page en utilisant la propriété flexbox */
+  /* Pas de styles ici, seulement pour englober le tout */
   width: 100%; /* Assure que le footer occupe toute la largeur de la page */
   box-sizing: border-box; /* Inclut le padding et les bordures dans la largeur totale de l'élément */
   position: relative; /* Position relative pour pouvoir utiliser certaines propriétés CSS comme "absolute" si nécessaire pour des éléments internes */
+  
+  display: flex; /* Utilise Flexbox pour diviser le footer en deux sections */
+  justify-content: space-between; /* Sépare les deux sections */
+  align-items: stretch; /* Force les sections à occuper toute la hauteur */
+  margin-top: auto; /* Pousse le footer en bas de la page avec Flexbox */
+  height: 100px; /* Définit une hauteur spécifique pour garantir que le footer occupe une hauteur fixe. Ajustez cette valeur selon vos besoins */
+}
 
-  p {
-    font-size: 0.9rem; /* Taille de la police pour le texte du copyright */
-    margin-top: $space-xs; /* Espace au-dessus du texte du copyright */
+.footer-left, .footer-right {
+  flex: 1; /* La section gauche et droite occuperont chacune 50% de la largeur */
+  display: flex; /* Utilisation de flexbox dans chaque section pour gérer le contenu */
+  flex-direction: column;
+  justify-content: center; /* Centre le contenu verticalement */
+  padding: $space-sm $space-md; /* Padding interne */
+  height: 100%; /* Assure que les sections prennent toute la hauteur du footer */
+  text-align: center; /* Centre le texte à l'intérieur des sections */
+}
 
-    @media (max-width: 768px) {
-      font-size: 0.8rem; /* Réduction de la taille de la police sur les écrans de taille moyenne */
-    }
+.footer-left {
+  background-color: $primary-color; /* Fond à gauche (couleur définie dans les variables) */
+  color: white;
+}
 
-    @media (max-width: 480px) {
-      font-size: 0.75rem; /* Réduction supplémentaire de la taille de la police sur les très petits écrans */
+.footer-right {
+  background-color: $secondary-color; /* Fond à droite (couleur définie dans les variables) */
+}
+
+.footer-right ul {
+  list-style: none; /* Supprime les puces des listes */
+  padding: 0;
+  margin: 0;
+
+  li {
+    margin-bottom: $space-xs; /* Espace entre chaque lien */
+    &:last-child {
+      margin-bottom: 0; /* Supprime l'espacement du dernier lien */
     }
   }
 
   a {
-    color: white; /* Les liens dans le footer seront en blanc */
-    text-decoration: underline; /* Souligne les liens */
-    font-size: 0.9rem; /* Taille du texte des liens */
+    color: white;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
 
-    @media (max-width: 480px) {
-      font-size: 0.8rem; /* Réduction de la taille du texte des liens sur les petits écrans */
+    &:hover {
+      color: $primary-color; /* Change la couleur du lien au survol */
     }
+  }
+}
+
+.footer-text {
+  font-size: 0.9rem; /* Taille de la police pour le texte du copyright */
+  margin-top: $space-xs; /* Espacement au-dessus du texte du copyright */
+  
+  @media (max-width: 768px) {
+    font-size: 0.8rem; /* Réduction sur les écrans moyens */
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.75rem; /* Réduction supplémentaire sur les très petits écrans */
   }
 }
 

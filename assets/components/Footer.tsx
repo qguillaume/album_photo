@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useTranslation, Trans } from 'react-i18next'; // hook
+import { useTranslation } from 'react-i18next';
 import AOS from 'aos';
 
 const Footer: React.FC = () => {
@@ -19,19 +19,39 @@ const Footer: React.FC = () => {
     }
   }, [i18n.isInitialized]);
 
-  if (!isReady) return <div>Loading...</div>;
+  if (!isReady) return <div>{t('admin.loading')}</div>;
 
   return (
-    <>
-        <footer>
-            <p>© { t('copyright')} - Guillaume Quesnel</p>
-            <div className="social-icons">
-                <a href="https://www.linkedin.com/in/guillaume-quesnel-a567352aa/" target="_blank">
-                    <img src="/images/logo_linkedin.png" alt="LinkedIn" className="social-icon" />
-                </a>
-            </div>
-        </footer>
-    </>
+    <footer>
+      <div className="footer-left">
+        <p className="footer-text">© {t('copyright')} - Guillaume Quesnel</p>
+        <div className="social-icons">
+          <a
+            href="https://www.https://www.linkedin.com/in/guillaume-quesnel-a567352aa/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="social-icon"
+          >
+            <img
+              src="/images/logo_linkedin.png"
+              alt="LinkedIn"
+              className="social-icon-img"
+            />
+          </a>
+        </div>
+      </div>
+
+      <div className="footer-right">
+        <ul>
+          <li>
+            <a href="/mentions-legales">{t('footer.legal_mentions')}</a>
+          </li>
+          <li>
+            <a href="/securite">{t('footer.security')}</a>
+          </li>
+        </ul>
+      </div>
+    </footer>
   );
 };
 
