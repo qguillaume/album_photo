@@ -35,6 +35,8 @@ import ThemeForm from '../components/ThemeForm';
 import CommentForm from '../components/CommentForm';
 import ResetPasswordForm from '../components/ResetPasswordForm';
 import CGU from '../components/Cgu';
+import MentionsLegales from '../components/MentionsLegales';
+import PolitiqueConfidentialite from '../components/PolitiqueConfidentialite';
 import '../../public/i18n';
 import TinyEditor from "./TinyEditor";
 /*
@@ -722,6 +724,22 @@ document.addEventListener("DOMContentLoaded", () => {
   if (CGURoot) {
     const root = ReactDOM.createRoot(CGURoot);
     root.render(<CGU />); // Rendre le composant CGU
+  }
+
+  // Code pour rendre les mentions légales dans l'élément du DOM
+  const MentionsRoot = document.getElementById('mentions-root');
+
+  if (MentionsRoot) {
+    const root = ReactDOM.createRoot(MentionsRoot);
+    root.render(<MentionsLegales />); // Rendre le composant MentionsLegales
+  }
+
+  // Code pour rendre la politique de confidentialité dans l'élément du DOM
+  const PolitiqueRoot = document.getElementById('politique-root');
+
+  if (PolitiqueRoot) {
+    const root = ReactDOM.createRoot(PolitiqueRoot);
+    root.render(<PolitiqueConfidentialite />); // Rendre le composant PolitiqueConfidentialite
   }
 });
 

@@ -243,7 +243,85 @@
       "title": "10. Contact",
       "text": "Pour toute question concernant ces Conditions Générales d'Utilisation, veuillez nous contacter via le formulaire de contact."
     }
+  },
+  
+  "mentions_legales": {
+    "title": "Mentions Légales",
+    "introduction": "1. Introduction",
+    "intro_text": "Les présentes mentions légales régissent l'accès et l'utilisation du site. En accédant à ce site, vous acceptez les termes et conditions définis dans ce document.",
+    "publisher": {
+      "title": "2. Éditeur du site",
+      "text": "Le site est édité par [Nom de l'éditeur], [Adresse de l'éditeur], [Numéro de SIRET, si applicable], [Numéro de téléphone], [Adresse e-mail de contact]."
+    },
+    "director": {
+      "title": "3. Directeur de la publication",
+      "text": "Le directeur de la publication est [Nom du directeur de publication]."
+    },
+    "host": {
+      "title": "4. Hébergement",
+      "text": "Le site est hébergé par [Nom de l'hébergeur], situé à [Adresse de l'hébergeur], [Numéro de téléphone de l'hébergeur]."
+    },
+    "responsibility": {
+      "title": "5. Responsabilité",
+      "text": "Le site ne pourra être tenu responsable des dommages directs ou indirects résultant de l'utilisation du site, y compris les erreurs dans le contenu et la perte de données."
+    },
+    "intellectual_property": {
+      "title": "6. Propriété Intellectuelle",
+      "text": "Tous les contenus du site, y compris textes, images, logos, vidéos, et autres éléments sont protégés par des droits d'auteur et des lois sur la propriété intellectuelle. Toute reproduction ou utilisation non autorisée est interdite."
+    },
+    "links": {
+      "title": "7. Liens hypertextes",
+      "text": "Des liens vers d'autres sites peuvent être présents. Nous déclinons toute responsabilité concernant leur contenu ou leur politique de confidentialité."
+    },
+    "data_protection": {
+      "title": "8. Protection des données personnelles",
+      "text": "Les informations personnelles collectées sur ce site sont traitées conformément à notre politique de confidentialité. Vous avez le droit d'accéder, de modifier et de supprimer vos données personnelles."
+    },
+    "jurisdiction": {
+      "title": "9. Loi Applicable et Juridiction Compétente",
+      "text": "Les présentes mentions légales sont soumises à la législation française. En cas de litige, les tribunaux compétents seront ceux du ressort du siège social de l'éditeur."
+    },
+    "contact": {
+      "title": "10. Contact",
+      "text": "Pour toute question, contactez-nous à l'adresse suivante : [adresse e-mail de contact]."
+    }
+  },
+  
+  "politique_confidentialite": {
+    "title": "Politique de Confidentialité",
+    "introduction": "1. Introduction",
+    "intro_text": "La présente politique de confidentialité décrit la manière dont nous collectons, utilisons, protégeons et partageons vos données personnelles.",
+    "data_collection": {
+      "title": "2. Collecte des données personnelles",
+      "text": "Nous collectons des données personnelles uniquement lorsque cela est nécessaire pour le bon fonctionnement de notre site. Cela peut inclure des informations telles que votre nom, votre adresse e-mail, et d'autres informations que vous nous fournissez volontairement."
+    },
+    "use_of_data": {
+      "title": "3. Utilisation des données",
+      "text": "Les informations que nous collectons sont utilisées pour fournir et améliorer nos services, personnaliser votre expérience sur le site, et répondre à vos demandes. Nous ne partagerons jamais vos données avec des tiers sans votre consentement explicite."
+    },
+    "security": {
+      "title": "4. Sécurité des données",
+      "text": "Nous prenons des mesures de sécurité appropriées pour protéger vos données personnelles contre tout accès non autorisé, modification, divulgation ou destruction."
+    },
+    "cookies": {
+      "title": "5. Utilisation des cookies",
+      "text": "Ce site utilise des cookies pour améliorer l'expérience utilisateur. Vous avez la possibilité de gérer vos préférences en matière de cookies via votre navigateur."
+    },
+    "third_party_services": {
+      "title": "6. Services de tiers",
+      "text": "Nous pouvons utiliser des services tiers pour analyser l'utilisation du site et améliorer nos services. Ces services peuvent collecter des informations telles que votre adresse IP et des données de navigation sur notre site."
+    },
+    "user_rights": {
+      "title": "7. Droits des utilisateurs",
+      "text": "Conformément à la législation applicable, vous avez le droit d'accéder, de corriger, de supprimer ou de restreindre l'utilisation de vos données personnelles. Vous pouvez également retirer votre consentement à tout moment."
+    },
+    "data_retention": {
+      "title": "8. Conservation des données",
+      "text": "Nous conserverons vos données personnelles aussi longtemps que nécessaire pour répondre à vos besoins, pour les raisons énoncées dans cette politique, ou jusqu'à ce que vous demandiez leur suppression."
+    },
+    "contact": {
+      "title": "9. Contact",
+      "text": "Pour toute question concernant cette politique de confidentialité, veuillez nous contacter à l'adresse suivante : [adresse e-mail de contact]."
+    }
   }
-  
-  
 }

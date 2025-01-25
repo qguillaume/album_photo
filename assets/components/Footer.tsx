@@ -40,7 +40,6 @@ const Footer: React.FC = () => {
           </a>
         </div>
       </div>
-
       <div className="footer-right">
         <ul>
           <li>
@@ -50,7 +49,7 @@ const Footer: React.FC = () => {
             <a href="/mentions-legales">{t('footer.legal_mentions')}</a>
           </li>
           <li>
-            <a href="/securite">{t('footer.security')}</a>
+            <a href="/politique-confidentialite">{t('footer.confidentiality')}</a>
           </li>
         </ul>
       </div>

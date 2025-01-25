@@ -234,7 +234,85 @@
       "title": "10. Contact",
       "text": "For any questions regarding these Terms and Conditions, please contact us from our contact form."
     }
+  },
+
+  "mentions_legales": {
+    "title": "Legal Notice",
+    "introduction": "1. Introduction",
+    "intro_text": "This legal notice governs access and use of the website. By accessing this site, you agree to the terms and conditions set forth in this document.",
+    "publisher": {
+      "title": "2. Publisher",
+      "text": "The site is published by [Publisher's Name], [Publisher's Address], [SIRET Number, if applicable], [Phone Number], [Contact Email Address]."
+    },
+    "director": {
+      "title": "3. Publication Director",
+      "text": "The publication director is [Publication Director's Name]."
+    },
+    "host": {
+      "title": "4. Hosting",
+      "text": "The site is hosted by [Host's Name], located at [Host's Address], [Host's Phone Number]."
+    },
+    "responsibility": {
+      "title": "5. Responsibility",
+      "text": "The site cannot be held responsible for any direct or indirect damages resulting from the use of the site, including errors in content or data loss."
+    },
+    "intellectual_property": {
+      "title": "6. Intellectual Property",
+      "text": "All content on the site, including texts, images, logos, videos, and other elements, is protected by copyright and intellectual property laws. Unauthorized reproduction or use is prohibited."
+    },
+    "links": {
+      "title": "7. Hyperlinks",
+      "text": "Links to other websites may be present. We disclaim any responsibility for their content or privacy policies."
+    },
+    "data_protection": {
+      "title": "8. Personal Data Protection",
+      "text": "Personal information collected on this site is processed in accordance with our privacy policy. You have the right to access, modify, and delete your personal data."
+    },
+    "jurisdiction": {
+      "title": "9. Applicable Law and Competent Jurisdiction",
+      "text": "These legal notices are governed by French law. In case of dispute, the competent courts will be those in the jurisdiction of the publisher's head office."
+    },
+    "contact": {
+      "title": "10. Contact",
+      "text": "For any questions, please contact us at the following address: [contact email address]."
+    }
+  },
+
+  "politique_confidentialite": {
+    "title": "Privacy Policy",
+    "introduction": "1. Introduction",
+    "intro_text": "This privacy policy describes how we collect, use, protect, and share your personal data.",
+    "data_collection": {
+      "title": "2. Data Collection",
+      "text": "We collect personal data only when necessary for the proper functioning of our site. This may include information such as your name, email address, and any other information you voluntarily provide."
+    },
+    "use_of_data": {
+      "title": "3. Use of Data",
+      "text": "The information we collect is used to provide and improve our services, personalize your experience on the site, and respond to your requests. We will never share your data with third parties without your explicit consent."
+    },
+    "security": {
+      "title": "4. Data Security",
+      "text": "We take appropriate security measures to protect your personal data against unauthorized access, alteration, disclosure, or destruction."
+    },
+    "cookies": {
+      "title": "5. Use of Cookies",
+      "text": "This site uses cookies to improve the user experience. You have the option to manage your cookie preferences through your browser."
+    },
+    "third_party_services": {
+      "title": "6. Third-Party Services",
+      "text": "We may use third-party services to analyze site usage and improve our services. These services may collect information such as your IP address and browsing data on our site."
+    },
+    "user_rights": {
+      "title": "7. User Rights",
+      "text": "Under applicable law, you have the right to access, correct, delete, or restrict the use of your personal data. You may also withdraw your consent at any time."
+    },
+    "data_retention": {
+      "title": "8. Data Retention",
+      "text": "We will retain your personal data as long as necessary to fulfill your needs, for the purposes outlined in this policy, or until you request its deletion."
+    },
+    "contact": {
+      "title": "9. Contact",
+      "text": "For any questions regarding this privacy policy, please contact us at the following address: [contact email address]."
+    }
   }
-  
-  
 }
