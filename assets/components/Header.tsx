@@ -48,7 +48,7 @@ const Header: React.FC = () => {
                 {t('articles')}
               </a>
               <div className="dropdown-content">
-                <a href="/article/create">{t('new_article')}</a>
+                <a href="/articles/new">{t('new_article')}</a>
                 <a href="/theme/create">{t('new_theme')}</a>
               </div>
             </div>

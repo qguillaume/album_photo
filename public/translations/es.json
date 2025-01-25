@@ -140,5 +140,56 @@
   "4_ans": "4 años",
   "2_ans": "2 años",
   "1_an": "1 año",
-  "1_an_et_demi": "1 año y medio"
+  "1_an_et_demi": "1 año y medio",
+  "admin": {
+    "dashboard": "Tablero",
+    "albums": "Álbumes",
+    "photos": "Fotos",
+    "users": "Usuarios",
+    "articles": "Artículos",
+    "comments": "Comentarios",
+    "themes": "Temas",
+
+    "loading": "Cargando...",
+    "prev": "Anterior",
+    "suiv": "Siguiente",
+    "actions": "Acciones",
+    "update": "Editar",
+    "delete": "Eliminar",
+    "validate": "Validar",
+    "cancel": "Cancelar",
+
+    "username": "Nombre de usuario",
+    "content": "Contenido",
+    "approve": "Aprobación",
+    "visible": "Visibilidad",
+
+    "albums_list": "Lista de Álbumes",
+    "album_name": "Nombre del Álbum",
+    "album_creator": "Creador del Álbum",
+    "photos_number": "Número de Fotos",
+
+    "photos_list": "Lista de Fotos",
+    "photo_title": "Título",
+    "associate_album": "Álbum Asociado",
+    "likes_number": "Número de Me gusta",
+    "comments_number": "Número de Comentarios",
+
+    "users_list": "Lista de Usuarios",
+    "email": "Correo Electrónico",
+    "admin_role": "Rol de Administrador",
+    "is_banned": "Está Prohibido",
+
+    "articles_list": "Lista de Artículos",
+    "article_title": "Título",
+    "created_at": "Creado el",
+    "updated_at": "Actualizado el",
+    "published": "Publicado",
+
+    "comments_list": "Lista de Comentarios",
+    "concerned_photo": "Foto Relacionada",
+
+    "themes_list": "Lista de Temas",
+    "theme_name": "Nombre del Tema"
+  }
 }

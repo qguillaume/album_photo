@@ -141,5 +141,56 @@
   "4_ans": "4 Jahre",
   "2_ans": "2 Jahre",
   "1_an": "1 Jahr",
-  "1_an_et_demi": "1 Jahr und ein halbes"
+  "1_an_et_demi": "1 Jahr und ein halbes",
+  "admin": {
+    "dashboard": "Dashboard",
+    "albums": "Alben",
+    "photos": "Fotos",
+    "users": "Benutzer",
+    "articles": "Artikel",
+    "comments": "Kommentare",
+    "themes": "Themen",
+
+    "loading": "Laden...",
+    "prev": "Zurück",
+    "suiv": "Weiter",
+    "actions": "Aktionen",
+    "update": "Bearbeiten",
+    "delete": "Löschen",
+    "validate": "Bestätigen",
+    "cancel": "Abbrechen",
+
+    "username": "Benutzername",
+    "content": "Inhalt",
+    "approve": "Genehmigung",
+    "visible": "Sichtbarkeit",
+
+    "albums_list": "Albenliste",
+    "album_name": "Albumname",
+    "album_creator": "Albumersteller",
+    "photos_number": "Anzahl der Fotos",
+
+    "photos_list": "Fotoliste",
+    "photo_title": "Titel",
+    "associate_album": "Zugehöriges Album",
+    "likes_number": "Anzahl der Likes",
+    "comments_number": "Anzahl der Kommentare",
+
+    "users_list": "Benutzerliste",
+    "email": "E-Mail",
+    "admin_role": "Administratorrolle",
+    "is_banned": "Ist gesperrt",
+
+    "articles_list": "Artikelliste",
+    "article_title": "Titel",
+    "created_at": "Erstellt am",
+    "updated_at": "Aktualisiert am",
+    "published": "Veröffentlicht",
+
+    "comments_list": "Kommentarliste",
+    "concerned_photo": "Betroffenes Foto",
+
+    "themes_list": "Themenliste",
+    "theme_name": "Themenname"
+  }
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Album, User } from '../ts/types';
 import Pagination from "./PaginationDashboard";
+import { useTranslation } from 'react-i18next';
 
 // AlbumTable.tsx
 interface AlbumTableProps {
@@ -10,6 +11,7 @@ interface AlbumTableProps {
 }
 
 const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }) => {
+  const { t } = useTranslation(); // Hook pour les traductions
   const [currentUserRoles, setCurrentUserRoles] = useState<string[]>([]);
   const [currentUserId, setCurrentUserId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
@@ -48,7 +50,7 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
   }, []);
 
     if (loading) {
-      return <div>Chargement...</div>; // Affiche un message pendant le chargement
+      return <div>{t('admin.loading')}</div>; // Affiche un message pendant le chargement
     }
 
   // Fonction pour trier les albums
@@ -223,17 +225,17 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
               ID {sortConfig.key === "id" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
             <th onClick={() => handleSort("nomAlbum")}>
-              Nom de l'album {sortConfig.key === "nomAlbum" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+            {t('admin.album_name')} {sortConfig.key === "nomAlbum" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
             <th onClick={() => handleSort("creator")}>
-              Créateur de l'album {sortConfig.key === "creator" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+            {t('admin.album_creator')} {sortConfig.key === "creator" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
             <th onClick={() => handleSort("photos")}>
-              Nombre de photos contenu dans l'album {sortConfig.key === "photos" && (sortConfig.direction === "asc" ? "↑" : "↓")}
+            {t('admin.photos_number')} {sortConfig.key === "photos" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
-            {isSuperAdmin && (<th>Approbation</th>)}
-            {isSuperAdmin && (<th>Visibilité</th>)}
-            <th>Actions</th>
+            {isSuperAdmin && (<th>{t('admin.approve')}</th>)}
+            {isSuperAdmin && (<th>{t('admin.visible')}</th>)}
+            <th>{t('admin.actions')}</th>
           </tr>
         </thead>
         <tbody>
@@ -285,10 +287,10 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
                       {editingAlbumId === album.id ? (
                         <>
                           <button className="validate" onClick={() => handleEdit(album.id)}>
-                            Valider
+                          {t('admin.validate')}
                           </button>
                           <button className="cancel" onClick={() => setEditingAlbumId(null)}>
-                            Annuler
+                          {t('admin.cancel')}
                           </button>
                         </>
                       ) : (
@@ -300,10 +302,10 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
                               setNewAlbumName(album.nomAlbum);
                             }}
                           >
-                            Modifier
+                            {t('admin.update')}
                           </button>
                           <button className="delete" onClick={() => handleDelete(album.id)}>
-                            Supprimer
+                          {t('admin.delete')}
                           </button>
                         </>
                       )}

@@ -148,5 +148,58 @@
   "4_ans": "4 ans",
   "2_ans": "2 ans",
   "1_an":  "1 an",
-  "1_an_et_demi": "1 an et demi"
+  "1_an_et_demi": "1 an et demi",
+
+  "admin": {
+    "dashboard": "Tableau de bord",
+    "albums": "Albums",
+    "photos": "Photos",
+    "users": "Utilisateurs",
+    "articles": "Articles",
+    "comments": "Commentaires",
+    "themes": "Themes",
+
+    "loading": "Chargement...",
+    "prev": "Précédent",
+    "suiv": "Suivant",
+    "actions": "Actions",
+    "update": "Modifier",
+    "delete": "Supprimer",
+    "validate": "Valider",
+    "cancel": "Annuler",
+
+    "username": "Utilisateur",
+    "content": "Contenu",
+    "approve": "Approbation",
+    "visible": "Visibilité",
+
+    "albums_list" : "Liste des Albums",
+    "album_name": "Nom de l'album",
+    "album_creator": "Créateur de l'album",
+    "photos_number": "Nombre de photos de l'album",
+
+
+    "photos_list" : "Liste des Photos",
+    "photo_title": "Titre",
+    "associate_album": "Album associé",
+    "likes_number": "Nombre de likes",
+    "comments_number": "Nombre de commentaires",
+
+    "users_list" : "Liste des Utilisateurs",
+    "email": "Email",
+    "admin_role": "Rôle Administrateur",
+    "is_banned": "Est banni",
+
+    "articles_list" : "Liste des Articles",
+    "article_title": "Titre",
+    "created_at": "Créé le",
+    "updated_at": "Modifié le",
+    "published": "Publié",
+
+    "comments_list" : "Liste des Commentaires",
+    "concerned_photo": "Photo concernée",
+
+    "themes_list": "Liste des Thèmes",
+    "theme_name": "Nom du thème"
+  }
 }

@@ -141,5 +141,56 @@
   "4_ans": "4 years",
   "2_ans": "2 years",
   "1_an": "1 year",
-  "1_an_et_demi": "1 year and a half"
+  "1_an_et_demi": "1 year and a half",
+  "admin": {
+    "dashboard": "Dashboard",
+    "albums": "Albums",
+    "photos": "Photos",
+    "users": "Users",
+    "articles": "Articles",
+    "comments": "Comments",
+    "themes": "Themes",
+
+    "loading": "Loading...",
+    "prev": "Previous",
+    "suiv": "Next",
+    "actions": "Actions",
+    "update": "Edit",
+    "delete": "Delete",
+    "validate": "Validate",
+    "cancel": "Cancel",
+
+    "username": "Username",
+    "content": "Content",
+    "approve": "Approval",
+    "visible": "Visibility",
+
+    "albums_list": "Albums List",
+    "album_name": "Album Name",
+    "album_creator": "Album Creator",
+    "photos_number": "Number of Photos",
+
+    "photos_list": "Photos List",
+    "photo_title": "Title",
+    "associate_album": "Associated Album",
+    "likes_number": "Number of Likes",
+    "comments_number": "Number of Comments",
+
+    "users_list": "Users List",
+    "email": "Email",
+    "admin_role": "Admin Role",
+    "is_banned": "Is Banned",
+
+    "articles_list": "Articles List",
+    "article_title": "Title",
+    "created_at": "Created At",
+    "updated_at": "Updated At",
+    "published": "Published",
+
+    "comments_list": "Comments List",
+    "concerned_photo": "Concerned Photo",
+
+    "themes_list": "Themes List",
+    "theme_name": "Theme Name"
+  }
 }

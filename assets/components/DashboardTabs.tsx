@@ -6,8 +6,11 @@ import ArticleTable from './ArticleTable';
 import CommentTable from './CommentTable';
 import ThemeTable from './ThemeTable';
 import { Photo, Album, User, Article, Comment, Theme } from '../ts/types';
+import { useTranslation } from 'react-i18next';
 
 const DashboardTabs: React.FC = () => {
+  const { t } = useTranslation(); // Hook pour les traductions
+
   // L'état pour savoir quel onglet est sélectionné
   const [activeTab, setActiveTab] = useState<'albums' | 'photos' | 'users' | 'articles' | 'comments' | 'themes'>('albums');
   
@@ -103,7 +106,6 @@ const DashboardTabs: React.FC = () => {
 
     const result = await response.json();
     if (response.ok) {
-      console.log(result.message);  // Thème modifié avec succès
       // Actualiser les données des thèmes après l'édition
       setThemes((prevThemes) =>
         prevThemes.map((theme) =>
@@ -122,37 +124,37 @@ const DashboardTabs: React.FC = () => {
           className={`tab-button albums ${activeTab === 'albums' ? 'active' : ''}`}
           onClick={() => handleTabClick('albums')}
         >
-          Albums
+          {t('admin.albums')}
         </button>
         <button
           className={`tab-button photos ${activeTab === 'photos' ? 'active' : ''}`}
           onClick={() => handleTabClick('photos')}
         >
-          Photos
+          {t('admin.photos')}
         </button>
         <button
           className={`tab-button users ${activeTab === 'users' ? 'active' : ''}`}
           onClick={() => handleTabClick('users')}
         >
-          Users
+          {t('admin.users')}
         </button>
         <button
           className={`tab-button articles ${activeTab === 'articles' ? 'active' : ''}`}
           onClick={() => handleTabClick('articles')}
         >
-          Articles
+          {t('admin.articles')}
         </button>
         <button
           className={`tab-button comments ${activeTab === 'comments' ? 'active' : ''}`}
           onClick={() => handleTabClick('comments')}
         >
-          Commentaires
+          {t('admin.comments')}
         </button>
         <button
           className={`tab-button themes ${activeTab === 'themes' ? 'active' : ''}`}
           onClick={() => handleTabClick('themes')}
         >
-          Themes
+          {t('admin.themes')}
         </button>
       </div>
 

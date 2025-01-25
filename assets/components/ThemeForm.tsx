@@ -52,7 +52,7 @@ const ThemeForm: React.FC = () => {
 
   return (
     <>
-      <h2>{t('theme_form')}</h2>
+      <h2>{t('form.theme_form')}</h2>
 
       {/* Flash errors pour les erreurs de validation */}
       {errors.length > 0 && (

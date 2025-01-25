@@ -12,13 +12,19 @@
     margin-bottom: 40px; /* Augmente l'espacement sous chaque section */
 
     .photo-presentation {
-        /* Fixe une largeur pour l'image */
-        flex: 1 1 200px; /* L'image peut se rétrécir, mais aura une largeur minimale de 200px */
+        /* Fixe une largeur pour l'image * /
+        flex: 1 1 200px; /* L'image peut se rétrécir, mais aura une largeur minimale de 200px * /
+        text-align: center;*/
+
+        /* Supprimer l'effet de rétrécissement */
+        flex: 0 0 auto; /* Empêche l'image de se redimensionner ou de s'étirer */
         text-align: center;
+
         img {
+            width: 100%; /* L'image occupe toute sa largeur par défaut */
             max-width: 100%; /* Adapte l'image à la largeur disponible */
             height: auto; /* Conserve les proportions */
-            border-radius: 10px; /* ajout de coins arrondis */
+            border-radius: 50px; /* ajout de coins arrondis */
         }
     }
 
@@ -122,4 +128,10 @@
     height: 5px;
     background: linear-gradient(to right, $primary-color 50%, $secondary-color 50%);
     margin: 100px auto;
+}
+
+@media screen and (max-width: 1200px) {
+    .photo-presentation {
+      display: none;
+    }
 }
