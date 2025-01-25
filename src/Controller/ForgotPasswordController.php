@@ -52,7 +52,7 @@ class ForgotPasswordController extends AbstractController
     }
 
     /**
-     * @Route("/forgot_password", name="forgot_password")
+     * @Route("/forgot-password", name="forgot_password")
      */
     public function forgotPassword(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {

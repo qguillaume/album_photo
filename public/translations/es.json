@@ -124,7 +124,22 @@
     "username_required": "¡El nombre de usuario es obligatorio!",
     "username_min_length": "¡El nombre de usuario debe contener al menos {{ limit }} caracteres!",
     "password_required": "¡La contraseña es obligatoria!",
-    "password_min_length": "¡La contraseña debe contener al menos {{ limit }} caracteres!"
+    "password_min_length": "¡La contraseña debe contener al menos {{ limit }} caracteres!",
+
+    "article_error_message": "Ocurrió un error, por favor contacte al administrador",
+    "comment_error_message": "Ocurrió un error, por favor contacte al administrador",
+    "contact_error_message": "Ocurrió un error, por favor contacte al administrador",
+    "forget_password_error_message": "Ocurrió un error, por favor contacte al administrador",
+    "photo_error_message": "Ocurrió un error, por favor contacte al administrador",
+    "register_error_message": "Ocurrió un error, por favor contacte al administrador",
+    "theme_error_message": "Ocurrió un error, por favor contacte al administrador",
+
+    "reset_password_title": "Restablecer la contraseña",
+    "reset_password_instruction": "Este formulario le permitirá cambiar su contraseña para que pueda acceder nuevamente a su cuenta.",
+    "new_password_placeholder": "Introduce tu nueva contraseña",
+    "confirm_password_placeholder": "Confirma tu nueva contraseña",
+    "reset_password": "Restablecer tu contraseña",
+    "password_mismatch": "Las contraseñas no coinciden"
   },
   "forgot_password": "¿Olvidaste tu contraseña?",
   "bellon": "Desarrollador Fullstack - Grupo Bellon",

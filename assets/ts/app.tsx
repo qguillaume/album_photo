@@ -766,9 +766,7 @@ const App: React.FC = () => {
     <BrowserRouter>
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
-          <Route path="/reset_password/:token" element={<ResetPasswordForm />} />
           <Route path="/login" element={<ConnexionForm />} />
-          <Route path="/forgot-password" element={<ForgotPasswordForm />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

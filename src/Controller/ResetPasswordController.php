@@ -61,7 +61,7 @@ class ResetPasswordController extends AbstractController
     }
 
     /**
-     * @Route("/reset_password/{token}", name="reset_password")
+     * @Route("/reset-password/{token}", name="reset_password")
      */
     public function resetPassword(string $token, Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {

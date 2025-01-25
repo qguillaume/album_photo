@@ -5,14 +5,14 @@ import { useParams, useNavigate } from 'react-router-dom';
 const ResetPasswordForm: React.FC = () => {
   const { t } = useTranslation();
   const { token } = useParams<{ token: string }>(); // Récupérer le token depuis l'URL
-  const navigate = useNavigate(); // Permet de naviguer après le succès
+  //const navigate = useNavigate(); // Permet de naviguer après le succès
 
   // États pour les champs et erreurs du formulaire
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   
   // État pour afficher les erreurs de validation
-  const [errors, setErrors] = useState<any>({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [flashMessages, setFlashMessages] = useState<string[]>([]);
 
   // Mettre à jour le `title` de la page
@@ -27,11 +27,16 @@ const ResetPasswordForm: React.FC = () => {
     // Réinitialiser les erreurs
     const newErrors: any = {};
 
+    if (!token) {
+      setFlashMessages(['Token manquant ou invalide']);
+      return;
+    }
+    
     // Validation des champs
     if (!password) {
       newErrors.password = t('form.password_required');
     } else if (password.length < 6) {
-      newErrors.password = t('form.password_min_length');
+      newErrors.password = t('form.password_min_length', { limit: 6 });
     }
 
     if (password !== confirmPassword) {
@@ -64,9 +69,9 @@ const ResetPasswordForm: React.FC = () => {
       setErrors({});
 
       // Rediriger vers la page de connexion
-      setTimeout(() => {
-        navigate('/login');
-      }, 2000);
+      // setTimeout(() => {
+      //   navigate('/login');
+      // }, 2000);
     } catch (error: any) {
       setFlashMessages([error.message]);
     }
@@ -76,12 +81,29 @@ const ResetPasswordForm: React.FC = () => {
     <>
       <h2>{t('form.reset_password_title')}</h2>
 
-      {/* Messages Flash */}
-      {flashMessages.map((msg, index) => (
-        <div key={index} className="flash-success">{msg}</div>
-      ))}
+      {Object.keys(errors).length > 0 && (
+        <div className="center">
+          <div className="flash-error">
+            <ul>
+              {Object.keys(errors).map((key) => (
+                <li key={key}>{errors[key]}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
 
-      <p>{t('form.reset_password_instruction')}</p>
+      {/* Flash success/error pour les messages globaux */}
+      {flashMessages.length > 0 && (
+        <div className="center">
+          <div className="flash-success">
+            {flashMessages.map((msg, index) => (
+              <div key={index}>{msg}</div>
+            ))}
+          </div>
+        </div>
+      )}
+      <p className="center">{t('form.reset_password_instruction')}</p>
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -92,7 +114,6 @@ const ResetPasswordForm: React.FC = () => {
             onChange={(e) => setPassword(e.target.value)}
             placeholder={t('form.new_password_placeholder')}
           />
-          {errors.password && <div className="error">{errors.password}</div>}
         </div>
 
         <div className="form-group">
@@ -103,16 +124,17 @@ const ResetPasswordForm: React.FC = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder={t('form.confirm_password_placeholder')}
           />
-          {errors.confirmPassword && <div className="error">{errors.confirmPassword}</div>}
         </div>
 
         <div className="form-group">
           <button type="submit" className="green-button">{t('form.reset_password')}</button>
         </div>
-      </form>
 
-      {/* Lien vers la page de connexion */}
-      <a href="/login">{t('form.back_to_login')}</a>
+        {/* Lien vers la page de connexion */}
+        <div className="form-group mt-2">
+          <a href="/login">{t('form.back_to_login')}</a>
+        </div>
+      </form>
     </>
   );
 };

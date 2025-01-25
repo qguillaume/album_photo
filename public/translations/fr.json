@@ -126,13 +126,20 @@
     "password_required": "Le mot de passe est obligatoire !",
     "password_min_length": "Le mot de passe doit contenir au moins {{ limit }} caractères !",
     
-    "article_error_message":"@todo erreur dynamique article",
-    "comment_error_message":"@todo erreur dynamique comment",
-    "contact_error_message":"@todo erreur dynamique contact",
-    "forget_password_error_message":"@todo erreur dynamique forget",
-    "photo_error_message":"@todo erreur dynamique photo",
-    "register_error_message":"@todo erreur dynamique register",
-    "theme_error_message":"@todo erreur dynamique theme"
+    "article_error_message":"Une erreur s'est produite, contactez l'administrateur",
+    "comment_error_message":"Une erreur s'est produite, contactez l'administrateur",
+    "contact_error_message":"Une erreur s'est produite, contactez l'administrateur",
+    "forget_password_error_message":"Une erreur s'est produite, contactez l'administrateur",
+    "photo_error_message":"Une erreur s'est produite, contactez l'administrateur",
+    "register_error_message":"Une erreur s'est produite, contactez l'administrateur",
+    "theme_error_message":"Une erreur s'est produite, contactez l'administrateur",
+
+    "reset_password_title": "Réinitialisation du mot de passe",
+    "reset_password_instruction": "Ce formulaire vous permettra de changer votre mot de passe afin que vous puissiez accédez de nouveau à votre compte.",
+    "new_password_placeholder": "Entrer votre nouveau mot de passe",
+    "confirm_password_placeholder": "Confirmer le nouveau mot de passe",
+    "reset_password": "Réinitialiser votre mot de passe",
+    "password_mismatch": "Les mots de passe ne correspondent pas"
   },
   "forgot_password": "Mot de passe oublié ?",
   "bellon": "Développeur Fullstack - Groupe Bellon",

@@ -125,7 +125,22 @@
     "username_required": "The username is required !",
     "username_min_length": "The username must be at least {{ limit }} characters long!",
     "password_required": "The password is required !",
-    "password_min_length": "The password must be at least {{ limit }} characters long!"
+    "password_min_length": "The password must be at least {{ limit }} characters long!",
+
+    "article_error_message": "An error occurred, please contact the administrator",
+    "comment_error_message": "An error occurred, please contact the administrator",
+    "contact_error_message": "An error occurred, please contact the administrator",
+    "forget_password_error_message": "An error occurred, please contact the administrator",
+    "photo_error_message": "An error occurred, please contact the administrator",
+    "register_error_message": "An error occurred, please contact the administrator",
+    "theme_error_message": "An error occurred, please contact the administrator",
+
+    "reset_password_title": "Reset Password",
+    "reset_password_instruction": "This form will allow you to change your password so you can access your account again.",
+    "new_password_placeholder": "Enter your new password",
+    "confirm_password_placeholder": "Confirm your new password",
+    "reset_password": "Reset your password",
+    "password_mismatch": "Passwords do not match"
   },
   "forgot_password": "Forgot your password?",
   "bellon": "Fullstack Developer - Groupe Bellon",

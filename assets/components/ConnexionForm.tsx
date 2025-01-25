@@ -118,7 +118,7 @@ const ConnexionForm: React.FC = () => {
         </div>
 
         <div className="form-group mt-2">
-          <a href="/forgot_password">{t('forgot_password')}</a>
+          <a href="/forgot-password">{t('forgot_password')}</a>
         </div>
       </form>
     </>

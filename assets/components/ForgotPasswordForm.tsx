@@ -9,7 +9,7 @@ const ForgetPasswordForm: React.FC = () => {
   
   // État pour afficher les erreurs de validation
   const [errors, setErrors] = useState<string[]>([]);
-  const [flashMessages, setFlashMessages] = useState<string[]>([]);
+  const [flashMessages, setFlashMessages] = useState<{ type: string, message: string }[]>([]);
 
   // Mettre à jour le `title` de la page
   useEffect(() => {
@@ -51,11 +51,11 @@ const ForgetPasswordForm: React.FC = () => {
       if (!response.ok) throw new Error('Submission failed');
 
       // Ajouter le message de succès
-      setFlashMessages([t('form.forget_password_success_message')]);
+      setFlashMessages([{ type: 'success', message: t('form.forget_password_success_message') }]);
       setEmail(''); // Réinitialiser le champ après un envoi réussi
     } catch (error) {
       // Ajouter le message d'erreur
-      setFlashMessages([t('form.forget_password_error_message')]);
+      setFlashMessages([{ type: 'error', message: t('form.forget_password_error_message') }]);
     }
   };
 
@@ -79,11 +79,14 @@ const ForgetPasswordForm: React.FC = () => {
       {/* Flash success/error pour les messages globaux */}
       {flashMessages.length > 0 && (
         <div className="center">
-          <div className="flash-success">
-            {flashMessages.map((msg, index) => (
-              <div key={index}>{msg}</div>
-            ))}
-          </div>
+          {flashMessages.map((msg, index) => (
+            <div 
+              key={index} 
+              className={msg.type === 'error' ? 'flash-error' : 'flash-success'}
+            >
+              {msg.message}
+            </div>
+          ))}
         </div>
       )}
 
