@@ -27,7 +27,7 @@ const Footer: React.FC = () => {
         <p className="footer-text">© {t('copyright')} - Guillaume Quesnel</p>
         <div className="social-icons">
           <a
-            href="https://www.https://www.linkedin.com/in/guillaume-quesnel-a567352aa/"
+            href="https://www.linkedin.com/in/guillaume-quesnel-a567352aa/"
             target="_blank"
             rel="noopener noreferrer"
             className="social-icon"
@@ -42,23 +42,29 @@ const Footer: React.FC = () => {
       </div>
 
       <div className="footer-right">
-        <ul>
-          <li>
-            <a href="/cgu">{t('footer.cgu')}</a>
-          </li>
-          <li>
-            <a href="/mentions-legales">{t('footer.legal_mentions')}</a>
-          </li>
-          <li>
-            <a href="/politique-confidentialite">{t('footer.confidentiality')}</a>
-          </li>
-          <li>
-            <a href="/moderation">{t('footer.moderation')}</a>
-          </li>
-          <li>
-            <a href="/droits-auteur">{t('footer.copyright_author')}</a>
-          </li>
-        </ul>
+        <div className="footer-column">
+          <ul>
+            <li>
+              <a href="/cgu">{t('footer.cgu')}</a>
+            </li>
+            <li>
+              <a href="/mentions-legales">{t('footer.legal_mentions')}</a>
+            </li>
+            <li>
+              <a href="/politique-confidentialite">{t('footer.confidentiality')}</a>
+            </li>
+          </ul>
+        </div>
+        <div className="footer-column">
+          <ul>
+            <li>
+              <a href="/moderation">{t('footer.moderation')}</a>
+            </li>
+            <li>
+              <a href="/droits-auteur">{t('footer.copyright_author')}</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </footer>
   );

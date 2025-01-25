@@ -744,15 +744,15 @@ document.addEventListener("DOMContentLoaded", () => {
     root.render(<PolitiqueConfidentialite />); // Rendre le composant PolitiqueConfidentialite
   }
 
-    // Code pour rendre la modération dans l'élément du DOM
-    const ModerationRoot = document.getElementById('moderation-root');
+  // Code pour rendre la modération dans l'élément du DOM
+  const ModerationRoot = document.getElementById('moderation-root');
 
-    if (ModerationRoot) {
-      const root = ReactDOM.createRoot(ModerationRoot);
-      root.render(<Moderation />); // Rendre le composant Moderation
-    }
+  if (ModerationRoot) {
+    const root = ReactDOM.createRoot(ModerationRoot);
+    root.render(<Moderation />); // Rendre le composant Moderation
+  }
 
-      // Code pour rendre les droits d'auteur dans l'élément du DOM
+  // Code pour rendre les droits d'auteur dans l'élément du DOM
   const DroitsRoot = document.getElementById('droits-root');
 
   if (DroitsRoot) {

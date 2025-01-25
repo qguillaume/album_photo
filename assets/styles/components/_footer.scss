@@ -10,7 +10,7 @@ footer {
   justify-content: space-between; /* Sépare les deux sections */
   align-items: stretch; /* Force les sections à occuper toute la hauteur */
   margin-top: auto; /* Pousse le footer en bas de la page avec Flexbox */
-  height: 100px; /* Définit une hauteur spécifique pour garantir que le footer occupe une hauteur fixe. Ajustez cette valeur selon vos besoins */
+  height: 120px; /* Augmenté pour donner plus d'espace */
 }
 
 .footer-left, .footer-right {
@@ -30,29 +30,36 @@ footer {
 
 .footer-right {
   background-color: $secondary-color; /* Fond à droite (couleur définie dans les variables) */
+  
+  display: flex; /* Utilisation de Flexbox pour disposer les éléments en deux colonnes */
+  flex-wrap: wrap; /* Permet aux éléments enfants de passer à la ligne suivante */
+  justify-content: space-between; /* Sépare les colonnes */
+  gap: 20px; /* Espace entre les deux colonnes */
 }
 
 .footer-right ul {
   list-style: none; /* Supprime les puces des listes */
   padding: 0;
   margin: 0;
+  display: flex; /* Affiche les éléments horizontalement dans chaque colonne */
+  flex-direction: column; /* Les liens s'empilent verticalement */
+}
 
-  li {
-    margin-bottom: $space-xs; /* Espace entre chaque lien */
-    &:last-child {
-      margin-bottom: 0; /* Supprime l'espacement du dernier lien */
-    }
+.footer-right ul li {
+  margin-bottom: $space-xs; /* Espace entre chaque lien */
+  &:last-child {
+    margin-bottom: 0; /* Supprime l'espacement du dernier lien */
   }
+}
 
-  a {
-    color: white;
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: color 0.3s ease;
+.footer-right ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
 
-    &:hover {
-      color: $primary-color; /* Change la couleur du lien au survol */
-    }
+  &:hover {
+    color: $primary-color; /* Change la couleur du lien au survol */
   }
 }
 
