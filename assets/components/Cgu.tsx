@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const Cgu: React.FC = () => {
   const { t, i18n } = useTranslation(); // Hook pour accéder aux traductions
+
+  useEffect(() => {
+    document.title = t('conditions.title');
+  }, [t]); // Le hook se relance lorsque `t` (la fonction de traduction) change
 
   return (
     <div>

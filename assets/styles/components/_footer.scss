@@ -5,12 +5,16 @@ footer {
   width: 100%; /* Assure que le footer occupe toute la largeur de la page */
   box-sizing: border-box; /* Inclut le padding et les bordures dans la largeur totale de l'élément */
   position: relative; /* Position relative pour pouvoir utiliser certaines propriétés CSS comme "absolute" si nécessaire pour des éléments internes */
-  
   display: flex; /* Utilise Flexbox pour diviser le footer en deux sections */
   justify-content: space-between; /* Sépare les deux sections */
   align-items: stretch; /* Force les sections à occuper toute la hauteur */
   margin-top: auto; /* Pousse le footer en bas de la page avec Flexbox */
   height: 120px; /* Augmenté pour donner plus d'espace */
+
+  @media (max-width: 768px) {
+    flex-direction: column; /* Empile les colonnes l'une sous l'autre sur écran moyen */
+    height: auto; /* Permet à la hauteur de s'adapter automatiquement au contenu */
+  }
 }
 
 .footer-left, .footer-right {
@@ -21,6 +25,11 @@ footer {
   padding: $space-sm $space-md; /* Padding interne */
   height: 100%; /* Assure que les sections prennent toute la hauteur du footer */
   text-align: center; /* Centre le texte à l'intérieur des sections */
+
+  @media (max-width: 768px) {
+    height: auto; /* Ajuste la hauteur automatiquement pour chaque colonne */
+    padding: $space-md; /* Ajoute un peu plus de padding sur mobile */
+  }
 }
 
 .footer-left {
@@ -30,14 +39,19 @@ footer {
 
 .footer-right {
   background-color: $secondary-color; /* Fond à droite (couleur définie dans les variables) */
-  
   display: flex; /* Utilisation de Flexbox pour disposer les éléments en deux colonnes */
   flex-wrap: wrap; /* Permet aux éléments enfants de passer à la ligne suivante */
   justify-content: space-between; /* Sépare les colonnes */
   gap: 20px; /* Espace entre les deux colonnes */
+
+  @media (max-width: 768px) {
+    flex-direction: column; /* Passe les éléments en pile sur écran moyen */
+    align-items: center; /* Centre les éléments horizontalement */
+  }
 }
 
 .footer-right ul {
+  /* Listes de liens dans la section droite */
   list-style: none; /* Supprime les puces des listes */
   padding: 0;
   margin: 0;

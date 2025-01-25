@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const MentionsLegales: React.FC = () => {
   const { t } = useTranslation();
+
+    useEffect(() => {
+      document.title = t('mentions_legales.title');
+    }, [t]); // Le hook se relance lorsque `t` (la fonction de traduction) change
+  
 
   return (
     <div>

@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const Moderation: React.FC = () => {
   const { t, i18n } = useTranslation(); // Hook pour accéder aux traductions
+
+    useEffect(() => {
+      document.title = t('moderation.title');
+    }, [t]); // Le hook se relance lorsque `t` (la fonction de traduction) change
+  
 
   return (
     <div>
