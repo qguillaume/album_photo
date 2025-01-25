@@ -36,7 +36,7 @@
                 <!-- Nom de l'album avec styles et icônes conditionnels -->
                 <p 
                     class="card-folder-name" 
-                    {% if album.creator.id == app.user.id %}style="color: green;"{% endif %}
+                    {% if app.user and album.creator.id == app.user.id %}style="color: green;"{% endif %}
                 >
                     {{ album.nomAlbum }} ({{album.photoCount}})
                     
