@@ -139,7 +139,11 @@
     "new_password_placeholder": "Introduce tu nueva contraseña",
     "confirm_password_placeholder": "Confirma tu nueva contraseña",
     "reset_password": "Restablecer tu contraseña",
-    "password_mismatch": "Las contraseñas no coinciden"
+    "password_mismatch": "Las contraseñas no coinciden",
+
+    "login_success": "Conexión exitosa",
+    "login_failed": "Nombre de usuario o contraseña incorrectos",
+    "connexion_error": "Error de conexión"
   },
   "forgot_password": "¿Olvidaste tu contraseña?",
   "bellon": "Desarrollador Fullstack - Grupo Bellon",

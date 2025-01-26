@@ -140,7 +140,11 @@
     "new_password_placeholder": "Geben Sie Ihr neues Passwort ein",
     "confirm_password_placeholder": "Bestätigen Sie Ihr neues Passwort",
     "reset_password": "Setzen Sie Ihr Passwort zurück",
-    "password_mismatch": "Die Passwörter stimmen nicht überein"
+    "password_mismatch": "Die Passwörter stimmen nicht überein",
+
+    "login_success": "Erfolgreich eingeloggt",
+    "login_failed": "Falscher Benutzername oder Passwort",
+    "connexion_error": "Verbindungsfehler"
   },
   "forgot_password": "Passwort vergessen?",
   "bellon": "Fullstack-Entwickler - Gruppe Bellon",

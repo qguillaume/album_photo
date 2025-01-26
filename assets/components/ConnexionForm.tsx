@@ -49,13 +49,13 @@ const ConnexionForm: React.FC = () => {
       });
 
       if (response.ok) {
-        setFlashMessages([t('form.login_success') || 'Connexion réussie']);
+        setFlashMessages([t('form.login_success')]);
       } else {
-        setFlashMessages([t('form.login_failed') || 'Nom d\'utilisateur ou mot de passe incorrect']);
+        setFlashMessages([t('form.login_failed')]);
       }
     } catch (error) {
       console.error('Erreur lors de la soumission:', error);
-      setFlashMessages([t('form.connection_error') || 'Erreur lors de la connexion']);
+      setFlashMessages([t('form.connection_error')]);
     }
   };
 
