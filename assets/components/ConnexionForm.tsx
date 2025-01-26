@@ -8,6 +8,7 @@ const ConnexionForm: React.FC = () => {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<string[]>([]);
   const [flashMessages, setFlashMessages] = useState<string[]>([]);
+  const [flashType, setFlashType] = useState<'success' | 'error' | null>(null);
 
   // Mettre à jour dynamiquement le `title` de la page
   useEffect(() => {
@@ -49,13 +50,23 @@ const ConnexionForm: React.FC = () => {
       });
 
       if (response.ok) {
-        setFlashMessages([t('form.login_success') || 'Connexion réussie']);
+        const data = await response.json();
+
+        if (data.success) {
+          setFlashMessages([t('form.login_success')]);
+          setFlashType('success');
+        } else {
+          setFlashMessages([t('form.login_failed')]);
+          setFlashType('error');
+        }
       } else {
-        setFlashMessages([t('form.login_failed') || 'Nom d\'utilisateur ou mot de passe incorrect']);
+        setFlashMessages([t('form.login_failed')]);
+        setFlashType('error');
       }
     } catch (error) {
       console.error('Erreur lors de la soumission:', error);
-      setFlashMessages([t('form.connection_error') || 'Erreur lors de la connexion']);
+      setFlashMessages([t('form.connexion_error')]);
+      setFlashType('error');
     }
   };
 
@@ -79,7 +90,7 @@ const ConnexionForm: React.FC = () => {
       {/* Flash success/error pour les messages globaux */}
       {flashMessages.length > 0 && (
         <div className="center">
-          <div className="flash-success">
+          <div className={flashType === 'error' ? 'flash-error' : 'flash-success'}>
             {flashMessages.map((msg, index) => (
               <div key={index}>{msg}</div>
             ))}
