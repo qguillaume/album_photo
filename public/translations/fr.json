@@ -143,7 +143,10 @@
 
     "login_success": "Connexion réussie",
     "login_failed": "Nom d'utilisateur ou mot de passe incorrect",
-    "connexion_error": "Erreur lors de la connexion"
+    "connexion_error": "Erreur lors de la connexion",
+
+    "leave_comment": "Laissez un commentaire",
+    "leave_comment_placeholder": "Ecrire un commentaire"
   },
   "forgot_password": "Mot de passe oublié ?",
   "bellon": "Développeur Fullstack - Groupe Bellon",

@@ -96,7 +96,7 @@ const CommentForm: React.FC = () => {
             ))}
           </ul>
         ) : (
-          <p>{t('no_comment')}</p>
+          <p className="center">{t('no_comment')}</p>
         )}
       </div>
 

@@ -144,7 +144,10 @@
 
     "login_success": "Login successful",
     "login_failed": "Incorrect username or password",
-    "connexion_error": "Connection error"
+    "connexion_error": "Connection error",
+
+    "leave_comment": "Leave a comment",
+    "leave_comment_placeholder": "Write a comment"
   },
   "forgot_password": "Forgot your password?",
   "bellon": "Fullstack Developer - Groupe Bellon",

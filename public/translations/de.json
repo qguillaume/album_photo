@@ -144,7 +144,10 @@
 
     "login_success": "Erfolgreich eingeloggt",
     "login_failed": "Falscher Benutzername oder Passwort",
-    "connexion_error": "Verbindungsfehler"
+    "connexion_error": "Verbindungsfehler",
+
+    "leave_comment": "Hinterlassen Sie einen Kommentar",
+    "leave_comment_placeholder": "Einen Kommentar schreiben"
   },
   "forgot_password": "Passwort vergessen?",
   "bellon": "Fullstack-Entwickler - Gruppe Bellon",
