@@ -18,7 +18,6 @@
                     <!-- Face arrière de la carte -->
                     <a class="card-folder-back" href="{{ path('photos_by_album', { 'id': album.id }) }}">
                         <div>
-                            <p>Créé le {{album.createdAt|date('d/m/Y H:i:s')}}</p>
                             {% if is_granted('ROLE_SUPER_ADMIN') %}
                                 <div class="album-actions">
                                     <!-- Conteneur React pour les autres contrôles -->
