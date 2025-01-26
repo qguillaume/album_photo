@@ -62,7 +62,15 @@ const CommentForm: React.FC = () => {
 
       const data = await response.json();
       setFlashMessages([t('form.comment_success_message')]);
-      setComments([...comments, data.comment]);
+      setComments((prevComments) => [
+        ...prevComments,
+        {
+          id: data.comment.id,
+          content: data.comment.content,
+          user: { username: 'Current User' },
+          createdAt: data.comment.createdAt,
+        },
+      ]);
       setContent('');
       setErrors({});
     } catch (error) {

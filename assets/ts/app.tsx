@@ -220,7 +220,7 @@ const AlbumsTable = () => {
       })
       .catch((error) => console.error("Erreur lors du fetch des albums", error));
   }, []);
-  
+
 
   return (
     <div>
@@ -266,14 +266,14 @@ const UsersTable = () => {
   const ThemesTable = () => {
     const [themes, setThemes] = useState<Theme[]>([]);
     const [newThemeName, setNewThemeName] = useState<string>(""); // Pour stocker le nom du nouveau thème
-  
+
     useEffect(() => {
       fetch(`${process.env.REACT_APP_API_URL}/themes_list`)
         .then((response) => response.json())
         .then((data) => setThemes(data))
         .catch((error) => console.error("Erreur lors du fetch des thèmes", error));
     }, []);
-  
+
     // Fonction de mise à jour de l'API
     const handleEdit = async (themeId: number) => {
       const newThemeName = prompt("Entrez le nouveau nom du thème :");
@@ -281,7 +281,7 @@ const UsersTable = () => {
         alert("Le nom du thème ne peut pas être vide.");
         return;
       }
-    
+
       try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/theme/${themeId}/edit_dashboard`, {
           method: "PUT",
@@ -290,11 +290,11 @@ const UsersTable = () => {
           },
           body: JSON.stringify({ name: newThemeName }),
         });
-    
+
         if (!response.ok) {
           throw new Error("Échec de la mise à jour du thème");
         }
-    
+
         const updatedTheme = await response.json();
         setThemes((prevThemes) =>
           prevThemes.map((theme) =>
@@ -305,18 +305,18 @@ const UsersTable = () => {
         console.error("Erreur lors de la mise à jour du thème", error);
       }
     };
-  
+
     return (
       <div>
         <ThemeTable themes={themes} onEdit={handleEdit} />
       </div>
     );
   };
-  
+
 
   const ArticlesTable = () => {
     const [articles, setArticles] = useState<Article[]>([]);
-  
+
     // Charger les articles depuis l'API au montage du composant
     useEffect(() => {
       const fetchArticles = async () => {
@@ -331,10 +331,10 @@ const UsersTable = () => {
           console.error(error);
         }
       };
-  
+
       fetchArticles();
     }, []);  // Le tableau vide signifie que cet effet se déclenche uniquement au premier rendu
-  
+
     // Fonction pour rafraîchir les articles après modification/suppression
     const updateArticles = async () => {
       try {
@@ -349,7 +349,7 @@ const UsersTable = () => {
         console.error(error);
       }
     };
-  
+
     return (
       <div>
         <ArticleTable
@@ -425,7 +425,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (response.ok) {
                   console.log("Album supprimé avec succès");
                   alert("Album supprimé avec succès");
-          
+
                   // Redirection après succès
                   window.location.href = "/photos"; // Redirige vers la liste des albums
                 } else {
@@ -457,11 +457,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const photoPath = el.getAttribute("data-photo-path") || "#";
     const isOwnerString = el.getAttribute('data-is-owner');
     const isOwner = isOwnerString === '1' ? true : false;
-  
+
     const onLike = (id: number) => {
       console.log(`Photo ${id} aimée!`);
     };
-  
+
     if (photoId && photoTitle && photoUrl) {
       ReactDOM.createRoot(el).render(
         <PhotoControls
@@ -772,5 +772,3 @@ const App: React.FC = () => {
     </BrowserRouter>
   );
 };
-
-export default App;

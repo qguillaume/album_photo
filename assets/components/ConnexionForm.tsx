@@ -1,30 +1,22 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { useUser } from '../context/UserContext'; // Importer le hook
 
 const ConnexionForm: React.FC = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const { user, loading } = useUser(); // Utiliser le hook pour obtenir l'utilisateur et le loading
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<string[]>([]);
   const [flashMessages, setFlashMessages] = useState<string[]>([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Ne pas rediriger tant que l'état de loading est true
+  // Mettre à jour dynamiquement le `title` de la page
   useEffect(() => {
-    if (!loading && user) {
-      navigate('/'); // Rediriger si l'utilisateur est déjà connecté
-    }
-  }, [user, loading, navigate]);
+    document.title = t('form.connexion_title');
+  }, [t]);
 
   // Fonction de soumission du formulaire
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true); // Marque la soumission comme en cours
 
     const newErrors: string[] = [];
 
@@ -39,7 +31,6 @@ const ConnexionForm: React.FC = () => {
     // Si des erreurs existent, les afficher sous forme de flash error
     if (newErrors.length > 0) {
       setErrors(newErrors);
-      setIsSubmitting(false); // Arrêter la soumission si des erreurs
       return;
     }
 
@@ -58,33 +49,15 @@ const ConnexionForm: React.FC = () => {
       });
 
       if (response.ok) {
-        setFlashMessages([t('form.login_success')]);
-        navigate('/'); // Redirection vers la page d'accueil après la connexion réussie
+        setFlashMessages([t('form.login_success') || 'Connexion réussie']);
       } else {
-        setFlashMessages([t('form.login_failed')]);
+        setFlashMessages([t('form.login_failed') || 'Nom d\'utilisateur ou mot de passe incorrect']);
       }
     } catch (error) {
       console.error('Erreur lors de la soumission:', error);
-      setFlashMessages([t('form.connection_error')]);
+      setFlashMessages([t('form.connection_error') || 'Erreur lors de la connexion']);
     }
-
-    setIsSubmitting(false); // Arrêter la soumission
   };
-
-  // Nettoyage des messages flash après 3 secondes
-  useEffect(() => {
-    if (flashMessages.length > 0) {
-      const timer = setTimeout(() => {
-        setFlashMessages([]);
-      }, 3000);
-      return () => clearTimeout(timer); // Cleanup du timer
-    }
-  }, [flashMessages]);
-
-  // Rendu du formulaire s'il n'y a pas d'utilisateur ou si on n'est pas encore en train de soumettre
-  if (loading) {
-    return <div>Loading...</div>; // Si on est en train de charger l'utilisateur
-  }
 
   return (
     <>
@@ -139,7 +112,7 @@ const ConnexionForm: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <button type="submit" className="green-button" disabled={isSubmitting}>
+          <button type="submit" className="green-button">
             {t('form.send')}
           </button>
         </div>
