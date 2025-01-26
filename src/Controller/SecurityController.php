@@ -16,6 +16,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SecurityController extends AbstractController
 {
@@ -38,23 +39,21 @@ class SecurityController extends AbstractController
         $password = $data['password'] ?? null;
 
         if (!$username || !$password) {
-            return new Response('Nom d\'utilisateur ou mot de passe manquant', Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(['error' => 'Nom d\'utilisateur ou mot de passe manquant'], Response::HTTP_BAD_REQUEST);
         }
 
         // Recherche de l'utilisateur dans la base de données
         $userRepository = $this->getDoctrine()->getRepository(User::class);
         $user = $userRepository->findOneBy(['username' => $username]);
 
-        if ($user && $this->passwordHasher->isPasswordValid($user, $password)) {
-            // Connexion réussie, retourne une réponse 200
-            return new Response('Connexion réussie', Response::HTTP_OK);
+        if (!$user || !$this->passwordHasher->isPasswordValid($user, $password)) {
+            // Erreur de connexion : nom d'utilisateur ou mot de passe incorrect
+            return new JsonResponse(['error' => 'Nom d\'utilisateur ou mot de passe incorrect'], Response::HTTP_UNAUTHORIZED);
         }
 
-        // Erreur de connexion : nom d'utilisateur ou mot de passe incorrect
-        return new Response('Nom d\'utilisateur ou mot de passe incorrect.', Response::HTTP_UNAUTHORIZED);
+        // Connexion réussie
+        return new JsonResponse(['message' => 'Connexion réussie'], Response::HTTP_OK);
     }
-
-
 
     /**
      * @Route("/login", name="login")
@@ -98,7 +97,6 @@ class SecurityController extends AbstractController
             'last_username' => $lastUsername,
         ]);
     }
-
 
     // Endpoint pour tester un mot de passe avec son hashage.
     /**
