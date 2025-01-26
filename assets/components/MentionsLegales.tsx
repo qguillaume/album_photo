@@ -29,6 +29,18 @@ const MentionsLegales: React.FC = () => {
         <h2>{t('mentions_legales.responsibility.title')}</h2>
         <p>{t('mentions_legales.responsibility.text')}</p>
 
+        <h2>{t('mentions_legales.intellectual_property.title')}</h2>
+        <p>{t('mentions_legales.intellectual_property.text')}</p>
+
+        <h2>{t('mentions_legales.links.title')}</h2>
+        <p>{t('mentions_legales.links.text')}</p>
+
+        <h2>{t('mentions_legales.data_protection.title')}</h2>
+        <p>{t('mentions_legales.data_protection.text')}</p>
+
+        <h2>{t('mentions_legales.jurisdiction.title')}</h2>
+        <p>{t('mentions_legales.jurisdiction.text')}</p>
+
         <h2>{t('mentions_legales.contact.title')}</h2>
         <p>{t('mentions_legales.contact.text')}</p>
       </div>

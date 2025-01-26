@@ -19,9 +19,6 @@ const PolitiqueConfidentialite: React.FC = () => {
         <h2>{t('politique_confidentialite.data_collection.title')}</h2>
         <p>{t('politique_confidentialite.data_collection.text')}</p>
 
-        <h3>{t('politique_confidentialite.data_collection.types.title')}</h3>
-        <p>{t('politique_confidentialite.data_collection.types.text')}</p>
-
         <h2>{t('politique_confidentialite.use_of_data.title')}</h2>
         <p>{t('politique_confidentialite.use_of_data.text')}</p>
 
@@ -31,11 +28,17 @@ const PolitiqueConfidentialite: React.FC = () => {
         <h2>{t('politique_confidentialite.cookies.title')}</h2>
         <p>{t('politique_confidentialite.cookies.text')}</p>
 
-        <h3>{t('politique_confidentialite.cookies.management.title')}</h3>
-        <p>{t('politique_confidentialite.cookies.management.text')}</p>
+        <h2>{t('politique_confidentialite.third_party_services.title')}</h2>
+        <p>{t('politique_confidentialite.third_party_services.text')}</p>
 
-        <h2>{t('politique_confidentialite.rights.title')}</h2>
-        <p>{t('politique_confidentialite.rights.text')}</p>
+        <h2>{t('politique_confidentialite.user_rights.title')}</h2>
+        <p>{t('politique_confidentialite.user_rights.text')}</p>
+
+        <h2>{t('politique_confidentialite.data_retention.title')}</h2>
+        <p>{t('politique_confidentialite.data_retention.text')}</p>
+
+        <h2>{t('politique_confidentialite.policy_updates.title')}</h2>
+        <p>{t('politique_confidentialite.policy_updates.text')}</p>
 
         <h2>{t('politique_confidentialite.contact.title')}</h2>
         <p>{t('politique_confidentialite.contact.text')}</p>
