@@ -15,6 +15,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Security\Core\Security;
 
 class SecurityController extends AbstractController
 {
@@ -58,8 +59,14 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login", name="login")
      */
-    public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
+    public function login(AuthenticationUtils $authenticationUtils, Request $request, Security $security): Response
     {
+        // Vérifier si l'utilisateur est déjà connecté
+        if ($security->getUser()) {
+            // Rediriger vers la page d'accueil
+            return $this->redirectToRoute('portfolio_home');
+        }
+
         // Récupère les erreurs de connexion
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
@@ -91,6 +98,7 @@ class SecurityController extends AbstractController
             'last_username' => $lastUsername,
         ]);
     }
+
 
     // Endpoint pour tester un mot de passe avec son hashage.
     /**
