@@ -6,7 +6,7 @@ import { useUser } from '../context/UserContext'; // Importer le hook
 const ConnexionForm: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const user = useUser(); // Utiliser le hook pour obtenir l'utilisateur
+  const { user, loading } = useUser(); // Utiliser le hook pour obtenir l'utilisateur et le loading
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -14,12 +14,12 @@ const ConnexionForm: React.FC = () => {
   const [flashMessages, setFlashMessages] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Rediriger l'utilisateur si déjà connecté
+  // Ne pas rediriger tant que l'état de loading est true
   useEffect(() => {
-    if (user) {
+    if (!loading && user) {
       navigate('/'); // Rediriger si l'utilisateur est déjà connecté
     }
-  }, [user, navigate]);
+  }, [user, loading, navigate]);
 
   // Fonction de soumission du formulaire
   const handleSubmit = async (e: FormEvent) => {
@@ -81,10 +81,11 @@ const ConnexionForm: React.FC = () => {
     }
   }, [flashMessages]);
 
-  // Debug : Affichage de l'état de l'utilisateur
-  console.log("User is logged in:", user);
-
   // Rendu du formulaire s'il n'y a pas d'utilisateur ou si on n'est pas encore en train de soumettre
+  if (loading) {
+    return <div>Loading...</div>; // Si on est en train de charger l'utilisateur
+  }
+
   return (
     <>
       <h2>{t('connexion_form')}</h2>

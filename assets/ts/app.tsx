@@ -764,7 +764,7 @@ const Presentation = lazy(() => import('../components/Presentation'));
 const Competences = lazy(() => import('../components/Competences'));
 const Timeline = lazy(() => import('../components/Timeline'));
 const ProjectCarousel = lazy(() => import('../components/ProjectCarousel'));
-import CVContact from '../components/CVContact';
+const CVContact = lazy(() => import('../components/CVContact'));
 
 const App: React.FC = () => {
   // Fonction d'initialisation des composants dans des éléments spécifiques du DOM
@@ -794,12 +794,11 @@ const App: React.FC = () => {
         root.render(<ProjectCarousel />);
       }
 
-      // const cvContactRoot = document.getElementById('cv-contact-root');
-      // console.log(cvContactRoot); 
-      // if (cvContactRoot) {
-      //   const root = ReactDOM.createRoot(cvContactRoot);
-      //   root.render(<CVContact />);
-      // }
+      const cvContactRoot = document.getElementById('cv-contact-root');
+      if (cvContactRoot) {
+        const root = ReactDOM.createRoot(cvContactRoot);
+        root.render(<CVContact />);
+      }
     };
 
     mountReactComponents();
@@ -815,10 +814,13 @@ const App: React.FC = () => {
             <Route path="/" element={<HomePage />} />
           </Routes>
         </Suspense>
+        
       </BrowserRouter>
-      <div id="cv-contact-root">
+      
+      {/* Ce composant sera rendu ici avec Suspense 
+      <Suspense fallback={<div>Loading CVContact...</div>}>
         <CVContact />
-      </div>
+      </Suspense>*/}
     </UserProvider>
   );
 };

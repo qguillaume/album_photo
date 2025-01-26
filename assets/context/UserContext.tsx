@@ -5,6 +5,7 @@ import { User } from "../ts/types";
 interface UserContextType {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  loading: boolean;
 }
 
 // Créer le contexte avec une valeur par défaut
@@ -13,6 +14,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 // Créer un provider pour le contexte
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Récupérer l'utilisateur connecté depuis le backend
@@ -38,6 +40,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         // Gérer les erreurs de récupération de l'utilisateur
         console.error("Erreur lors de la récupération de l'utilisateur :", error);
         setUser(null);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -45,7 +49,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, []); // Charge l'utilisateur une fois au démarrage
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, loading }}>
       {children}
     </UserContext.Provider>
   );
