@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Security\Core\Security;
 
 class ResetPasswordController extends AbstractController
 {
@@ -63,8 +64,13 @@ class ResetPasswordController extends AbstractController
     /**
      * @Route("/reset-password/{token}", name="reset_password")
      */
-    public function resetPassword(string $token, Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
+    public function resetPassword(string $token, Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher, Security $security): Response
     {
+        // Vérifier si l'utilisateur est déjà connecté
+        if ($security->getUser()) {
+            // Rediriger vers la page d'accueil
+            return $this->redirectToRoute('portfolio_home');
+        }
         // Vérification du token
         $tokenEntity = $entityManager->getRepository(PasswordResetToken::class)->findOneBy(['token' => $token]);
 

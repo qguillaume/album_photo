@@ -14,6 +14,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Security;
 
 class ForgotPasswordController extends AbstractController
 {
@@ -54,8 +55,14 @@ class ForgotPasswordController extends AbstractController
     /**
      * @Route("/forgot-password", name="forgot_password")
      */
-    public function forgotPassword(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
+    public function forgotPassword(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer, Security $security): Response
     {
+        // Vérifier si l'utilisateur est déjà connecté
+        if ($security->getUser()) {
+            // Rediriger vers la page d'accueil
+            return $this->redirectToRoute('portfolio_home');
+        }
+
         $form = $this->createForm(ForgotPasswordFormType::class);
         $form->handleRequest($request);
 

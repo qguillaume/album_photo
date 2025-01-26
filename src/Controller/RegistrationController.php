@@ -14,6 +14,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\UserRepository;
+use Symfony\Component\Security\Core\Security;
 
 class RegistrationController extends AbstractController
 {
@@ -28,11 +29,13 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/register", name="register")
      */
-    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, MailerInterface $mailer): Response
+    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, MailerInterface $mailer, Security $security): Response
     {
-        /*if ($this->getUser()) {
+        // Vérifier si l'utilisateur est déjà connecté
+        if ($security->getUser()) {
+            // Rediriger vers la page d'accueil
             return $this->redirectToRoute('portfolio_home');
-        }*/
+        }
 
         $user = new User();
 
