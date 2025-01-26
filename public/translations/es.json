@@ -60,6 +60,8 @@
   "leave_comment": "Dejar un comentario",
   "no_comment": "No hay comentarios para esta foto.",
   "connected_to_comment": "Debes estar conectado para dejar un comentario.",
+  "posted_on": "Publicado el",
+  "loading_comments": "Cargando comentarios...",
   "create_new_album": "Crear un nuevo álbum",
   "album_name": "Nombre del álbum",
   "upload_valide": "Por favor, sube una imagen válida.",

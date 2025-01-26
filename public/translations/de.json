@@ -61,6 +61,8 @@
   "leave_comment": "Kommentar hinterlassen",
   "no_comment": "Kein Kommentar zu diesem Foto.",
   "connected_to_comment": "Sie müssen angemeldet sein, um einen Kommentar zu hinterlassen.",
+  "posted_on": "Veröffentlicht am",
+  "loading_comments": "Laden von Kommentaren...",
   "create_new_album": "Erstelle ein neues Album",
   "album_name": "Albumname",
   "upload_valide": "Bitte laden Sie ein gültiges Bild hoch.",

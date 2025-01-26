@@ -80,7 +80,7 @@ const CommentForm: React.FC = () => {
 
   return (
     <div>
-      <h2>{t('form.leave_comment')}</h2>
+      <h2>{t('leave_comment')}</h2>
 
       {/* Messages Flash */}
       <div className="form-group">
@@ -92,17 +92,19 @@ const CommentForm: React.FC = () => {
       {/* Affichage des commentaires */}
       <div className="comments-list">
         {loading ? (
-          <p>{t('form.loading_comments')}</p>
+          <p className="center">{t('loading_comments')}</p>
         ) : comments.length > 0 ? (
-          <ul>
-            {comments.map((comment) => (
-              <li key={comment.id}>
-                <strong>{comment.user.username}</strong>: {comment.content}
-                <br />
-                <small>Posté le {comment.createdAt}</small>
-              </li>
-            ))}
-          </ul>
+          <div className="center">
+            <ul>
+              {comments.map((comment) => (
+                <li key={comment.id}>
+                  <strong>{comment.user.username}</strong>: {comment.content}
+                  <br />
+                  <small>Posté le {comment.createdAt}</small>
+                </li>
+              ))}
+            </ul>
+          </div>
         ) : (
           <p className="center">{t('no_comment')}</p>
         )}

@@ -61,6 +61,8 @@
   "leave_comment": "Leave a comment",
   "no_comment": "No comment for this photo.",
   "connected_to_comment": "You must be logged in to leave a comment.",
+  "posted_on": "Posted on",
+  "loading_comments": "Loading comments...",
   "create_new_album": "Create a new album",
   "album_name": "Album name",
   "upload_valide": "Please upload a valid image.",
