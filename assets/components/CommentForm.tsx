@@ -62,17 +62,10 @@ const CommentForm: React.FC = () => {
 
       const data = await response.json();
       setFlashMessages([t('form.comment_success_message')]);
-      setComments((prevComments) => [
-        ...prevComments,
-        {
-          id: data.comment.id,
-          content: data.comment.content,
-          user: { username: 'Current User' },
-          createdAt: data.comment.createdAt,
-        },
-      ]);
+
       setContent('');
       setErrors({});
+      window.location.reload(); 
     } catch (error) {
       setFlashMessages([t('form.comment_error_message')]);
     }
@@ -81,13 +74,6 @@ const CommentForm: React.FC = () => {
   return (
     <div>
       <h2>{t('leave_comment')}</h2>
-
-      {/* Messages Flash */}
-      <div className="form-group">
-        {flashMessages.map((msg, index) => (
-          <div key={index} className="flash-success">{msg}</div>
-        ))}
-      </div>
 
       {/* Affichage des commentaires */}
       <div className="comments-list">
@@ -110,9 +96,16 @@ const CommentForm: React.FC = () => {
         )}
       </div>
 
+      {/* Messages Flash */}
+      <div className="form-group">
+        {flashMessages.map((msg, index) => (
+          <div key={index} className="flash-success">{msg}</div>
+        ))}
+      </div>
+
       {/* Formulaire de commentaire */}
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
+        <div className="form-group mt-2">
           <textarea
             className="form-control"
             value={content}
