@@ -1,13 +1,103 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
     <div id="presentation-root"></div>
+
     <div class="espacement"></div>
-    <div id="competences-root"></div>
-    <div id="timeline-root"></div>
-    <div id="project-carousel-root"></div>
+        <div class="presentation-container">
+            <!-- Compétences à gauche -->
+            <div class="competences" data-aos="fade-right">
+                <div class="competence">
+                    <img src="{{ asset('icons/html.svg') }}" alt="HTML">
+                    <div class="competence-text">HTML</div>
+                </div>
+                <div class="competence">
+                    <img src="{{ asset('icons/css.svg') }}" alt="CSS">
+                    <div class="competence-text">CSS</div>
+                </div>
+                <div class="competence">
+                    <img src="{{ asset('icons/js.svg') }}" alt="JavaScript">
+                    <div class="competence-text">JavaScript</div>
+                </div>
+                <div class="competence">
+                    <img src="{{ asset('icons/react.svg') }}" alt="React">
+                    <div class="competence-text">React</div>
+                </div>
+                <div class="competence">
+                    <img src="{{ asset('icons/nodejs.svg') }}" alt="NodeJS">
+                    <div class="competence-text">Node.js</div>
+                </div>
+                <div class="competence">
+                    <img src="{{ asset('icons/typescript.svg') }}" alt="TypeScript">
+                    <div class="competence-text">TypeScript</div>
+                </div>
+                <div class="competence">
+                    <img src="{{ asset('icons/mysql.svg') }}" alt="MySQL">
+                    <div class="competence-text">MySQL</div>
+                </div>
+                <div class="competence">
+                    <img src="{{ asset('icons/jenkins.svg') }}" alt="Jenkins">
+                    <div class="competence-text">Jenkins</div>
+                </div>
+                <div class="competence">
+                    <img src="{{ asset('icons/jquery.svg') }}" alt="jQuery">
+                    <div class="competence-text">jQuery</div>
+                </div>
+            </div>
+
+            <div class="competences" data-aos="fade-left">
+                <div class="competence">
+                    <img src="{{ asset('icons/php.svg') }}" alt="PHP">
+                    <div class="competence-text">PHP</div>
+                </div>
+                <div class="competence">
+                    <img src="{{ asset('icons/symfony.svg') }}" alt="Symfony">
+                    <div class="competence-text">Symfony</div>
+                </div>
+                <div class="competence">
+                    <img src="{{ asset('icons/laravel.svg') }}" alt="Laravel">
+                    <div class="competence-text">Laravel</div>
+                </div>
+                <div class="competence">
+                    <img src="{{ asset('icons/git.svg') }}" alt="Git">
+                    <div class="competence-text">Git</div>
+                </div>
+                <div class="competence">
+                    <img src="{{ asset('icons/github.svg') }}" alt="GitHub">
+                    <div class="competence-text">GitHub</div>
+                </div>
+                <div class="competence">
+                    <img src="{{ asset('icons/docker.svg') }}" alt="Docker">
+                    <div class="competence-text">Docker</div>
+                </div>
+                <div class="competence">
+                    <img src="{{ asset('icons/postman.svg') }}" alt="Postman">
+                    <div class="competence-text">Postman</div>
+                </div>
+                <div class="competence">
+                    <img src="{{ asset('icons/jira.svg') }}" alt="Jira">
+                    <div class="competence-text">Jira</div>
+                </div>
+                <div class="competence">
+                    <img src="{{ asset('icons/gimp.svg') }}" alt="GIMP">
+                    <div class="competence-text">GIMP</div>
+                </div>
+            </div>
+
+        </div>
+
+
     <div class="separator"></div>
-    <div id="cv-contact-root"></div>
+
+    <div id="timeline-root"></div>
+
+    <div class="project-carousel-container">
+        <div id="project-carousel" data-aos="zoom-in"></div>
+    </div>
+
+    <div class="separator"></div>
+
     
+    <div id="cv_contact"></div>
+
 {% endblock %}
