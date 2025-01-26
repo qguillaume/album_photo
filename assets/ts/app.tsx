@@ -1,17 +1,14 @@
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense, lazy } from "react";
 import CookieConsent from 'react-cookie-consent';
 import ReactDOM from "react-dom/client";
 import AlbumControls from "../components/AlbumControls";
 import PhotoControls from "../components/PhotoControls";
 import PhotoTable from "../components/PhotoTable";
-import Timeline from "../components/Timeline";
-import ContactButton from "../components/ContactButton"; 
 import { Photo, Album, User, Article, Comment, Theme } from "./types";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useTranslation } from 'react-i18next'; // Importer useTranslation ici pour l'utiliser dans les composants
-import ProjectCarousel from '../components/ProjectCarousel';
 import UserTable from "../components/UserTable";
 import AlbumTable from "../components/AlbumTable";
 import ArticleTable from "../components/ArticleTable";
@@ -23,9 +20,8 @@ import Header from "../components/Header";
 import Languette from "../components/Languette";
 import Footer from "../components/Footer";
 import { UserProvider } from '../context/UserContext';
-import Presentation from '../components/Presentation';
 import ContactForm from '../components/ContactForm';
-import ConnexionForm from '../components/ConnexionForm';
+//import ConnexionForm from '../components/ConnexionForm';
 import RegisterForm from '../components/RegisterForm';
 import AlbumForm from '../components/AlbumForm';
 import PhotoForm from '../components/PhotoForm';
@@ -73,50 +69,50 @@ if (headerRootElement) {
 }
 
 // Composant principal pour téléchargement du CV et contact
-const CVContact: React.FC = () => {
-  const { t, i18n } = useTranslation(); // Hook pour accéder aux traductions
-  const [isReady, setIsReady] = useState(false);
+// const CVContact: React.FC = () => {
+//   const { t, i18n } = useTranslation(); // Hook pour accéder aux traductions
+//   const [isReady, setIsReady] = useState(false);
 
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      easing: 'ease-in-out',
-      once: true,
-      offset: 120,
-      mirror: false,
-    });
-    if (i18n.isInitialized) {
-      setIsReady(true); // Attendre que i18next soit initialisé
-    }
-  }, [i18n.isInitialized]);
+//   useEffect(() => {
+//     AOS.init({
+//       duration: 1000,
+//       easing: 'ease-in-out',
+//       once: true,
+//       offset: 120,
+//       mirror: false,
+//     });
+//     if (i18n.isInitialized) {
+//       setIsReady(true); // Attendre que i18next soit initialisé
+//     }
+//   }, [i18n.isInitialized]);
 
-  if (!isReady) return null; // Afficher rien ou un loader pendant l'initialisation
+//   if (!isReady) return null; // Afficher rien ou un loader pendant l'initialisation
 
-  const handleDownloadCV = () => {
-    const cvUrl = "/files/CV.pdf";
-    const link = document.createElement("a");
-    link.href = cvUrl;
-    link.download = "CV.pdf"; 
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+//   const handleDownloadCV = () => {
+//     const cvUrl = "/files/CV.pdf";
+//     const link = document.createElement("a");
+//     link.href = cvUrl;
+//     link.download = "CV.pdf"; 
+//     document.body.appendChild(link);
+//     link.click();
+//     document.body.removeChild(link);
+//   };
 
-  return (
-    <>
-      <h2 data-aos="zoom-in">{t('profile_interest')}</h2>
-      <p className="cv-p" data-aos="fade-up">{t('collab_sentence')}</p>
-      <div className="cv-contact">
-        <div className="cvc-buttons" data-aos="fade-up">
-          <ContactButton />
-          <button className="green-button" onClick={handleDownloadCV}>
-            {t('download_cv')} {/* Traduction pour le texte du bouton */}
-          </button>
-        </div>
-      </div>
-    </>
-  );
-};
+//   return (
+//     <>
+//       <h2 data-aos="zoom-in">{t('profile_interest')}</h2>
+//       <p className="cv-p" data-aos="fade-up">{t('collab_sentence')}</p>
+//       <div className="cv-contact">
+//         <div className="cvc-buttons" data-aos="fade-up">
+//           <ContactButton />
+//           <button className="green-button" onClick={handleDownloadCV}>
+//             {t('download_cv')} {/* Traduction pour le texte du bouton */}
+//           </button>
+//         </div>
+//       </div>
+//     </>
+//   );
+// };
 
 
 
@@ -587,14 +583,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Ajouter le composant CVContact dans le DOM
-  const cvcRoot = document.getElementById("cv_contact");
-  if (cvcRoot) {
-    ReactDOM.createRoot(cvcRoot).render(
-      <BrowserRouter>
-        <CVContact />
-      </BrowserRouter>
-    );
-  }
+  // const cvcRoot = document.getElementById("cv_contact");
+  // if (cvcRoot) {
+  //   ReactDOM.createRoot(cvcRoot).render(
+  //     <BrowserRouter>
+  //       <CVContact />
+  //     </BrowserRouter>
+  //   );
+  // }
 
     // Ajouter le composant Presentation dans le DOM
     const presentationRoot = document.getElementById("presentation-root");
@@ -633,12 +629,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Code pour rendre le formulaire de connexion dans l'élément du DOM
-  const connexionFormRoot = document.getElementById('connexion-form-root');
+  /*const connexionFormRoot = document.getElementById('connexion-form-root');
 
   if (connexionFormRoot) {
     const root = ReactDOM.createRoot(connexionFormRoot);
     root.render(<ConnexionForm />); // Rendre le composant ConnexionForm
-  }
+  }*/
 
   // Code pour rendre le formulaire d'inscription dans l'élément du DOM
   const registerFormRoot = document.getElementById('register-form-root');
@@ -761,16 +757,75 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// Lazy loading des composants
+const ConnexionForm = lazy(() => import('../components/ConnexionForm'));
+const HomePage = lazy(() => import('../components/HomePage'));
+const Presentation = lazy(() => import('../components/Presentation'));
+const Competences = lazy(() => import('../components/Competences'));
+const Timeline = lazy(() => import('../components/Timeline'));
+const ProjectCarousel = lazy(() => import('../components/ProjectCarousel'));
+import CVContact from '../components/CVContact';
+
 const App: React.FC = () => {
+  // Fonction d'initialisation des composants dans des éléments spécifiques du DOM
+  useEffect(() => {
+    const mountReactComponents = () => {
+      const presentationRoot = document.getElementById('presentation-root');
+      if (presentationRoot) {
+        const root = ReactDOM.createRoot(presentationRoot);
+        root.render(<Presentation />);
+      }
+
+      const competencesRoot = document.getElementById('competences-root');
+      if (competencesRoot) {
+        const root = ReactDOM.createRoot(competencesRoot);
+        root.render(<Competences />);
+      }
+
+      const timelineRoot = document.getElementById('timeline-root');
+      if (timelineRoot) {
+        const root = ReactDOM.createRoot(timelineRoot);
+        root.render(<Timeline />);
+      }
+
+      const projectCarouselRoot = document.getElementById('project-carousel-root');
+      if (projectCarouselRoot) {
+        const root = ReactDOM.createRoot(projectCarouselRoot);
+        root.render(<ProjectCarousel />);
+      }
+
+      // const cvContactRoot = document.getElementById('cv-contact-root');
+      // console.log(cvContactRoot); 
+      // if (cvContactRoot) {
+      //   const root = ReactDOM.createRoot(cvContactRoot);
+      //   root.render(<CVContact />);
+      // }
+    };
+
+    mountReactComponents();
+  }, []);
+
   return (
-    <BrowserRouter>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Routes>
-          <Route path="/login" element={<ConnexionForm />} />
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
+    <UserProvider>
+      <BrowserRouter>
+        {/* Utilisation du Suspense pour le lazy loading des routes */}
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+            <Route path="/login" element={<ConnexionForm />} />
+            <Route path="/" element={<HomePage />} />
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+      <div id="cv-contact-root">
+        <CVContact />
+      </div>
+    </UserProvider>
   );
 };
 
-export default App;
+// Trouver l'élément du DOM pour y monter le React App
+const rootElement = document.getElementById('connexion-form-root');
+if (rootElement) {
+  const root = ReactDOM.createRoot(rootElement); // Créer une racine pour React
+  root.render(<App />); // Utiliser seulement un argument dans render
+}
