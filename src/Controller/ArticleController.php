@@ -258,6 +258,6 @@ class ArticleController extends AbstractController
         $this->entityManager->remove($article);
         $this->entityManager->flush();
 
-        return $this->redirectToRoute('articles_list');
+        return $this->redirectToRoute('articles');
     }
 }
