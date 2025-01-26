@@ -258,42 +258,42 @@
   "mentions_legales": {
     "title": "Legal Notice",
     "introduction": "1. Introduction",
-    "intro_text": "This legal notice governs access and use of the website. By accessing this site, you agree to the terms and conditions set forth in this document.",
+    "intro_text": "These legal notices govern the access and use of the site. By accessing this site, you agree to the terms and conditions defined in this document.",
     "publisher": {
-      "title": "2. Publisher",
-      "text": "The site is published by [Publisher's Name], [Publisher's Address], [SIRET Number, if applicable], [Phone Number], [Contact Email Address]."
+      "title": "2. Publisher of the site",
+      "text": "The site is published by Guillaume QUESNEL, reachable via the contact form available on the contact page."
     },
     "director": {
       "title": "3. Publication Director",
-      "text": "The publication director is [Publication Director's Name]."
+      "text": "The publication director is Guillaume QUESNEL."
     },
     "host": {
       "title": "4. Hosting",
-      "text": "The site is hosted by [Host's Name], located at [Host's Address], [Host's Phone Number]."
+      "text": "OVH SAS, with a capital of €10,174,560, headquartered at: 2 rue Kellermann - 59100 Roubaix – France, registered at the RCS Lille Métropole under number: 424 761 419 00045."
     },
     "responsibility": {
       "title": "5. Responsibility",
-      "text": "The site cannot be held responsible for any direct or indirect damages resulting from the use of the site, including errors in content or data loss."
+      "text": "The site guillaume-quesnel.com makes every effort to provide accurate and up-to-date information but cannot guarantee the accuracy, completeness, or update of the information available on the site. The site cannot be held responsible for direct or indirect damages resulting from the use of the site, including but not limited to errors in the content, interruptions, or data loss."
     },
     "intellectual_property": {
       "title": "6. Intellectual Property",
-      "text": "All content on the site, including texts, images, logos, videos, and other elements, is protected by copyright and intellectual property laws. Unauthorized reproduction or use is prohibited."
+      "text": "All content on the site, including texts, images, logos, videos, and other elements, is protected by copyright and intellectual property laws. Any unauthorized reproduction or use is prohibited."
     },
     "links": {
       "title": "7. Hyperlinks",
-      "text": "Links to other websites may be present. We disclaim any responsibility for their content or privacy policies."
+      "text": "Links to other sites may be present. We disclaim all responsibility for their content or privacy policies."
     },
     "data_protection": {
       "title": "8. Personal Data Protection",
-      "text": "Personal information collected on this site is processed in accordance with our privacy policy. You have the right to access, modify, and delete your personal data."
+      "text": "In accordance with the applicable laws, particularly the General Data Protection Regulation (GDPR), this site collects certain personal data (name, surname, email address, etc.) for the following purposes: user management. Users have the right to access, rectify, delete, restrict, port, and object to their personal data. These rights can be exercised by sending a request via email through the contact form. The collected data is stored for a duration of [insert duration] and will not be used for other purposes than those specified above. The site uses cookies to improve user experience. You can manage your cookie preferences via your browser settings."
     },
     "jurisdiction": {
       "title": "9. Applicable Law and Competent Jurisdiction",
-      "text": "These legal notices are governed by French law. In case of dispute, the competent courts will be those in the jurisdiction of the publisher's head office."
+      "text": "These legal notices are governed by French law. In case of a dispute, French courts will have jurisdiction."
     },
     "contact": {
       "title": "10. Contact",
-      "text": "For any questions, please contact us at the following address: [contact email address]."
+      "text": "For any questions, please contact me via the contact form available on the contact page."
     }
   },
 
@@ -303,34 +303,38 @@
     "intro_text": "This privacy policy describes how we collect, use, protect, and share your personal data.",
     "data_collection": {
       "title": "2. Data Collection",
-      "text": "We collect personal data only when necessary for the proper functioning of our site. This may include information such as your name, email address, and any other information you voluntarily provide."
+      "text": "We collect personal data only when necessary for the proper functioning of our site. This may include information such as your name, email address, IP address, geolocation data, and other information you voluntarily provide."
     },
     "use_of_data": {
       "title": "3. Use of Data",
-      "text": "The information we collect is used to provide and improve our services, personalize your experience on the site, and respond to your requests. We will never share your data with third parties without your explicit consent."
+      "text": "The information we collect is used to provide and improve our services, personalize your experience on the site, and respond to your requests. We will never share your data with third parties without your explicit consent. The legal basis for processing is your consent, the performance of a contract, or legitimate interest depending on the nature of the processing."
     },
     "security": {
       "title": "4. Data Security",
-      "text": "We take appropriate security measures to protect your personal data against unauthorized access, alteration, disclosure, or destruction."
+      "text": "We take appropriate security measures to protect your personal data from unauthorized access, modification, disclosure, or destruction."
     },
     "cookies": {
       "title": "5. Use of Cookies",
-      "text": "This site uses cookies to improve the user experience. You have the option to manage your cookie preferences through your browser."
+      "text": "This site uses cookies to improve the user experience. By using our site, you consent to the use of cookies. You can manage your cookie preferences via your browser or our cookie manager."
     },
     "third_party_services": {
       "title": "6. Third-Party Services",
-      "text": "We may use third-party services to analyze site usage and improve our services. These services may collect information such as your IP address and browsing data on our site."
+      "text": "We may use third-party services such as Google Analytics to analyze site usage and improve our services. These services may collect information such as your IP address and browsing data on our site. This information is used exclusively to improve our site."
     },
     "user_rights": {
       "title": "7. User Rights",
-      "text": "Under applicable law, you have the right to access, correct, delete, or restrict the use of your personal data. You may also withdraw your consent at any time."
+      "text": "Under applicable law, you have the right to access, correct, delete, or restrict the use of your personal data. You can also withdraw your consent at any time."
     },
     "data_retention": {
       "title": "8. Data Retention",
-      "text": "We will retain your personal data as long as necessary to fulfill your needs, for the purposes outlined in this policy, or until you request its deletion."
+      "text": "We will retain your personal data as long as necessary to fulfill your needs or for the reasons outlined in this policy. In general, data is retained for a period of [duration in months or years], unless the law requires a longer period."
+    },
+    "policy_updates": {
+      "title": "9. Privacy Policy Updates",
+      "text": "We reserve the right to update this privacy policy at any time. Any changes will be posted on this page, and we encourage you to regularly review this policy to stay informed of any updates."
     },
     "contact": {
-      "title": "9. Contact",
+      "title": "10. Contact",
       "text": "For any questions regarding this privacy policy, please contact us at the following address: [contact email address]."
     }
   },

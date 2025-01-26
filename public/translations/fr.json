@@ -262,23 +262,23 @@
     "intro_text": "Les présentes mentions légales régissent l'accès et l'utilisation du site. En accédant à ce site, vous acceptez les termes et conditions définis dans ce document.",
     "publisher": {
       "title": "2. Éditeur du site",
-      "text": "Le site est édité par [Nom de l'éditeur], [Adresse de l'éditeur], [Numéro de SIRET, si applicable], [Numéro de téléphone], [Adresse e-mail de contact]."
+      "text": "Le site est édité par Guillaume QUESNEL, joignable via le formulaire de contact disponible sur la page de contact."
     },
     "director": {
       "title": "3. Directeur de la publication",
-      "text": "Le directeur de la publication est [Nom du directeur de publication]."
+      "text": "Le directeur de la publication est Guillaume QUESNEL."
     },
     "host": {
       "title": "4. Hébergement",
-      "text": "Le site est hébergé par [Nom de l'hébergeur], situé à [Adresse de l'hébergeur], [Numéro de téléphone de l'hébergeur]."
+      "text": "OVH SAS au capital de 10 174 560 €, dont le siège social est au : 2 rue Kellermann - 59100 Roubaix – France, immatriculée au RCS Lille Métropole sous le numéro : 424 761 419 00045."
     },
     "responsibility": {
       "title": "5. Responsabilité",
-      "text": "Le site ne pourra être tenu responsable des dommages directs ou indirects résultant de l'utilisation du site, y compris les erreurs dans le contenu et la perte de données."
+      "text": "Le site guillaume-quesnel.com met tout en œuvre pour offrir des informations exactes et actualisées, mais ne peut garantir l'exactitude, l'exhaustivité ou la mise à jour des informations mises à disposition sur le site. Le site ne pourra être tenu responsable des dommages directs ou indirects résultant de l'utilisation du site, y compris mais non limité à des erreurs dans le contenu, des interruptions ou des pertes de données."
     },
     "intellectual_property": {
       "title": "6. Propriété Intellectuelle",
-      "text": "Tous les contenus du site, y compris textes, images, logos, vidéos, et autres éléments sont protégés par des droits d'auteur et des lois sur la propriété intellectuelle. Toute reproduction ou utilisation non autorisée est interdite."
+      "text": "Tous les contenus du site, y compris textes, images, logos, vidéos, et autres éléments, sont protégés par des droits d'auteur et des lois sur la propriété intellectuelle. Toute reproduction ou utilisation non autorisée est interdite."
     },
     "links": {
       "title": "7. Liens hypertextes",
@@ -286,15 +286,15 @@
     },
     "data_protection": {
       "title": "8. Protection des données personnelles",
-      "text": "Les informations personnelles collectées sur ce site sont traitées conformément à notre politique de confidentialité. Vous avez le droit d'accéder, de modifier et de supprimer vos données personnelles."
+      "text": "Conformément à la législation en vigueur, notamment la Règlementation Générale sur la Protection des Données (RGPD), ce site collecte certaines données personnelles (nom, prénom, adresse e-mail, etc.) pour les finalités suivantes : gestion des utilisateurs. Les utilisateurs disposent d'un droit d'accès, de rectification, d'effacement, de limitation, de portabilité et d'opposition concernant leurs données personnelles. Ces droits peuvent être exercés en envoyant une demande par email via le formulaire de contact. Les données collectées sont conservées pour une durée de [insérer la durée] et ne seront utilisées à d'autres fins que celles spécifiées ci-dessus. Le site utilise des cookies pour améliorer l'expérience utilisateur. Vous pouvez gérer vos préférences de cookies via les paramètres de votre navigateur."
     },
     "jurisdiction": {
       "title": "9. Loi Applicable et Juridiction Compétente",
-      "text": "Les présentes mentions légales sont soumises à la législation française. En cas de litige, les tribunaux compétents seront ceux du ressort du siège social de l'éditeur."
+      "text": "Les présentes mentions légales sont soumises à la législation française. En cas de litige, les tribunaux français seront compétents."
     },
     "contact": {
       "title": "10. Contact",
-      "text": "Pour toute question, contactez-nous à l'adresse suivante : [adresse e-mail de contact]."
+      "text": "Pour toute question, contactez-moi via le formulaire de contact disponible sur la page de contact."
     }
   },
   
@@ -304,11 +304,11 @@
     "intro_text": "La présente politique de confidentialité décrit la manière dont nous collectons, utilisons, protégeons et partageons vos données personnelles.",
     "data_collection": {
       "title": "2. Collecte des données personnelles",
-      "text": "Nous collectons des données personnelles uniquement lorsque cela est nécessaire pour le bon fonctionnement de notre site. Cela peut inclure des informations telles que votre nom, votre adresse e-mail, et d'autres informations que vous nous fournissez volontairement."
+      "text": "Nous collectons des données personnelles uniquement lorsque cela est nécessaire pour le bon fonctionnement de notre site. Cela peut inclure des informations telles que votre nom, votre adresse e-mail, votre adresse IP, des données de géolocalisation, et d'autres informations que vous nous fournissez volontairement."
     },
     "use_of_data": {
       "title": "3. Utilisation des données",
-      "text": "Les informations que nous collectons sont utilisées pour fournir et améliorer nos services, personnaliser votre expérience sur le site, et répondre à vos demandes. Nous ne partagerons jamais vos données avec des tiers sans votre consentement explicite."
+      "text": "Les informations que nous collectons sont utilisées pour fournir et améliorer nos services, personnaliser votre expérience sur le site, et répondre à vos demandes. Nous ne partagerons jamais vos données avec des tiers sans votre consentement explicite. La base légale du traitement est votre consentement, l'exécution d'un contrat ou l'intérêt légitime en fonction de la nature du traitement."
     },
     "security": {
       "title": "4. Sécurité des données",
@@ -316,11 +316,11 @@
     },
     "cookies": {
       "title": "5. Utilisation des cookies",
-      "text": "Ce site utilise des cookies pour améliorer l'expérience utilisateur. Vous avez la possibilité de gérer vos préférences en matière de cookies via votre navigateur."
+      "text": "Ce site utilise des cookies pour améliorer l'expérience utilisateur. En utilisant notre site, vous acceptez l'utilisation de cookies. Vous avez la possibilité de gérer vos préférences en matière de cookies via votre navigateur ou via notre gestionnaire de cookies."
     },
     "third_party_services": {
       "title": "6. Services de tiers",
-      "text": "Nous pouvons utiliser des services tiers pour analyser l'utilisation du site et améliorer nos services. Ces services peuvent collecter des informations telles que votre adresse IP et des données de navigation sur notre site."
+      "text": "Nous pouvons utiliser des services tiers tels que Google Analytics pour analyser l'utilisation du site et améliorer nos services. Ces services peuvent collecter des informations telles que votre adresse IP et des données de navigation sur notre site. Ces informations sont utilisées exclusivement dans le cadre de l'amélioration de notre site."
     },
     "user_rights": {
       "title": "7. Droits des utilisateurs",
@@ -328,7 +328,11 @@
     },
     "data_retention": {
       "title": "8. Conservation des données",
-      "text": "Nous conserverons vos données personnelles aussi longtemps que nécessaire pour répondre à vos besoins, pour les raisons énoncées dans cette politique, ou jusqu'à ce que vous demandiez leur suppression."
+      "text": "Nous conserverons vos données personnelles aussi longtemps que nécessaire pour répondre à vos besoins ou pour les raisons énoncées dans cette politique. En général, les données sont conservées pendant une période de [durée en mois ou années], sauf si la loi exige une période plus longue."
+    },
+    "policy_updates": {
+      "title": "10. Modifications de la politique de confidentialité",
+      "text": "Nous nous réservons le droit de mettre à jour cette politique de confidentialité à tout moment. Toute modification sera publiée sur cette page, et nous vous inviterons à consulter régulièrement cette politique pour être informé des éventuelles mises à jour."
     },
     "contact": {
       "title": "9. Contact",

@@ -257,42 +257,42 @@
   "mentions_legales": {
     "title": "Aviso Legal",
     "introduction": "1. Introducción",
-    "intro_text": "Este aviso legal regula el acceso y uso del sitio web. Al acceder a este sitio, acepta los términos y condiciones establecidos en este documento.",
+    "intro_text": "Este aviso legal regula el acceso y uso del sitio. Al acceder a este sitio, acepta los términos y condiciones establecidos en este documento.",
     "publisher": {
       "title": "2. Editor del sitio",
-      "text": "El sitio es editado por [Nombre del editor], [Dirección del editor], [Número de SIRET, si corresponde], [Número de teléfono], [Dirección de correo electrónico de contacto]."
+      "text": "El sitio es editado por Guillaume QUESNEL, quien puede ser contactado a través del formulario de contacto disponible en la página de contacto."
     },
     "director": {
       "title": "3. Director de la publicación",
-      "text": "El director de la publicación es [Nombre del director]."
+      "text": "El director de la publicación es Guillaume QUESNEL."
     },
     "host": {
       "title": "4. Alojamiento",
-      "text": "El sitio está alojado por [Nombre del proveedor de alojamiento], ubicado en [Dirección del proveedor de alojamiento], [Número de teléfono del proveedor de alojamiento]."
+      "text": "OVH SAS con un capital de 10.174.560 €, con sede en: 2 rue Kellermann - 59100 Roubaix – Francia, inscrita en el RCS Lille Métropole bajo el número: 424 761 419 00045."
     },
     "responsibility": {
       "title": "5. Responsabilidad",
-      "text": "El sitio no se hace responsable de los daños directos o indirectos derivados del uso del sitio, incluidos los errores en el contenido o la pérdida de datos."
+      "text": "El sitio guillaume-quesnel.com hace todo lo posible para ofrecer información precisa y actualizada, pero no puede garantizar la exactitud, exhaustividad o actualización de la información disponible en el sitio. El sitio no podrá ser responsable de daños directos o indirectos derivados del uso del sitio, incluyendo, pero no limitado a, errores en el contenido, interrupciones o pérdida de datos."
     },
     "intellectual_property": {
       "title": "6. Propiedad Intelectual",
-      "text": "Todos los contenidos del sitio, incluidos textos, imágenes, logotipos, videos y otros elementos, están protegidos por derechos de autor y leyes de propiedad intelectual. Cualquier reproducción o uso no autorizado está prohibido."
+      "text": "Todo el contenido del sitio, incluidos los textos, imágenes, logotipos, videos y otros elementos, está protegido por derechos de autor y leyes de propiedad intelectual. Queda prohibida cualquier reproducción o uso no autorizado."
     },
     "links": {
-      "title": "7. Enlaces",
-      "text": "Pueden existir enlaces a otros sitios. No nos hacemos responsables de su contenido o de sus políticas de privacidad."
+      "title": "7. Enlaces Hipervinculados",
+      "text": "Pueden existir enlaces a otros sitios. No asumimos ninguna responsabilidad por su contenido o política de privacidad."
     },
     "data_protection": {
-      "title": "8. Protección de datos",
-      "text": "Los datos personales recolectados en este sitio se procesan conforme a nuestra política de privacidad. Usted tiene derecho a acceder, corregir y eliminar sus datos personales."
+      "title": "8. Protección de Datos Personales",
+      "text": "De acuerdo con las leyes aplicables, especialmente el Reglamento General de Protección de Datos (RGPD), este sitio recopila ciertos datos personales (nombre, apellido, dirección de correo electrónico, etc.) con los siguientes fines: gestión de usuarios. Los usuarios tienen derecho de acceso, rectificación, eliminación, limitación, portabilidad y oposición a sus datos personales. Estos derechos pueden ejercerse enviando una solicitud por correo electrónico a través del formulario de contacto. Los datos recopilados se almacenan durante un período de [insertar duración] y no se utilizarán para otros fines que los especificados anteriormente. El sitio utiliza cookies para mejorar la experiencia del usuario. Puede gestionar sus preferencias de cookies a través de la configuración de su navegador."
     },
     "jurisdiction": {
       "title": "9. Ley Aplicable y Jurisdicción Competente",
-      "text": "Este aviso legal se rige por la legislación francesa. En caso de litigio, los tribunales competentes serán los del lugar de residencia del editor."
+      "text": "Este aviso legal está sujeto a la legislación francesa. En caso de litigio, los tribunales franceses serán los competentes."
     },
     "contact": {
       "title": "10. Contacto",
-      "text": "Para cualquier pregunta, por favor, contáctenos a la siguiente dirección: [Dirección de correo electrónico de contacto]."
+      "text": "Para cualquier pregunta, por favor contacte conmigo a través del formulario de contacto disponible en la página de contacto."
     }
   },
 
@@ -301,36 +301,40 @@
     "introduction": "1. Introducción",
     "intro_text": "Esta política de privacidad describe cómo recopilamos, usamos, protegemos y compartimos sus datos personales.",
     "data_collection": {
-      "title": "2. Recopilación de datos",
-      "text": "Recopilamos datos personales solo cuando es necesario para el funcionamiento adecuado de nuestro sitio. Esto puede incluir información como su nombre, su dirección de correo electrónico y cualquier otra información que nos proporcione voluntariamente."
+      "title": "2. Recopilación de Datos",
+      "text": "Recopilamos datos personales solo cuando es necesario para el correcto funcionamiento de nuestro sitio. Esto puede incluir información como su nombre, dirección de correo electrónico, dirección IP, datos de geolocalización y otra información que usted proporcione voluntariamente."
     },
     "use_of_data": {
-      "title": "3. Uso de los datos",
-      "text": "La información que recopilamos se utiliza para proporcionar y mejorar nuestros servicios, personalizar su experiencia en el sitio y responder a sus solicitudes. Nunca compartiremos sus datos con terceros sin su consentimiento explícito."
+      "title": "3. Uso de los Datos",
+      "text": "La información que recopilamos se utiliza para proporcionar y mejorar nuestros servicios, personalizar su experiencia en el sitio y responder a sus solicitudes. Nunca compartiremos sus datos con terceros sin su consentimiento explícito. La base legal para el procesamiento es su consentimiento, la ejecución de un contrato o el interés legítimo dependiendo de la naturaleza del procesamiento."
     },
     "security": {
-      "title": "4. Seguridad de los datos",
-      "text": "Tomamos las medidas de seguridad adecuadas para proteger sus datos personales contra el acceso no autorizado, la modificación, divulgación o destrucción."
+      "title": "4. Seguridad de los Datos",
+      "text": "Tomamos las medidas de seguridad adecuadas para proteger sus datos personales contra el acceso no autorizado, alteración, divulgación o destrucción."
     },
     "cookies": {
       "title": "5. Uso de Cookies",
-      "text": "Este sitio utiliza cookies para mejorar la experiencia del usuario. Puede gestionar sus preferencias de cookies a través de su navegador."
+      "text": "Este sitio utiliza cookies para mejorar la experiencia del usuario. Al utilizar nuestro sitio, usted acepta el uso de cookies. Puede gestionar sus preferencias de cookies a través de su navegador o nuestro gestor de cookies."
     },
     "third_party_services": {
-      "title": "6. Servicios de terceros",
-      "text": "Podemos utilizar servicios de terceros para analizar el uso del sitio y mejorar nuestros servicios. Estos servicios pueden recopilar información como su dirección IP y datos de navegación en nuestro sitio."
+      "title": "6. Servicios de Terceros",
+      "text": "Podemos utilizar servicios de terceros como Google Analytics para analizar el uso del sitio y mejorar nuestros servicios. Estos servicios pueden recopilar información como su dirección IP y datos de navegación en nuestro sitio. Esta información se utiliza exclusivamente para mejorar nuestro sitio."
     },
     "user_rights": {
-      "title": "7. Derechos del usuario",
-      "text": "Según la legislación aplicable, tiene derecho a acceder, corregir, eliminar o restringir el uso de sus datos personales. También puede retirar su consentimiento en cualquier momento."
+      "title": "7. Derechos de los Usuarios",
+      "text": "De acuerdo con la legislación aplicable, tiene derecho a acceder, corregir, eliminar o restringir el uso de sus datos personales. También puede retirar su consentimiento en cualquier momento."
     },
     "data_retention": {
-      "title": "8. Retención de datos",
-      "text": "Retendremos sus datos personales durante el tiempo necesario para cumplir con sus necesidades, para los fines establecidos en esta política o hasta que solicite su eliminación."
+      "title": "8. Retención de Datos",
+      "text": "Retendremos sus datos personales durante el tiempo que sea necesario para satisfacer sus necesidades o por las razones establecidas en esta política. En general, los datos se retendrán durante un período de [duración en meses o años], a menos que la ley requiera un período más largo."
+    },
+    "policy_updates": {
+      "title": "9. Actualizaciones de la Política de Privacidad",
+      "text": "Nos reservamos el derecho de actualizar esta política de privacidad en cualquier momento. Cualquier cambio se publicará en esta página, y le recomendamos que revise regularmente esta política para mantenerse informado de las actualizaciones."
     },
     "contact": {
-      "title": "9. Contacto",
-      "text": "Para cualquier pregunta relacionada con esta política de privacidad, comuníquese con nosotros a la siguiente dirección: [Dirección de correo electrónico]."
+      "title": "10. Contacto",
+      "text": "Si tiene alguna pregunta sobre esta política de privacidad, comuníquese con nosotros a la siguiente dirección: [dirección de correo electrónico de contacto]."
     }
   },
 

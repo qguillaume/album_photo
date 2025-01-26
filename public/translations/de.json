@@ -257,81 +257,85 @@
 
   "mentions_legales": {
     "title": "Impressum",
-    "introduction": "1. Einleitung",
-    "intro_text": "Diese rechtlichen Hinweise regeln den Zugang und die Nutzung der Website. Durch den Zugriff auf diese Website stimmen Sie den Bedingungen und Bestimmungen in diesem Dokument zu.",
+    "introduction": "1. Einführung",
+    "intro_text": "Diese rechtlichen Hinweise regeln den Zugriff und die Nutzung der Website. Durch den Zugriff auf diese Website stimmen Sie den Bedingungen zu, die in diesem Dokument festgelegt sind.",
     "publisher": {
       "title": "2. Herausgeber der Website",
-      "text": "Die Website wird herausgegeben von [Name des Herausgebers], [Adresse des Herausgebers], [SIRET-Nummer, falls zutreffend], [Telefonnummer], [E-Mail-Adresse]."
+      "text": "Die Website wird von Guillaume QUESNEL herausgegeben, der über das Kontaktformular auf der Kontaktseite erreichbar ist."
     },
     "director": {
-      "title": "3. Direktor der Veröffentlichung",
-      "text": "Der Direktor der Veröffentlichung ist [Name des Direktors]."
+      "title": "3. Verantwortlicher Herausgeber",
+      "text": "Der verantwortliche Herausgeber ist Guillaume QUESNEL."
     },
     "host": {
       "title": "4. Hosting",
-      "text": "Die Website wird gehostet von [Name des Hosts], ansässig in [Adresse des Hosts], [Telefonnummer des Hosts]."
+      "text": "OVH SAS mit einem Kapital von 10.174.560 €, mit Sitz in der 2 rue Kellermann - 59100 Roubaix – Frankreich, eingetragen im RCS Lille Métropole unter der Nummer: 424 761 419 00045."
     },
     "responsibility": {
-      "title": "5. Verantwortung",
-      "text": "Die Website haftet nicht für direkte oder indirekte Schäden, die aus der Nutzung der Website resultieren, einschließlich Fehlern im Inhalt oder Datenverlust."
+      "title": "5. Haftung",
+      "text": "Die Website guillaume-quesnel.com bemüht sich, genaue und aktuelle Informationen bereitzustellen, kann jedoch nicht die Richtigkeit, Vollständigkeit oder Aktualisierung der auf der Website bereitgestellten Informationen garantieren. Die Website kann nicht für direkte oder indirekte Schäden haftbar gemacht werden, die aus der Nutzung der Website entstehen, einschließlich, aber nicht beschränkt auf Fehler im Inhalt, Unterbrechungen oder Datenverlust."
     },
     "intellectual_property": {
       "title": "6. Geistiges Eigentum",
-      "text": "Alle Inhalte der Website, einschließlich Texte, Bilder, Logos, Videos und anderer Elemente, sind durch Urheberrechte und geistige Eigentumsrechte geschützt. Jede unbefugte Vervielfältigung oder Nutzung ist untersagt."
+      "text": "Alle Inhalte der Website, einschließlich Texte, Bilder, Logos, Videos und andere Elemente, sind durch Urheberrechte und geistige Eigentumsgesetze geschützt. Jede unbefugte Vervielfältigung oder Nutzung ist verboten."
     },
     "links": {
       "title": "7. Hyperlinks",
-      "text": "Es können Links zu anderen Websites vorhanden sein. Wir übernehmen keine Verantwortung für deren Inhalt oder deren Datenschutzrichtlinien."
+      "text": "Es können Links zu anderen Websites vorhanden sein. Wir übernehmen keine Verantwortung für deren Inhalt oder Datenschutzrichtlinien."
     },
     "data_protection": {
       "title": "8. Datenschutz",
-      "text": "Die auf dieser Website gesammelten personenbezogenen Daten werden gemäß unserer Datenschutzrichtlinie verarbeitet. Sie haben das Recht, auf Ihre Daten zuzugreifen, diese zu korrigieren oder zu löschen."
+      "text": "Gemäß den geltenden Gesetzen, insbesondere der Datenschutz-Grundverordnung (DSGVO), sammelt diese Website bestimmte personenbezogene Daten (Name, Vorname, E-Mail-Adresse usw.) für folgende Zwecke: Benutzerverwaltung. Benutzer haben das Recht auf Zugang, Berichtigung, Löschung, Einschränkung, Übertragbarkeit und Widerspruch hinsichtlich ihrer personenbezogenen Daten. Diese Rechte können durch eine Anfrage per E-Mail über das Kontaktformular ausgeübt werden. Die gesammelten Daten werden für eine Dauer von [Dauer einfügen] aufbewahrt und nicht für andere Zwecke verwendet als die oben angegebenen. Die Website verwendet Cookies, um das Benutzererlebnis zu verbessern. Sie können Ihre Cookie-Einstellungen über die Einstellungen Ihres Browsers verwalten."
     },
     "jurisdiction": {
-      "title": "9. Anwendbares Recht und Zuständigkeit",
-      "text": "Diese rechtlichen Hinweise unterliegen dem französischen Recht. Im Falle eines Rechtsstreits sind die zuständigen Gerichte die des Sitzes des Herausgebers."
+      "title": "9. Anwendbares Recht und zuständige Gerichtsbarkeit",
+      "text": "Diese rechtlichen Hinweise unterliegen dem französischen Recht. Im Falle von Streitigkeiten sind die französischen Gerichte zuständig."
     },
     "contact": {
       "title": "10. Kontakt",
-      "text": "Bei Fragen kontaktieren Sie uns bitte unter der folgenden Adresse: [E-Mail-Adresse]."
+      "text": "Bei Fragen kontaktieren Sie mich bitte über das Kontaktformular auf der Kontaktseite."
     }
   },
 
   "politique_confidentialite": {
     "title": "Datenschutzrichtlinie",
-    "introduction": "1. Einleitung",
-    "intro_text": "Diese Datenschutzrichtlinie beschreibt, wie wir Ihre personenbezogenen Daten sammeln, verwenden, schützen und weitergeben.",
+    "introduction": "1. Einführung",
+    "intro_text": "Diese Datenschutzrichtlinie beschreibt, wie wir Ihre personenbezogenen Daten sammeln, verwenden, schützen und teilen.",
     "data_collection": {
-      "title": "2. Datensammlung",
-      "text": "Wir sammeln personenbezogene Daten nur, wenn dies für den ordnungsgemäßen Betrieb unserer Website erforderlich ist. Dies kann Informationen wie Ihren Namen, Ihre E-Mail-Adresse und andere Informationen umfassen, die Sie uns freiwillig zur Verfügung stellen."
+      "title": "2. Sammlung von Daten",
+      "text": "Wir sammeln personenbezogene Daten nur, wenn dies für das ordnungsgemäße Funktionieren unserer Website erforderlich ist. Dies kann Informationen wie Ihren Namen, Ihre E-Mail-Adresse, IP-Adresse, Standortdaten und andere von Ihnen freiwillig bereitgestellte Informationen umfassen."
     },
     "use_of_data": {
-      "title": "3. Verwendung der Daten",
-      "text": "Die gesammelten Informationen werden verwendet, um unsere Dienstleistungen bereitzustellen und zu verbessern, Ihre Erfahrung auf der Website zu personalisieren und auf Ihre Anfragen zu antworten. Wir werden Ihre Daten niemals ohne Ihre ausdrückliche Zustimmung an Dritte weitergeben."
+      "title": "3. Verwendung von Daten",
+      "text": "Die gesammelten Informationen werden verwendet, um unsere Dienste bereitzustellen und zu verbessern, Ihre Erfahrung auf der Website zu personalisieren und auf Ihre Anfragen zu reagieren. Wir werden Ihre Daten niemals ohne Ihre ausdrückliche Zustimmung an Dritte weitergeben. Die rechtliche Grundlage der Verarbeitung ist Ihre Zustimmung, die Erfüllung eines Vertrags oder ein berechtigtes Interesse, je nach Art der Verarbeitung."
     },
     "security": {
       "title": "4. Datensicherheit",
-      "text": "Wir ergreifen angemessene Sicherheitsmaßnahmen, um Ihre personenbezogenen Daten vor unbefugtem Zugriff, Änderung, Offenlegung oder Zerstörung zu schützen."
+      "text": "Wir ergreifen geeignete Sicherheitsmaßnahmen, um Ihre personenbezogenen Daten vor unbefugtem Zugriff, Veränderung, Offenlegung oder Zerstörung zu schützen."
     },
     "cookies": {
       "title": "5. Verwendung von Cookies",
-      "text": "Diese Website verwendet Cookies, um die Benutzererfahrung zu verbessern. Sie haben die Möglichkeit, Ihre Cookie-Einstellungen über Ihren Browser zu verwalten."
+      "text": "Diese Website verwendet Cookies, um die Benutzererfahrung zu verbessern. Durch die Nutzung unserer Website stimmen Sie der Verwendung von Cookies zu. Sie können Ihre Cookie-Präferenzen über Ihren Browser oder unseren Cookie-Manager verwalten."
     },
     "third_party_services": {
-      "title": "6. Dritte Dienstleistungen",
-      "text": "Wir können Drittanbieter-Dienste zur Analyse der Website-Nutzung und zur Verbesserung unserer Dienste einsetzen. Diese Dienste können Informationen wie Ihre IP-Adresse und Navigationsdaten auf unserer Website sammeln."
+      "title": "6. Dritte Dienste",
+      "text": "Wir können Drittanbieter-Dienste wie Google Analytics verwenden, um die Nutzung der Website zu analysieren und unsere Dienste zu verbessern. Diese Dienste können Informationen wie Ihre IP-Adresse und Browsing-Daten auf unserer Website sammeln. Diese Informationen werden ausschließlich zur Verbesserung unserer Website verwendet."
     },
     "user_rights": {
-      "title": "7. Rechte der Nutzer",
-      "text": "Gemäß den geltenden Gesetzen haben Sie das Recht, auf Ihre personenbezogenen Daten zuzugreifen, diese zu korrigieren, zu löschen oder deren Nutzung einzuschränken. Sie können Ihre Zustimmung jederzeit widerrufen."
+      "title": "7. Rechte der Benutzer",
+      "text": "Gemäß den geltenden Gesetzen haben Sie das Recht, auf Ihre personenbezogenen Daten zuzugreifen, sie zu korrigieren, zu löschen oder ihre Verwendung einzuschränken. Sie können Ihre Zustimmung jederzeit widerrufen."
     },
     "data_retention": {
-      "title": "8. Aufbewahrung der Daten",
-      "text": "Wir werden Ihre personenbezogenen Daten so lange aufbewahren, wie es notwendig ist, um Ihre Bedürfnisse zu erfüllen, die in dieser Richtlinie genannten Zwecke zu erreichen oder bis Sie die Löschung anfordern."
+      "title": "8. Datenaufbewahrung",
+      "text": "Wir bewahren Ihre personenbezogenen Daten so lange auf, wie es notwendig ist, um Ihre Bedürfnisse zu erfüllen oder aus den in dieser Richtlinie genannten Gründen. In der Regel werden die Daten für eine Dauer von [Dauer in Monaten oder Jahren] aufbewahrt, es sei denn, das Gesetz erfordert eine längere Aufbewahrungsfrist."
+    },
+    "policy_updates": {
+      "title": "9. Aktualisierungen der Datenschutzrichtlinie",
+      "text": "Wir behalten uns das Recht vor, diese Datenschutzrichtlinie jederzeit zu aktualisieren. Alle Änderungen werden auf dieser Seite veröffentlicht, und wir empfehlen Ihnen, diese Richtlinie regelmäßig zu überprüfen, um über alle Updates informiert zu bleiben."
     },
     "contact": {
-      "title": "9. Kontakt",
-      "text": "Für Fragen zu dieser Datenschutzrichtlinie kontaktieren Sie uns bitte unter folgender Adresse: [E-Mail-Adresse]."
+      "title": "10. Kontakt",
+      "text": "Bei Fragen zu dieser Datenschutzrichtlinie kontaktieren Sie uns bitte unter folgender Adresse: [Kontakt-E-Mail-Adresse]."
     }
   },
 
