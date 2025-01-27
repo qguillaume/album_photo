@@ -268,17 +268,17 @@
     },
     "contact": {
       "title": "10. Kontakt",
-      "text": "Für Fragen zu diesen Allgemeinen Geschäftsbedingungen kontaktieren Sie uns bitte über das Kontaktformular."
+      "text": "Für Fragen zu diesen Nutzungsbedingungen kontaktieren Sie uns bitte per E-Mail unter admin@guillaume-quesnel.com."
     }
   },
 
   "mentions_legales": {
-    "title": "Impressum",
+    "title": "Rechtlicher Hinweis",
     "introduction": "1. Einführung",
-    "intro_text": "Diese rechtlichen Hinweise regeln den Zugriff und die Nutzung der Website. Durch den Zugriff auf diese Website stimmen Sie den Bedingungen zu, die in diesem Dokument festgelegt sind.",
+    "intro_text": "Dieser rechtliche Hinweis regelt den Zugriff auf und die Nutzung der Website. Durch den Zugriff auf diese Website akzeptieren Sie die in diesem Dokument festgelegten Bedingungen.",
     "publisher": {
-      "title": "2. Herausgeber der Website",
-      "text": "Die Website wird von Guillaume QUESNEL herausgegeben, der über das Kontaktformular auf der Kontaktseite erreichbar ist."
+      "title": "2. Website-Herausgeber",
+      "text": "Die Website wird von Guillaume QUESNEL veröffentlicht, erreichbar per E-Mail unter admin@guillaume-quesnel.com."
     },
     "director": {
       "title": "3. Verantwortlicher Herausgeber",
@@ -301,16 +301,16 @@
       "text": "Es können Links zu anderen Websites vorhanden sein. Wir übernehmen keine Verantwortung für deren Inhalt oder Datenschutzrichtlinien."
     },
     "data_protection": {
-      "title": "8. Datenschutz",
-      "text": "Gemäß den geltenden Gesetzen, insbesondere der Datenschutz-Grundverordnung (DSGVO), sammelt diese Website bestimmte personenbezogene Daten (Name, Vorname, E-Mail-Adresse usw.) für folgende Zwecke: Benutzerverwaltung. Benutzer haben das Recht auf Zugang, Berichtigung, Löschung, Einschränkung, Übertragbarkeit und Widerspruch hinsichtlich ihrer personenbezogenen Daten. Diese Rechte können durch eine Anfrage per E-Mail über das Kontaktformular ausgeübt werden. Die gesammelten Daten werden für eine Dauer von [Dauer einfügen] aufbewahrt und nicht für andere Zwecke verwendet als die oben angegebenen. Die Website verwendet Cookies, um das Benutzererlebnis zu verbessern. Sie können Ihre Cookie-Einstellungen über die Einstellungen Ihres Browsers verwalten."
+      "title": "8. Schutz personenbezogener Daten",
+      "text": "In Übereinstimmung mit den geltenden Vorschriften, insbesondere der Datenschutz-Grundverordnung (DSGVO), erhebt diese Website bestimmte personenbezogene Daten (Name, Vorname, E-Mail-Adresse usw.) zu folgenden Zwecken: Verwaltung der Benutzer. Benutzer haben das Recht auf Zugang, Berichtigung, Löschung, Einschränkung, Übertragbarkeit und Widerspruch in Bezug auf ihre personenbezogenen Daten. Diese Rechte können durch eine Anfrage per E-Mail an admin@guillaume-quesnel.com ausgeübt werden. Die erhobenen Daten werden für eine Dauer von [Dauer einfügen] aufbewahrt und nicht für andere Zwecke als die oben genannten verwendet. Die Website verwendet Cookies, um die Benutzererfahrung zu verbessern. Sie können Ihre Cookie-Einstellungen über die Einstellungen Ihres Browsers verwalten."
     },
     "jurisdiction": {
       "title": "9. Anwendbares Recht und zuständige Gerichtsbarkeit",
-      "text": "Diese rechtlichen Hinweise unterliegen dem französischen Recht. Im Falle von Streitigkeiten sind die französischen Gerichte zuständig."
+      "text": "Diese rechtlichen Hinweise unterliegen dem französischen Recht. Im Streitfall sind die französischen Gerichte zuständig."
     },
     "contact": {
       "title": "10. Kontakt",
-      "text": "Bei Fragen kontaktieren Sie mich bitte über das Kontaktformular auf der Kontaktseite."
+      "text": "Für Fragen kontaktieren Sie mich bitte über das Kontaktformular oder per E-Mail an admin@guillaume-quesnel.com."
     }
   },
 

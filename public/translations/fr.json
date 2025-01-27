@@ -6,7 +6,7 @@
   "presentation_text_1": "Bonjour, je m'appelle Guillaume et j'ai beaucoup de plaisir à exercer ce métier dans lequel je ne vois pas le temps passé. J'aime relever de nouveaux défis et en tirer un apprentissage.",
   "presentation_text_2": "Résilient et persévérant de nature, je m'investis beaucoup dans les projets que j'entreprends et m'engage à offrir une grande qualité de travail.",
   "presentation_text_3": "Vous pourrez découvrir les détails de mon expertise plus bas sur cette page mais également à travers ce site lui-même.",
-  "presentation_text_4": "Si mon profil vous intéresse ou que vous avez besoin de mes services, n'hésitez pas à me contacter via mon formulaire de contact",
+  "presentation_text_4": "Si mon profil vous intéresse ou que vous avez besoin de mes services, n'hésitez pas à me contacter à l'adresse mail admin@guillaume-quesnel.com",
   "presentation_text_5": "Mis à part l'informatique, je suis un amoureux de la nature et toujours émerveillé par la beauté des paysages que notre planète peut offrir.",
   "presentation_text_6": "C'est pourquoi, par le biais de ce site, je souhaitais partager les photos de tous mes périples.",
   "presentation_text_7": "Je suis passionné par la création de solutions technologiques innovantes, avec un fort accent sur l'amélioration continue et l'efficacité. J'ai travaillé sur plusieurs projets passionnants et j'ai acquis une expertise dans divers langages et outils. Je crois fermement que la technologie doit non seulement résoudre des problèmes, mais aussi améliorer la qualité de vie des utilisateurs.",
@@ -269,7 +269,7 @@
     },
     "contact": {
       "title": "10. Contact",
-      "text": "Pour toute question concernant ces Conditions Générales d'Utilisation, veuillez nous contacter via le formulaire de contact."
+      "text": "Pour toute question concernant ces Conditions Générales d'Utilisation, veuillez nous contacter via l'adresse mail admin@guillaume-quesnel.com."
     }
   },
   
@@ -279,7 +279,7 @@
     "intro_text": "Les présentes mentions légales régissent l'accès et l'utilisation du site. En accédant à ce site, vous acceptez les termes et conditions définis dans ce document.",
     "publisher": {
       "title": "2. Éditeur du site",
-      "text": "Le site est édité par Guillaume QUESNEL, joignable via le formulaire de contact disponible sur la page de contact."
+      "text": "Le site est édité par Guillaume QUESNEL, joignable à l'adresse mail admin@guillaume-quesnel.com"
     },
     "director": {
       "title": "3. Directeur de la publication",
@@ -303,7 +303,7 @@
     },
     "data_protection": {
       "title": "8. Protection des données personnelles",
-      "text": "Conformément à la législation en vigueur, notamment la Règlementation Générale sur la Protection des Données (RGPD), ce site collecte certaines données personnelles (nom, prénom, adresse e-mail, etc.) pour les finalités suivantes : gestion des utilisateurs. Les utilisateurs disposent d'un droit d'accès, de rectification, d'effacement, de limitation, de portabilité et d'opposition concernant leurs données personnelles. Ces droits peuvent être exercés en envoyant une demande par email via le formulaire de contact. Les données collectées sont conservées pour une durée de [insérer la durée] et ne seront utilisées à d'autres fins que celles spécifiées ci-dessus. Le site utilise des cookies pour améliorer l'expérience utilisateur. Vous pouvez gérer vos préférences de cookies via les paramètres de votre navigateur."
+      "text": "Conformément à la législation en vigueur, notamment la Règlementation Générale sur la Protection des Données (RGPD), ce site collecte certaines données personnelles (nom, prénom, adresse e-mail, etc.) pour les finalités suivantes : gestion des utilisateurs. Les utilisateurs disposent d'un droit d'accès, de rectification, d'effacement, de limitation, de portabilité et d'opposition concernant leurs données personnelles. Ces droits peuvent être exercés en envoyant une demande par email à l'adresse admin@guillaume-quesnel.com. Les données collectées sont conservées pour une durée de [insérer la durée] et ne seront utilisées à d'autres fins que celles spécifiées ci-dessus. Le site utilise des cookies pour améliorer l'expérience utilisateur. Vous pouvez gérer vos préférences de cookies via les paramètres de votre navigateur."
     },
     "jurisdiction": {
       "title": "9. Loi Applicable et Juridiction Compétente",
@@ -311,7 +311,7 @@
     },
     "contact": {
       "title": "10. Contact",
-      "text": "Pour toute question, contactez-moi via le formulaire de contact disponible sur la page de contact."
+      "text": "Pour toute question, contactez-moi via le formulaire de contact ou à l'adresse mail admin@guillaume-quesnel.com"
     }
   },
   

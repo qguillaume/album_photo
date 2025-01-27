@@ -268,17 +268,17 @@
     },
     "contact": {
       "title": "10. Contact",
-      "text": "For any questions regarding these Terms and Conditions, please contact us from our contact form."
+      "text": "For any questions regarding these Terms of Use, please contact us via email at admin@guillaume-quesnel.com."
     }
   },
 
   "mentions_legales": {
     "title": "Legal Notice",
     "introduction": "1. Introduction",
-    "intro_text": "These legal notices govern the access and use of the site. By accessing this site, you agree to the terms and conditions defined in this document.",
+    "intro_text": "This legal notice governs access to and use of the website. By accessing this site, you accept the terms and conditions set out in this document.",
     "publisher": {
-      "title": "2. Publisher of the site",
-      "text": "The site is published by Guillaume QUESNEL, reachable via the contact form available on the contact page."
+      "title": "2. Website Publisher",
+      "text": "The website is published by Guillaume QUESNEL, reachable via email at admin@guillaume-quesnel.com."
     },
     "director": {
       "title": "3. Publication Director",
@@ -302,15 +302,15 @@
     },
     "data_protection": {
       "title": "8. Personal Data Protection",
-      "text": "In accordance with the applicable laws, particularly the General Data Protection Regulation (GDPR), this site collects certain personal data (name, surname, email address, etc.) for the following purposes: user management. Users have the right to access, rectify, delete, restrict, port, and object to their personal data. These rights can be exercised by sending a request via email through the contact form. The collected data is stored for a duration of [insert duration] and will not be used for other purposes than those specified above. The site uses cookies to improve user experience. You can manage your cookie preferences via your browser settings."
+      "text": "In accordance with the applicable legislation, including the General Data Protection Regulation (GDPR), this site collects certain personal data (name, surname, email address, etc.) for the following purposes: user management. Users have the right to access, rectify, erase, restrict, transfer, and object to the processing of their personal data. These rights can be exercised by sending a request via email to admin@guillaume-quesnel.com. The collected data is kept for a duration of [insert duration] and will not be used for purposes other than those specified above. The site uses cookies to enhance the user experience. You can manage your cookie preferences through your browser settings."
     },
     "jurisdiction": {
-      "title": "9. Applicable Law and Competent Jurisdiction",
+      "title": "9. Applicable Law and Jurisdiction",
       "text": "These legal notices are governed by French law. In case of a dispute, French courts will have jurisdiction."
     },
     "contact": {
       "title": "10. Contact",
-      "text": "For any questions, please contact me via the contact form available on the contact page."
+      "text": "For any questions, please contact me via the contact form or at the email address admin@guillaume-quesnel.com."
     }
   },
 
