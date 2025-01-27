@@ -345,7 +345,7 @@
     },
     "data_retention": {
       "title": "8. Conservation des données",
-      "text": "Nous conserverons vos données personnelles aussi longtemps que nécessaire pour répondre à vos besoins ou pour les raisons énoncées dans cette politique. En général, les données sont conservées pendant une période de [durée en mois ou années], sauf si la loi exige une période plus longue."
+      "text": "Nous conserverons vos données personnelles aussi longtemps que nécessaire pour répondre à vos besoins ou pour les finalités énoncées dans cette politique. Les emails et pseudonymes sont conservés tant que le compte est actif, puis pendant une durée maximale de 5 ans après sa désactivation ou son inactivité. Les photos, articles et commentaires publiés par les utilisateurs sont conservés tant que le compte est actif. En cas de désactivation, ces contenus peuvent être anonymisés ou supprimés sur demande dans un délai de 5 ans, sauf si une durée plus longue est imposée par la loi."
     },
     "policy_updates": {
       "title": "10. Modifications de la politique de confidentialité",
@@ -353,7 +353,7 @@
     },
     "contact": {
       "title": "9. Contact",
-      "text": "Pour toute question concernant cette politique de confidentialité, veuillez nous contacter à l'adresse suivante : [adresse e-mail de contact]."
+      "text": "Pour toute question concernant cette politique de confidentialité, veuillez nous contacter à l'adresse suivante : admin@guillaume-quesnel.com."
     }
   },
 

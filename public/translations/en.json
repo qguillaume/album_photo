@@ -344,7 +344,7 @@
     },
     "data_retention": {
       "title": "8. Data Retention",
-      "text": "We will retain your personal data as long as necessary to fulfill your needs or for the reasons outlined in this policy. In general, data is retained for a period of [duration in months or years], unless the law requires a longer period."
+      "text": "We will retain your personal data for as long as necessary to meet your needs or for the purposes outlined in this policy. Emails and usernames are retained as long as the account is active, and for a maximum of 5 years after deactivation or inactivity. Photos, articles, and comments posted by users are retained as long as the account is active. Upon deactivation, this content may be anonymized or deleted upon request within a maximum of 5 years, unless a longer retention period is required by law."
     },
     "policy_updates": {
       "title": "9. Privacy Policy Updates",
@@ -352,7 +352,7 @@
     },
     "contact": {
       "title": "10. Contact",
-      "text": "For any questions regarding this privacy policy, please contact us at the following address: [contact email address]."
+      "text": "For any questions regarding this privacy policy, please contact us at the following address: admin@guillaume-quesnel.com."
     }
   },
 

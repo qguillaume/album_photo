@@ -343,8 +343,8 @@
       "text": "Gemäß den geltenden Gesetzen haben Sie das Recht, auf Ihre personenbezogenen Daten zuzugreifen, sie zu korrigieren, zu löschen oder ihre Verwendung einzuschränken. Sie können Ihre Zustimmung jederzeit widerrufen."
     },
     "data_retention": {
-      "title": "8. Datenaufbewahrung",
-      "text": "Wir bewahren Ihre personenbezogenen Daten so lange auf, wie es notwendig ist, um Ihre Bedürfnisse zu erfüllen oder aus den in dieser Richtlinie genannten Gründen. In der Regel werden die Daten für eine Dauer von [Dauer in Monaten oder Jahren] aufbewahrt, es sei denn, das Gesetz erfordert eine längere Aufbewahrungsfrist."
+      "title": "8. Datenspeicherung",
+      "text": "Wir speichern Ihre persönlichen Daten so lange, wie es erforderlich ist, um Ihre Bedürfnisse zu erfüllen oder die in dieser Richtlinie genannten Zwecke zu erreichen. E-Mails und Benutzernamen werden so lange gespeichert, wie das Konto aktiv ist, und für maximal 5 Jahre nach Deaktivierung oder Inaktivität. Fotos, Artikel und Kommentare, die von Nutzern veröffentlicht werden, bleiben so lange gespeichert, wie das Konto aktiv ist. Nach der Deaktivierung können diese Inhalte auf Anfrage innerhalb eines maximalen Zeitraums von 5 Jahren anonymisiert oder gelöscht werden, es sei denn, eine längere Aufbewahrungsfrist ist gesetzlich vorgeschrieben."
     },
     "policy_updates": {
       "title": "9. Aktualisierungen der Datenschutzrichtlinie",
@@ -352,7 +352,7 @@
     },
     "contact": {
       "title": "10. Kontakt",
-      "text": "Bei Fragen zu dieser Datenschutzrichtlinie kontaktieren Sie uns bitte unter folgender Adresse: [Kontakt-E-Mail-Adresse]."
+      "text": "Bei Fragen zu dieser Datenschutzrichtlinie kontaktieren Sie uns bitte unter folgender Adresse: admin@guillaume-quesnel.com."
     }
   },
 

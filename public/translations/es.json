@@ -342,8 +342,8 @@
       "text": "De acuerdo con la legislación aplicable, tiene derecho a acceder, corregir, eliminar o restringir el uso de sus datos personales. También puede retirar su consentimiento en cualquier momento."
     },
     "data_retention": {
-      "title": "8. Retención de Datos",
-      "text": "Retendremos sus datos personales durante el tiempo que sea necesario para satisfacer sus necesidades o por las razones establecidas en esta política. En general, los datos se retendrán durante un período de [duración en meses o años], a menos que la ley requiera un período más largo."
+      "title": "8. Conservación de datos",
+      "text": "Conservaremos sus datos personales mientras sea necesario para satisfacer sus necesidades o para los fines descritos en esta política. Los correos electrónicos y nombres de usuario se conservarán mientras la cuenta esté activa y durante un máximo de 5 años después de su desactivación o inactividad. Las fotos, artículos y comentarios publicados por los usuarios se conservarán mientras la cuenta esté activa. Tras la desactivación, este contenido podrá ser anonimizado o eliminado a petición dentro de un período máximo de 5 años, salvo que la ley requiera un período de conservación más largo."
     },
     "policy_updates": {
       "title": "9. Actualizaciones de la Política de Privacidad",
@@ -351,7 +351,7 @@
     },
     "contact": {
       "title": "10. Contacto",
-      "text": "Si tiene alguna pregunta sobre esta política de privacidad, comuníquese con nosotros a la siguiente dirección: [dirección de correo electrónico de contacto]."
+      "text": "Si tiene alguna pregunta sobre esta política de privacidad, comuníquese con nosotros a la siguiente dirección: admin@guillaume-quesnel.com."
     }
   },
 
