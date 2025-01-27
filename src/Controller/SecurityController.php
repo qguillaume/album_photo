@@ -97,50 +97,12 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    // Endpoint pour tester un mot de passe avec son hashage.
-    /**
-     * @Route("/test-password", name="test_password")
-     */
-    public function testPassword(Request $request): Response
-    {
-        // Récupère l'utilisateur avec son nom d'utilisateur
-        $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['username' => 'Guillaume']);
-
-        // Récupérer le mot de passe en clair que tu veux tester
-        $plainPassword = $request->query->get('password'); // Par exemple, /test-password?password=monmotdepasse
-
-        if ($user) {
-            // Vérifie si le mot de passe en clair correspond au mot de passe haché
-            $isValid = $this->passwordHasher->isPasswordValid($user, $plainPassword);
-
-            if ($isValid) {
-                return new Response('Le mot de passe est valide !');
-            } else {
-                return new Response('Le mot de passe est invalide.');
-            }
-        }
-
-        return new Response('Utilisateur non trouvé.', Response::HTTP_NOT_FOUND);
-    }
-
     /**
      * @Route("/logout", name="logout")
      */
     public function logout(): void
     {
         // Symfony se charge de la déconnexion automatiquement.
-    }
-
-    /**
-     * @Route("/generate-password", name="generate_password")
-     */
-    public function generatePassword(): Response
-    {
-        // Générer un mot de passe avec bcrypt (12 rounds)
-        $hashedPassword = password_hash('toto', PASSWORD_BCRYPT);
-
-        // Affiche le mot de passe haché
-        return new Response('Mot de passe haché : ' . $hashedPassword);
     }
 
     /**
