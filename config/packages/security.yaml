@@ -11,8 +11,8 @@ security:
         main:
             anonymous: true  # Permet aux utilisateurs non authentifiés d'accéder
             form_login:
-                login_path: login  # Route de la page de connexion
-                check_path: login  # Route de soumission du formulaire
+                login_path: login  # chemin de la page de connexion
+                check_path: api_login # Correspond à ton route "/api/login"  # chemin pour soumettre le formulaire
                 username_parameter: login_form[username]
                 password_parameter: login_form[password]
                 default_target_path: portfolio_home  # Redirige vers la page d'accueil après connexion
@@ -25,14 +25,9 @@ security:
         article_area:
             pattern: ^/articles
             form_login:
-                login_path: login
-                check_path: login
-                default_target_path: /articles  # L'URL après une connexion réussie
-
-        # Firewall pour l'API
-        api:
-            pattern: ^/api/
-            security: false  # Désactive la sécurité pour les routes API
+                login_path: app_login
+                check_path: app_login
+                default_target_path: /articles # L'URL après une connexion réussie
 
     # Fournisseur d'utilisateurs
     providers:
@@ -49,7 +44,7 @@ security:
         - { path: ^/logout$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/photos$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        
+
         # Les utilisateurs connectés seulement peuvent accéder à ces pages suivantes :
         - { path: ^/reference$, roles: ROLE_SUPER_ADMIN }
         - { path: ^/dashboard$, roles: ROLE_ADMIN }
@@ -60,5 +55,3 @@ security:
         - { path: ^/articles, roles: ROLE_ADMIN }
         # Pour les pages de l'article avec /article au singulier (pour être sûr de ne rien manquer)
         - { path: ^/article, roles: ROLE_ADMIN }
-
-    access_denied_url: /access-denied

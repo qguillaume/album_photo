@@ -18,41 +18,39 @@ const ConnexionForm: React.FC = () => {
   // Fonction de soumission du formulaire
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-  
     const newErrors: string[] = [];
-  
+    // Vérification des champs
     if (!username) {
       newErrors.push(t('form.username_required'));
     }
     if (!password) {
       newErrors.push(t('form.password_required'));
     }
-  
+    // Si des erreurs existent, les afficher sous forme de flash error
     if (newErrors.length > 0) {
       setErrors(newErrors);
       return;
     }
-  
+    // Réinitialiser les erreurs
     setErrors([]);
-  
     try {
+      const formData = new URLSearchParams();
+      formData.append('login_form[username]', username);
+      formData.append('login_form[password]', password);
       const response = await fetch('/api/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: username,
-          password: password,
-        }),
+        body: formData,
         credentials: 'include',
       });
-  
-      const data = await response.json();
-  
-      if (response.ok && data.message === 'Connexion réussie') {
-        setFlashMessages([t('form.login_success')]);
-        setFlashType('success');
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          setFlashMessages([t('form.login_success')]);
+          setFlashType('success');
+        } else {
+          setFlashMessages([t('form.login_failed')]);
+          setFlashType('error');
+        }
       } else {
         setFlashMessages([t('form.login_failed')]);
         setFlashType('error');
