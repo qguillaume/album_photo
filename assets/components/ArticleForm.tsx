@@ -56,7 +56,19 @@ const ArticleForm: React.FC = () => {
     // Validation des champs
     if (!author) newErrors.push(t('form.article_author_required'));
     if (!title) newErrors.push(t('form.article_title_required'));
+    if (title.length < 10) {
+      newErrors.push(t('form.title_min_length', { limit: 10 }));
+    }
+    if (title.length > 30) {
+      newErrors.push(t('form.title_max_length', { limit: 30 }));
+    }
     if (!content) newErrors.push(t('form.article_content_required'));
+    if (content.length < 10) {
+      newErrors.push(t('form.content_min_length', { limit: 10 }));
+    }
+    if (content.length > 20000) {
+      newErrors.push(t('form.content_max_length', { limit: 20000 }));
+    }
 
     // Si des erreurs existent, les afficher et arrêter la soumission
     if (newErrors.length > 0) {

@@ -25,13 +25,33 @@ const ContactForm: React.FC = () => {
 
     // Validation des champs
     if (!name) newErrors.push(t('form.name_required'));
+    if (name.length < 4) {
+      newErrors.push(t('form.username_min_length', { limit: 4 }));
+    }
+    if (name.length > 30) {
+      newErrors.push(t('form.username_max_length', { limit: 30 }));
+    }
+
     if (!email) {
       newErrors.push(t('form.email_required'));
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.push(t('form.email_invalid'));
     }
-    if (!message) newErrors.push(t('form.message_required'));
+    if (email.length < 10) {
+      newErrors.push(t('form.email_min_length', { limit: 10 }));
+    }
+    if (email.length > 60) {
+      newErrors.push(t('form.email_max_length', { limit: 60 }));
+    }
 
+    if (!message) newErrors.push(t('form.message_required'));
+    if (message.length < 10) {
+      newErrors.push(t('form.message_min_length', { limit: 10 }));
+    }
+    if (message.length > 5000) {
+      newErrors.push(t('form.message_max_length', { limit: 5000 }));
+    }
+    
     // Si des erreurs existent, les afficher sous forme de flash et arrêter la soumission
     if (newErrors.length > 0) {
       setErrors(newErrors);

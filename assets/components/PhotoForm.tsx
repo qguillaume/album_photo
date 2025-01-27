@@ -44,6 +44,9 @@ const PhotoForm: React.FC = () => {
 
     // Validation des champs du formulaire
     if (!title) newErrors.push(t('form.photo_title_required'));
+    if (title.length > 30) {
+      newErrors.push(t('form.title_max_length', { limit: 30 }));
+    }
     if (!file) newErrors.push(t('form.photo_file_required'));
     if (!album) newErrors.push(t('form.photo_album_required'));
 

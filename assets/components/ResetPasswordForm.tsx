@@ -38,8 +38,10 @@ const ResetPasswordForm: React.FC = () => {
     // Validation des champs
     if (!password) {
       newErrors.password = t('form.password_required');
-    } else if (password.length < 6) {
-      newErrors.password = t('form.password_min_length', { limit: 6 });
+    } else if (password.length < 8) {
+      newErrors.password = t('form.password_min_length', { limit: 8 });
+    } else if (password.length > 60) {
+      newErrors.password = t('form.password_max_length', { limit: 60 });
     }
 
     if (password !== confirmPassword) {

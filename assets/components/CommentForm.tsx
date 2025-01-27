@@ -43,6 +43,12 @@ const CommentForm: React.FC = () => {
     if (!content) {
       newErrors.content = t('form.content_required');
     }
+    if (content.length < 3) {
+      newErrors.push(t('form.content_min_length', { limit: 3 }));
+    }
+    if (content.length > 3000) {
+      newErrors.push(t('form.content_max_length', { limit: 3000 }));
+    }
 
     // Si des erreurs existent, on les affiche et on arrête la soumission
     if (Object.keys(newErrors).length > 0) {

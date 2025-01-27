@@ -24,6 +24,9 @@ const AlbumForm: React.FC = () => {
 
     // Validation du nom de l'album
     if (!albumName) newErrors.push(t('form.album_name_required'));
+    if (albumName.length > 30) {
+      newErrors.push(t('form.album_name_max_length', { limit: 30 }));
+    }
 
     // Si des erreurs existent, on les affiche sous forme de flash et on arrête la soumission
     if (newErrors.length > 0) {

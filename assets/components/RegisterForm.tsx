@@ -26,14 +26,25 @@ const RegisterForm: React.FC = () => {
     const newErrors: string[] = [];
 
     // Validation des champs
-    if (!username) newErrors.push(t('form.username_required') || 'Nom d\'utilisateur requis');
-    if (!email) {
-      newErrors.push(t('form.email_required') || 'Adresse e-mail requise');
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.push(t('form.email_invalid') || 'Adresse e-mail invalide');
+    if (!username) newErrors.push(t('form.username_required'));
+    if (username.length < 4) {
+      newErrors.push(t('form.username_min_length', { limit: 4 }));
     }
-    if (!password) newErrors.push(t('form.password_required') || 'Mot de passe requis');
-
+    if (username.length > 30) {
+      newErrors.push(t('form.username_max_length', { limit: 30 }));
+    }
+    if (!email) {
+      newErrors.push(t('form.email_required'));
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.push(t('form.email_invalid'));
+    }
+    if (!password) newErrors.push(t('form.password_required'));
+    if (password.length < 8) {
+      newErrors.push(t('form.password_min_length', { limit: 8 }));
+    }
+    if (password.length > 60) {
+      newErrors.push(t('form.password_max_length', { limit: 60 }));
+    }
     // Si des erreurs existent, on les affiche et on arrête la soumission
     if (newErrors.length > 0) {
       setErrors(newErrors);
