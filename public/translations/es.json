@@ -149,7 +149,18 @@
     "connexion_error": "Error de conexión",
 
     "leave_comment": "Deja un comentario",
-    "leave_comment_placeholder": "Escribir un comentario"
+    "leave_comment_placeholder": "Escribir un comentario",
+
+    "album_name_max_length": "El nombre del álbum está limitado a {{ limit }} caracteres.",
+    "title_min_length": "El título debe contener al menos {{ limit }} caracteres.",
+    "title_max_length": "El título está limitado a {{ limit }} caracteres.",
+    "content_min_length": "El contenido debe contener al menos {{ limit }} caracteres.",
+    "content_max_length": "El contenido está limitado a {{ limit }} caracteres.",
+    "username_max_length": "El nombre de usuario está limitado a {{ limit }} caracteres.",
+    "email_min_length": "El correo electrónico debe contener al menos {{ limit }} caracteres.",
+    "email_max_length": "El correo electrónico está limitado a {{ limit }} caracteres.",
+    "message_max_length": "El mensaje está limitado a {{ limit }} caracteres.",
+    "password_max_length": "La contraseña está limitada a {{ limit }} caracteres."
   },
   "forgot_password": "¿Olvidaste tu contraseña?",
   "bellon": "Desarrollador Fullstack - Grupo Bellon",

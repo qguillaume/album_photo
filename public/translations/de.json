@@ -150,7 +150,18 @@
     "connexion_error": "Verbindungsfehler",
 
     "leave_comment": "Hinterlassen Sie einen Kommentar",
-    "leave_comment_placeholder": "Einen Kommentar schreiben"
+    "leave_comment_placeholder": "Einen Kommentar schreiben",
+
+    "album_name_max_length": "Der Albumname ist auf {{ limit }} Zeichen begrenzt.",
+    "title_min_length": "Der Titel muss mindestens {{ limit }} Zeichen enthalten.",
+    "title_max_length": "Der Titel ist auf {{ limit }} Zeichen begrenzt.",
+    "content_min_length": "Der Inhalt muss mindestens {{ limit }} Zeichen enthalten.",
+    "content_max_length": "Der Inhalt ist auf {{ limit }} Zeichen begrenzt.",
+    "username_max_length": "Der Benutzername ist auf {{ limit }} Zeichen begrenzt.",
+    "email_min_length": "Die E-Mail muss mindestens {{ limit }} Zeichen enthalten.",
+    "email_max_length": "Die E-Mail ist auf {{ limit }} Zeichen begrenzt.",
+    "message_max_length": "Die Nachricht ist auf {{ limit }} Zeichen begrenzt.",
+    "password_max_length": "Das Passwort ist auf {{ limit }} Zeichen begrenzt."
   },
   "forgot_password": "Passwort vergessen?",
   "bellon": "Fullstack-Entwickler - Gruppe Bellon",
