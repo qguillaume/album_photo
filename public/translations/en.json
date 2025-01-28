@@ -303,7 +303,7 @@
     },
     "data_protection": {
       "title": "8. Personal Data Protection",
-      "text": "In accordance with the applicable legislation, including the General Data Protection Regulation (GDPR), this site collects certain personal data (name, surname, email address, etc.) for the following purposes: user management. Users have the right to access, rectify, erase, restrict, transfer, and object to the processing of their personal data. These rights can be exercised by sending a request via email to admin@guillaume-quesnel.com. The collected data is kept for a duration of [insert duration] and will not be used for purposes other than those specified above. The site uses cookies to enhance the user experience. You can manage your cookie preferences through your browser settings."
+      "text": "In accordance with the applicable legislation, including the General Data Protection Regulation (GDPR), this site collects certain personal data (name, surname, email address, etc.) for the following purposes: user management. Users have the right to access, rectify, erase, restrict, transfer, and object to the processing of their personal data. These rights can be exercised by sending a request via email to admin@guillaume-quesnel.com. The collected data is kept for a duration of 5 years and will not be used for purposes other than those specified above. The site uses cookies to enhance the user experience. You can manage your cookie preferences through your browser settings."
     },
     "jurisdiction": {
       "title": "9. Applicable Law and Jurisdiction",
