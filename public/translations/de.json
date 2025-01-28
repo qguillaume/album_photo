@@ -161,7 +161,8 @@
     "email_min_length": "Die E-Mail muss mindestens {{ limit }} Zeichen enthalten.",
     "email_max_length": "Die E-Mail ist auf {{ limit }} Zeichen begrenzt.",
     "message_max_length": "Die Nachricht ist auf {{ limit }} Zeichen begrenzt.",
-    "password_max_length": "Das Passwort ist auf {{ limit }} Zeichen begrenzt."
+    "password_max_length": "Das Passwort ist auf {{ limit }} Zeichen begrenzt.",
+    "no_albums": "Keine Alben, Sie müssen zuerst eines erstellen!"
   },
   "forgot_password": "Passwort vergessen?",
   "bellon": "Fullstack-Entwickler - Gruppe Bellon",

@@ -160,7 +160,8 @@
     "email_min_length": "L'email doit contenir au moins {{ limit }} caractères.",
     "email_max_length": "L'email est limité à {{ limit }} caractères.",
     "message_max_length": "Le message est limité à {{ limit }} caractères.",
-    "password_max_length": "Le mot de passe est limité à {{ limit }} caractères."
+    "password_max_length": "Le mot de passe est limité à {{ limit }} caractères.",
+    "no_albums": "Pas d'album, il faut d'abord en créer un !"
   },
   "forgot_password": "Mot de passe oublié ?",
   "bellon": "Développeur Fullstack - Groupe Bellon",
