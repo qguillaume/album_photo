@@ -21,7 +21,29 @@ const DashboardTabs: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [comments, setComments] = useState<Comment[]>([]);
   const [themes, setThemes] = useState<Theme[]>([]);
+  const [currentUserRoles, setCurrentUserRoles] = useState<string[]>([]);
 
+  const [currentUser, setCurrentUser] = useState<User | null>(null); // Ajouter un état pour l'utilisateur courant
+  
+    useEffect(() => {
+      const fetchCurrentUser = async () => {
+        try {
+          const response = await fetch("/api/current_user");
+          if (!response.ok) {
+            throw new Error("Erreur dans la réponse de l'API");
+          }
+          const data = await response.json();
+          setCurrentUser(data); // Stocker les informations de l'utilisateur courant
+          setCurrentUserRoles(data.roles || []);
+        } catch (error) {
+          console.error("Erreur lors de la récupération de l'utilisateur courant :", error);
+        }
+      };
+  
+      fetchCurrentUser();
+    }, []);
+
+  const isSuperAdmin = currentUserRoles.includes("ROLE_SUPER_ADMIN");
   // Mise à jour du titre de la page en fonction de l'onglet actif
   useEffect(() => {
     const tabTitles: Record<typeof activeTab, string> = {
@@ -153,12 +175,14 @@ const DashboardTabs: React.FC = () => {
         >
           {t('admin.users')}
         </button>
+        {(isSuperAdmin) && (
         <button
           className={`tab-button articles ${activeTab === 'articles' ? 'active' : ''}`}
           onClick={() => handleTabClick('articles')}
         >
           {t('admin.articles')}
         </button>
+        )}
         <button
           className={`tab-button comments ${activeTab === 'comments' ? 'active' : ''}`}
           onClick={() => handleTabClick('comments')}

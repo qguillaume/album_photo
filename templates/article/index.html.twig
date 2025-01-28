@@ -12,7 +12,7 @@
                 <th>Titre</th>
                 <th>Theme</th>
                 <th>Date de création</th>
-                {% if is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
                     <th>Actions</th>
                 {% endif %}
             </tr>
