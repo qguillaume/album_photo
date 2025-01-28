@@ -53,7 +53,7 @@ form input[type="submit"] {
 }
 
 /* Styles des messages flash */
-.flash-error, .flash-success {
+.flash-error, .flash-success, .flash-info {
   width: 100%;
   max-width: 600px;
   margin: 20px auto;
@@ -73,6 +73,12 @@ form input[type="submit"] {
 .flash-success {
   background-color: #d4edda;
   color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.flash-info {
+  background-color: #d4edda;
+  color: #08b4a6;
   border: 1px solid #c3e6cb;
 }
 

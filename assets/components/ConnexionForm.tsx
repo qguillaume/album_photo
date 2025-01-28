@@ -120,6 +120,19 @@ const ConnexionForm: React.FC = () => {
           </button>
         </div>
 
+        <div className="flash-info">
+          <p>
+            Attention ! Formulaire de connexion fonctionnel mais pas de redirection et message erroné en cas de connexion réussie !
+            Vérifier votre connexion en cliquant sur "Accueil". En cours de résolution...
+          </p>
+          <br />
+          <p>
+            Formulaire de récupération de mot de passe non fonctionnel, en cours de résolution...
+          </p>
+          <br />
+          <p>En cas de problème, contactez-moi via le formulaire de contact.</p>
+        </div>
+
         <div className="form-group mt-2">
           <a href="/forgot-password">{t('forgot_password')}</a>
         </div>

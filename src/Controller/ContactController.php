@@ -49,7 +49,7 @@ class ContactController extends AbstractController
         // Créer l'email à envoyer
         $email = (new Email())
             ->from($data['email'])
-            ->to('quesnel.guillaume.j@gmail.com') // Destinataire
+            ->to('admin@guillaume-quesnel.com')
             ->subject('[Formulaire de contact] Message reçu de : ' . $data['name'])
             ->text('Bonjour, vous avez reçu un message : ' . $data['message'])
             ->html('<p>' . $data['message'] . '</p>');
