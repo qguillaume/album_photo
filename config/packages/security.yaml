@@ -54,4 +54,4 @@ security:
         # Restreindre l'accès à toutes les pages commençant par /articles uniquement aux utilisateurs admin connectés
         - { path: ^/articles, roles: ROLE_ADMIN }
         # Pour les pages de l'article avec /article au singulier (pour être sûr de ne rien manquer)
-        - { path: ^/article, roles: ROLE_ADMIN }
+        - { path: ^/article, roles: ROLE_SUPER_ADMIN }
