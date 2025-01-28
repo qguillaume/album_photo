@@ -115,19 +115,30 @@ class ArticleController extends AbstractController
      */
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
-        // Vérifier que l'utilisateur est connecté
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        // Vérifier que l'utilisateur est connecté et a le rôle requis
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        // Récupérer la requête pour les articles
-        $query = $this->articleRepository->createQueryBuilder('a')
-            ->orderBy('a.createdAt', 'DESC')
-            ->getQuery();
+        // Récupérer l'utilisateur connecté
+        $user = $this->getUser();
+
+        // Construire la requête en fonction des rôles
+        $queryBuilder = $this->articleRepository->createQueryBuilder('a')
+            ->orderBy('a.createdAt', 'DESC');
+
+        // Si l'utilisateur est admin mais pas superadmin, filtrer par ses propres articles
+        if ($this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_SUPER_ADMIN')) {
+            $queryBuilder->where('a.author = :user')
+                ->setParameter('user', $user);
+        }
+
+        // Exécuter la requête
+        $query = $queryBuilder->getQuery();
 
         // Paginer les résultats
         $articles = $paginator->paginate(
-            $query, // QueryBuilder ou Query
-            $request->query->getInt('page', 1), // Numéro de la page actuelle (par défaut 1)
-            10 // Nombre d'articles par page
+            $query,
+            $request->query->getInt('page', 1), // Page actuelle
+            10 // Articles par page
         );
 
         return $this->render('article/index.html.twig', [

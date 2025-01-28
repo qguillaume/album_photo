@@ -41,6 +41,13 @@
                                 </form>
                             </div>
                         </td>
+                    {% elseif is_granted('ROLE_ADMIN') and article.author.username == app.user.username %}
+                        <td class="td-actions">
+                            <div class="crud-buttons">
+                                <a class="view" href="{{ path('article_show', {'id': article.id}) }}">Voir</a>
+                                <a class="edit" href="{{ path('article_edit', {'id': article.id}) }}">Modifier</a>
+                            </div>
+                        </td>
                     {% endif %}
                 </tr>
             {% endfor %}

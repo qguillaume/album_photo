@@ -233,8 +233,8 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
             <th onClick={() => handleSort("photos")}>
             {t('admin.photos_number')} {sortConfig.key === "photos" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
-            {isSuperAdmin && (<th>{t('admin.approve')}</th>)}
-            {isSuperAdmin && (<th>{t('admin.visible')}</th>)}
+            {(isSuperAdmin || isAdmin) && (<th>{t('admin.approve')}</th>)}
+            {(isSuperAdmin || isAdmin) && (<th>{t('admin.visible')}</th>)}
             <th>{t('admin.actions')}</th>
           </tr>
         </thead>
@@ -256,7 +256,7 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
               </td>
               <td>{getUserNameById(album.creator)}</td>
               <td>{album.photos.length}</td>
-              {isSuperAdmin && (
+              {(isSuperAdmin || isAdmin) && (
                 <>
                   <td>
                     <label className="switch">
