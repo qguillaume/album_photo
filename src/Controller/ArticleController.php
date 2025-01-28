@@ -146,18 +146,26 @@ class ArticleController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/article/{id}", name="article_show", methods={"GET"})
      */
     public function show(int $id): Response
     {
         // Vérifier que l'utilisateur est connecté
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
+        // Récupérer l'article
         $article = $this->articleRepository->find($id);
 
         if (!$article) {
             throw $this->createNotFoundException('Article non trouvé');
+        }
+
+        // Vérifier que l'utilisateur est l'auteur OU un superadmin
+        $user = $this->getUser();
+        if (!$this->isGranted('ROLE_SUPER_ADMIN') && $article->getAuthor() !== $user) {
+            throw $this->createAccessDeniedException('Vous n\'avez pas la permission de voir cet article.');
         }
 
         return $this->render('article/show.html.twig', [
@@ -210,17 +218,18 @@ class ArticleController extends AbstractController
     public function edit(int $id, Request $request): Response
     {
         $article = $this->articleRepository->find($id);
-        // Vérifier que l'utilisateur est l'auteur de l'article
-        if ($article->getAuthor() !== $this->getUser()) {
-            throw new AccessDeniedException('Vous ne pouvez pas modifier cet article.');
-        }
 
         if (!$article) {
-            return $this->json(['message' => 'Article non trouvé'], Response::HTTP_NOT_FOUND);
+            throw $this->createNotFoundException('Article non trouvé');
+        }
+
+        // Vérifier que l'utilisateur est l'auteur OU un superadmin
+        $user = $this->getUser();
+        if (!$this->isGranted('ROLE_SUPER_ADMIN') && $article->getAuthor() !== $user) {
+            throw $this->createAccessDeniedException('Vous ne pouvez pas modifier cet article.');
         }
 
         $form = $this->createForm(ArticleFormType::class, $article);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -257,13 +266,15 @@ class ArticleController extends AbstractController
     public function delete(int $id): Response
     {
         $article = $this->articleRepository->find($id);
-        // Vérifier que l'utilisateur est l'auteur de l'article
-        if ($article->getAuthor() !== $this->getUser()) {
-            throw new AccessDeniedException('Vous ne pouvez pas modifier cet article.');
-        }
 
         if (!$article) {
             return $this->json(['message' => 'Article non trouvé'], Response::HTTP_NOT_FOUND);
+        }
+
+        // Vérifier que l'utilisateur est l'auteur OU un superadmin
+        $user = $this->getUser();
+        if (!$this->isGranted('ROLE_SUPER_ADMIN') && $article->getAuthor() !== $user) {
+            throw $this->createAccessDeniedException('Vous ne pouvez pas supprimer cet article.');
         }
 
         $this->entityManager->remove($article);
