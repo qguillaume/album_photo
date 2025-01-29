@@ -21,10 +21,12 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 class PhotoController extends AbstractController
 {
+    private $photoRepository;
     private $projectDir;
 
-    public function __construct(KernelInterface $kernel)
+    public function __construct(PhotoRepository $photoRepository, KernelInterface $kernel)
     {
+        $this->photoRepository = $photoRepository;
         $this->projectDir = $kernel->getProjectDir();
     }
 
@@ -338,6 +340,29 @@ class PhotoController extends AbstractController
 
     /**
      * @Route("/photos_list", name="photos_list", methods={"GET"})
+     */
+    public function list()
+    {
+        // Récupérer tous les photos depuis la base de données
+        $photos = $this->photoRepository->findAll();
+
+        // Convertir les photos en tableau associatif ou en un tableau d'objets
+        $photosData = [];
+        foreach ($photos as $photo) {
+            $photosData[] = [
+                'id' => $photo->getId(),
+                'title' => $photo->getTitle(),
+                'isVisible' => $photo->getIsVisible(),
+                'isApproved' => $photo->getIsApproved(),
+            ];
+        }
+
+        // Retourner la réponse JSON avec les photos
+        return new JsonResponse($photosData);
+    }
+
+    /**
+     * @Route("/photos_list_filter", name="photos_list_filter", methods={"GET"})
      */
     public function listPhotos(PhotoRepository $photoRepository): JsonResponse
     {
