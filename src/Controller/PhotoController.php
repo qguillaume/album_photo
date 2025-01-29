@@ -105,8 +105,16 @@ class PhotoController extends AbstractController
         // Vérifier si l'utilisateur est le créateur de l'album
         $isOwner = $album->getCreator() === $user;
 
-        // Vérifier si l'album est visible et approuvé ou si l'utilisateur est le créateur
-        if ((!$album->getIsVisible() || !$album->getIsApproved()) && !$isOwner) {
+        $roles = $user ? $user->getRoles() : [];
+        $albumOwnerRoles = $album->getCreator()->getRoles();
+
+        // Vérifier si l'utilisateur a le droit d'accéder à l'album
+        if (
+            (!$album->getIsVisible() || !$album->getIsApproved())
+            && !$isOwner
+            && !in_array('ROLE_SUPER_ADMIN', $roles)
+            && !(in_array('ROLE_ADMIN', $roles) && $albumOwnerRoles === ['ROLE_USER'])
+        ) {
             throw new AccessDeniedException('Vous n\'avez pas l\'autorisation d\'accéder à cet album');
         }
 
