@@ -256,9 +256,9 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
               </td>
               <td>{getUserNameById(album.creator)}</td>
               <td>{album.photos.length}</td>
-              {(isSuperAdmin || isAdmin) && (
                 <>
                   <td>
+                    {canEditOrDelete(album.creator) && (
                     <label className="switch">
                       <input
                         type="checkbox"
@@ -267,8 +267,10 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
                       />
                       <span className="slider"></span>
                     </label>
+                    )}
                   </td>
-                  <td>
+                  
+                  <td>{canEditOrDelete(album.creator) && (
                     <label className="switch">
                       <input
                         type="checkbox"
@@ -277,9 +279,9 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
                       />
                       <span className="slider"></span>
                     </label>
+                    )}
                   </td>
                 </>
-              )}
               <td className="td-actions">
                 <div className="crud-buttons">
                   {canEditOrDelete(album.creator) && (
