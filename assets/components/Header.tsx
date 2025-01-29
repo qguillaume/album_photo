@@ -55,7 +55,7 @@ const Header: React.FC = () => {
           )}
 
           {isSuperAdmin && (
-            <a href="/references" className={window.location.pathname === '/references' ? 'active' : ''}>
+            <a href="/reference" className={window.location.pathname === '/reference' ? 'active' : ''}>
               {t('references')}
             </a>
           )}

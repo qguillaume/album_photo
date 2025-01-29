@@ -62,7 +62,7 @@ class RegistrationController extends AbstractController
 
             // Envoi de l'email de confirmation
             $email = (new Email())
-                ->from('noreply@gqportfolio.com') // L'expéditeur
+                ->from('noreply@guillaume-quesnel.com')
                 ->to($user->getEmail()) // L'adresse de l'utilisateur
                 ->subject('Merci pour votre inscription !')
                 ->text('Bonjour ' . $user->getUsername() . ', merci pour votre inscription sur notre site.')
@@ -118,7 +118,7 @@ class RegistrationController extends AbstractController
 
         // Envoi de l'email de confirmation
         $emailAdress = (new Email())
-            ->from('noreply@gqportfolio.com') // L'expéditeur
+            ->from('noreply@guillaume-quesnel.com')
             ->to($user->getEmail()) // L'adresse de l'utilisateur
             ->subject('Merci pour votre inscription !')
             ->text('Bonjour ' . $user->getUsername() . ', merci pour votre inscription sur notre site.')
