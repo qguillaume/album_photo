@@ -62,7 +62,7 @@ const DashboardTabs: React.FC = () => {
   useEffect(() => {
     // Si les données ne sont pas encore chargées, on les charge
     if (photos.length === 0) {
-      fetch('/photos_list')
+      fetch('/photos_list_filter')
         .then(response => response.json())
         .then(data => setPhotos(data));
     }

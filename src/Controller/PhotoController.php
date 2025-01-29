@@ -361,8 +361,9 @@ class PhotoController extends AbstractController
         return new JsonResponse($photosData);
     }
 
-    /*
-     
+    /**
+     * @Route("/photos_list_filter", name="photos_list_filter", methods={"GET"})
+     */
     public function listPhotos(PhotoRepository $photoRepository): JsonResponse
     {
         // Récupérer l'utilisateur connecté
@@ -404,8 +405,6 @@ class PhotoController extends AbstractController
         // Retourner une réponse JSON
         return new JsonResponse($photosData);
     }
-    */
-
 
     /**
      * @Route("/photo/{id}", name="photo_show", requirements={"id"="\d+"}, methods={"GET", "POST"})
