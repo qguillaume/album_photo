@@ -13,7 +13,15 @@
 {% endif %}
 
 {% for photo in photos %}
-    {% if (photo.isVisible and photo.isApproved) or photo.album.creator.id == app.user.id %}
+    {% if
+        is_granted('ROLE_SUPER_ADMIN') 
+        or
+        (is_granted('ROLE_ADMIN') and photo.album.creator.roles[0] == 'ROLE_USER')
+        or
+        photo.album.creator.id == app.user.id
+        or
+        (photo.isVisible and photo.isApproved)
+    %}
         <div class="card-container {% if not photo.isVisible or not photo.isApproved %}photo-transparent{% endif %}">
             <div class="card">
                 <!-- Face avant -->
@@ -41,7 +49,7 @@
                                     {% endif %}
 
                                     <a href="{{ path('photo_show', { 'id': photo.id }) }}" class="btn-view">👁️</a>
-                                    
+
                                     {% if is_owner %}
                                         <button class="btn-rename" onClick="handleRename({{ photo.id }})">✏️</button>
                                         <button class="btn-delete" onClick="handleDelete({{ photo.id }})">❌</button>

@@ -118,12 +118,32 @@ class PhotoController extends AbstractController
             throw new AccessDeniedException('Vous n\'avez pas l\'autorisation d\'accéder à cet album');
         }
 
+        // Filtrer les photos en fonction des rôles
+        $photos = array_filter($album->getPhotos()->toArray(), function ($photo) use ($user, $roles, $albumOwnerRoles) {
+            // Si l'utilisateur est un superadmin, toutes les photos sont visibles
+            if (in_array('ROLE_SUPER_ADMIN', $roles)) {
+                return true;
+            }
+
+            // Si l'utilisateur est un admin et que l'album appartient à un utilisateur avec le rôle 'ROLE_USER',
+            // alors l'admin peut voir toutes les photos de cet album (même celles non visibles ou non approuvées).
+            if (in_array('ROLE_ADMIN', $roles) && in_array('ROLE_USER', $albumOwnerRoles)) {
+                return true;
+            }
+
+            // Le propriétaire peut voir ses propres photos, même non visibles ou non approuvées
+            if ($photo->getAlbum()->getCreator() === $user) {
+                return true;
+            }
+
+            // Si l'utilisateur n'est pas le propriétaire, il ne peut voir que les photos visibles et approuvées
+            return $photo->getIsVisible() && $photo->getIsApproved();
+        });
+
         // Retourner la vue Twig avec les photos de l'album
         return $this->render('photo/photos_by_album.html.twig', [
             'album' => $album,
-            'photos' => array_filter($album->getPhotos()->toArray(), function ($photo) use ($user) {
-                return $photo->getIsVisible() && $photo->getIsApproved() || $photo->getAlbum()->getCreator() === $user;
-            }),
+            'photos' => $photos,
             'is_owner' => $isOwner,
         ]);
     }
