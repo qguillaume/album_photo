@@ -30,14 +30,35 @@ class PhotoController extends AbstractController
         $this->projectDir = $kernel->getProjectDir();
     }
 
-    // Afficher tous les albums
     /**
      * @Route("/photos", name="photo_albums")
      */
     public function albums(EntityManagerInterface $em): Response
     {
-        // Récupérer tous les albums
-        $albums = $em->getRepository(Album::class)->findAll();
+        $user = $this->getUser();
+        $albumsQueryBuilder = $em->getRepository(Album::class)->createQueryBuilder('a');
+
+        if ($user) {
+            // Si l'utilisateur est un superadmin, on ne filtre rien
+            if ($this->isGranted('ROLE_SUPER_ADMIN')) {
+                // Superadmin voit tout
+                // Pas de filtre supplémentaire
+            } else {
+                // Pour les autres utilisateurs, on filtre les albums visibles et approuvés
+                $albumsQueryBuilder
+                    ->where('a.isVisible = :visible AND a.isApproved = :approved')
+                    ->setParameter('visible', true)
+                    ->setParameter('approved', true);
+
+                // Ajouter une condition pour que l'utilisateur puisse voir ses propres albums, même s'ils ne sont pas approuvés ou visibles
+                $albumsQueryBuilder
+                    ->orWhere('a.creator = :user')
+                    ->setParameter('user', $user);
+            }
+        }
+
+        // Exécuter la requête
+        $albums = $albumsQueryBuilder->getQuery()->getResult();
 
         // Retourner la vue Twig avec les albums
         return $this->render('photo/albums.html.twig', [
