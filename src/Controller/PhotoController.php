@@ -39,18 +39,40 @@ class PhotoController extends AbstractController
         $albumsQueryBuilder = $em->getRepository(Album::class)->createQueryBuilder('a');
 
         if ($user) {
-            // Si l'utilisateur est un superadmin, on ne filtre rien
+            // Superadmin voit tous les albums
             if ($this->isGranted('ROLE_SUPER_ADMIN')) {
-                // Superadmin voit tout
-                // Pas de filtre supplémentaire
-            } else {
-                // Pour les autres utilisateurs, on filtre les albums visibles et approuvés
+                // Pas de filtre
+            } elseif ($this->isGranted('ROLE_ADMIN')) {
+                // Admin voit les albums visibles et approuvés
                 $albumsQueryBuilder
                     ->where('a.isVisible = :visible AND a.isApproved = :approved')
                     ->setParameter('visible', true)
                     ->setParameter('approved', true);
 
-                // Ajouter une condition pour que l'utilisateur puisse voir ses propres albums, même s'ils ne sont pas approuvés ou visibles
+                // Admin voit ses propres albums
+                $albumsQueryBuilder
+                    ->orWhere('a.creator = :user')
+                    ->setParameter('user', $user);
+
+                // Admin voit les albums des users qui ont UNIQUEMENT le rôle ROLE_USER
+                $albumsQueryBuilder
+                    ->orWhere('a.creator IN (
+                    SELECT u.id FROM App\Entity\User u 
+                    WHERE u.roles LIKE :roleUser 
+                    AND u.roles NOT LIKE :roleAdmin
+                    AND u.roles NOT LIKE :roleSuperAdmin
+                )')
+                    ->setParameter('roleUser', '%"ROLE_USER"%')
+                    ->setParameter('roleAdmin', '%"ROLE_ADMIN"%')
+                    ->setParameter('roleSuperAdmin', '%"ROLE_SUPER_ADMIN"%');
+            } else {
+                // Utilisateur simple : voit uniquement les albums visibles et approuvés
+                $albumsQueryBuilder
+                    ->where('a.isVisible = :visible AND a.isApproved = :approved')
+                    ->setParameter('visible', true)
+                    ->setParameter('approved', true);
+
+                // Il voit aussi ses propres albums, qu'ils soient visibles ou non
                 $albumsQueryBuilder
                     ->orWhere('a.creator = :user')
                     ->setParameter('user', $user);
@@ -60,7 +82,6 @@ class PhotoController extends AbstractController
         // Exécuter la requête
         $albums = $albumsQueryBuilder->getQuery()->getResult();
 
-        // Retourner la vue Twig avec les albums
         return $this->render('photo/albums.html.twig', [
             'albums' => $albums,
         ]);

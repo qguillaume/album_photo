@@ -3,7 +3,12 @@
 {% block body %}
 <div class="card-folder-gallery">
     {% for album in albums %}
-        {% if (album.isVisible and album.isApproved) or (app.user and album.creator.id == app.user.id) or is_granted('ROLE_SUPER_ADMIN') %}
+        {% if 
+            (album.isVisible and album.isApproved) 
+            or (app.user and album.creator.id == app.user.id) 
+            or is_granted('ROLE_SUPER_ADMIN') 
+            or (is_granted('ROLE_ADMIN') and album.creator.roles is defined and album.creator.roles|length == 1 and 'ROLE_USER' in album.creator.roles) 
+        %}
             <div class="card-folder-container">
                 <div class="card-folder">
                     <!-- Face avant -->
@@ -39,7 +44,7 @@
                 >
                     {{ album.nomAlbum }} ({{album.photoCount}})
                     
-                    {% if (not album.isApproved or not album.isVisible) and (album.creator.id == app.user.id or is_granted('ROLE_SUPER_ADMIN')) %}
+                    {% if (not album.isApproved or not album.isVisible) and (album.creator.id == app.user.id or is_granted('ROLE_SUPER_ADMIN') or (is_granted('ROLE_ADMIN') and album.creator.roles is defined and album.creator.roles|length == 1 and 'ROLE_USER' in album.creator.roles)) %}
                         <span class="icon-danger" title="Non approuvé ou invisible" style="color: red;">&#9888;</span>
                     {% endif %}
                 </p>
@@ -48,5 +53,4 @@
         {% endif %}
     {% endfor %}
 </div>
-
 {% endblock %}
