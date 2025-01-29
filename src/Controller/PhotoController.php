@@ -344,7 +344,7 @@ class PhotoController extends AbstractController
     public function list()
     {
         // Récupérer tous les photos depuis la base de données
-        $photos = $this->photoRepository->findAll();
+        $photos = $this->photoRepository->findAllPhotosForUser($this->getUser());
 
         // Convertir les photos en tableau associatif ou en un tableau d'objets
         $photosData = [];
@@ -361,9 +361,8 @@ class PhotoController extends AbstractController
         return new JsonResponse($photosData);
     }
 
-    /**
-     * @Route("/photos_list_filter", name="photos_list_filter", methods={"GET"})
-     */
+    /*
+     
     public function listPhotos(PhotoRepository $photoRepository): JsonResponse
     {
         // Récupérer l'utilisateur connecté
@@ -405,6 +404,7 @@ class PhotoController extends AbstractController
         // Retourner une réponse JSON
         return new JsonResponse($photosData);
     }
+    */
 
 
     /**

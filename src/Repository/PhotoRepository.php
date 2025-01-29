@@ -42,4 +42,53 @@ class PhotoRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findAllPhotosForUser($user)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $roles = $user->getRoles();
+        $userId = $user->getId();
+
+        // Si l'utilisateur est SuperAdmin
+        if (in_array('ROLE_SUPER_ADMIN', $roles)) {
+            // Le superadmin voit toutes les photos, visibles ou non, approuvées ou non
+            return $qb->getQuery()->getResult();
+        }
+
+        // Si l'utilisateur est Admin
+        if (in_array('ROLE_ADMIN', $roles)) {
+            return $qb
+                ->leftJoin('p.album', 'a')
+                ->leftJoin('a.creator', 'ac')
+                ->where(
+                    // Voir les photos des autres utilisateurs visibles et approuvées
+                    'p.isVisible = :visible AND p.isApproved = :approved'
+                )
+                // Voir ses propres photos (même non visibles ou non approuvées)
+                ->orWhere('ac.id = :userId')
+                // Voir les photos des utilisateurs avec seulement le rôle ROLE_USER (pas de ROLE_ADMIN ni ROLE_SUPER_ADMIN)
+                ->orWhere('ac.id IN (SELECT u.id FROM App\Entity\User u WHERE SIZE(u.roles) = 1 AND u.id != :userId)')
+                ->setParameter('visible', true)
+                ->setParameter('approved', true)
+                ->setParameter('userId', $userId)
+                ->getQuery()
+                ->getResult();
+        }
+
+        // Si l'utilisateur est un simple User
+        return $qb
+            ->leftJoin('p.album', 'a')
+            ->leftJoin('a.creator', 'ac')
+            ->where(
+                // Voir les photos visibles et approuvées des autres utilisateurs
+                'p.isVisible = :visible AND p.isApproved = :approved'
+            )
+            // Voir ses propres photos (même non visibles ou non approuvées)
+            ->orWhere('ac.id = :userId')
+            ->setParameter('visible', true)
+            ->setParameter('approved', true)
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->getResult();
+    }
 }
