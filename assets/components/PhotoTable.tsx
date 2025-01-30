@@ -230,8 +230,8 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
             <th onClick={() => handleSort("commentsCount")}>
               {t("admin.comments_number")} {sortConfig.key === "commentsCount" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
-            {(isSuperAdmin || isAdmin) && (<th>Approbation</th>)}
-            <th>{t("admin.visible")}</th>
+            {(isSuperAdmin || isAdmin) && (<th>{t('admin.approve')}</th>)}
+            {(isSuperAdmin || isAdmin) && (<th>{t("admin.visible")}</th>)}
             <th>{t("admin.actions")}</th>
           </tr>
         </thead>
@@ -266,8 +266,9 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
                 <td>{album ? album.nomAlbum : "Non associé"}</td>
                 <td>{photo.likesCount}</td>
                 <td>{photo.commentsCount || 0}</td>
-                {(isSuperAdmin || isAdmin) && (
+                
                 <td>
+                  {canEditOrDelete && (
                   <label className="switch">
                     <input
                       type="checkbox"
@@ -276,9 +277,11 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
                     />
                     <span className="slider"></span>
                   </label>
+                  )}
                 </td>
-                )}
+                
                   <td>
+                    {canEditOrDelete && (
                     <label className="switch">
                       <input
                         type="checkbox"
@@ -287,6 +290,7 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
                       />
                       <span className="slider"></span>
                     </label>
+                    )}
                   </td>
                 
                 <td className="td-actions">
