@@ -135,7 +135,7 @@ const PhotosTable = () => {
 
   useEffect(() => { 
     // Charger les photos depuis l'API
-    fetch(`${process.env.REACT_APP_API_URL}/photos_list_filter`)
+    fetch(`${process.env.REACT_APP_API_URL}/photos_list`)
       .then((response) => response.json())
       .then((data) => {
         setPhotos(data);

@@ -411,54 +411,14 @@ class PhotoController extends AbstractController
     /**
      * @Route("/photos_list", name="photos_list", methods={"GET"})
      */
-    public function list()
+    public function list(PhotoRepository $photoRepository): JsonResponse
     {
-        // Récupérer tous les photos depuis la base de données
-        $photos = $this->photoRepository->findAllPhotosForUser($this->getUser());
-
-        // Convertir les photos en tableau associatif ou en un tableau d'objets
-        $photosData = [];
-        foreach ($photos as $photo) {
-            $photosData[] = [
-                'id' => $photo->getId(),
-                'title' => $photo->getTitle(),
-                'isVisible' => $photo->getIsVisible(),
-                'isApproved' => $photo->getIsApproved(),
-            ];
-        }
-
-        // Retourner la réponse JSON avec les photos
-        return new JsonResponse($photosData);
-    }
-
-    /**
-     * @Route("/photos_list_filter", name="photos_list_filter", methods={"GET"})
-     */
-    public function listPhotos(PhotoRepository $photoRepository): JsonResponse
-    {
-        // Récupérer l'utilisateur connecté
-        $user = $this->getUser();
-
-        if (!$user) {
-            return new JsonResponse(['error' => 'Utilisateur non connecté'], 401);
-        }
-
         // Récupérer toutes les photos
         $photos = $photoRepository->findAll();
 
         // Convertir les photos en un tableau JSON
         $photosData = [];
         foreach ($photos as $photo) {
-            // Vérifier si l'utilisateur est le propriétaire de la photo
-            $isOwner = $photo->getAlbum() && $photo->getAlbum()->getCreator() === $user;
-
-            // Vérifier si la photo est visible et approuvée
-            if (!$photo->getIsVisible() || !$photo->getIsApproved()) {
-                if (!$isOwner) {
-                    continue;  // Si l'utilisateur n'est pas le propriétaire, on passe à la suivante
-                }
-            }
-
             $photosData[] = [
                 'id' => $photo->getId(),
                 'title' => $photo->getTitle(),
@@ -467,12 +427,11 @@ class PhotoController extends AbstractController
                 'likesCount' => $photo->getLikesCount(),
                 'commentsCount' => $photo->getCommentsCount(),
                 'isVisible' => $photo->getIsVisible(),
-                'isApproved' => $photo->getIsApproved(),
-                'isOwner' => $isOwner,  // Ajouter la vérification du propriétaire
+                'isApproved' => $photo->getIsApproved()
             ];
         }
 
-        // Retourner une réponse JSON
+        // Retourner la réponse JSON avec les photos
         return new JsonResponse($photosData);
     }
 
