@@ -12,7 +12,7 @@ i18n
     supportedLngs: ['fr', 'en', 'es', 'de'], // Langues supportées
     ns: ['translations'], // namespace "translations" pour correspondre au nom d dossier
     defaultNS: 'translations',
-    debug: true, // Activer le mode debug pour les logs dans la console
+    debug: false, // Activer ou désactiver le mode debug pour les logs dans la console
     interpolation: {
       escapeValue: false, // Pas besoin d'échapper les valeurs dans React
     },

@@ -23,13 +23,13 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const response = await fetch('/api/user', { credentials: 'include' });
 
         // Log de la réponse pour déboguer
-        console.log('Réponse API:', response);
+        //console.log('Réponse API:', response);
 
         if (response.ok) {
           const data = await response.json();
 
           // Log des données utilisateur récupérées
-          console.log('Données utilisateur récupérées :', data);
+          //console.log('Données utilisateur récupérées :', data);
 
           setUser(data); // Met à jour l'utilisateur dans le contexte
         } else {

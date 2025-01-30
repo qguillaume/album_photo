@@ -71,8 +71,8 @@ const ProjectCarousel = () => {
         loop={true}
         pagination={{ clickable: true }}
         navigation={false}
-        onSlideChange={() => console.log('Slide changé')}
-        onSwiper={(swiper) => console.log(swiper)}
+        //onSlideChange={() => console.log('Slide changé')}
+        //onSwiper={(swiper) => console.log(swiper)}
       >
         {projects.map((project, index) => (
           <SwiperSlide key={index}>

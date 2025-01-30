@@ -344,7 +344,7 @@ const UsersTable = () => {
         }
         const data = await response.json();
         setArticles(data); // Mettre à jour les articles
-        console.log('Articles mis à jour:', data); // Debugging
+        //console.log('Articles mis à jour:', data); // Debugging
       } catch (error) {
         console.error(error);
       }
@@ -423,7 +423,6 @@ document.addEventListener("DOMContentLoaded", () => {
             fetch(`${process.env.REACT_APP_API_URL}/album/delete/${id}`, { method: "DELETE" })
               .then((response) => {
                 if (response.ok) {
-                  console.log("Album supprimé avec succès");
                   alert("Album supprimé avec succès");
 
                   // Redirection après succès
@@ -459,7 +458,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const isOwner = isOwnerString === '1' ? true : false;
 
     const onLike = (id: number) => {
-      console.log(`Photo ${id} aimée!`);
+      //console.log(`Photo ${id} aimée!`);
     };
 
     if (photoId && photoTitle && photoUrl) {

@@ -11,7 +11,7 @@ const TinyEditor = () => {
     ).style.display = "block";
 
     const content = editor.getContent(); // Récupère le contenu actuel de l'éditeur
-    console.log("Contenu édité:", content); // Affiche le contenu dans la console
+    //console.log("Contenu édité:", content); // Affiche le contenu dans la console
     setContent(content); // Mettez à jour le state React
     // Mettez à jour la valeur du textarea caché
     document.querySelector('textarea[name="article_form[content]"]').value =
