@@ -2,7 +2,7 @@
 
 {% block body %}
 <h2>{{ 'pictures_of_album'|trans }} {{ album.getNomAlbum() }}</h2>
-
+<div class="center"><a href="/photos" class="orange-button">Retour à l'ensemble des albums</a></div>
 {% if is_owner %}
     {% if photos|length == 0 %}
         <p class="center">{{ 'no_photos_in_album'|trans }}.</p>
