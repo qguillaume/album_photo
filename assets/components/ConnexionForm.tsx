@@ -9,6 +9,7 @@ const ConnexionForm: React.FC = () => {
   const [errors, setErrors] = useState<string[]>([]);
   const [flashMessages, setFlashMessages] = useState<string[]>([]);
   const [flashType, setFlashType] = useState<'success' | 'error' | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   // Mettre à jour dynamiquement le `title` de la page
   useEffect(() => {
@@ -106,12 +107,26 @@ const ConnexionForm: React.FC = () => {
         <div className="form-group">
           <input
             className="form-control"
-            type="password"
+            type={showPassword ? "text" : "password"}
             name="login_form[password]"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder={t('form.password_placeholder')}
           />
+        </div>
+
+        <div className="form-group">
+          <label className="switch-container">
+            <label className="switch">
+              <input
+                type="checkbox"
+                checked={showPassword}
+                onChange={() => setShowPassword(!showPassword)}
+              />
+              <span className="slider"></span>
+            </label>
+            <span className="switch-label">{t('form.show_password')}</span>
+          </label>
         </div>
 
         <div className="form-group">
