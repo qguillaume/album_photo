@@ -8,7 +8,8 @@ const RegisterForm: React.FC = () => {
   const [username, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
+  const [showPassword, setShowPassword] = useState(false);
+
   // État pour afficher les erreurs de validation
   const [errors, setErrors] = useState<string[]>([]);
   const [flashMessages, setFlashMessages] = useState<string[]>([]);
@@ -125,12 +126,27 @@ const RegisterForm: React.FC = () => {
         <div className="form-group">
           <input
             className="form-control"
-            type="password"
+            type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder={t('form.password_placeholder')}
           />
         </div>
+
+        <div className="form-group">
+          <label className="switch-container">
+            <label className="switch">
+              <input
+                type="checkbox"
+                checked={showPassword}
+                onChange={() => setShowPassword(!showPassword)}
+              />
+              <span className="slider"></span>
+            </label>
+            <span className="switch-label">{t('form.show_password')}</span>
+          </label>
+        </div>
+
         <div className="form-group">
           <button type="submit" className="green-button">{t('form.send')}</button>
         </div>
