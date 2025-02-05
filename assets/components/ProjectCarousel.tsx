@@ -24,9 +24,9 @@ const projects: Project[] = [
     link: 'https://directgestion.com',
   },
   {
-    title: 'Directgestion2google',
-    imageUrl: 'images/directgestion.png',
-    link: 'https://google.com',
+    title: 'Portfolio Guillaume Quesnel',
+    imageUrl: 'images/guillaume-quesnel.png',
+    link: 'https://guillaume-quesnel.com',
   },
 ];
 
