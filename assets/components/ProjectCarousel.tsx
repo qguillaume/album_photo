@@ -17,8 +17,9 @@ const projects: Project[] = [
 const ProjectCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [slideDirection, setSlideDirection] = useState(""); // Pour animer le glissement
 
-  // Écoute du redimensionnement de l'écran pour adapter l'affichage
+  // Écoute du redimensionnement pour adapter l'affichage
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener("resize", handleResize);
@@ -27,12 +28,20 @@ const ProjectCarousel = () => {
 
   // Fonction pour aller au projet suivant (rotation circulaire)
   const nextProject = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % projects.length);
+    setSlideDirection("next");
+    setTimeout(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % projects.length);
+      setSlideDirection("");
+    }, 300); // Correspond à la durée de l'animation CSS
   };
 
   // Fonction pour aller au projet précédent (rotation circulaire)
   const prevProject = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? projects.length - 1 : prevIndex - 1));
+    setSlideDirection("prev");
+    setTimeout(() => {
+      setCurrentIndex((prevIndex) => (prevIndex === 0 ? projects.length - 1 : prevIndex - 1));
+      setSlideDirection("");
+    }, 300);
   };
 
   // Gestion des éléments affichés
@@ -46,7 +55,7 @@ const ProjectCarousel = () => {
 
   return (
     <div className="project-carousel">
-      <div className={`carousel-container ${isMobile ? "mobile" : ""}`}>
+      <div className={`carousel-container ${slideDirection}`}>
         {visibleProjects.map((project, index) => (
           <div key={index} className="project-slide">
             <a href={project.link} target="_blank" rel="noopener noreferrer">
@@ -60,8 +69,8 @@ const ProjectCarousel = () => {
       {/* Boutons pour navigation (cachés sur mobile) */}
       {!isMobile && (
         <>
-          <button onClick={prevProject} className="prev-btn">Précédent</button>
-          <button onClick={nextProject} className="next-btn">Suivant</button>
+          <button onClick={prevProject} className="prev-btn">{"<"}</button>
+          <button onClick={nextProject} className="next-btn">{">"}</button>
         </>
       )}
     </div>

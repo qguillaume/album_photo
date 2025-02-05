@@ -12,6 +12,34 @@
   transition: transform 0.3s ease-in-out;
 }
 
+.carousel-container.next {
+  transform: translateX(-10%);
+  animation: slide-left 0.3s ease-in-out forwards;
+}
+
+.carousel-container.prev {
+  transform: translateX(10%);
+  animation: slide-right 0.3s ease-in-out forwards;
+}
+
+@keyframes slide-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes slide-right {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 .project-slide {
   position: relative;
   transition: opacity 0.3s ease;
@@ -58,8 +86,10 @@
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
   border: none;
-  padding: 10px;
+  padding: 10px 15px;
+  font-size: 24px;
   cursor: pointer;
+  border-radius: 50%;
 }
 
 .prev-btn {
