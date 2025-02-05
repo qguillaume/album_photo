@@ -1,5 +1,6 @@
 // Competences.tsx - Affiche toutes les compétences
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Competence from './Competence';
 
 // Tableau de compétences avec leur icône et nom
@@ -28,30 +29,47 @@ const competencesRight = [
 ];
 
 const Competences: React.FC = () => {
-  return (
-    <div className="presentation-container">
-      {/* Compétences à gauche */}
-      <div className="competences" data-aos="fade-right">
-        {competencesLeft.map((competence, index) => (
-          <Competence
-            key={index}
-            icon={competence.icon}
-            name={competence.name}
-          />
-        ))}
-      </div>
 
-      {/* Compétences à droite */}
-      <div className="competences" data-aos="fade-left">
-        {competencesRight.map((competence, index) => (
-          <Competence
-            key={index}
-            icon={competence.icon}
-            name={competence.name}
-          />
-        ))}
+    const { t, i18n } = useTranslation(); // Hook pour accéder aux traductions
+    const [isReady, setIsReady] = useState(false);
+  
+    useEffect(() => {
+      if (i18n.isInitialized) {
+        setIsReady(true);
+      }
+    }, [i18n.isInitialized]);
+  
+    if (!isReady) return <div>Loading...</div>;
+
+  return (
+    <>
+      <h2 id="skills" data-aos="zoom-in">{t('skills')}</h2>
+      <div className="espacement"></div>
+      <div className="presentation-container">
+        {/* Compétences à gauche */}
+        <div className="competences" data-aos="fade-right">
+          {competencesLeft.map((competence, index) => (
+            <Competence
+              key={index}
+              icon={competence.icon}
+              name={competence.name}
+            />
+          ))}
+        </div>
+
+        {/* Compétences à droite */}
+        <div className="competences" data-aos="fade-left">
+          {competencesRight.map((competence, index) => (
+            <Competence
+              key={index}
+              icon={competence.icon}
+              name={competence.name}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+      <div className="separator"></div>
+    </>
   );
 };
 

@@ -39,7 +39,6 @@ const TextPresentation: React.FC = () => {
         </div>
       </div>
       <div className="separator"></div>
-      <h2 id="skills" data-aos="zoom-in">{t('skills')}</h2>
     </>
   );
 };

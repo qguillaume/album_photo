@@ -39,6 +39,8 @@ import MentionsLegales from '../components/MentionsLegales';
 import PolitiqueConfidentialite from '../components/PolitiqueConfidentialite';
 import Moderation from '../components/Moderation';
 import DroitsAuteur from '../components/DroitsAuteur';
+import Competence from '../components/Competence';
+import Competences from '../components/Competences';
 import '../../public/i18n';
 import TinyEditor from "./TinyEditor";
 /*
@@ -586,7 +588,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Ajouter le composant CVContact dans le DOM
-  const cvcRoot = document.getElementById("cv_contact");
+  const cvcRoot = document.getElementById("cv-contact-root");
   if (cvcRoot) {
     ReactDOM.createRoot(cvcRoot).render(
       <BrowserRouter>
@@ -606,10 +608,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
   // Ajouter le composant carousel dans le DOM
-  const carouselElement = document.getElementById('project-carousel');  // Récupère l'élément DOM
+  const carouselElementRoot = document.getElementById('project-carousel-root');  // Récupère l'élément DOM
 
-  if (carouselElement) {
-    const root = ReactDOM.createRoot(carouselElement);  // Crée la racine React
+  if (carouselElementRoot) {
+    const root = ReactDOM.createRoot(carouselElementRoot);  // Crée la racine React
     root.render(<ProjectCarousel />);  // Rendre le composant dans l'élément
   }
 
@@ -757,6 +759,22 @@ document.addEventListener("DOMContentLoaded", () => {
   if (DroitsRoot) {
     const root = ReactDOM.createRoot(DroitsRoot);
     root.render(<DroitsAuteur />); // Rendre le composant DroitsAuteur
+  }
+
+  // Code pour rendre les compétences dans l'élément du DOM
+  const CompetenceRoot = document.getElementById('competence-root');
+
+  if (CompetenceRoot) {
+    const root = ReactDOM.createRoot(CompetenceRoot);
+    root.render(<Competence icon="/icons/html.svg" name="HTML" />); // Rendre le composant Competence
+  }
+
+  // Code pour rendre l'ensemble des compétences dans l'élément du DOM
+  const CompetencesRoot = document.getElementById('competences-root');
+
+  if (CompetencesRoot) {
+    const root = ReactDOM.createRoot(CompetencesRoot);
+    root.render(<Competences />); // Rendre le composant Competences
   }
 });
 

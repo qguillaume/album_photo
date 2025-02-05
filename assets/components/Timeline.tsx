@@ -79,7 +79,6 @@ const timelineData: TimelineItem[] = [
         </div>
       </section>
       <div className="separator"></div>
-      <h2 data-aos="zoom-in">{t('projects_title')}</h2>
     </>
   );
 };
