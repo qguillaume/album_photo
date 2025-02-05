@@ -1,18 +1,57 @@
-.project-carousel-container { 
-  padding-top: 70px;
-}
-
 .project-carousel {
+  position: relative;
+  padding-top: 70px;
   text-align: center;
   margin: 40px 0;
 }
-  
+
+.carousel-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);  // Affiche 3 éléments sur grand écran
+  gap: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
 .project-slide {
   position: relative;
+  transition: opacity 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-  
+
 .project-image {
   width: 100%;
   height: auto;
   border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .carousel-container {
+    grid-template-columns: repeat(1, 1fr);  // Affiche 1 élément sur petit écran
+  }
+
+  .project-slide {
+    width: 100%;  // Assure que chaque élément prend toute la largeur disponible
+    padding: 20px 0;  // Ajoute de l'espace entre les éléments
+  }
+}
+
+.prev-btn, .next-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.prev-btn {
+  left: 10px;
+}
+
+.next-btn {
+  right: 10px;
 }

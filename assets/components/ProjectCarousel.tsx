@@ -1,12 +1,6 @@
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { useState } from 'react';
 
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/navigation';  // Styles pour la navigation
-import 'swiper/css/pagination';  // Styles pour la pagination
-
-import { useState, useEffect } from 'react';
-
+// Interface pour les projets
 interface Project {
   title: string;
   imageUrl: string;
@@ -32,69 +26,48 @@ const projects: Project[] = [
 ];
 
 const ProjectCarousel = () => {
-  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  /*
+  // Fonction pour aller au projet suivant
+  const nextProject = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % projects.length);
+  };
 
-  useEffect(() => {
-    // Fonction pour vérifier le chargement des images
-    const checkImagesLoaded = () => {
-      let loadedImagesCount = 0;
-      let totalImagesCount = projects.length;
-
-      // Vérifie si chaque image se charge
-      projects.forEach((project) => {
-        const img = new Image();
-        img.src = project.imageUrl;
-        img.onload = () => {
-          loadedImagesCount += 1;
-          if (loadedImagesCount === totalImagesCount) {
-            setImagesLoaded(true); // Toutes les images sont chargées
-          }
-        };
-        img.onerror = () => {
-          console.error("Erreur de chargement de l'image pour", project.title);
-        };
-      });
-    };
-
-    checkImagesLoaded(); // Appelle la fonction de vérification dès que le composant est monté
-  }, []);
-
-  if (!imagesLoaded) {
-    return <div>Chargement des images...</div>; // Affiche un message de chargement si les images ne sont pas encore prêtes
-  }
+  // Fonction pour aller au projet précédent
+  const prevProject = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? projects.length - 1 : prevIndex - 1
+    );
+  };*/
 
   return (
     <div className="project-carousel">
-      <Swiper
-        spaceBetween={30}
-        slidesPerView={3}
-        loop={true}
-        pagination={{ clickable: true }}
-        navigation={false}
-        //onSlideChange={() => console.log('Slide changé')}
-        //onSwiper={(swiper) => console.log(swiper)}
-      >
+      <div className="carousel-container">
         {projects.map((project, index) => (
-          <SwiperSlide key={index}>
-            <div className="project-slide">
-              <a href={project.link} target="_blank" rel="noopener noreferrer">
-                <img
-                  src={project.imageUrl}
-                  alt={project.title}
-                  className="project-image"
-                  style={{
-                    width: '100%',
-                    maxWidth: '200px',
-                    height: 'auto',
-                    objectFit: 'cover',
-                  }}
-                />
-                <p>{project.title}</p>
-              </a>
-            </div>
-          </SwiperSlide>
+          <div
+            key={index}
+            className={`project-slide ${index === currentIndex ? 'active' : ''}`}
+          >
+            <a href={project.link} target="_blank" rel="noopener noreferrer">
+              <img
+                src={project.imageUrl}
+                alt={project.title}
+                className="project-image"
+              />
+              <p>{project.title}</p>
+            </a>
+          </div>
         ))}
-      </Swiper>
+      </div>
+
+      {/* Boutons pour navigation 
+      <button onClick={prevProject} className="prev-btn">
+        Précédent
+      </button>
+      <button onClick={nextProject} className="next-btn">
+        Suivant
+      </button>
+      */}
     </div>
   );
 };
