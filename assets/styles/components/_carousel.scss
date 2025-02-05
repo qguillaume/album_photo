@@ -18,12 +18,36 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;  // Masque le titre au centre si l'élément est trop grand
 }
 
 .project-image {
   width: 100%;
   height: auto;
   border-radius: 8px;
+  transition: opacity 0.3s ease;
+}
+
+/* Ajout du titre au centre de l'image */
+.project-slide p {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Effet de survol */
+.project-slide:hover .project-image {
+  opacity: 0.5;  // Réduit l'opacité de l'image lors du survol
+}
+
+.project-slide:hover p {
+  opacity: 1;  // Affiche le titre au centre de l'image lors du survol
 }
 
 @media (max-width: 768px) {
