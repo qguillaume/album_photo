@@ -23,30 +23,42 @@ const projects: Project[] = [
     imageUrl: 'images/directgestion.png',
     link: 'https://directgestion.com',
   },
+  {
+    title: 'Directgestion2google',
+    imageUrl: 'images/directgestion.png',
+    link: 'https://google.com',
+  },
 ];
 
 const ProjectCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  /*
-  // Fonction pour aller au projet suivant
+
+  // Fonction pour aller au projet suivant (rotation circulaire)
   const nextProject = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % projects.length);
   };
 
-  // Fonction pour aller au projet précédent
+  // Fonction pour aller au projet précédent (rotation circulaire)
   const prevProject = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? projects.length - 1 : prevIndex - 1
+    setCurrentIndex(
+      (prevIndex) => (prevIndex === 0 ? projects.length - 1 : prevIndex - 1)
     );
-  };*/
+  };
+
+  // Logique pour calculer les indices des 3 éléments visibles
+  const visibleProjects = [
+    projects[(currentIndex + 0) % projects.length],
+    projects[(currentIndex + 1) % projects.length],
+    projects[(currentIndex + 2) % projects.length],
+  ];
 
   return (
     <div className="project-carousel">
       <div className="carousel-container">
-        {projects.map((project, index) => (
+        {visibleProjects.map((project, index) => (
           <div
             key={index}
-            className={`project-slide ${index === currentIndex ? 'active' : ''}`}
+            className="project-slide"
           >
             <a href={project.link} target="_blank" rel="noopener noreferrer">
               <img
@@ -60,14 +72,13 @@ const ProjectCarousel = () => {
         ))}
       </div>
 
-      {/* Boutons pour navigation 
+      {/* Boutons pour navigation */}
       <button onClick={prevProject} className="prev-btn">
         Précédent
       </button>
       <button onClick={nextProject} className="next-btn">
         Suivant
       </button>
-      */}
     </div>
   );
 };

@@ -28,7 +28,6 @@
   transition: opacity 0.3s ease;
 }
 
-/* Ajout du titre au centre de l'image */
 .project-slide p {
   position: absolute;
   top: 50%;
@@ -41,24 +40,12 @@
   transition: opacity 0.3s ease;
 }
 
-/* Effet de survol */
 .project-slide:hover .project-image {
-  opacity: 0.5;  // Réduit l'opacité de l'image lors du survol
+  opacity: 0.5;
 }
 
 .project-slide:hover p {
-  opacity: 1;  // Affiche le titre au centre de l'image lors du survol
-}
-
-@media (max-width: 768px) {
-  .carousel-container {
-    grid-template-columns: repeat(1, 1fr);  // Affiche 1 élément sur petit écran
-  }
-
-  .project-slide {
-    width: 100%;  // Assure que chaque élément prend toute la largeur disponible
-    padding: 20px 0;  // Ajoute de l'espace entre les éléments
-  }
+  opacity: 1;
 }
 
 .prev-btn, .next-btn {
@@ -78,4 +65,19 @@
 
 .next-btn {
   right: 10px;
+}
+
+@media (max-width: 768px) {
+  .carousel-container {
+    grid-template-columns: repeat(1, 1fr);  // Affiche 1 élément sur petit écran
+  }
+
+  .project-slide {
+    width: 100%;  // Assure que chaque élément prend toute la largeur disponible
+    padding: 20px 0;  // Ajoute de l'espace entre les éléments
+  }
+
+  .prev-btn, .next-btn {
+    display: none;  // Masque les boutons sur mobile
+  }
 }
