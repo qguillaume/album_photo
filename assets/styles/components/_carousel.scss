@@ -72,12 +72,14 @@
 
 @media (max-width: 768px) {
   .carousel-container {
-    grid-template-columns: repeat(1, 1fr);  // Affiche 1 élément sur petit écran
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
   }
 
   .project-slide {
     width: 100%;  // Assure que chaque élément prend toute la largeur disponible
-    padding: 20px 0;  // Ajoute de l'espace entre les éléments
   }
 
   .prev-btn, .next-btn {
