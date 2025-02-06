@@ -41,6 +41,7 @@ import Moderation from '../components/Moderation';
 import DroitsAuteur from '../components/DroitsAuteur';
 import Competence from '../components/Competence';
 import Competences from '../components/Competences';
+import HomePage from '../components/HomePage';
 import '../../public/i18n';
 import TinyEditor from "./TinyEditor";
 /*
@@ -634,12 +635,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Code pour rendre le formulaire de connexion dans l'élément du DOM
-  const connexionFormRoot = document.getElementById('connexion-form-root');
+  // const connexionFormRoot = document.getElementById('connexion-form-root');
 
-  if (connexionFormRoot) {
-    const root = ReactDOM.createRoot(connexionFormRoot);
-    root.render(<ConnexionForm />); // Rendre le composant ConnexionForm
-  }
+  // if (connexionFormRoot) {
+  //   const root = ReactDOM.createRoot(connexionFormRoot);
+  //   root.render(<ConnexionForm />); // Rendre le composant ConnexionForm
+  // }
 
   // Code pour rendre le formulaire d'inscription dans l'élément du DOM
   const registerFormRoot = document.getElementById('register-form-root');
@@ -780,12 +781,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const App: React.FC = () => {
   return (
-    <BrowserRouter>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Routes>
-          <Route path="/login" element={<ConnexionForm />} />
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
+    <UserProvider>
+      <BrowserRouter>
+        {/* Utilisation du Suspense pour le lazy loading des routes */}
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+            <Route path="/login" element={<ConnexionForm />} />
+            <Route path="/" element={<HomePage />} />
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+    </UserProvider>
   );
 };
+
+// Trouver l'élément du DOM pour y monter le React App
+const rootElement = document.getElementById('connexion-form-root');
+if (rootElement) {
+  const root = ReactDOM.createRoot(rootElement); // Créer une racine pour React
+  root.render(<App />); // Utiliser seulement un argument dans render
+}

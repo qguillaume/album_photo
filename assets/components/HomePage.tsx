@@ -10,10 +10,10 @@ const Homepage: React.FC = () => {
   return (
     <div>
         <Presentation />
+        <ProjectCarousel />
         <Competences />
         <Languette />
         <Timeline />
-        <ProjectCarousel />
         <CVContact />
     </div>
   );
