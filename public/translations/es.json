@@ -383,5 +383,13 @@
     "confidentiality": "Política de privacidad",
     "moderation": "Moderación",
     "copyright_author": "Derechos de autor"
+  },
+
+  "labels": {
+    "username": "Nombre de usuario",
+    "password": "Contraseña",
+    "show_password": "Mostrar contraseña",
+    "forgot_password": "¿Olvidaste tu contraseña?",
+    "h2login": "¡Inicia sesión!"
   }
 }

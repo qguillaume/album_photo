@@ -45,6 +45,32 @@ import HomePage from '../components/HomePage';
 import '../../public/i18n';
 import TinyEditor from "./TinyEditor";
 import PasswordSwitch from "../components/PasswordSwitch";
+import LabelUsername from '../components/LabelUsername';
+import LabelPassword from '../components/LabelPassword';
+import LabelForgot from '../components/LabelForgot';
+import LabelH2Login from '../components/LabelH2Login';
+
+
+const labelH2LoginRoot = document.getElementById('label-h2-root');
+if (labelH2LoginRoot) {
+  ReactDOM.createRoot(labelH2LoginRoot).render(<LabelH2Login />);
+}
+
+const labelForgotRoot = document.getElementById('label-forgot-root');
+if (labelForgotRoot) {
+  ReactDOM.createRoot(labelForgotRoot).render(<LabelForgot />);
+}
+
+
+const labelUsernameRoot = document.getElementById('label-username-root');
+if (labelUsernameRoot) {
+  ReactDOM.createRoot(labelUsernameRoot).render(<LabelUsername />);
+}
+
+const labelPasswordRoot = document.getElementById('label-password-root');
+if (labelPasswordRoot) {
+  ReactDOM.createRoot(labelPasswordRoot).render(<LabelPassword />);
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("password-switch");

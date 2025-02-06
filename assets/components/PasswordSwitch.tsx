@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 
 interface PasswordSwitchProps {
   passwordFieldId: string;
@@ -6,6 +7,10 @@ interface PasswordSwitchProps {
 
 const PasswordSwitch: React.FC<PasswordSwitchProps> = ({ passwordFieldId }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const { t, i18n } = useTranslation(); // Hook pour accéder aux traductions
+
+  useEffect(() => {
+  }, [t]); // Le hook se relance lorsque `t` (la fonction de traduction) change
 
   const togglePassword = () => {
     setShowPassword(!showPassword);
@@ -22,7 +27,7 @@ const PasswordSwitch: React.FC<PasswordSwitchProps> = ({ passwordFieldId }) => {
           <input type="checkbox" checked={showPassword} onChange={togglePassword} />
           <span className="slider"></span>
         </label>
-        <span className="switch-label">Afficher le mot de passe</span>
+        <span className="switch-label">{t('labels.show_password')}</span>
       </label>
     </div>
   );

@@ -384,5 +384,13 @@
     "confidentiality": "Privacy Policy",
     "moderation": "Moderation",
     "copyright_author": "Copyright"
+  },
+
+  "labels": {
+    "username": "Username",
+    "password": "Password",
+    "show_password": "Show password",
+    "forgot_password": "Forgot password?",
+    "h2login": "Log in!"
   }
 }

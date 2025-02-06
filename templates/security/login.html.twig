@@ -3,7 +3,7 @@
 {% block title %}{{ 'connexion'|trans }}{% endblock %}
 
 {% block body %}
-    <h2>{{ 'connexion'|trans }}</h2>
+    <div id="label-h2-root"></div>
     {# Gestion des erreurs de connexion #}
     {% if error is defined and error %}
         <div class="form-group">
@@ -23,9 +23,11 @@
     {# Formulaire de connexion #}
     {{ form_start(loginForm) }}
         <div class="form-group">
+            <div id="label-username-root"></div>
             {{ form_widget(loginForm.username) }}
         </div>
         <div class="form-group">
+            <div id="label-password-root"></div>
             {{ form_widget(loginForm.password) }}
         </div>
 
@@ -35,7 +37,7 @@
             {{ form_widget(loginForm.login, {'attr': {'class': 'green-button'}}) }}
         </div>
         <div class="form-group mt-2">
-            <a href="{{ path('forgot_password') }}" >Mot de passe oublié ?</a>
+            <a href="{{ path('forgot_password') }}" ><span id="label-forgot-root"></span></a>
         </div>
     {{ form_end(loginForm) }}
 {% endblock %}

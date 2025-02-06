@@ -385,5 +385,14 @@
     "confidentiality": "Politique de confidentialité",
     "moderation": "Modération",
     "copyright_author": "Droits d'auteur"
+  },
+
+  "labels": {
+    "username": "Nom d'utilisateur",
+    "password": "Mot de passe",
+    "show_password": "Afficher le mot de passe",
+    "forgot_password": "Mot de passe oublié ?",
+    "h2login": "Connectez-vous !"
   }
 }
+
