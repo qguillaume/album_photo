@@ -28,6 +28,9 @@
         <div class="form-group">
             {{ form_widget(loginForm.password) }}
         </div>
+
+        <div id="password-switch" data-password-field-id="login_form_password"></div>
+        
         <div class="form-group">
             {{ form_widget(loginForm.login, {'attr': {'class': 'green-button'}}) }}
         </div>

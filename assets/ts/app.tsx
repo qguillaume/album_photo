@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Suspense } from "react";
 import CookieConsent from 'react-cookie-consent';
-import ReactDOM from "react-dom/client";
+import ReactDOM, { createRoot } from "react-dom/client";
 import AlbumControls from "../components/AlbumControls";
 import PhotoControls from "../components/PhotoControls";
 import PhotoTable from "../components/PhotoTable";
@@ -44,15 +44,15 @@ import Competences from '../components/Competences';
 import HomePage from '../components/HomePage';
 import '../../public/i18n';
 import TinyEditor from "./TinyEditor";
-/*
-const App = () => {
-  return (
-    <div>
-      <TinyEditor />
-    </div>
-  );
-};
-*/
+import PasswordSwitch from "../components/PasswordSwitch";
+
+document.addEventListener("DOMContentLoaded", () => {
+  const container = document.getElementById("password-switch");
+  if (container) {
+    const passwordFieldId = container.getAttribute("data-password-field-id")!;
+    createRoot(container).render(<PasswordSwitch passwordFieldId={passwordFieldId} />);
+  }
+});
 const HeaderApp: React.FC = () => {
   return (
     <UserProvider>
