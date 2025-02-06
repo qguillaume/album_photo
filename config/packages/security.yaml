@@ -11,8 +11,8 @@ security:
         main:
             anonymous: true  # Permet aux utilisateurs non authentifiés d'accéder
             form_login:
-                login_path: login  # chemin de la page de connexion
-                check_path: api_login # Correspond à ton route "/api/login"  # chemin pour soumettre le formulaire
+                login_path: login # chemin de la page de connexion
+                check_path: login # chemin pour soumettre le formulaire
                 username_parameter: login_form[username]
                 password_parameter: login_form[password]
                 default_target_path: portfolio_home  # Redirige vers la page d'accueil après connexion

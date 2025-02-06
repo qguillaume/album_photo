@@ -15,7 +15,6 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Security\Core\Security;
 
 class SecurityController extends AbstractController
 {
@@ -28,73 +27,78 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/api/login", name="api_login", methods={"POST"})
-     */
-    public function apiLogin(Request $request): Response
-    {
-        // Récupérer les données JSON envoyées par le frontend
-        $data = json_decode($request->getContent(), true);
-        $username = $data['username'] ?? null;
-        $password = $data['password'] ?? null;
-
-        if (!$username || !$password) {
-            return new Response('Nom d\'utilisateur ou mot de passe manquant', Response::HTTP_BAD_REQUEST);
-        }
-
-        // Recherche de l'utilisateur dans la base de données
-        $userRepository = $this->getDoctrine()->getRepository(User::class);
-        $user = $userRepository->findOneBy(['username' => $username]);
-
-        if ($user && $this->passwordHasher->isPasswordValid($user, $password)) {
-            // Connexion réussie, retourne une réponse 200
-            return new Response('Connexion réussie', Response::HTTP_OK);
-        }
-
-        // Erreur de connexion : nom d'utilisateur ou mot de passe incorrect
-        return new Response('Nom d\'utilisateur ou mot de passe incorrect.', Response::HTTP_UNAUTHORIZED);
-    }
-
-    /**
      * @Route("/login", name="login")
      */
-    public function login(AuthenticationUtils $authenticationUtils, Request $request, Security $security): Response
+    public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
     {
-        // Vérifier si l'utilisateur est déjà connecté
-        if ($security->getUser()) {
-            // Rediriger vers la page d'accueil
+        // Si l'utilisateur est déjà connecté, on le redirige vers l'accueil
+        if ($this->getUser()) {
             return $this->redirectToRoute('portfolio_home');
         }
-
-        // Récupère les erreurs de connexion
+        // Récupère les erreurs de connexion (si présentes)
         $error = $authenticationUtils->getLastAuthenticationError();
+        // Récupère le dernier nom d'utilisateur soumis (pour préremplir le champ)
         $lastUsername = $authenticationUtils->getLastUsername();
 
+        // Créer un objet User vide
         $user = new User();
-        $user->setUsername($lastUsername); // préremplir avec le dernier nom d'utilisateur
+        $user->setUsername($lastUsername);  // On préremplir avec le dernier nom d'utilisateur
 
-        $form = $this->createForm(LoginFormType::class, $user);
+        // Créer le formulaire de connexion en liant l'entité User
+        $form = $this->createForm(LoginFormType::class, $user, [
+            'method' => 'POST'
+        ]);
 
+        // Si le formulaire est soumis et valide
         $form->handleRequest($request);
 
+        //dd($form->getData());  // Pour inspecter les données du formulaire
         if ($form->isSubmitted() && $form->isValid()) {
-            // Recherche utilisateur et validation du mot de passe
+            // Recherche utilisateur dans la base de données
             $userRepository = $this->getDoctrine()->getRepository(User::class);
-            $user = $userRepository->findOneBy(['username' => $form->get('username')->getData()]);
+            $user = $userRepository->findOneBy(['username' => $form->get('login_form[username]')->getData()]);// Faire bien attention à cette ligne
 
             if ($user && $this->passwordHasher->isPasswordValid($user, $form->get('password')->getData())) {
-                // Authentification réussie, Symfony gère la session automatiquement
+                // Authentification réussie
                 return $this->redirectToRoute('portfolio_home');
             }
 
-            // Si utilisateur ou mot de passe incorrect
+            // Si l'utilisateur ou le mot de passe est incorrect
             $error = 'Nom d\'utilisateur ou mot de passe incorrect.';
         }
 
+        // Afficher la page de connexion
         return $this->render('security/login.html.twig', [
             'loginForm' => $form->createView(),
             'error' => $error,
             'last_username' => $lastUsername,
         ]);
+    }
+
+    // Endpoint pour tester un mot de passe avec son hashage.
+    /**
+     * @Route("/test-password", name="test_password")
+     */
+    public function testPassword(Request $request): Response
+    {
+        // Récupère l'utilisateur avec son nom d'utilisateur
+        $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['username' => 'Guillaume']);
+
+        // Récupérer le mot de passe en clair que tu veux tester
+        $plainPassword = $request->query->get('password'); // Par exemple, /test-password?password=monmotdepasse
+
+        if ($user) {
+            // Vérifie si le mot de passe en clair correspond au mot de passe haché
+            $isValid = $this->passwordHasher->isPasswordValid($user, $plainPassword);
+
+            if ($isValid) {
+                return new Response('Le mot de passe est valide !');
+            } else {
+                return new Response('Le mot de passe est invalide.');
+            }
+        }
+
+        return new Response('Utilisateur non trouvé.', Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -103,6 +107,18 @@ class SecurityController extends AbstractController
     public function logout(): void
     {
         // Symfony se charge de la déconnexion automatiquement.
+    }
+
+    /**
+     * @Route("/generate-password", name="generate_password")
+     */
+    public function generatePassword(): Response
+    {
+        // Générer un mot de passe avec bcrypt (12 rounds)
+        $hashedPassword = password_hash('toto', PASSWORD_BCRYPT);
+
+        // Affiche le mot de passe haché
+        return new Response('Mot de passe haché : ' . $hashedPassword);
     }
 
     /**
