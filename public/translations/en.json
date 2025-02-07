@@ -391,6 +391,10 @@
     "password": "Password",
     "show_password": "Show password",
     "forgot_password": "Forgot password?",
-    "h2login": "Log in!"
+    "h2login": "Log in!",
+
+    "h2reset": "Password Reset",
+    "preset": "Please enter a new password.",
+    "back_to_connexion": "Back to login"
   }
 }

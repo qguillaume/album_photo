@@ -49,7 +49,19 @@ import LabelUsername from '../components/LabelUsername';
 import LabelPassword from '../components/LabelPassword';
 import LabelForgot from '../components/LabelForgot';
 import LabelH2Login from '../components/LabelH2Login';
+import LabelTopReset from '../components/LabelTopReset';
+import LabelBackToLogin from '../components/LabelBackToLogin';
 
+
+const labelBackToLoginRoot = document.getElementById('label-backto-root');
+if (labelBackToLoginRoot) {
+  ReactDOM.createRoot(labelBackToLoginRoot).render(<LabelBackToLogin />);
+}
+
+const labelTopResetRoot = document.getElementById('label-topreset-root');
+if (labelTopResetRoot) {
+  ReactDOM.createRoot(labelTopResetRoot).render(<LabelTopReset />);
+}
 
 const labelH2LoginRoot = document.getElementById('label-h2-root');
 if (labelH2LoginRoot) {

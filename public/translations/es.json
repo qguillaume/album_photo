@@ -390,6 +390,10 @@
     "password": "Contraseña",
     "show_password": "Mostrar contraseña",
     "forgot_password": "¿Olvidaste tu contraseña?",
-    "h2login": "¡Inicia sesión!"
+    "h2login": "¡Inicia sesión!",
+
+    "h2reset": "Restablecimiento de contraseña",
+    "preset": "Por favor, ingrese una nueva contraseña.",
+    "back_to_connexion": "Volver a la conexión"
   }
 }

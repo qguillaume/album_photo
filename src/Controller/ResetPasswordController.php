@@ -86,8 +86,7 @@ class ResetPasswordController extends AbstractController
         // Création du formulaire
         $form = $this->createFormBuilder()
             ->add('password', PasswordType::class, [
-                'label' => false,
-                'attr' => ['placeholder' => 'Nouveau mot de passe']
+                'label' => false
             ])
             ->add('reinit', SubmitType::class, [
                 'label' => 'Réinitialiser',

@@ -392,7 +392,11 @@
     "password": "Mot de passe",
     "show_password": "Afficher le mot de passe",
     "forgot_password": "Mot de passe oublié ?",
-    "h2login": "Connectez-vous !"
+    "h2login": "Connectez-vous !",
+
+    "h2reset": "Réinitialisation du mot de passe",
+    "preset": "Veuillez entrer un nouveau mot de passe.",
+    "back_to_connexion": "Retour à la connexion"
   }
 }
 

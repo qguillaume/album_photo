@@ -391,6 +391,10 @@
     "password": "Passwort",
     "show_password": "Passwort anzeigen",
     "forgot_password": "Passwort vergessen?",
-    "h2login": "Melden Sie sich an!"
+    "h2login": "Melden Sie sich an!",
+
+    "h2reset": "Passwort zurücksetzen",
+    "preset": "Bitte geben Sie ein neues Passwort ein.",
+    "back_to_connexion": "Zurück zur Anmeldung"
   }
 }
