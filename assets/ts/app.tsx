@@ -134,7 +134,8 @@ const CVContact: React.FC = () => {
   if (!isReady) return null; // Afficher rien ou un loader pendant l'initialisation
 
   const handleDownloadCV = () => {
-    const cvUrl = "/files/CV.pdf";
+    const currentLang = i18n.language;
+    const cvUrl = currentLang === "fr" ? "/files/CV_FR.pdf" : "/files/CV_EN.pdf"; 
     const link = document.createElement("a");
     link.href = cvUrl;
     link.download = "CV.pdf"; 
