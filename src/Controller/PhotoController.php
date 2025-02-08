@@ -467,7 +467,7 @@ class PhotoController extends AbstractController
         // Vérifier si la photo est visible, approuvée ou appartient à l'utilisateur
         $isOwner = $photo->getAlbum() && $photo->getAlbum()->getCreator() === $this->getUser();
         if (!$photo->getIsVisible() || !$photo->getIsApproved()) {
-            if (!$isOwner) {
+            if (!$isOwner && !$this->isGranted('ROLE_SUPER_ADMIN')) {
                 throw new AccessDeniedException('Vous n\'avez pas l\'autorisation d\'accéder à cette photo');
             }
         }
