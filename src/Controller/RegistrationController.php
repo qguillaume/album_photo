@@ -126,6 +126,15 @@ class RegistrationController extends AbstractController
 
         $mailer->send($emailAdress);
 
+        // Envoyer un mail après l'inscription d'un nouvel utilisateur
+        $email2 = (new Email())
+            ->from('no-reply@guillaume-quesnel.com')
+            ->to('admin@guillaume-quesnel.com')
+            ->subject('Nouvel utilisateur ' . $user->getUsername())
+            ->html("<p>Inscription d'un nouvel utilisateur {$user->getUsername()}.</p>");
+
+        $mailer->send($email2);
+
         // Réponse de succès
         return new Response('Utilisateur enregistré avec succès', Response::HTTP_CREATED);
     }

@@ -11,6 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+
 
 class CommentController extends AbstractController
 {
@@ -27,7 +30,7 @@ class CommentController extends AbstractController
     /**
      * @Route("/photo/{id}/comment", name="comment_add", methods={"POST"})
      */
-    public function addComment(Request $request, Photo $photo, EntityManagerInterface $em): JsonResponse
+    public function addComment(Request $request, Photo $photo, EntityManagerInterface $em, MailerInterface $mailer): JsonResponse
     {
         // Décoder le JSON dans le corps de la requête
         $data = json_decode($request->getContent(), true);

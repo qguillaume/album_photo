@@ -494,6 +494,19 @@ class PhotoController extends AbstractController
             $em->persist($comment);
             $em->flush();
 
+            // Envoyer un mail après la mise en ligne d'un commentaire
+            // $email = (new Email())
+            //     ->from('no-reply@guillaume-quesnel.com')
+            //     ->to('admin@guillaume-quesnel.com')
+            //     ->subject('Nouveau commentaire')
+            //     ->html("
+            // <p>Un nouveau commentaire a été ajoutée par {$comment->getUser()}.</p>
+            // <p>Commentaire : {$comment->getContent()}</p>
+            // <p><a href='https://guillaume-quesnel.com/photo/{$photo->getId()}'>Voir le commentaire</a></p>
+            // ");
+
+            // $mailer->send($email);
+
             // Rediriger pour éviter la resoumission du formulaire
             return $this->redirectToRoute('photo_show', ['id' => $photo->getId()]);
         }
