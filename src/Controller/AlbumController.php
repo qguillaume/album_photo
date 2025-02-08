@@ -18,7 +18,8 @@ use Symfony\Component\Security\Core\Security;
 use App\Service\AlbumVisibilityService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpKernel\KernelInterface;
-
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 class AlbumController extends AbstractController
 {
@@ -81,7 +82,7 @@ class AlbumController extends AbstractController
     /**
      * @Route("/api/create-album", name="api_create_album", methods={"POST"})
      */
-    public function createAlbumApi(Request $request, EntityManagerInterface $em): JsonResponse
+    public function createAlbumApi(Request $request, EntityManagerInterface $em, MailerInterface $mailer): JsonResponse
     {
         // Vérifier si l'utilisateur est authentifié
         if (!$this->getUser()) {
@@ -152,6 +153,19 @@ class AlbumController extends AbstractController
         // Persister l'album dans la base de données
         $em->persist($album);
         $em->flush();
+
+        // Envoyer un mail après l'upload d'un album
+        $email = (new Email())
+            ->from('no-reply@guillaume-quesnel.com')
+            ->to('admin@guillaume-quesnel.com')
+            ->subject('Nouvel album créé')
+            ->html("
+        <p>Un nouvel album a été ajoutée par {$user->getUsername()}.</p>
+        <p>Album : {$album->getNomAlbum()}</p>
+        <p><a href='https://guillaume-quesnel.com/album/{$album->getId()}'>Voir l'album</a></p>
+        ");
+
+        $mailer->send($email);
 
         // Retourner la réponse au client
         return new JsonResponse(['message' => 'Album created successfully'], Response::HTTP_OK);
