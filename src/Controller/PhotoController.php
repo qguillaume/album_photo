@@ -18,6 +18,8 @@ use App\Entity\Comment;
 use App\Form\CommentFormType;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 class PhotoController extends AbstractController
 {
@@ -151,7 +153,7 @@ class PhotoController extends AbstractController
     /**
      * @Route("/api/photo", name="create_photo", methods={"POST"})
      */
-    public function createPhoto(Request $request, EntityManagerInterface $em): JsonResponse
+    public function createPhoto(Request $request, EntityManagerInterface $em, MailerInterface $mailer): JsonResponse
     {
         $user = $this->getUser();  // Récupérer l'utilisateur courant
 
@@ -229,6 +231,20 @@ class PhotoController extends AbstractController
         $em->persist($photo);
         $em->persist($album);
         $em->flush();
+
+        // Envoyer un mail après l'upload d'une photo
+        $email = (new Email())
+            ->from('no-reply@guillaume-quesnel.com')
+            ->to('admin@guillaume-quesnel.com')
+            ->subject('Nouvelle photo ajoutée')
+            ->html("
+        <p>Une nouvelle photo a été ajoutée par {$user->getUsername()}.</p>
+        <p>Titre : {$photo->getTitle()}</p>
+        <p>Album : {$album->getNomAlbum()}</p>
+        <p><a href='https://guillaume-quesnel.com/photo/{$photo->getId()}'>Voir la photo</a></p>
+        ");
+
+        $mailer->send($email);
 
         // Retourner une réponse JSON avec un message de succès
         return new JsonResponse(['message' => 'Photo created successfully!'], Response::HTTP_OK);
