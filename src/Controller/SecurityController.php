@@ -15,6 +15,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use VictorPrdh\RecaptchaBundle\Validator\Constraints\RecaptchaValidator;
 
 class SecurityController extends AbstractController
 {
@@ -35,6 +36,7 @@ class SecurityController extends AbstractController
         if ($this->getUser()) {
             return $this->redirectToRoute('portfolio_home');
         }
+
         // Récupère les erreurs de connexion (si présentes)
         $error = $authenticationUtils->getLastAuthenticationError();
         // Récupère le dernier nom d'utilisateur soumis (pour préremplir le champ)
@@ -52,11 +54,18 @@ class SecurityController extends AbstractController
         // Si le formulaire est soumis et valide
         $form->handleRequest($request);
 
-        //dd($form->getData());  // Pour inspecter les données du formulaire
         if ($form->isSubmitted() && $form->isValid()) {
+            // Validation du reCAPTCHA
+            $captchaResponse = $form->get('captcha')->getData();
+            if (!$captchaResponse || !$this->isCaptchaValid($captchaResponse)) {
+                // Si le reCAPTCHA n'est pas valide, on affiche une erreur
+                $this->addFlash('error', 'Veuillez valider le reCAPTCHA.');
+                return $this->redirectToRoute('login');
+            }
+
             // Recherche utilisateur dans la base de données
             $userRepository = $this->getDoctrine()->getRepository(User::class);
-            $user = $userRepository->findOneBy(['username' => $form->get('login_form[username]')->getData()]);// Faire bien attention à cette ligne
+            $user = $userRepository->findOneBy(['username' => $form->get('username')->getData()]);
 
             if ($user && $this->passwordHasher->isPasswordValid($user, $form->get('password')->getData())) {
                 // Authentification réussie
@@ -73,6 +82,14 @@ class SecurityController extends AbstractController
             'error' => $error,
             'last_username' => $lastUsername,
         ]);
+    }
+
+    // Fonction pour valider le reCAPTCHA
+    private function isCaptchaValid(string $captchaResponse): bool
+    {
+        // Utilisation du service recaptcha fourni par le bundle
+        $recaptchaService = $this->container->get('recaptcha');
+        return $recaptchaService->verify($captchaResponse);
     }
 
     // Endpoint pour tester un mot de passe avec son hashage.

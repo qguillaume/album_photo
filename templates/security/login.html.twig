@@ -32,6 +32,14 @@
         </div>
 
         <div id="password-switch" data-password-field-id="login_form_password"></div>
+
+        <div class="espacement"></div>
+        <div class="form-group">
+            {{ form_row(loginForm.captcha)}}
+            {{ form_errors(loginForm.captcha) }}
+        </div>
+        
+        <div class="espacement"></div>
         
         <div class="form-group">
             {{ form_widget(loginForm.login, {'attr': {'class': 'green-button'}}) }}
