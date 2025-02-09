@@ -15,16 +15,17 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use VictorPrdh\RecaptchaBundle\Validator\Constraints\RecaptchaValidator;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SecurityController extends AbstractController
 {
     private $passwordHasher;
+    private $validator;
 
-    // Injection du service de hachage du mot de passe
-    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    public function __construct(UserPasswordHasherInterface $passwordHasher, ValidatorInterface $validator)
     {
         $this->passwordHasher = $passwordHasher;
+        $this->validator = $validator;
     }
 
     /**
@@ -42,54 +43,35 @@ class SecurityController extends AbstractController
         // Récupère le dernier nom d'utilisateur soumis (pour préremplir le champ)
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        // Créer un objet User vide
         $user = new User();
-        $user->setUsername($lastUsername);  // On préremplir avec le dernier nom d'utilisateur
+        $user->setUsername($lastUsername);
 
-        // Créer le formulaire de connexion en liant l'entité User
-        $form = $this->createForm(LoginFormType::class, $user, [
-            'method' => 'POST'
-        ]);
-
-        // Si le formulaire est soumis et valide
+        $form = $this->createForm(LoginFormType::class, $user, ['method' => 'POST']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Validation du reCAPTCHA
-            $captchaResponse = $form->get('captcha')->getData();
-            if (!$captchaResponse || !$this->isCaptchaValid($captchaResponse)) {
-                // Si le reCAPTCHA n'est pas valide, on affiche une erreur
-                $this->addFlash('error', 'Veuillez valider le reCAPTCHA.');
-                return $this->redirectToRoute('login');
+            // Validation reCAPTCHA
+            $captchaError = $this->validator->validate($form->get('captcha')->getData());
+            if (count($captchaError) > 0) {
+                $error = 'Veuillez confirmer que vous n\'êtes pas un robot.';
+            } else {
+                // Recherche utilisateur dans la base de données
+                $userRepository = $this->getDoctrine()->getRepository(User::class);
+                $user = $userRepository->findOneBy(['username' => $form->get('username')->getData()]);
+
+                if ($user && $this->passwordHasher->isPasswordValid($user, $form->get('password')->getData())) {
+                    return $this->redirectToRoute('portfolio_home');
+                }
+
+                $error = 'Nom d\'utilisateur ou mot de passe incorrect.';
             }
-
-            // Recherche utilisateur dans la base de données
-            $userRepository = $this->getDoctrine()->getRepository(User::class);
-            $user = $userRepository->findOneBy(['username' => $form->get('username')->getData()]);
-
-            if ($user && $this->passwordHasher->isPasswordValid($user, $form->get('password')->getData())) {
-                // Authentification réussie
-                return $this->redirectToRoute('portfolio_home');
-            }
-
-            // Si l'utilisateur ou le mot de passe est incorrect
-            $error = 'Nom d\'utilisateur ou mot de passe incorrect.';
         }
 
-        // Afficher la page de connexion
         return $this->render('security/login.html.twig', [
             'loginForm' => $form->createView(),
             'error' => $error,
             'last_username' => $lastUsername,
         ]);
-    }
-
-    // Fonction pour valider le reCAPTCHA
-    private function isCaptchaValid(string $captchaResponse): bool
-    {
-        // Utilisation du service recaptcha fourni par le bundle
-        $recaptchaService = $this->container->get('recaptcha');
-        return $recaptchaService->verify($captchaResponse);
     }
 
     // Endpoint pour tester un mot de passe avec son hashage.
