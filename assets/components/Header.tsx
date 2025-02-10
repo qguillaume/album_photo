@@ -32,24 +32,30 @@ const Header: React.FC = () => {
               <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
             </svg>
           </a>
-          <div className="dropdown">
-            <a href="/photos" className={window.location.pathname === '/photos' ? 'active' : ''}>
-              {t('photos')}
-            </a>
-            {isLoggedIn && (
+          {isLoggedIn ? (
+            <div className="dropdown">
+              <a href="#" className={window.location.pathname === '/photos' ? 'active' : ''}>
+                {t('photos')}
+              </a>
               <div className="dropdown-content">
+                <a href="/photos">{t('see_photos')}</a>
                 <a href="/album/new">{t('create_album')}</a>
                 <a href="/photo/upload">{t('upload_photo')}</a>
               </div>
-            )}
-          </div>
+            </div>
+          ) : (
+            <a href="/photos" className={window.location.pathname === '/photos' ? 'active' : ''}>
+              {t('photos')}
+            </a>
+          )}
 
           {isAdmin && (
             <div className="dropdown">
-              <a href="/articles" className={window.location.pathname === '/articles' ? 'active' : ''}>
+              <a href="#" className={window.location.pathname === '/articles' ? 'active' : ''}>
                 {t('articles')}
               </a>
               <div className="dropdown-content">
+                <a href="/articles">{t('see_articles')}</a>
                 <a href="/articles/new">{t('new_article')}</a>
                 <a href="/theme/create">{t('new_theme')}</a>
               </div>

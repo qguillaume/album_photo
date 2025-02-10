@@ -66,6 +66,8 @@
   "album_name": "Nombre del álbum",
   "upload_valide": "Por favor, sube una imagen válida.",
   "visit": "Visitar",
+  "see_photos": "Ver fotos",
+  "see_articles": "Ver artículos",
   "form": {
     "contact_title": "Formulario de contacto",
     "connexion_title": "Formulario de inicio de sesión",
