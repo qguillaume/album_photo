@@ -242,3 +242,23 @@ header .nav-menu a.active svg {
   fill: white;
   background-color: $primary-color;
 }
+
+@media (max-width: 768px) {
+  .mobile-only {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+  }
+  .desktop-only {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-only {
+    display: none;
+  }
+  .desktop-only {
+    display: inline-block;
+  }
+}
