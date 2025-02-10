@@ -114,13 +114,24 @@ const AlbumForm: React.FC = () => {
         {/* Image */}
         <div className="form-group">
           <input
+            id="file-upload"
             className="form-control"
             type="file"
             name="album_form[imagePath]"
             onChange={handleImageChange}
+            hidden
           />
+          <label
+            htmlFor="file-upload"
+            className="custom-file-label form-control"
+            style={{ display: 'block', cursor: 'pointer', textAlign: 'center' }}
+          >
+            {imagePath ? imagePath.name : t('form.no_file_selected')}
+          </label>
         </div>
 
+        <div className="espacement"></div>
+        
         {/* Bouton de création de l'album */}
         <div className="form-group">
           <button type="submit" className="green-button">

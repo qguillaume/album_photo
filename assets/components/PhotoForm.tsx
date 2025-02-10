@@ -151,8 +151,10 @@ const PhotoForm: React.FC = () => {
           </label>
         </div>
 
-        {/* Album dynamique */}
         <div className="espacement"></div>
+        
+        {/* Album dynamique */}
+
         <div className="form-group">
           <select
             className="form-control"
