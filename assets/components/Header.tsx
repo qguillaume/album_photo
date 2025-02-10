@@ -80,7 +80,10 @@ const Header: React.FC = () => {
           <a href="/contact" className={window.location.pathname === '/contact' ? 'active' : ''}>
             <span className="desktop-only">{t('contact')}</span>
             <svg className="mobile-only" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-              <path d="M22 6H2v12h20V6zM20 16H4V8h16v8zm-3-4h-2v-2h2v2zm-4 0h-2v-2h2v2zm-4 0H7v-2h2v2z"/>
+              <path
+                d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm0 2v12h16V6H4zm8 7l8-5H4l8 5z"
+                transform={isLoggedIn ? "translate(0, 3)" : "translate(0, 1)"}
+              />
             </svg>
           </a>
         </div>
