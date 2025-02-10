@@ -28,7 +28,9 @@ const Header: React.FC = () => {
       <nav className={`nav-menu ${menuOpen ? 'active' : ''}`}>
         <div className="header-left">
           <a href="/" className={window.location.pathname === '/' ? 'active' : ''}>
-            {t('home')}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            </svg>
           </a>
           <div className="dropdown">
             <a href="/photos" className={window.location.pathname === '/photos' ? 'active' : ''}>
@@ -54,11 +56,11 @@ const Header: React.FC = () => {
             </div>
           )}
 
-          {isSuperAdmin && (
+          {/*isSuperAdmin && (
             <a href="/reference" className={window.location.pathname === '/reference' ? 'active' : ''}>
               {t('references')}
             </a>
-          )}
+          )*/}
 
           <a href="/contact" className={window.location.pathname === '/contact' ? 'active' : ''}>
             {t('contact')}
