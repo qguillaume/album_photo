@@ -72,3 +72,15 @@ body.light-mode table th, body.light-mode table td,
 body.dark-mode table th, body.dark-mode table td {
   color: $dark-text-color; /* Fixe la couleur du texte du tableau dans tous les modes */
 }
+
+/* Mode sombre : menu burger */
+@media (max-width: 768px) {
+  body.dark-mode .nav-menu {
+    background-color: rgba(18, 18, 18, 0.85);
+  }
+
+  /* Mode clair : menu burger */
+  body.light-mode .nav-menu {
+    background-color: rgba(255, 255, 255, 0.85);
+  }
+}
