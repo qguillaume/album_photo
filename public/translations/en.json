@@ -70,6 +70,8 @@
   "see_photos": "See photos",
   "see_articles": "See articles",
   "form": {
+    "photo_file_label": "Choose a photo",
+  "no_file_selected": "No file selected",
     "contact_title": "Contact form",
     "connexion_title": "Login form",
     "register_title": "Registration form",

@@ -133,3 +133,19 @@ form a {
     margin: 1rem 0;
   }
 }
+
+.custom-file-label {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: $primary-color;
+  color: $header-bg-color;
+  cursor: pointer;
+  border-radius: 4px;
+  text-align: center;
+  transition: background-color 0.5s ease, color 0.5s ease;
+  
+  &:hover {
+    background-color: $primary-color-hover;
+    color: white;
+  }
+}

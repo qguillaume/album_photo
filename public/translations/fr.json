@@ -69,6 +69,8 @@
   "see_photos": "Voir les photos",
   "see_articles": "Voir les articles",
   "form": {
+    "photo_file_label": "Choisir une photo",
+    "no_file_selected": "Aucun fichier choisi",
     "contact_title": "Formulaire de contact",
     "connexion_title": "Formulaire de connexion",
     "register_title": "Formulaire d'inscription",

@@ -135,15 +135,24 @@ const PhotoForm: React.FC = () => {
         {/* Fichier photo */}
         <div className="form-group">
           <input
+            id="photoFile"
             className="form-control"
             type="file"
             name="photo_form[file]"
             accept="image/*"
             onChange={handleFileChange}
+            style={{ display: 'none' }}
           />
+          <label
+            htmlFor="photoFile"
+            className="custom-file-label"
+          >
+            {file ? file.name : t('form.no_file_selected')}
+          </label>
         </div>
 
         {/* Album dynamique */}
+        <div className="espacement"></div>
         <div className="form-group">
           <select
             className="form-control"
