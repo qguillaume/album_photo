@@ -2,7 +2,7 @@
 FROM php:7.4-fpm
 
 # Installer les dépendances nécessaires pour PHP et les extensions requises
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev \
     unzip \
     zip \
     git \
@@ -15,6 +15,8 @@ RUN apt-get update && apt-get install -y \
     && echo "Install pdo_mysql..." && docker-php-ext-install pdo_mysql \
     && docker-php-ext-install zip mysqli intl \
     && apt-get clean \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd\
     && echo "pdo_mysql installed"
 
 # Installer Composer (gestionnaire de dépendances PHP)
