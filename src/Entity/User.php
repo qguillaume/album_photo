@@ -55,11 +55,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\NotBlank(message="L'email ne doit pas être vide.")
-     * @Assert\Email(message="Veuillez fournir une adresse email valide.")
+     * @Assert\NotBlank(
+     *     message="L'email ne doit pas être vide.",
+     *     groups={"registration"}
+     * )
+     * @Assert\Email(
+     *     message="Veuillez fournir une adresse email valide.",
+     *     groups={"registration"}
+     * )
      * @Assert\Length(
      *     max=180,
-     *     maxMessage="L'adresse email ne doit pas dépasser {{ limit }} caractères."
+     *     maxMessage="L'adresse email ne doit pas dépasser {{ limit }} caractères.",
+     *     groups={"registration"}
      * )
      */
     private $email;

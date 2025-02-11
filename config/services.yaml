@@ -51,6 +51,12 @@ services:
     App\EventListener\AlbumListener:
         tags:
             - { name: doctrine.event_listener, event: preRemove }
+
+    App\Security\LoginFormAuthenticator:
+        arguments:
+            $urlGenerator: '@router.default'
+            $entityManager: '@doctrine.orm.entity_manager'
+            $session: '@session'
 # Pensez à décommenter pour la prod
 # framework:
 #     error_controller: 'App\Controller\ErrorController::showError'

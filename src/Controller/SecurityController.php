@@ -4,67 +4,77 @@
 
 namespace App\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
+use App\Security\LoginFormAuthenticator;
 use App\Entity\User;
 use App\Form\LoginFormType;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use App\Service\CaptchaGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SecurityController extends AbstractController
 {
     private $passwordHasher;
-    private $validator;
+    private $captchaGenerator;
 
-    public function __construct(UserPasswordHasherInterface $passwordHasher, ValidatorInterface $validator)
+    public function __construct(UserPasswordHasherInterface $passwordHasher, CaptchaGenerator $captchaGenerator)
     {
         $this->passwordHasher = $passwordHasher;
-        $this->validator = $validator;
+        $this->captchaGenerator = $captchaGenerator;
     }
 
     /**
      * @Route("/login", name="login")
      */
-    public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
-    {
+    public function login(
+        AuthenticationUtils $authenticationUtils,
+        Request $request,
+        SessionInterface $session,
+        UserAuthenticatorInterface $userAuthenticator,
+        LoginFormAuthenticator $authenticator
+    ): Response {
         // Si l'utilisateur est déjà connecté, on le redirige vers l'accueil
         if ($this->getUser()) {
             return $this->redirectToRoute('portfolio_home');
         }
 
-        // Récupère les erreurs de connexion (si présentes)
         $error = $authenticationUtils->getLastAuthenticationError();
-        // Récupère le dernier nom d'utilisateur soumis (pour préremplir le champ)
         $lastUsername = $authenticationUtils->getLastUsername();
 
         $user = new User();
         $user->setUsername($lastUsername);
 
-        $form = $this->createForm(LoginFormType::class, $user, ['method' => 'POST']);
+        // Génération du Captcha uniquement si le formulaire n'est pas soumis
+        if (!$request->isMethod('POST')) {
+            $captchaText = $this->captchaGenerator->generateCaptchaText();
+            $session->set('captcha', $captchaText); // Stocke le captcha généré dans la session
+        } else {
+            $captchaText = $session->get('captcha'); // Récupère le captcha existant
+        }
+
+        // Crée le formulaire
+        $form = $this->createForm(LoginFormType::class, $user, [
+            'method' => 'POST',
+            'captcha' => $captchaText, // Passe le captcha généré au formulaire
+        ]);
+
+        // Manipuler la soumission du formulaire
         $form->handleRequest($request);
 
+        // Vérifie si le formulaire est soumis
         if ($form->isSubmitted() && $form->isValid()) {
-            // Validation reCAPTCHA
-            $captchaError = $this->validator->validate($form->get('captcha')->getData());
-            if (count($captchaError) > 0) {
-                $error = 'Veuillez confirmer que vous n\'êtes pas un robot.';
-            } else {
-                // Recherche utilisateur dans la base de données
-                $userRepository = $this->getDoctrine()->getRepository(User::class);
-                $user = $userRepository->findOneBy(['username' => $form->get('username')->getData()]);
-
-                if ($user && $this->passwordHasher->isPasswordValid($user, $form->get('password')->getData())) {
-                    return $this->redirectToRoute('portfolio_home');
-                }
-
-                $error = 'Nom d\'utilisateur ou mot de passe incorrect.';
-            }
+            // Authentifier l'utilisateur
+            return $userAuthenticator->authenticateUser(
+                $user,
+                $authenticator,
+                $request
+            );
         }
 
         return $this->render('security/login.html.twig', [

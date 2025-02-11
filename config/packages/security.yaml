@@ -1,4 +1,5 @@
 security:
+    enable_authenticator_manager: true
     # Configuration des encoders pour les mots de passe
     password_hashers:
         App\Entity\User:
@@ -9,13 +10,14 @@ security:
     firewalls:
         # Le firewall "main" est utilisé pour l'authentification
         main:
-            anonymous: true  # Permet aux utilisateurs non authentifiés d'accéder
-            form_login:
-                login_path: login # chemin de la page de connexion
-                check_path: login # chemin pour soumettre le formulaire
-                username_parameter: login_form[username]
-                password_parameter: login_form[password]
-                default_target_path: portfolio_home  # Redirige vers la page d'accueil après connexion
+            # form_login:
+            #     login_path: login # chemin de la page de connexion
+            #     check_path: login_check # chemin pour soumettre le formulaire
+            #     username_parameter: login_form[username]
+            #     password_parameter: login_form[password]
+            #     default_target_path: portfolio_home  # Redirige vers la page d'accueil après connexion
+            custom_authenticators:
+                - App\Security\LoginFormAuthenticator
             logout:
                 path: logout  # chemin pour se déconnecter
                 target: /  # Redirige après déconnexion vers la page d'accueil

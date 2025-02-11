@@ -21,7 +21,7 @@
         </div>
     {% endfor %}
     {# Formulaire de connexion #}
-    {{ form_start(loginForm) }}
+    {{ form_start(loginForm, {'method': 'POST'}) }}
         <div class="form-group">
             <div id="label-username-root"></div>
             {{ form_widget(loginForm.username) }}
@@ -33,10 +33,12 @@
 
         <div id="password-switch" data-password-field-id="login_form_password"></div>
 
-        <div class="espacement"></div>
         <div class="form-group">
-            {{ form_row(loginForm.captcha)}}
-            {{ form_errors(loginForm.captcha) }}
+            <div><p>Captcha</p></div>
+            {{ form_widget(loginForm.captcha) }}
+            {{ form_widget(loginForm.captcha_hidden) }}
+            <div class=" mt-2"></div>
+            <img src="{{ path('captcha_image') }}" alt="Captcha" />
         </div>
         
         <div class="espacement"></div>
