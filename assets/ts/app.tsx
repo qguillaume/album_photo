@@ -54,12 +54,10 @@ import LabelBackToLogin from '../components/LabelBackToLogin';
 import ErrorFlashMessage from '../components/ErrorFlashMessage';
 
 
-// Récupère la clé de traduction depuis les données du DOM avec une valeur par défaut
-const errorMessage = document.getElementById('flash-error-root')?.dataset.errorMessage || 'default_error_key';
-
-// Monte le composant ErrorFlashMessage
 const errorMessageRoot = document.getElementById('flash-error-root');
-if (errorMessageRoot) {
+const errorMessage = errorMessageRoot?.dataset.message || '';
+
+if (errorMessageRoot && errorMessage) {
     const root = createRoot(errorMessageRoot);
     root.render(<ErrorFlashMessage errorMessage={errorMessage} />);
 }

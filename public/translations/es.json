@@ -402,5 +402,6 @@
   },
   "invalid_credentials": "¡Nombre de usuario o contraseña incorrectos!",
   "invalid_captcha": "¡El captcha es incorrecto!",
-  "default_error_key": "¡Ha ocurrido un error!"
+  "default_error_key": "¡Ha ocurrido un error!",
+  "An authentication exception occurred.": "Ocurrió una excepción de autenticación."
 }

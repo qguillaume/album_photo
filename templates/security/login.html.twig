@@ -5,8 +5,8 @@
 {% block body %}
     <div id="label-h2-root"></div>
 
-    {# Conteneur pour les messages flash React #}
-    <div id="flash-error-root" data-message="{{ app.flashes('error')|first }}"></div>
+    {% set errorMessages = app.flashes('error') %}
+    <div id="flash-error-root" data-message="{{ errorMessages ? errorMessages|first : '' }}"></div>
 
     {# Affichage des messages flash de succès #}
     {% for message in app.flashes('success') %}

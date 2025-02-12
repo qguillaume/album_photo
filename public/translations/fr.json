@@ -404,6 +404,7 @@
   },
   "invalid_credentials": "Nom d'utilisateur ou mot de passe incorrect !",
   "invalid_captcha": "Captcha invalide !",
-  "default_error_key": "Une erreur s'est produite"
+  "default_error_key": "Une erreur s'est produite",
+  "An authentication exception occurred.": "Une erreur d'authentification s'est produite."
 }
 

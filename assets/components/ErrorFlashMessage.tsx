@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface ErrorFlashMessageProps {
@@ -9,9 +9,9 @@ const ErrorFlashMessage: React.FC<ErrorFlashMessageProps> = ({ errorMessage }) =
   const { t } = useTranslation();
 
   if (!errorMessage) {
-    return null; // Ne rien afficher si 'errorMessage' est indéfini ou vide
+    return null;
   }
-  
+
   return (
     <div className="flash-error">
       <span>{t(errorMessage)}</span>
