@@ -51,7 +51,18 @@ import LabelForgot from '../components/LabelForgot';
 import LabelH2Login from '../components/LabelH2Login';
 import LabelTopReset from '../components/LabelTopReset';
 import LabelBackToLogin from '../components/LabelBackToLogin';
+import ErrorFlashMessage from '../components/ErrorFlashMessage';
 
+
+// Récupère la clé de traduction depuis les données du DOM avec une valeur par défaut
+const errorMessage = document.getElementById('flash-error-root')?.dataset.errorMessage || 'default_error_key';
+
+// Monte le composant ErrorFlashMessage
+const errorMessageRoot = document.getElementById('flash-error-root');
+if (errorMessageRoot) {
+    const root = createRoot(errorMessageRoot);
+    root.render(<ErrorFlashMessage errorMessage={errorMessage} />);
+}
 
 const labelBackToLoginRoot = document.getElementById('label-backto-root');
 if (labelBackToLoginRoot) {

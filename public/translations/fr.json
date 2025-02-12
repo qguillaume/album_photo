@@ -401,6 +401,9 @@
     "h2reset": "Réinitialisation du mot de passe",
     "preset": "Veuillez entrer un nouveau mot de passe.",
     "back_to_connexion": "Retour à la connexion"
-  }
+  },
+  "invalid_credentials": "Nom d'utilisateur ou mot de passe incorrect !",
+  "invalid_captcha": "Captcha invalide !",
+  "default_error_key": "Une erreur s'est produite"
 }
 

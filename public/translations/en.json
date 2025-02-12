@@ -400,5 +400,8 @@
     "h2reset": "Password Reset",
     "preset": "Please enter a new password.",
     "back_to_connexion": "Back to login"
-  }
+  },
+  "invalid_credentials": "Invalid username or password !",
+  "invalid_captcha": "The captcha is incorrect !",
+  "default_error_key": "An error has occurred !"
 }

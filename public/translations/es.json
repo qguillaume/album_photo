@@ -399,5 +399,8 @@
     "h2reset": "Restablecimiento de contraseña",
     "preset": "Por favor, ingrese una nueva contraseña.",
     "back_to_connexion": "Volver a la conexión"
-  }
+  },
+  "invalid_credentials": "¡Nombre de usuario o contraseña incorrectos!",
+  "invalid_captcha": "¡El captcha es incorrecto!",
+  "default_error_key": "¡Ha ocurrido un error!"
 }

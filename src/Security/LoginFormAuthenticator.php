@@ -91,7 +91,7 @@ class LoginFormAuthenticator extends AbstractAuthenticator implements Authentica
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
         // Ajouter un message flash pour l'erreur
-        $request->getSession()->getFlashBag()->add('error', $exception->getMessage());
+        $request->getSession()->getFlashBag()->add('error', $exception->getMessageKey());
 
         // Rediriger vers la page de login
         return new RedirectResponse($this->urlGenerator->generate('login'));

@@ -4,23 +4,9 @@
 
 {% block body %}
     <div id="label-h2-root"></div>
-    {# Gestion des erreurs de connexion #}
-    {% if error is defined and error %}
-        <div class="form-group">
-            <div class="flash-error">
-                {{ error.messageKey|trans(error.messageData, 'security') }}
-            </div>
-        </div>
-    {% endif %}
 
-    {# Affichage des messages flash d'erreur #}
-    {% for message in app.flashes('error') %}
-        <div class="form-group">
-            <div class="flash-error">
-                {{ message|trans }}
-            </div>
-        </div>
-    {% endfor %}
+    {# Conteneur pour les messages flash React #}
+    <div id="flash-error-root" data-message="{{ app.flashes('error')|first }}"></div>
 
     {# Affichage des messages flash de succès #}
     {% for message in app.flashes('success') %}
