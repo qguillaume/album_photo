@@ -17,21 +17,25 @@ use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Entity\User;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LoginFormAuthenticator extends AbstractAuthenticator implements AuthenticationEntryPointInterface
 {
     private $urlGenerator;
     private $entityManager;
     private $session;
+    private $translator;
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
         EntityManagerInterface $entityManager,
-        SessionInterface $session
+        SessionInterface $session,
+        TranslatorInterface $translator
     ) {
         $this->urlGenerator = $urlGenerator;
         $this->entityManager = $entityManager;
         $this->session = $session;
+        $this->translator = $translator;
     }
 
     public function supports(Request $request): ?bool
@@ -52,7 +56,7 @@ class LoginFormAuthenticator extends AbstractAuthenticator implements Authentica
 
         // Valider le captcha
         if ($submittedCaptcha !== $storedCaptcha) {
-            throw new AuthenticationException('Le captcha est incorrect.');
+            throw new AuthenticationException($this->translator->trans('invalid_captcha', [], 'messages'));
         }
 
         if (null === $username || '' === $username) {
@@ -63,12 +67,12 @@ class LoginFormAuthenticator extends AbstractAuthenticator implements Authentica
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $username]);
 
         if (!$user) {
-            throw new AuthenticationException('Nom d\'utilisateur incorrect.');
+            throw new AuthenticationException($this->translator->trans('invalid_credentials', [], 'messages'));
         }
 
         // Vérifier le mot de passe
         if (!password_verify($password, $user->getPassword())) {
-            throw new AuthenticationException('Mot de passe incorrect.');
+            throw new AuthenticationException($this->translator->trans('invalid_credentials', [], 'messages'));
         }
 
         return new SelfValidatingPassport(

@@ -17,6 +17,7 @@ use App\Entity\User;
 use App\Form\LoginFormType;
 use App\Service\CaptchaGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SecurityController extends AbstractController
 {
@@ -37,7 +38,8 @@ class SecurityController extends AbstractController
         Request $request,
         SessionInterface $session,
         UserAuthenticatorInterface $userAuthenticator,
-        LoginFormAuthenticator $authenticator
+        LoginFormAuthenticator $authenticator,
+        TranslatorInterface $translator
     ): Response {
         // Si l'utilisateur est déjà connecté, on le redirige vers l'accueil
         if ($this->getUser()) {
@@ -76,7 +78,7 @@ class SecurityController extends AbstractController
 
             // Valider le captcha avant de procéder à l'authentification
             if ($submittedCaptcha !== $storedCaptcha) {
-                $this->addFlash('error', 'Le captcha est incorrect.');
+                $this->addFlash('error', $translator->trans('invalid_captcha', [], 'messages'));
                 return $this->redirectToRoute('login');
             }
 
@@ -94,7 +96,8 @@ class SecurityController extends AbstractController
             }
 
             // Si les identifiants sont incorrects, afficher une erreur
-            $this->addFlash('error', 'Nom d\'utilisateur ou mot de passe incorrect.');
+            $this->addFlash('error', $translator->trans('invalid_credentials', [], 'messages'));
+
             return $this->redirectToRoute('login');
         }
 

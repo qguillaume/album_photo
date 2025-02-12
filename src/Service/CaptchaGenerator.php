@@ -14,7 +14,7 @@ class CaptchaGenerator
 
     public function generateCaptchaText(): string
     {
-        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        $characters = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
         $captchaText = '';
         for ($i = 0; $i < 6; $i++) {
             $captchaText .= $characters[rand(0, strlen($characters) - 1)];
@@ -24,26 +24,28 @@ class CaptchaGenerator
 
     public function generateCaptchaImage(string $captchaText): string
     {
-        $width = 200;
-        $height = 50;
+        $width = 300;
+        $height = 80;
         $image = imagecreate($width, $height);
 
         // Couleurs
-        $backgroundColor = imagecolorallocate($image, 100, 200, 50);
-        $textColor = imagecolorallocate($image, 0, 0, 0); // Noir
+        $backgroundColor = imagecolorallocate($image, 147, 43, 21);
+        $textColor = imagecolorallocate($image, 188, 225, 151);
+        $noiseColor = imagecolorallocate($image, 172, 205, 137);
 
         // Remplir l'arrière-plan
         imagefilledrectangle($image, 0, 0, $width, $height, $backgroundColor);
 
-        // Ajouter du bruit (lignes et points)
-        for ($i = 0; $i < 50; $i++) {
-            imagesetpixel($image, rand(0, $width), rand(0, $height), $textColor);
-        }
-        for ($i = 0; $i < 5; $i++) {
-            imageline($image, rand(0, $width), rand(0, $height), rand(0, $width), rand(0, $height), $textColor);
+        // Ajouter du bruit (lignes fines aléatoires)
+        for ($i = 0; $i < 8; $i++) {
+            $x1 = rand(0, $width);
+            $y1 = rand(0, $height);
+            $x2 = rand(0, $width);
+            $y2 = rand(0, $height);
+            imagesetthickness($image, 0.5);
+            imageline($image, $x1, $y1, $x2, $y2, $noiseColor);
         }
 
-        $fontSize = 20;
         $font = __DIR__ . '/../..' . $this->publicDir . '/fonts/Montserrat-Italic.ttf';
 
         // Vérification de l'existence du fichier TTF
@@ -51,7 +53,18 @@ class CaptchaGenerator
             throw new \Exception("Le fichier de police n'a pas été trouvé à l'emplacement : " . $font);
         }
 
-        imagettftext($image, $fontSize, 0, 10, 35, $textColor, $font, $captchaText);
+        // Ajouter chaque lettre avec un angle différent
+        $fontSize = 30;
+        $x = 30;
+        $y = 60;
+        $letterSpacing = 40;
+
+        for ($i = 0; $i < strlen($captchaText); $i++) {
+            $letter = $captchaText[$i];
+            $angle = rand(-25, 25);
+            imagettftext($image, $fontSize, $angle, $x, $y, $textColor, $font, $letter);
+            $x += $letterSpacing;
+        }
 
         // Capturer l'image en mémoire
         ob_start();

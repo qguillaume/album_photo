@@ -60,3 +60,5 @@ connected_to_comment: "Sie müssen angemeldet sein, um einen Kommentar zu hinter
 create_new_album: "Erstelle ein neues Album"
 album_name: "Albumname"
 upload_valide: "Bitte laden Sie ein gültiges Bild hoch."
+"invalid_captcha": "Das Captcha ist falsch!"
+"invalid_credentials": "Falscher Benutzername oder falsches Passwort"
