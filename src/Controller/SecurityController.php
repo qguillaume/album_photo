@@ -69,12 +69,33 @@ class SecurityController extends AbstractController
 
         // Vérifie si le formulaire est soumis
         if ($form->isSubmitted() && $form->isValid()) {
-            // Authentifier l'utilisateur
-            return $userAuthenticator->authenticateUser(
-                $user,
-                $authenticator,
-                $request
-            );
+            // Récupérer le captcha soumis
+            $submittedCaptcha = $form->get('captcha')->getData();
+            // Récupérer le captcha stocké dans la session
+            $storedCaptcha = $session->get('captcha');
+
+            // Valider le captcha avant de procéder à l'authentification
+            if ($submittedCaptcha !== $storedCaptcha) {
+                $this->addFlash('error', 'Le captcha est incorrect.');
+                return $this->redirectToRoute('login');
+            }
+
+            // Si le captcha est correct, procéder à la vérification du nom d'utilisateur et du mot de passe
+            $userRepository = $this->getDoctrine()->getRepository(User::class);
+            $user = $userRepository->findOneBy(['username' => $form->get('username')->getData()]);
+
+            if ($user && $this->passwordHasher->isPasswordValid($user, $form->get('password')->getData())) {
+                // Authentifier l'utilisateur
+                return $userAuthenticator->authenticateUser(
+                    $user,
+                    $authenticator,
+                    $request
+                );
+            }
+
+            // Si les identifiants sont incorrects, afficher une erreur
+            $this->addFlash('error', 'Nom d\'utilisateur ou mot de passe incorrect.');
+            return $this->redirectToRoute('login');
         }
 
         return $this->render('security/login.html.twig', [

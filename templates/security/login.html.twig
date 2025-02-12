@@ -12,6 +12,16 @@
             </div>
         </div>
     {% endif %}
+
+    {# Affichage des messages flash d'erreur #}
+    {% for message in app.flashes('error') %}
+        <div class="form-group">
+            <div class="flash-error">
+                {{ message|trans }}
+            </div>
+        </div>
+    {% endfor %}
+
     {# Affichage des messages flash de succès #}
     {% for message in app.flashes('success') %}
         <div class="form-group">
@@ -20,6 +30,7 @@
             </div>
         </div>
     {% endfor %}
+    
     {# Formulaire de connexion #}
     {{ form_start(loginForm, {'method': 'POST'}) }}
         <div class="form-group">
