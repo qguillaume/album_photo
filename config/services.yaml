@@ -57,6 +57,11 @@ services:
             $urlGenerator: '@router.default'
             $entityManager: '@doctrine.orm.entity_manager'
             $session: '@session'
+
+    App\Service\CaptchaGenerator:
+        arguments:
+            $publicDir: '%env(PUBLIC_DIR)%'
+
 # Pensez à décommenter pour la prod
-# framework:
-#     error_controller: 'App\Controller\ErrorController::showError'
+framework:
+    error_controller: 'App\Controller\ErrorController::showError'

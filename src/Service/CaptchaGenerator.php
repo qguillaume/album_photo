@@ -5,6 +5,13 @@ namespace App\Service;
 
 class CaptchaGenerator
 {
+    private $publicDir;
+
+    public function __construct(string $publicDir)
+    {
+        $this->publicDir = $publicDir;
+    }
+
     public function generateCaptchaText(): string
     {
         $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -37,7 +44,7 @@ class CaptchaGenerator
         }
 
         $fontSize = 20;
-        $font = __DIR__ . '/../../public/fonts/Montserrat-Italic.ttf';
+        $font = __DIR__ . '/../..' . $this->publicDir . '/fonts/Montserrat-Italic.ttf';
 
         // Vérification de l'existence du fichier TTF
         if (!file_exists($font)) {
