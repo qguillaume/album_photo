@@ -16,6 +16,7 @@ const Timeline: React.FC = () => {
   const [isReady, setIsReady] = useState(false);
 
 const timelineData: TimelineItem[] = [
+  { year: "2025", description: t('portfolio_gq'), duration: "" },
   { year: "2024", description: t('bellon'), duration: t('6_mois') },
   { year: "2019", description: t('alphalives'), duration: t('4_ans') },
   { year: "2018", description: t('fnac'), duration: t('1_an') },
