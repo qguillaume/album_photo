@@ -72,7 +72,7 @@ const Timeline: React.FC = () => {
       {selectedItem && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h3>{selectedItem.year} - {selectedItem.description}</h3>
+            <h3 className="center">{selectedItem.year} - {selectedItem.description}</h3>
             <p>{selectedItem.details}</p>
             <button onClick={closeModal} className="close-btn">Fermer</button>
           </div>
