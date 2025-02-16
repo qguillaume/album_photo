@@ -8,6 +8,7 @@
 parameters:
     photos_directory: '%kernel.project_dir%/%env(PUBLIC_DIR)%/uploads/photos'
     public_directory: '%env(PUBLIC_DIR)%'
+    api_url: '%env(REACT_APP_API_URL)%'
 
 services:
     # default configuration for services in *this* file

@@ -36,7 +36,7 @@ class ForgotPasswordController extends AbstractController
             $token = new PasswordResetToken($email);
             $entityManager->persist($token);
             $entityManager->flush();
-
+            $apiUrl = $_ENV['REACT_APP_API_URL'] ?? 'https://guillaume-quesnel.com';
             // Envoyer un email
             $resetUrl = $this->generateUrl('reset_password', ['token' => $token->getToken()], true);
 
@@ -44,7 +44,7 @@ class ForgotPasswordController extends AbstractController
                 ->from('no-reply@guillaume-quesnel.com')
                 ->to($user->getEmail())
                 ->subject('Réinitialisation de votre mot de passe')
-                ->text("Cliquez sur le lien suivant pour réinitialiser votre mot de passe : $resetUrl");
+                ->html("<p>Cliquez sur le lien suivant pour réinitialiser votre mot de passe : <a href='" . $apiUrl . $resetUrl . "'>$apiUrl$resetUrl</a></p>");
 
             $mailer->send($email);
         }
