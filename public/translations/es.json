@@ -1,6 +1,7 @@
 {
   "contact_text": "Texto de contacto",
-  "download_cv": "Descargar CV",
+  "download_cv": "Descargar CV (FR)",
+  "download_cv_international": "Descargar CV (EN)",
   "main_title": "Bienvenido a mi portafolio",
   "hello_welcome": "Desarrollador Fullstack y apasionado por mi trabajo",
   "presentation_text_1": "Hola, mi nombre es Guillaume y realmente disfruto de este oficio en el que pierdo la noción del tiempo. Me encanta enfrentar nuevos desafíos y aprender de ellos.",

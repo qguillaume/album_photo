@@ -52,6 +52,7 @@ import LabelH2Login from '../components/LabelH2Login';
 import LabelTopReset from '../components/LabelTopReset';
 import LabelBackToLogin from '../components/LabelBackToLogin';
 import ErrorFlashMessage from '../components/ErrorFlashMessage';
+import CVContact from '../components/CVContact';
 
 
 const errorMessageRoot = document.getElementById('flash-error-root');
@@ -121,55 +122,6 @@ if (headerRootElement) {
     </React.StrictMode>
   );
 }
-
-// Composant principal pour téléchargement du CV et contact
-const CVContact: React.FC = () => {
-  const { t, i18n } = useTranslation(); // Hook pour accéder aux traductions
-  const [isReady, setIsReady] = useState(false);
-
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      easing: 'ease-in-out',
-      once: true,
-      offset: 120,
-      mirror: false,
-    });
-    if (i18n.isInitialized) {
-      setIsReady(true); // Attendre que i18next soit initialisé
-    }
-  }, [i18n.isInitialized]);
-
-  if (!isReady) return null; // Afficher rien ou un loader pendant l'initialisation
-
-  const handleDownloadCV = () => {
-    const currentLang = i18n.language;
-    const cvUrl = currentLang === "fr" ? "/files/CV_FR.pdf" : "/files/CV_EN.pdf"; 
-    const link = document.createElement("a");
-    link.href = cvUrl;
-    link.download = "CV.pdf"; 
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
-  return (
-    <>
-      <h2 data-aos="zoom-in">{t('profile_interest')}</h2>
-      <p className="cv-p" data-aos="fade-up">{t('collab_sentence')}</p>
-      <div className="cv-contact">
-        <div className="cvc-buttons" data-aos="fade-up">
-          <ContactButton />
-          <button className="green-button" onClick={handleDownloadCV}>
-            {t('download_cv')} {/* Traduction pour le texte du bouton */}
-          </button>
-        </div>
-      </div>
-    </>
-  );
-};
-
-
 
 // Composant principal PhotosTable
 const PhotosTable = () => {
