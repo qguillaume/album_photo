@@ -100,7 +100,7 @@ class ResetPasswordController extends AbstractController
             $user->setPassword($passwordHasher->hashPassword($user, $form->get('password')->getData()));
             $entityManager->flush();
 
-            $this->addFlash('success', 'Votre mot de passe a été réinitialisé.');
+            $this->addFlash('success', 'password_reset_success');
 
             // Rediriger vers la page de connexion
             return $this->redirectToRoute('login');
