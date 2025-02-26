@@ -66,3 +66,4 @@ phpunit.xml.dist
 symfony.lock
 tsconfig.json
 compose.yaml.bak
+config/packages/security.yaml
