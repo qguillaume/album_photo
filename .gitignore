@@ -57,3 +57,12 @@ php.ini
 
 package-lock.json
 composer.lock
+nginx.conf.bakk
+compose.override.yaml
+composer.json
+package.json
+webpack.config.js
+phpunit.xml.dist
+symfony.lock
+tsconfig.json
+compose.yaml.bak
