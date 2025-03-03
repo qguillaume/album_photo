@@ -16,6 +16,7 @@ jobs:
             - run: echo "coucou Guillaume in job1"
 
     job2:
+        needs: [job1]
         runs-on: ubuntu-latest
         steps:
             - name: checkout@v4
