@@ -1,0 +1,24 @@
+name: album_photo ci-cd
+
+on:
+    push:
+        branches: ["main"]
+    pull_request:
+        branches: ["main"]
+
+jobs:
+    job1:
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout@v4
+              uses: actions/checkout@v4
+
+            - run: echo "coucou Guillaume in job1"
+
+    job2:
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout@v4
+              uses: actions/checkout@v4
+
+            - run: echo "coucou Guillaume in job2"
