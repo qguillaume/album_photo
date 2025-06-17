@@ -233,18 +233,21 @@ class PhotoController extends AbstractController
         $em->flush();
 
         // Envoyer un mail après l'upload d'une photo
-        $email = (new Email())
-            ->from('no-reply@guillaume-quesnel.com')
-            ->to('admin@guillaume-quesnel.com')
-            ->subject('Nouvelle photo ajoutée')
-            ->html("
-        <p>Une nouvelle photo a été ajoutée par {$user->getUsername()}.</p>
-        <p>Titre : {$photo->getTitle()}</p>
-        <p>Album : {$album->getNomAlbum()}</p>
-        <p><a href='https://guillaume-quesnel.com/photo/{$photo->getId()}'>Voir la photo</a></p>
-        ");
+        if ($user->getUsername() !== "GuillaumeQuesnel") {
+            $email = (new Email())
+                ->from('no-reply@guillaume-quesnel.com')
+                ->to('admin@guillaume-quesnel.com')
+                ->subject('Nouvelle photo ajoutée')
+                ->html("
+                    <p>Une nouvelle photo a été ajoutée par {$user->getUsername()}.</p>
+                    <p>Titre : {$photo->getTitle()}</p>
+                    <p>Album : {$album->getNomAlbum()}</p>
+                    <p><a href='https://guillaume-quesnel.com/photo/{$photo->getId()}'>Voir la photo</a></p>
+                    ");
 
-        $mailer->send($email);
+            $mailer->send($email);
+        }
+
 
         // Retourner une réponse JSON avec un message de succès
         return new JsonResponse(['message' => 'Photo created successfully!'], Response::HTTP_OK);
