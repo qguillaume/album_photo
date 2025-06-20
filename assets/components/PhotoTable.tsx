@@ -26,7 +26,7 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
   const [newTitle, setNewTitle] = useState<string>("");
 
   const [currentPage, setCurrentPage] = useState(1); // Page actuelle
-  const photosPerPage = 50; // Nombre de photos par page
+  const photosPerPage = 100; // Nombre de photos par page
   const isSuperAdmin = currentUserRoles.includes("ROLE_SUPER_ADMIN");
   const isAdmin = currentUserRoles.includes("ROLE_ADMIN");
   const isUser = currentUserRoles.includes("ROLE_USER");

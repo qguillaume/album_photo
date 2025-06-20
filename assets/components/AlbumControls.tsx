@@ -9,26 +9,26 @@ interface AlbumControlsProps {
 
 const AlbumControls: React.FC<AlbumControlsProps> = ({ albumId, albumName, onRename, onDelete }) => {
   const handleRename = () => {
-    const newName = prompt(`Renommer l'album "${albumName}" :`, albumName);
-    if (newName && newName.trim() !== "") {
-      onRename(albumId, newName);
-    }
+    // const newName = prompt(`Renommer l'album "${albumName}" :`, albumName);
+    // if (newName && newName.trim() !== "") {
+    //   onRename(albumId, newName);
+    // }
   };
 
   const handleDelete = () => {
-    if (confirm(`Voulez-vous vraiment supprimer l'album "${albumName}" ?`)) {
-      onDelete(albumId);
-    }
+    // if (confirm(`Voulez-vous vraiment supprimer l'album "${albumName}" ?`)) {
+    //   onDelete(albumId);
+    // }
   };
 
   return (
     <div className="album-controls">
-      <button className="btn-rename" onClick={handleRename}>
-        ✏️
+      {/* <button className="btn-rename" onClick={handleRename}>
+        ff
       </button>
       <button className="btn-delete" onClick={handleDelete}>
-        ❌
-      </button>
+        gg
+      </button> */}
     </div>
   );
 };
