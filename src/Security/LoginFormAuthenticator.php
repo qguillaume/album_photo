@@ -55,7 +55,7 @@ class LoginFormAuthenticator extends AbstractAuthenticator implements Authentica
         $storedCaptcha = $this->session->get('captcha');
 
         // Valider le captcha
-        if ($submittedCaptcha !== $storedCaptcha) {
+        if (strtoupper($submittedCaptcha) !== strtoupper($storedCaptcha)) {
             throw new AuthenticationException($this->translator->trans('invalid_captcha', [], 'messages'));
         }
 

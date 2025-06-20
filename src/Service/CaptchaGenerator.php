@@ -14,7 +14,7 @@ class CaptchaGenerator
 
     public function generateCaptchaText(): string
     {
-        $characters = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
+        $characters = 'ABCDEFGHJKLMNPQRTUVWXY346789';
         $captchaText = '';
         for ($i = 0; $i < 6; $i++) {
             $captchaText .= $characters[rand(0, strlen($characters) - 1)];
