@@ -1,0 +1,21 @@
+.photo-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+.nav-arrow {
+    font-size: 18px;
+    text-decoration: none;
+    color: #FF6600;
+    font-weight: bold;
+}
+
+.left-arrow {
+    text-align: left;
+}
+
+.right-arrow {
+    text-align: right;
+}

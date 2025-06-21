@@ -459,15 +459,12 @@ class PhotoController extends AbstractController
      */
     public function show(int $id, Request $request, EntityManagerInterface $em): Response
     {
-        // Récupérer la photo par son ID
         $photo = $em->getRepository(Photo::class)->find($id);
 
-        // Si la photo n'existe pas, renvoyer une erreur 404
         if (!$photo) {
             throw $this->createNotFoundException('Photo non trouvée');
         }
 
-        // Vérifier si la photo est visible, approuvée ou appartient à l'utilisateur
         $isOwner = $photo->getAlbum() && $photo->getAlbum()->getCreator() === $this->getUser();
         if (!$photo->getIsVisible() || !$photo->getIsApproved()) {
             if (!$isOwner && !$this->isGranted('ROLE_SUPER_ADMIN')) {
@@ -475,50 +472,48 @@ class PhotoController extends AbstractController
             }
         }
 
+        // 🔁 Récupérer toutes les photos de l'album triées par ID (ou createdAt si tu préfères)
+        $albumPhotos = $em->getRepository(Photo::class)->findBy(
+            ['album' => $photo->getAlbum()],
+            ['id' => 'ASC']
+        );
 
+        // 🔍 Trouver la précédente et la suivante
+        $prevPhoto = null;
+        $nextPhoto = null;
+        foreach ($albumPhotos as $index => $p) {
+            if ($p->getId() === $photo->getId()) {
+                if ($index > 0) {
+                    $prevPhoto = $albumPhotos[$index - 1];
+                }
+                if ($index < count($albumPhotos) - 1) {
+                    $nextPhoto = $albumPhotos[$index + 1];
+                }
+                break;
+            }
+        }
 
-        // Récupérer les commentaires associés à la photo
         $comments = $em->getRepository(Comment::class)->findBy(['photo' => $photo]);
 
-        // Créer un nouvel objet Comment lié à la photo
         $comment = new Comment();
         $comment->setPhoto($photo);
-
-        // Créer le formulaire pour ajouter un commentaire
         $form = $this->createForm(CommentFormType::class, $comment);
-
-        // Gérer la soumission du formulaire
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Associer l'utilisateur connecté au commentaire
-            $comment->setUser($this->getUser());
 
-            // Sauvegarder le commentaire dans la base de données
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setUser($this->getUser());
             $em->persist($comment);
             $em->flush();
 
-            // Envoyer un mail après la mise en ligne d'un commentaire
-            // $email = (new Email())
-            //     ->from('no-reply@guillaume-quesnel.com')
-            //     ->to('admin@guillaume-quesnel.com')
-            //     ->subject('Nouveau commentaire')
-            //     ->html("
-            // <p>Un nouveau commentaire a été ajoutée par {$comment->getUser()}.</p>
-            // <p>Commentaire : {$comment->getContent()}</p>
-            // <p><a href='https://guillaume-quesnel.com/photo/{$photo->getId()}'>Voir le commentaire</a></p>
-            // ");
-
-            // $mailer->send($email);
-
-            // Rediriger pour éviter la resoumission du formulaire
             return $this->redirectToRoute('photo_show', ['id' => $photo->getId()]);
         }
 
-        // Renvoyer la vue Twig avec les détails de la photo, ses commentaires et le formulaire
         return $this->render('photo/show.html.twig', [
             'photo' => $photo,
             'comments' => $comments,
             'commentForm' => $form->createView(),
+            'prevPhoto' => $prevPhoto,
+            'nextPhoto' => $nextPhoto,
         ]);
     }
 

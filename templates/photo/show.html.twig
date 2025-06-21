@@ -11,7 +11,15 @@
             </a>
         </div>
     </div>
+    <div class="photo-navigation">
+        {% if prevPhoto %}
+            <a href="{{ path('photo_show', {'id': prevPhoto.id}) }}" class="nav-arrow left-arrow">← Précédente</a>
+        {% endif %}
 
+        {% if nextPhoto %}
+            <a href="{{ path('photo_show', {'id': nextPhoto.id}) }}" class="nav-arrow right-arrow">Suivante →</a>
+        {% endif %}
+    </div>
     <p class="details-photo"><strong>Nombre de likes : {{ photo.likesCount }}</strong><div id="like-button-container"></div></p><!-- @TODO isoler le bouton like et le faire fonctionner ici -->
 
     {% if photo.album %}
