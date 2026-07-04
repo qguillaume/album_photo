@@ -1,55 +1,54 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div class="card-folder-gallery">
+<div class="album-gallery">
     {% for album in albums %}
-        {% if 
-            (album.isVisible and album.isApproved) 
-            or (app.user and album.creator.id == app.user.id) 
-            or is_granted('ROLE_SUPER_ADMIN') 
-            or (is_granted('ROLE_ADMIN') and album.creator.roles is defined and album.creator.roles|length == 1 and 'ROLE_USER' in album.creator.roles) 
+        {% if
+            (album.isVisible and album.isApproved)
+            or (app.user and album.creator.id == app.user.id)
+            or is_granted('ROLE_SUPER_ADMIN')
+            or (is_granted('ROLE_ADMIN') and album.creator.roles is defined and album.creator.roles|length == 1 and 'ROLE_USER' in album.creator.roles)
         %}
-            <div class="card-folder-container">
-                <div class="card-folder">
-                    <!-- Face avant -->
-                    <div class="card-folder-front">
-                        {% if album.imagePath is not null %}
-                            <img 
-                                src="{{ asset('uploads/photos/'~ album.creator.id ~ '/' ~ album.getNomAlbum() ~ '/cover_photo/' ~ album.imagePath) }}" 
-                                alt="Dossier"
-                            >
-                        {% endif %}
-                    </div>
-                    <!-- Face arrière de la carte -->
-                    <a class="card-folder-back" href="{{ path('photos_by_album', { 'id': album.id }) }}">
-                        <div>
-                            {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                <div class="album-actions">
-                                    <!-- Conteneur React pour les autres contrôles -->
-                                    <div id="album-controls-{{ album.id }}" 
-                                        data-album-id="{{ album.id }}" 
-                                        data-album-name="{{ album.nomAlbum }}" 
-                                        data-album-url="{{ asset('uploads/albums/' ~ album.imagePath) }}"
-                                    ></div>
-                                </div>
-                            {% endif %}
-                        </div>
-                    </a>
-                </div>
+            {% set is_owner = app.user and album.creator.id == app.user.id %}
+            {% set can_moderate = is_owner or is_granted('ROLE_SUPER_ADMIN') or (is_granted('ROLE_ADMIN') and album.creator.roles is defined and album.creator.roles|length == 1 and 'ROLE_USER' in album.creator.roles) %}
+            {% set show_danger = (not album.isApproved or not album.isVisible) and can_moderate %}
 
-                <!-- Nom de l'album avec styles et icônes conditionnels -->
-                <p 
-                    class="card-folder-name" 
-                    {% if app.user and album.creator.id == app.user.id %}style="color: green;"{% endif %}
-                >
-                    {{ album.nomAlbum }} ({{album.photoCount}})
-                    
-                    {% if (not album.isApproved or not album.isVisible) and (album.creator.id == app.user.id or is_granted('ROLE_SUPER_ADMIN') or (is_granted('ROLE_ADMIN') and album.creator.roles is defined and album.creator.roles|length == 1 and 'ROLE_USER' in album.creator.roles)) %}
-                        <span class="icon-danger" title="Non approuvé ou invisible" style="color: red;">&#9888;</span>
-                    {% endif %}
+            <div class="album-card{% if is_owner %} album-card--owner{% endif %}">
+
+                {% if show_danger %}
+                    <span class="album-card__badge-danger" title="Non approuvé ou invisible">&#9888;</span>
+                {% endif %}
+
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <div class="album-card__actions">
+                        <div id="album-controls-{{ album.id }}"
+                            data-album-id="{{ album.id }}"
+                            data-album-name="{{ album.nomAlbum }}"
+                            data-album-url="{{ asset('uploads/albums/' ~ album.imagePath) }}"></div>
+                    </div>
+                {% endif %}
+
+                <a class="album-card__link" href="{{ path('photos_by_album', { 'id': album.id }) }}">
+                    <div class="album-card__media">
+                        {% if album.imagePath is not null %}
+                            <img
+                                src="{{ asset('uploads/photos/'~ album.creator.id ~ '/' ~ album.getNomAlbum() ~ '/cover_photo/' ~ album.imagePath) }}"
+                                alt="{{ album.nomAlbum }}"
+                                loading="lazy">
+                        {% else %}
+                            <div class="album-card__placeholder">&#128247;</div>
+                        {% endif %}
+                        <span class="album-card__overlay">
+                            <span class="album-card__cta" aria-hidden="true">&rarr;</span>
+                        </span>
+                    </div>
+                </a>
+
+                <p class="album-card__title">
+                    <span>{{ album.nomAlbum }}</span>
+                    <span class="album-card__count">{{ album.photoCount }}</span>
                 </p>
             </div>
-            
         {% endif %}
     {% endfor %}
 </div>

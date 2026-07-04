@@ -1,107 +1,184 @@
-.card-folder-gallery {
+@use "../base/variables" as *;
+
+/* =========================================================================
+ * Cartes d'album — version moderne "plein cadre"
+ * L'image de couverture EST la carte : coins arrondis, ombre douce,
+ * léger zoom + voile dégradé au survol. Remplace les anciennes cartes-dossiers
+ * skeuomorphes qui pivotaient en 3D.
+ * ====================================================================== */
+
+.album-gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Colonnes adaptatives */
-    gap: 20px; /* Ajoute de l'espace entre les colonnes et les lignes */
-    justify-content: center; /* Centre la grille si elle a moins de colonnes que nécessaire */
-    padding: 20px; /* Ajoute de l'espace autour de la grille */
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 28px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px;
 }
 
-.card-folder-container {
+.album-card {
+    position: relative;
     display: flex;
     flex-direction: column;
-    width: 200px;
-    height: 150px;
-    perspective: 1000px;
-    margin: 15px;
-    align-items: center;
 }
 
-.card-folder {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.8s ease;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); /* Ombre par défaut */
-    transform-origin: center;
-}
-
-.card-folder-container:hover .card-folder {
-    transform: rotateY(180deg);
-    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.5); /* Ombre plus prononcée au survol */
-}
-
-.card-folder-front,
-.card-folder-back {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+/* La carte cliquable (image de couverture) */
+.album-card__link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border-radius: $radius-md;
     overflow: hidden;
+    box-shadow: $shadow-md;
+    transition: transform 0.25s $ease, box-shadow 0.25s $ease;
 }
 
-.card-folder-front {
-    background: linear-gradient(to top, #ffe4a4, #fbbc04);
-    clip-path: polygon(
-        0 20%, 
-        10% 20%, 
-        10% 0, 
-        40% 0, 
-        40% 20%, 
-        100% 20%, 
-        100% 100%, 
-        0 100%
-    ); // Forme du dossier avec onglet
+.album-card__link:hover,
+.album-card__link:focus-visible {
+    transform: translateY(-6px);
+    box-shadow: $shadow-lg;
+    outline: none;
+}
+
+.album-card__media {
     position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: $card-surface-dark;
 }
 
-.card-folder-front img {
-    position: absolute; // Pour s'assurer que l'image couvre toute la zone
-    top: 0;
-    left: 0;
+.album-card__media img {
     width: 100%;
     height: 100%;
-    object-fit: cover; // Pour s'assurer que l'image couvre l'ensemble du conteneur
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s $ease;
 }
 
-.card-folder-back {
-    background: darkslateblue;
-    color: black;
-    transform: rotateY(180deg);
-    text-align: center;
-    font-size: 16px;
-    padding: 10px;
-    clip-path: polygon(
-        0 20%, 
-        10% 20%, 
-        10% 0, 
-        40% 0, 
-        40% 20%, 
-        100% 20%, 
-        100% 100%, 
-        0 100%
-    );
+.album-card__link:hover .album-card__media img {
+    transform: scale(1.06);
+}
+
+/* Couverture absente : dégradé de marque + icône */
+.album-card__placeholder {
+    width: 100%;
+    height: 100%;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    font-size: 2.6rem;
+    background: $brand-gradient;
+    color: rgba(255, 255, 255, 0.92);
 }
 
-.card-folder-name {
-    text-align: center;
-    font-size: 14px;
-    white-space: normal; /* Permet le retour à la ligne si nécessaire */
-    word-wrap: break-word; /* Permet de couper les mots trop longs si nécessaire */
-    overflow-wrap: break-word; /* Assure la compatibilité pour le texte long */
-    margin-top: 10px;
+/* Voile dégradé + bouton d'action au survol */
+.album-card__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 14px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 55%);
+    opacity: 0;
+    transition: opacity 0.25s $ease;
 }
 
-.card-folder-container:hover .card-folder-back {
-    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4); /* Ombre plus forte au survol */
+.album-card__link:hover .album-card__overlay {
+    opacity: 1;
+}
+
+.album-card__cta {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: $primary-color; /* bleu de marque */
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    line-height: 1;
+    box-shadow: $shadow-sm;
+    transform: translateY(10px);
+    transition: transform 0.25s $ease;
+}
+
+.album-card__link:hover .album-card__cta {
+    transform: translateY(0);
+}
+
+/* Titre + nombre de photos, sous la carte */
+.album-card__title {
+    margin: 14px 4px 0;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.35;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.album-card__count {
+    margin-left: auto;
+    font-weight: 400;
+    font-size: 13px;
+    opacity: 0.6;
+}
+
+/* Pastille verte = album qui t'appartient */
+.album-card--owner .album-card__title > span:first-child::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 8px;
+    border-radius: 50%;
+    background: $secondary-color; /* vert de marque */
+    vertical-align: middle;
+}
+
+/* Badge d'alerte (non approuvé / invisible) en haut à gauche */
+.album-card__badge-danger {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(231, 76, 60, 0.95); /* $red-color */
+    color: #fff;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: $shadow-sm;
+}
+
+/* Contrôles admin (React) en surimpression, apparaissent au survol */
+.album-card__actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 0.25s $ease;
+}
+
+.album-card:hover .album-card__actions,
+.album-card:focus-within .album-card__actions {
+    opacity: 1;
+}
+
+/* Adaptations thème clair */
+body.light-mode {
+    .album-card__media {
+        background: $neutral-100;
+    }
+
+    .album-card__count {
+        color: $neutral-500;
+        opacity: 1;
+    }
 }
