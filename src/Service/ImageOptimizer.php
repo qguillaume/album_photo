@@ -3,9 +3,12 @@
 namespace App\Service;
 
 /**
- * Optimise les images uploadées :
- *  - redimensionne l'original s'il dépasse FULL_MAX (pour éviter des fichiers énormes) ;
- *  - génère une miniature (dossier "thumbnails/") servie dans les grilles d'albums.
+ * Génère des miniatures pour les images uploadées.
+ *
+ * ⚠️ NON-DESTRUCTIF : ce service ne modifie, ne recompresse et n'écrase JAMAIS
+ * le fichier original. Il se contente d'ÉCRIRE un nouveau fichier "miniature"
+ * dans un sous-dossier "thumbnails/". Les photos originales sont donc préservées
+ * à l'identique.
  *
  * Utilise l'extension GD (déjà présente : cf. CaptchaGenerator et le Dockerfile).
  */
@@ -14,79 +17,78 @@ class ImageOptimizer
     /** Côté le plus long, en pixels, pour la miniature affichée dans les grilles. */
     public const THUMBNAIL_MAX = 500;
 
-    /** Côté le plus long, en pixels, pour l'image "pleine résolution" conservée. */
-    private const FULL_MAX = 1920;
-
-    /** Qualité de compression JPEG (0-100). */
+    /** Qualité de compression JPEG des miniatures (0-100). N'affecte QUE la miniature. */
     private const JPEG_QUALITY = 82;
 
     /** Sous-dossier où sont stockées les miniatures. */
     public const THUMBNAIL_DIR = 'thumbnails';
 
     /**
-     * Traite une image déjà présente sur le disque :
-     * compresse/redimensionne l'original en place, puis écrit sa miniature.
+     * Crée la miniature d'une image existante.
+     * L'original n'est jamais modifié : on le lit seulement en lecture.
      *
-     * @param string $absolutePath Chemin absolu du fichier image (déjà déplacé).
+     * @param string $originalPath Chemin absolu du fichier original (préservé).
      */
-    public function process(string $absolutePath): void
+    public function generateThumbnail(string $originalPath): void
     {
-        if (!is_file($absolutePath)) {
+        if (!is_file($originalPath)) {
             return;
         }
 
-        $image = @imagecreatefromstring((string) file_get_contents($absolutePath));
+        // Lecture seule de l'original — aucune écriture ne sera faite dessus.
+        $image = @imagecreatefromstring((string) file_get_contents($originalPath));
         if ($image === false) {
-            // Fichier non décodable par GD : on le laisse tel quel plutôt que de le corrompre.
-            return;
+            return; // Non décodable par GD : on ne touche à rien.
         }
 
-        $type = $this->detectType($absolutePath);
+        $type = $this->detectType($originalPath);
 
-        // 1) Réécrit l'original borné à FULL_MAX (compression + éventuel redimensionnement).
-        $full = $this->constrain($image, self::FULL_MAX);
-        $this->save($full, $absolutePath, $type);
-        if ($full !== $image) {
-            imagedestroy($full);
-        }
-
-        // 2) Génère la miniature dans le sous-dossier dédié.
-        $thumbDir = \dirname($absolutePath) . '/' . self::THUMBNAIL_DIR;
+        $thumbDir = \dirname($originalPath) . '/' . self::THUMBNAIL_DIR;
         if (!is_dir($thumbDir)) {
             mkdir($thumbDir, 0755, true);
         }
-        $thumb = $this->constrain($image, self::THUMBNAIL_MAX);
-        $this->save($thumb, $thumbDir . '/' . basename($absolutePath), $type);
+
+        $thumbPath = $thumbDir . '/' . basename($originalPath);
+        $thumb = $this->resizeDown($image, self::THUMBNAIL_MAX);
+        $this->save($thumb, $thumbPath, $type);
+
         if ($thumb !== $image) {
             imagedestroy($thumb);
         }
-
         imagedestroy($image);
     }
 
     /**
-     * Retourne le chemin absolu de la miniature correspondant à un original.
+     * Chemin absolu de la miniature correspondant à un original.
      */
-    public function thumbnailPathFor(string $absoluteOriginalPath): string
+    public function thumbnailPathFor(string $originalPath): string
     {
-        return \dirname($absoluteOriginalPath) . '/' . self::THUMBNAIL_DIR . '/' . basename($absoluteOriginalPath);
+        return \dirname($originalPath) . '/' . self::THUMBNAIL_DIR . '/' . basename($originalPath);
     }
 
     /**
-     * Redimensionne l'image pour que son côté le plus long ne dépasse pas $max.
-     * Renvoie la ressource d'origine inchangée si elle est déjà assez petite.
+     * Indique si la miniature existe déjà (utile pour reprendre un traitement de masse).
+     */
+    public function thumbnailExists(string $originalPath): bool
+    {
+        return is_file($this->thumbnailPathFor($originalPath));
+    }
+
+    /**
+     * Renvoie une copie réduite de l'image (côté le plus long = $max).
+     * Si l'image est déjà plus petite, la ressource d'origine est renvoyée telle quelle.
      *
      * @param resource|\GdImage $src
      * @return resource|\GdImage
      */
-    private function constrain($src, int $max)
+    private function resizeDown($src, int $max)
     {
         $width = imagesx($src);
         $height = imagesy($src);
         $longest = max($width, $height);
 
         if ($longest <= $max) {
-            return $src; // Déjà assez petite : on ne ré-échantillonne pas inutilement.
+            return $src;
         }
 
         $ratio = $max / $longest;
@@ -94,7 +96,6 @@ class ImageOptimizer
         $newHeight = (int) round($height * $ratio);
 
         $dst = imagecreatetruecolor($newWidth, $newHeight);
-        // Préserve la transparence (PNG / GIF).
         imagealphablending($dst, false);
         imagesavealpha($dst, true);
         $transparent = imagecolorallocatealpha($dst, 0, 0, 0, 127);
@@ -114,7 +115,7 @@ class ImageOptimizer
             case 'png':
                 imagealphablending($image, false);
                 imagesavealpha($image, true);
-                imagepng($image, $path, 6); // 6 = bon compromis taille/vitesse
+                imagepng($image, $path, 6);
                 break;
             case 'gif':
                 imagegif($image, $path);

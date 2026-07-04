@@ -68,7 +68,7 @@ class GenerateThumbnailsCommand extends Command
                 . '/' . $photo->getFilePath();
 
             if (is_file($path)) {
-                $this->imageOptimizer->process($path);
+                $this->imageOptimizer->generateThumbnail($path);
                 $done++;
             } else {
                 $missing++;

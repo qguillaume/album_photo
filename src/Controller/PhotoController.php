@@ -220,8 +220,8 @@ class PhotoController extends AbstractController
             $filename = uniqid() . '.' . $file->guessExtension();
             $file->move($albumDir, $filename);
 
-            // Compresser l'original et générer la miniature (grille d'album)
-            $imageOptimizer->process($albumDir . '/' . $filename);
+            // Générer la miniature (grille d'album) — l'original n'est jamais modifié
+            $imageOptimizer->generateThumbnail($albumDir . '/' . $filename);
 
             // Mettre à jour le chemin du fichier dans l'objet Photo
             $photo->setFilePath($filename);
@@ -323,8 +323,8 @@ class PhotoController extends AbstractController
                 $filename = uniqid() . '.' . $file->guessExtension();
                 $file->move($albumDir, $filename);
 
-                // Compresser l'original et générer la miniature (grille d'album)
-                $imageOptimizer->process($albumDir . '/' . $filename);
+                // Générer la miniature (grille d'album) — l'original n'est jamais modifié
+                $imageOptimizer->generateThumbnail($albumDir . '/' . $filename);
 
                 $photo->setFilePath($filename);
 
