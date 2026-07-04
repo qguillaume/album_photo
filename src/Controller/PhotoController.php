@@ -20,6 +20,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use App\Service\ImageOptimizer;
 
 class PhotoController extends AbstractController
 {
@@ -153,7 +154,7 @@ class PhotoController extends AbstractController
     /**
      * @Route("/api/photo", name="create_photo", methods={"POST"})
      */
-    public function createPhoto(Request $request, EntityManagerInterface $em, MailerInterface $mailer): JsonResponse
+    public function createPhoto(Request $request, EntityManagerInterface $em, MailerInterface $mailer, ImageOptimizer $imageOptimizer): JsonResponse
     {
         $user = $this->getUser();  // Récupérer l'utilisateur courant
 
@@ -206,18 +207,21 @@ class PhotoController extends AbstractController
 
             // Créer les répertoires si nécessaires
             if (!file_exists($userDir)) {
-                mkdir($userDir, 0777, true);
+                mkdir($userDir, 0755, true);
             }
             if (!file_exists($albumDir)) {
-                mkdir($albumDir, 0777, true);
+                mkdir($albumDir, 0755, true);
             }
             if (!file_exists($coverDir)) {
-                mkdir($coverDir, 0777, true);
+                mkdir($coverDir, 0755, true);
             }
 
             // Générer un nom unique pour l'image et déplacer le fichier
             $filename = uniqid() . '.' . $file->guessExtension();
             $file->move($albumDir, $filename);
+
+            // Compresser l'original et générer la miniature (grille d'album)
+            $imageOptimizer->process($albumDir . '/' . $filename);
 
             // Mettre à jour le chemin du fichier dans l'objet Photo
             $photo->setFilePath($filename);
@@ -256,7 +260,7 @@ class PhotoController extends AbstractController
     /**
      * @Route("photo/upload/{albumId}", name="photo_upload", defaults={"albumId"=null})
      */
-    public function upload(Request $request, EntityManagerInterface $em, $albumId = null): Response
+    public function upload(Request $request, EntityManagerInterface $em, ImageOptimizer $imageOptimizer, $albumId = null): Response
     {
         $photo = new Photo();
         $user = $this->getUser(); // Récupérer l'utilisateur connecté
@@ -306,18 +310,21 @@ class PhotoController extends AbstractController
 
                 // Créer les répertoires si nécessaires
                 if (!file_exists($userDir)) {
-                    mkdir($userDir, 0777, true);
+                    mkdir($userDir, 0755, true);
                 }
                 if (!file_exists($albumDir)) {
-                    mkdir($albumDir, 0777, true);
+                    mkdir($albumDir, 0755, true);
                 }
                 if (!file_exists($coverDir)) {
-                    mkdir($coverDir, 0777, true);
+                    mkdir($coverDir, 0755, true);
                 }
 
                 // Générer un nom unique pour l'image et déplacer le fichier
                 $filename = uniqid() . '.' . $file->guessExtension();
                 $file->move($albumDir, $filename);
+
+                // Compresser l'original et générer la miniature (grille d'album)
+                $imageOptimizer->process($albumDir . '/' . $filename);
 
                 $photo->setFilePath($filename);
 
@@ -384,6 +391,12 @@ class PhotoController extends AbstractController
             unlink($photoPath); // Supprimer le fichier
         } else {
             error_log("Le fichier n'existe pas à ce chemin : " . $photoPath);
+        }
+
+        // Supprimer également la miniature associée si elle existe
+        $thumbPath = $uploadDir . ImageOptimizer::THUMBNAIL_DIR . '/' . $photo->getFilePath();
+        if (file_exists($thumbPath)) {
+            unlink($thumbPath);
         }
 
         $em->remove($photo);

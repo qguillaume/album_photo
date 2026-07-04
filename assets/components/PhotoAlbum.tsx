@@ -59,6 +59,7 @@ const PhotoAlbum: React.FC<PhotoAlbumProps> = ({ photos }) => {
                             src={photo.url}
                             alt={photo.title}
                             className="photo-thumbnail"
+                            loading="lazy"
                         />
                         <div className="photo-info">
                             <h4>{photo.title}</h4>
