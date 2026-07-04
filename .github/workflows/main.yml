@@ -1,4 +1,4 @@
-name: album_photo ci-cd
+name: CI
 
 on:
     push:
@@ -7,19 +7,45 @@ on:
         branches: ["main"]
 
 jobs:
-    job1:
+    build-and-test:
+        name: Build & Test
         runs-on: ubuntu-latest
+
         steps:
-            - name: checkout@v4
+            - name: Checkout
               uses: actions/checkout@v4
 
-            - run: echo "coucou Guillaume in job1"
+            - name: Setup PHP 8.2
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: "8.2"
+                  extensions: gd, intl, pdo_mysql, zip, mbstring, ctype, iconv
+                  tools: composer:v2
+                  coverage: none
 
-    job2:
-        needs: [job1]
-        runs-on: ubuntu-latest
-        steps:
-            - name: checkout@v4
-              uses: actions/checkout@v4
+            - name: Install PHP dependencies
+              run: composer install --no-interaction --no-progress --prefer-dist --ignore-platform-reqs --no-scripts
 
-            - run: echo "coucou Guillaume in job2"
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20"
+
+            - name: Install JS dependencies and build assets
+              run: |
+                  npm ci
+                  npm run build
+
+            - name: Prepare test environment
+              run: |
+                  echo "APP_ENV=test" > .env
+                  echo "APP_SECRET=ci_dummy_secret_for_tests" >> .env
+                  echo "DATABASE_URL=mysql://root:root@127.0.0.1:3306/app_test?serverVersion=8.0" >> .env
+
+            - name: Run tests (PHPUnit)
+              run: php bin/phpunit
+
+            - name: Static analysis (PHPStan)
+              run: |
+                  curl -sSL -o phpstan.phar https://github.com/phpstan/phpstan/releases/latest/download/phpstan.phar
+                  php phpstan.phar analyse --no-progress

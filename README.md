@@ -4,8 +4,11 @@ A full-stack web application combining a personal **portfolio** with a multi-use
 
 🔗 **Live demo:** [guillaume-quesnel.com](https://guillaume-quesnel.com)
 
-<!-- TODO: add a screenshot or GIF here — it is the single most impactful thing on this page.
-     e.g. ![Home page](docs/screenshot-home.png) -->
+![CI](https://github.com/qguillaume/album_photo/actions/workflows/main.yml/badge.svg)
+
+![Home page](docs/screenshot-home.png)
+
+> _Add your screenshot at `docs/screenshot-home.png` (a capture of the home page or the album gallery works best). A short GIF of the gallery hover effect also works — name it `docs/demo.gif` and reference it here._
 
 ---
 

@@ -1,4 +1,3 @@
-
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -11,10 +10,7 @@
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
-/public/images/
 /public/build/
-/public/uploads/photos
-/public/uploads/albums
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
@@ -24,46 +20,29 @@ yarn-error.log
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 
-###> phpunit/phpunit ###
-/phpunit.xml
-.phpunit.result.cache
-###< phpunit/phpunit ###
+# --- Contenu utilisateur (uploads) : ne pas versionner ---
+/public/uploads/photos
+/public/uploads/albums
 
+# --- Fichiers d'environnement : contiennent des secrets, NE JAMAIS versionner ---
 /.env
+/.env.local
 /.env.dev
 /.env.test
 /.env.prod
 /.env-old
 
-!/public/images/fr.png
-!/public/images/en.png
-!/public/images/logo_github.png
-!/public/images/logo_instagram.png
-!/public/images/logo_linkedin.png
-!/public/images/default-photo.png
-!/public/images/folder-icon.png
-
-Dockerfile
-
+# --- Sauvegardes / logs locaux ---
 logs/
-var/
-node_modules/
-tests/
-migrations/
-
-docker-compose.yml
-nginx.conf
-php.ini
-
-package-lock.json
-composer.lock
+*.bak
 nginx.conf.bakk
-compose.override.yaml
-composer.json
-package.json
-webpack.config.js
-phpunit.xml.dist
-symfony.lock
-tsconfig.json
 compose.yaml.bak
-config/packages/security.yaml
+compose.override.yaml
+
+# =========================================================================
+# NOTE : les fichiers ci-dessous (composer.json, package.json, webpack.config.js,
+# phpunit.xml.dist, tsconfig.json, symfony.lock, tests/, migrations/, Dockerfile,
+# docker-compose.yml, nginx.conf, php.ini, config/packages/security.yaml)
+# NE sont PLUS ignorés : ils sont nécessaires pour cloner, construire et tester
+# le projet. Ils ne contiennent aucun secret (les secrets vivent dans .env*).
+# =========================================================================
