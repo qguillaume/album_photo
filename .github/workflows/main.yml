@@ -42,6 +42,9 @@ jobs:
                   echo "KERNEL_CLASS=App\\Kernel" >> .env
                   echo "APP_SECRET=ci_dummy_secret_for_tests" >> .env
                   echo "DATABASE_URL=mysql://root:root@127.0.0.1:3306/app_test?serverVersion=8.0" >> .env
+                  echo "PUBLIC_DIR=/public" >> .env
+                  echo "REACT_APP_API_URL=http://localhost" >> .env
+                  echo "MAILER_DSN=null://null" >> .env
 
             - name: Run tests (PHPUnit)
               run: php bin/phpunit
