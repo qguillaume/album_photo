@@ -28,26 +28,44 @@ class ImageOptimizer
      * L'original n'est jamais modifié : on le lit seulement en lecture.
      *
      * @param string $originalPath Chemin absolu du fichier original (préservé).
+     * @return bool true si une miniature a été écrite, false si l'image a été
+     *              ignorée sans risque (introuvable, illisible, trop volumineuse
+     *              pour la mémoire disponible, ou dossier non inscriptible).
+     * @throws \RuntimeException Uniquement en cas d'erreur inattendue à surfacer.
      */
-    public function generateThumbnail(string $originalPath): void
+    public function generateThumbnail(string $originalPath): bool
     {
         if (!is_file($originalPath)) {
-            return;
+            return false;
+        }
+
+        // Vérif préalable SANS charger l'image (bon marché) : dimensions + mémoire.
+        $info = @getimagesize($originalPath);
+        if ($info === false) {
+            return false; // Pas une image exploitable : on ignore.
+        }
+        [$width, $height] = $info;
+
+        // Garde-fou mémoire : si décoder l'image risque de dépasser la limite PHP,
+        // on l'ignore (la grille retombera sur l'original via le fallback Twig)
+        // plutôt que de provoquer une "Internal Server Error".
+        if (!$this->fitsInMemory((int) $width, (int) $height)) {
+            return false;
+        }
+
+        // Prépare le dossier des miniatures.
+        $thumbDir = \dirname($originalPath) . '/' . self::THUMBNAIL_DIR;
+        if (!is_dir($thumbDir) && !@mkdir($thumbDir, 0755, true) && !is_dir($thumbDir)) {
+            throw new \RuntimeException("Impossible de créer le dossier des miniatures : $thumbDir (droits d'écriture ?)");
         }
 
         // Lecture seule de l'original — aucune écriture ne sera faite dessus.
         $image = @imagecreatefromstring((string) file_get_contents($originalPath));
         if ($image === false) {
-            return; // Non décodable par GD : on ne touche à rien.
+            return false; // Non décodable par GD : on ne touche à rien.
         }
 
         $type = $this->detectType($originalPath);
-
-        $thumbDir = \dirname($originalPath) . '/' . self::THUMBNAIL_DIR;
-        if (!is_dir($thumbDir)) {
-            mkdir($thumbDir, 0755, true);
-        }
-
         $thumbPath = $thumbDir . '/' . basename($originalPath);
         $thumb = $this->resizeDown($image, self::THUMBNAIL_MAX);
         $this->save($thumb, $thumbPath, $type);
@@ -56,6 +74,50 @@ class ImageOptimizer
             imagedestroy($thumb);
         }
         imagedestroy($image);
+
+        return true;
+    }
+
+    /**
+     * Estime si le décodage d'une image de $width x $height tient dans la
+     * mémoire PHP disponible, avec une marge de sécurité.
+     */
+    private function fitsInMemory(int $width, int $height): bool
+    {
+        $limit = $this->memoryLimitBytes();
+        if ($limit <= 0) {
+            return true; // Pas de limite (memory_limit = -1).
+        }
+
+        // ~4 octets/pixel pour l'image truecolor + la copie redimensionnée + marge.
+        $needed = (int) ($width * $height * 4 * 2.2);
+
+        return (memory_get_usage(true) + $needed) < $limit;
+    }
+
+    /**
+     * Convertit la valeur de memory_limit (ex "256M") en octets. 0 = illimité.
+     */
+    private function memoryLimitBytes(): int
+    {
+        $raw = trim((string) ini_get('memory_limit'));
+        if ($raw === '' || $raw === '-1') {
+            return 0;
+        }
+
+        $num = (int) $raw;
+        switch (strtolower(substr($raw, -1))) {
+            case 'g':
+                $num *= 1024;
+                // no break
+            case 'm':
+                $num *= 1024;
+                // no break
+            case 'k':
+                $num *= 1024;
+        }
+
+        return $num;
     }
 
     /**
