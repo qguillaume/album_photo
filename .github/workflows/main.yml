@@ -45,6 +45,7 @@ jobs:
                   echo "PUBLIC_DIR=/public" >> .env
                   echo "REACT_APP_API_URL=http://localhost" >> .env
                   echo "MAILER_DSN=null://null" >> .env
+                  echo "SYMFONY_DEPRECATIONS_HELPER=disabled" >> .env
 
             - name: Run tests (PHPUnit)
               run: php bin/phpunit
