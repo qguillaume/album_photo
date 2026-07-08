@@ -21,6 +21,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use App\Service\ImageOptimizer;
+use App\Service\AlbumVisibilityService;
 
 class PhotoController extends AbstractController
 {
@@ -36,57 +37,10 @@ class PhotoController extends AbstractController
     /**
      * @Route("/photos", name="photo_albums")
      */
-    public function albums(EntityManagerInterface $em): Response
+    public function albums(AlbumVisibilityService $albumVisibility): Response
     {
-        $user = $this->getUser();
-        $albumsQueryBuilder = $em->getRepository(Album::class)->createQueryBuilder('a');
-
-        if ($user) {
-            // Superadmin voit tous les albums
-            if ($this->isGranted('ROLE_SUPER_ADMIN')) {
-                // Pas de filtre
-            } elseif ($this->isGranted('ROLE_ADMIN')) {
-                // Admin voit les albums visibles et approuvés
-                $albumsQueryBuilder
-                    ->where('a.isVisible = :visible AND a.isApproved = :approved')
-                    ->setParameter('visible', true)
-                    ->setParameter('approved', true);
-
-                // Admin voit ses propres albums
-                $albumsQueryBuilder
-                    ->orWhere('a.creator = :user')
-                    ->setParameter('user', $user);
-
-                // Admin voit les albums des users qui ont UNIQUEMENT le rôle ROLE_USER
-                $albumsQueryBuilder
-                    ->orWhere('a.creator IN (
-                    SELECT u.id FROM App\Entity\User u 
-                    WHERE u.roles LIKE :roleUser 
-                    AND u.roles NOT LIKE :roleAdmin
-                    AND u.roles NOT LIKE :roleSuperAdmin
-                )')
-                    ->setParameter('roleUser', '%"ROLE_USER"%')
-                    ->setParameter('roleAdmin', '%"ROLE_ADMIN"%')
-                    ->setParameter('roleSuperAdmin', '%"ROLE_SUPER_ADMIN"%');
-            } else {
-                // Utilisateur simple : voit uniquement les albums visibles et approuvés
-                $albumsQueryBuilder
-                    ->where('a.isVisible = :visible AND a.isApproved = :approved')
-                    ->setParameter('visible', true)
-                    ->setParameter('approved', true);
-
-                // Il voit aussi ses propres albums, qu'ils soient visibles ou non
-                $albumsQueryBuilder
-                    ->orWhere('a.creator = :user')
-                    ->setParameter('user', $user);
-            }
-        }
-
-        // Exécuter la requête
-        $albums = $albumsQueryBuilder->getQuery()->getResult();
-
         return $this->render('photo/albums.html.twig', [
-            'albums' => $albums,
+            'albums' => $albumVisibility->getVisibleAlbumsFor($this->getUser()),
         ]);
     }
 
@@ -94,7 +48,7 @@ class PhotoController extends AbstractController
     /**
      * @Route("/album/{id}", name="photos_by_album", requirements={"id"="\d+"})
      */
-    public function photosByAlbum(EntityManagerInterface $em, int $id): Response
+    public function photosByAlbum(EntityManagerInterface $em, AlbumVisibilityService $albumVisibility, int $id): Response
     {
         // Récupérer un album spécifique par son ID
         $album = $em->getRepository(Album::class)->find($id);
@@ -105,49 +59,14 @@ class PhotoController extends AbstractController
 
         $user = $this->getUser();
 
-        // Vérifier si l'utilisateur est le créateur de l'album
-        $isOwner = $album->getCreator() === $user;
-
-        $roles = $user ? $user->getRoles() : [];
-        $albumOwnerRoles = $album->getCreator()->getRoles();
-
-        // Vérifier si l'utilisateur a le droit d'accéder à l'album
-        if (
-            (!$album->getIsVisible() || !$album->getIsApproved())
-            && !$isOwner
-            && !in_array('ROLE_SUPER_ADMIN', $roles)
-            && !(in_array('ROLE_ADMIN', $roles) && $albumOwnerRoles === ['ROLE_USER'])
-        ) {
+        if (!$albumVisibility->canAccessAlbum($album, $user)) {
             throw new AccessDeniedException('Vous n\'avez pas l\'autorisation d\'accéder à cet album');
         }
 
-        // Filtrer les photos en fonction des rôles
-        $photos = array_filter($album->getPhotos()->toArray(), function ($photo) use ($user, $roles, $albumOwnerRoles) {
-            // Si l'utilisateur est un superadmin, toutes les photos sont visibles
-            if (in_array('ROLE_SUPER_ADMIN', $roles)) {
-                return true;
-            }
-
-            // Si l'utilisateur est un admin et que l'album appartient à un utilisateur avec le rôle 'ROLE_USER',
-            // alors l'admin peut voir toutes les photos de cet album (même celles non visibles ou non approuvées).
-            if (in_array('ROLE_ADMIN', $roles) && in_array('ROLE_USER', $albumOwnerRoles)) {
-                return true;
-            }
-
-            // Le propriétaire peut voir ses propres photos, même non visibles ou non approuvées
-            if ($photo->getAlbum()->getCreator() === $user) {
-                return true;
-            }
-
-            // Si l'utilisateur n'est pas le propriétaire, il ne peut voir que les photos visibles et approuvées
-            return $photo->getIsVisible() && $photo->getIsApproved();
-        });
-
-        // Retourner la vue Twig avec les photos de l'album
         return $this->render('photo/photos_by_album.html.twig', [
             'album' => $album,
-            'photos' => $photos,
-            'is_owner' => $isOwner,
+            'photos' => $albumVisibility->getVisiblePhotosFor($album, $user),
+            'is_owner' => $album->getCreator() === $user,
         ]);
     }
 
