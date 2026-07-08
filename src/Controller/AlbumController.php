@@ -23,8 +23,8 @@ use Symfony\Component\Mime\Email;
 
 class AlbumController extends AbstractController
 {
-    private $albumRepository;
-    private $security;
+    private AlbumRepository $albumRepository;
+    private Security $security;
 
     // Ajout du service de sécurité pour récupérer l'utilisateur connecté
     public function __construct(AlbumRepository $albumRepository, Security $security)

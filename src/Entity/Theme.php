@@ -16,7 +16,7 @@ class Theme
     /**
      * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private $createdAt;
+    private \DateTime $createdAt;
 
     public function __construct()
     {
@@ -29,14 +29,14 @@ class Theme
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     // Nom du thème
     /**
      * @ORM\Column(type="string", length=30)
      * @Assert\Length(max=30, maxMessage="Le nom du thème ne peut pas dépasser 30 caractères.")
      */
-    private $name;
+    private ?string $name = null;
 
     // Getters et setters
     public function getId(): ?int

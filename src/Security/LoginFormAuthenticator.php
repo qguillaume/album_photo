@@ -21,10 +21,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LoginFormAuthenticator extends AbstractAuthenticator implements AuthenticationEntryPointInterface
 {
-    private $urlGenerator;
-    private $entityManager;
-    private $requestStack;
-    private $translator;
+    private UrlGeneratorInterface $urlGenerator;
+    private EntityManagerInterface $entityManager;
+    private RequestStack $requestStack;
+    private TranslatorInterface $translator;
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,

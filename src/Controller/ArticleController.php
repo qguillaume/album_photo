@@ -18,9 +18,9 @@ use Symfony\Component\Security\Core\Security;
 
 class ArticleController extends AbstractController
 {
-    private $articleRepository;
-    private $entityManager;
-    private $security;
+    private ArticleRepository $articleRepository;
+    private EntityManagerInterface $entityManager;
+    private Security $security;
 
     public function __construct(ArticleRepository $articleRepository, EntityManagerInterface $entityManager, Security $security)
     {

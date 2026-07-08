@@ -10,5 +10,5 @@ use Symfony\Component\Validator\Constraint;
  */
 class CaptchaValid extends Constraint
 {
-    public $message = 'Le captcha est incorrect.';
+    public string $message = 'Le captcha est incorrect.';
 }

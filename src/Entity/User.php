@@ -15,7 +15,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private $createdAt;
+    private \DateTime $createdAt;
 
     public function __construct()
     {
@@ -29,7 +29,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=30, unique=true)
@@ -39,7 +39,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *     maxMessage="Le nom d'utilisateur ne doit pas dépasser {{ limit }} caractères."
      * )
      */
-    private $username;
+    private string $username;
 
     /**
      * @ORM\Column(type="string")
@@ -51,7 +51,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *     maxMessage="Le mot de passe ne doit pas dépasser {{ limit }} caractères."
      * )
      */
-    private $password;
+    private string $password;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
@@ -69,12 +69,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *     groups={"registration"}
      * )
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isBanned = false; // Nouvelle propriété ajoutée pour l'état "banni"
+    private bool $isBanned = false; // Nouvelle propriété ajoutée pour l'état "banni"
 
     public function getId(): ?int
     {

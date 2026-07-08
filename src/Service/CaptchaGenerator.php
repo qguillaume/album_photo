@@ -5,7 +5,7 @@ namespace App\Service;
 
 class CaptchaGenerator
 {
-    private $publicDir;
+    private string $publicDir;
 
     public function __construct(string $publicDir)
     {

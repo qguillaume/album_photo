@@ -20,8 +20,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SecurityController extends AbstractController
 {
-    private $passwordHasher;
-    private $captchaGenerator;
+    private UserPasswordHasherInterface $passwordHasher;
+    private CaptchaGenerator $captchaGenerator;
 
     public function __construct(UserPasswordHasherInterface $passwordHasher, CaptchaGenerator $captchaGenerator)
     {

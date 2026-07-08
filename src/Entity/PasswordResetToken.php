@@ -15,22 +15,22 @@ class PasswordResetToken
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", unique=true)
      */
-    private $token;
+    private string $token;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $expiresAt;
+    private \DateTime $expiresAt;
 
     /**
      * @ORM\Column(type="string")
      */
-    private $email;
+    private string $email;
 
     public function __construct(string $email)
     {

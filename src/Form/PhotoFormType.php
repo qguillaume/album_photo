@@ -18,7 +18,7 @@ use Doctrine\ORM\EntityRepository;
 
 class PhotoFormType extends AbstractType
 {
-    private $albumRepository;
+    private AlbumRepository $albumRepository;
 
     public function __construct(AlbumRepository $albumRepository)
     {

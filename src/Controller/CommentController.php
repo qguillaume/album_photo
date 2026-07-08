@@ -18,8 +18,8 @@ use Symfony\Component\Mime\Email;
 class CommentController extends AbstractController
 {
 
-    private $commentRepository;
-    private $entityManager;
+    private CommentRepository $commentRepository;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(CommentRepository $commentRepository, EntityManagerInterface $entityManager)
     {

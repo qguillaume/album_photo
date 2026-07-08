@@ -34,7 +34,7 @@ class Album
     /**
      * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private $createdAt;
+    private \DateTime $createdAt;
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
@@ -97,7 +97,7 @@ class Album
     /**
      * @ORM\Column(type="integer", options={"default": 0})
      */
-    private $photoCount = 0;
+    private int $photoCount = 0;
 
     public function getPhotoCount(): ?int
     {

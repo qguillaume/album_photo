@@ -25,8 +25,8 @@ use App\Service\AlbumVisibilityService;
 
 class PhotoController extends AbstractController
 {
-    private $photoRepository;
-    private $projectDir;
+    private PhotoRepository $photoRepository;
+    private string $projectDir;
 
     public function __construct(PhotoRepository $photoRepository, KernelInterface $kernel)
     {

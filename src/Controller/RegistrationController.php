@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\Security;
 
 class RegistrationController extends AbstractController
 {
-    private $passwordHasher;
+    private UserPasswordHasherInterface $passwordHasher;
 
     // Injection du service de hachage du mot de passe
     public function __construct(UserPasswordHasherInterface $passwordHasher)

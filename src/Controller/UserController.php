@@ -15,7 +15,7 @@ use Psr\Log\LoggerInterface;
 
 class UserController extends AbstractController
 {
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
     private LoggerInterface $logger;
 
     public function __construct(EntityManagerInterface $entityManager, LoggerInterface $logger)

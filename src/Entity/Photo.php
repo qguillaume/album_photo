@@ -24,25 +24,25 @@ class Photo
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=30)
      * @Assert\NotBlank
      * @Assert\Length(max=30, maxMessage="Le titre ne peut pas dépasser 30 caractères.")
      */
-    private $title;
+    private ?string $title = null;
 
     /**
      * @var File|null
      * @Assert\File(mimeTypes={"image/jpeg", "image/png", "image/gif"})
      */
-    private $file;
+    private ?File $file = null;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $filePath;
+    private ?string $filePath = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Album", inversedBy="photos")
@@ -63,7 +63,7 @@ class Photo
     /**
      * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    private $createdAt;
+    private \DateTime $createdAt;
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})

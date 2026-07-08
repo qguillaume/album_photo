@@ -16,24 +16,24 @@ class Like
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user;
+    private ?User $user = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Photo::class, inversedBy="likes")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $photo;
+    private ?Photo $photo = null;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $createdAt;
+    private ?\DateTimeInterface $createdAt = null;
 
     public function getId(): ?int
     {

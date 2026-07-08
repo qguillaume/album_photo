@@ -9,7 +9,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TranslationController
 {
-    private $translator;
+    private TranslatorInterface $translator;
 
     // Injection du service TranslatorInterface dans le contrôleur
     public function __construct(TranslatorInterface $translator)
