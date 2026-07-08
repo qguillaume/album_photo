@@ -16,7 +16,6 @@ use App\Repository\AlbumRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Security;
 use App\Service\AlbumVisibilityService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -370,13 +369,17 @@ class AlbumController extends AbstractController
     }
 
     #[Route('/album/{id}/visibility', name: 'update_album_visibility', methods: ['POST'])]
-    #[ParamConverter('album', class: Album::class)]
     public function updateVisibility(
-        Album $album,
+        int $id,
         AlbumVisibilityService $albumVisibilityService,
         EntityManagerInterface $entityManager,
         Request $request
     ): JsonResponse {
+        $album = $entityManager->getRepository(Album::class)->find($id);
+        if ($album === null) {
+            throw $this->createNotFoundException('Album introuvable.');
+        }
+
         $user = $this->getUser();
 
         // Vérifie si l'utilisateur est bien le créateur de l'album ou admin
