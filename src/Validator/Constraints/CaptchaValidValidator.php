@@ -5,15 +5,12 @@ namespace App\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class CaptchaValidValidator extends ConstraintValidator
 {
-    private $session;
-
-    public function __construct(SessionInterface $session)
+    public function __construct(private RequestStack $requestStack)
     {
-        $this->session = $session;
     }
 
     public function validate($value, Constraint $constraint)
@@ -22,7 +19,7 @@ class CaptchaValidValidator extends ConstraintValidator
             return;
         }
 
-        $storedCaptcha = $this->session->get('captcha');
+        $storedCaptcha = $this->requestStack->getSession()->get('captcha');
 
         if ($value !== $storedCaptcha) {
             $this->context->buildViolation($constraint->message)

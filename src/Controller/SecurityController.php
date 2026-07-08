@@ -7,7 +7,6 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -34,7 +33,6 @@ class SecurityController extends AbstractController
     public function login(
         AuthenticationUtils $authenticationUtils,
         Request $request,
-        SessionInterface $session,
         UserAuthenticatorInterface $userAuthenticator,
         LoginFormAuthenticator $authenticator,
         TranslatorInterface $translator
@@ -51,6 +49,7 @@ class SecurityController extends AbstractController
         $user->setUsername($lastUsername);
 
         // Génération du Captcha uniquement si le formulaire n'est pas soumis
+        $session = $request->getSession();
         if (!$request->isMethod('POST')) {
             $captchaText = $this->captchaGenerator->generateCaptchaText();
             $session->set('captcha', $captchaText); // Stocke le captcha généré dans la session

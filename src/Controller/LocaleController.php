@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -12,10 +11,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class LocaleController
 {
     #[Route('/change_locale', name: 'change_locale')]
-    public function changeLocale(Request $request, SessionInterface $session): RedirectResponse
+    public function changeLocale(Request $request): RedirectResponse
     {
         $locale = $request->query->get('locale', 'en');
-        $session->set('_locale', $locale);
+        $request->getSession()->set('_locale', $locale);
 
         // Récupère l'URL de la page précédente
         $referer = $request->headers->get('referer');

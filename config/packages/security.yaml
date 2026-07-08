@@ -41,11 +41,11 @@ security:
     # Contrôles d'accès pour les utilisateurs
     access_control:
         # Les utilisateurs non authentifiés peuvent accéder à ces pages
-        - { path: ^/register$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/logout$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/photos$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register$, roles: PUBLIC_ACCESS }
+        - { path: ^/login$, roles: PUBLIC_ACCESS }
+        - { path: ^/logout$, roles: PUBLIC_ACCESS }
+        - { path: ^/$, roles: PUBLIC_ACCESS }
+        - { path: ^/photos$, roles: PUBLIC_ACCESS }
 
         # Les utilisateurs connectés seulement peuvent accéder à ces pages suivantes :
         - { path: ^/reference$, roles: ROLE_SUPER_ADMIN }

@@ -15,7 +15,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use App\Entity\User;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -23,18 +23,18 @@ class LoginFormAuthenticator extends AbstractAuthenticator implements Authentica
 {
     private $urlGenerator;
     private $entityManager;
-    private $session;
+    private $requestStack;
     private $translator;
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
         EntityManagerInterface $entityManager,
-        SessionInterface $session,
+        RequestStack $requestStack,
         TranslatorInterface $translator
     ) {
         $this->urlGenerator = $urlGenerator;
         $this->entityManager = $entityManager;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->translator = $translator;
     }
 
@@ -52,7 +52,7 @@ class LoginFormAuthenticator extends AbstractAuthenticator implements Authentica
         $submittedCaptcha = $formData['captcha'] ?? null;
 
         // Récupérer le captcha stocké en session
-        $storedCaptcha = $this->session->get('captcha');
+        $storedCaptcha = $this->requestStack->getSession()->get('captcha');
 
         // Valider le captcha
         if (strtoupper($submittedCaptcha) !== strtoupper($storedCaptcha)) {

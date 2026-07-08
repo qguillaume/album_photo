@@ -59,7 +59,7 @@ services:
         arguments:
             $urlGenerator: '@router.default'
             $entityManager: '@doctrine.orm.entity_manager'
-            $session: '@session'
+            $requestStack: '@request_stack'
 
     App\Service\CaptchaGenerator:
         arguments:

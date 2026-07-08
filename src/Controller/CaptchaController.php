@@ -5,26 +5,26 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\CaptchaGenerator;
 
 class CaptchaController extends AbstractController
 {
     #[Route('/captcha/generate', name: 'captcha_generate')]
-    public function generateCaptcha(SessionInterface $session, CaptchaGenerator $captchaGenerator)
+    public function generateCaptcha(RequestStack $requestStack, CaptchaGenerator $captchaGenerator)
     {
         $captchaText = $captchaGenerator->generateCaptchaText();
-        $session->set('captcha', $captchaText);
+        $requestStack->getSession()->set('captcha', $captchaText);
 
         // Retourner une réponse JSON ou une image, selon votre implémentation
         return $this->json(['captcha' => $captchaText]);
     }
 
     #[Route('/captcha/image', name: 'captcha_image')]
-    public function captchaImage(SessionInterface $session, CaptchaGenerator $captchaGenerator): Response
+    public function captchaImage(RequestStack $requestStack, CaptchaGenerator $captchaGenerator): Response
     {
-        $captchaText = $session->get('captcha', '');
+        $captchaText = $requestStack->getSession()->get('captcha', '');
 
         if (empty($captchaText)) {
             throw $this->createNotFoundException('Captcha non trouvé.');
