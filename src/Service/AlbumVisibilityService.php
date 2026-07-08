@@ -51,10 +51,13 @@ class AlbumVisibilityService
     {
         $albums = $this->entityManager->getRepository(Album::class)->findAll();
 
-        // Comportement historique conservé : un visiteur non authentifié voit
-        // tous les albums. (Voir la note de sécurité laissée à Guillaume.)
+        // Visiteur non authentifié : uniquement les albums publics
+        // (visibles ET approuvés).
         if ($user === null) {
-            return $albums;
+            return array_values(array_filter(
+                $albums,
+                fn (Album $album): bool => $album->getIsVisible() && $album->getIsApproved()
+            ));
         }
 
         return array_values(array_filter(
