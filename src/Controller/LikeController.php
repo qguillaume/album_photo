@@ -12,9 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class LikeController extends AbstractController
 {
-    /**
-     * @Route("/photo/{id}/like", name="photo_like", methods={"POST"})
-     */
+    #[Route('/photo/{id}/like', name: 'photo_like', methods: ['POST'])]
     public function like(int $id, PhotoRepository $photoRepository, EntityManagerInterface $entityManager): JsonResponse
     {
         $photo = $photoRepository->find($id);

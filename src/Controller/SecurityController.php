@@ -30,9 +30,7 @@ class SecurityController extends AbstractController
         $this->captchaGenerator = $captchaGenerator;
     }
 
-    /**
-     * @Route("/login", name="login")
-     */
+    #[Route('/login', name: 'login')]
     public function login(
         AuthenticationUtils $authenticationUtils,
         Request $request,
@@ -109,9 +107,7 @@ class SecurityController extends AbstractController
     }
 
     // Endpoint pour tester un mot de passe avec son hashage.
-    /**
-     * @Route("/test-password", name="test_password")
-     */
+    #[Route('/test-password', name: 'test_password')]
     public function testPassword(Request $request): Response
     {
         // Récupère l'utilisateur avec son nom d'utilisateur
@@ -134,17 +130,13 @@ class SecurityController extends AbstractController
         return new Response('Utilisateur non trouvé.', Response::HTTP_NOT_FOUND);
     }
 
-    /**
-     * @Route("/logout", name="logout")
-     */
+    #[Route('/logout', name: 'logout')]
     public function logout(): void
     {
         // Symfony se charge de la déconnexion automatiquement.
     }
 
-    /**
-     * @Route("/generate-password", name="generate_password")
-     */
+    #[Route('/generate-password', name: 'generate_password')]
     public function generatePassword(): Response
     {
         // Générer un mot de passe avec bcrypt (12 rounds)
@@ -154,9 +146,7 @@ class SecurityController extends AbstractController
         return new Response('Mot de passe haché : ' . $hashedPassword);
     }
 
-    /**
-     * @Route("/access-denied", name="access_denied_redirect")
-     */
+    #[Route('/access-denied', name: 'access_denied_redirect')]
     public function accessDenied(): RedirectResponse
     {
         return $this->redirectToRoute('portfolio_home');

@@ -23,9 +23,7 @@ class ThemeController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @Route("/api/theme", name="api_theme_create", methods={"POST"})
-     */
+    #[Route('/api/theme', name: 'api_theme_create', methods: ['POST'])]
     public function apiCreate(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -43,9 +41,7 @@ class ThemeController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/theme/create", name="theme_create")
-     */
+    #[Route('/theme/create', name: 'theme_create')]
     public function create(Request $request): Response
     {
         $theme = new Theme();
@@ -101,9 +97,7 @@ class ThemeController extends AbstractController
     //     ]);
     // }
 
-    /**
-     * @Route("/theme/{id}/delete", name="theme_delete", methods="POST")
-     */
+    #[Route('/theme/{id}/delete', name: 'theme_delete', methods: ['POST'])]
     public function delete(Request $request, Theme $theme): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
@@ -112,18 +106,14 @@ class ThemeController extends AbstractController
         return $this->redirectToRoute('theme_index');
     }
 
-    /**
-     * @Route("/themes_list", name="themes_list", methods={"GET"})
-     */
+    #[Route('/themes_list', name: 'themes_list', methods: ['GET'])]
     public function getThemes()
     {
         $themes = $this->entityManager->getRepository(Theme::class)->findAll();
         return $this->json($themes);
     }
 
-    /**
-     * @Route("/theme/{id}/edit_dashboard", name="theme_edit_dashboard", methods={"PUT"})
-     */
+    #[Route('/theme/{id}/edit_dashboard', name: 'theme_edit_dashboard', methods: ['PUT'])]
     public function editFromDashboard(Request $request, EntityManagerInterface $em, int $id): JsonResponse
     {
         $comment = $em->getRepository(Theme::class)->find($id);

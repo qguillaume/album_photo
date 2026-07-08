@@ -34,9 +34,7 @@ class PhotoController extends AbstractController
         $this->projectDir = $kernel->getProjectDir();
     }
 
-    /**
-     * @Route("/photos", name="photo_albums")
-     */
+    #[Route('/photos', name: 'photo_albums')]
     public function albums(AlbumVisibilityService $albumVisibility): Response
     {
         return $this->render('photo/albums.html.twig', [
@@ -45,9 +43,7 @@ class PhotoController extends AbstractController
     }
 
     // Afficher les photos d'un album
-    /**
-     * @Route("/album/{id}", name="photos_by_album", requirements={"id"="\d+"})
-     */
+    #[Route('/album/{id}', name: 'photos_by_album', requirements: ['id' => '\d+'])]
     public function photosByAlbum(EntityManagerInterface $em, AlbumVisibilityService $albumVisibility, int $id): Response
     {
         // Récupérer un album spécifique par son ID
@@ -70,9 +66,7 @@ class PhotoController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/api/photo", name="create_photo", methods={"POST"})
-     */
+    #[Route('/api/photo', name: 'create_photo', methods: ['POST'])]
     public function createPhoto(Request $request, EntityManagerInterface $em, MailerInterface $mailer, ImageOptimizer $imageOptimizer): JsonResponse
     {
         $user = $this->getUser();  // Récupérer l'utilisateur courant
@@ -176,9 +170,7 @@ class PhotoController extends AbstractController
         return new JsonResponse(['message' => 'Photo created successfully!'], Response::HTTP_OK);
     }
 
-    /**
-     * @Route("photo/upload/{albumId}", name="photo_upload", defaults={"albumId"=null})
-     */
+    #[Route('photo/upload/{albumId}', name: 'photo_upload', defaults: ['albumId' => null])]
     public function upload(Request $request, EntityManagerInterface $em, ImageOptimizer $imageOptimizer, $albumId = null): Response
     {
         $photo = new Photo();
@@ -270,9 +262,7 @@ class PhotoController extends AbstractController
     }
 
 
-    /**
-     * @Route("/photo/rename/{id}", name="rename_photo", requirements={"id"="\d+"})
-     */
+    #[Route('/photo/rename/{id}', name: 'rename_photo', requirements: ['id' => '\d+'])]
     public function renamePhoto(Request $request, EntityManagerInterface $em, int $id): JsonResponse
     {
         $photo = $em->getRepository(Photo::class)->find($id);
@@ -288,9 +278,7 @@ class PhotoController extends AbstractController
         return new JsonResponse(['message' => 'Photo renommée avec succès']);
     }
 
-    /**
-     * @Route("/photo/delete/{id}", name="delete_photo", requirements={"id"="\d+"})
-     */
+    #[Route('/photo/delete/{id}', name: 'delete_photo', requirements: ['id' => '\d+'])]
     public function deletePhoto(KernelInterface $kernel, EntityManagerInterface $em, int $id): JsonResponse
     {
         $photo = $em->getRepository(Photo::class)->find($id);
@@ -359,9 +347,7 @@ class PhotoController extends AbstractController
         return new JsonResponse(['likes' => $photo->getLikesCount()]);
     }
 
-    /**
-     * @Route("/photos_list", name="photos_list", methods={"GET"})
-     */
+    #[Route('/photos_list', name: 'photos_list', methods: ['GET'])]
     public function list(PhotoRepository $photoRepository): JsonResponse
     {
         // Récupérer toutes les photos
@@ -386,9 +372,7 @@ class PhotoController extends AbstractController
         return new JsonResponse($photosData);
     }
 
-    /**
-     * @Route("/photo/{id}", name="photo_show", requirements={"id"="\d+"}, methods={"GET", "POST"})
-     */
+    #[Route('/photo/{id}', name: 'photo_show', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function show(int $id, Request $request, EntityManagerInterface $em): Response
     {
         $photo = $em->getRepository(Photo::class)->find($id);
@@ -450,9 +434,7 @@ class PhotoController extends AbstractController
     }
 
 
-    /**
-     * @Route("/photo/{id}/comment", name="comment_add", methods={"POST"})
-     */
+    #[Route('/photo/{id}/comment', name: 'comment_add', methods: ['POST'])]
     public function addComment(Request $request, int $id, EntityManagerInterface $em): JsonResponse
     {
         // Récupérer l'utilisateur connecté
@@ -490,9 +472,7 @@ class PhotoController extends AbstractController
         return new JsonResponse(['success' => true, 'comment' => $comment], 201);
     }
 
-    /**
-     * @Route("/photo/{id}/visibility", name="photo_visibility", methods={"POST"})
-     */
+    #[Route('/photo/{id}/visibility', name: 'photo_visibility', methods: ['POST'])]
     public function updateVisibility(int $id, Request $request, EntityManagerInterface $em): JsonResponse
     {
         $photo = $em->getRepository(Photo::class)->find($id);
@@ -514,9 +494,7 @@ class PhotoController extends AbstractController
         return new JsonResponse(['message' => 'Visibilité mise à jour avec succès']);
     }
 
-    /**
-     * @Route("/photo/{id}/approval", name="photo_approval", methods={"POST"})
-     */
+    #[Route('/photo/{id}/approval', name: 'photo_approval', methods: ['POST'])]
     public function updateApproval(int $id, Request $request, EntityManagerInterface $em): JsonResponse
     {
         $photo = $em->getRepository(Photo::class)->find($id);

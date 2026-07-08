@@ -26,9 +26,7 @@ class RegistrationController extends AbstractController
         $this->passwordHasher = $passwordHasher;
     }
 
-    /**
-     * @Route("/register", name="register")
-     */
+    #[Route('/register', name: 'register')]
     public function register(Request $request, UserPasswordHasherInterface $passwordHasher, MailerInterface $mailer, Security $security): Response
     {
         // Vérifier si l'utilisateur est déjà connecté
@@ -82,9 +80,7 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/api/register", name="api_register", methods={"POST"})
-     */
+    #[Route('/api/register', name: 'api_register', methods: ['POST'])]
     public function apiRegister(Request $request, UserRepository $userRepository, MailerInterface $mailer): Response
     {
         // Récupérer les données envoyées par le frontend

@@ -11,9 +11,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LocaleController
 {
-    /**
-     * @Route("/change_locale", name="change_locale")
-     */
+    #[Route('/change_locale', name: 'change_locale')]
     public function changeLocale(Request $request, SessionInterface $session): RedirectResponse
     {
         $locale = $request->query->get('locale', 'en');
@@ -40,9 +38,7 @@ class LocaleController
         return new RedirectResponse('/?locale=' . $locale);
     }
 
-    /**
-     * @Route("/test_translation", name="test_translation")
-     */
+    #[Route('/test_translation', name: 'test_translation')]
     public function testTranslation(TranslatorInterface $translator): Response
     {
         $translated = $translator->trans('hello');

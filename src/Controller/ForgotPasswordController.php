@@ -18,9 +18,7 @@ use Symfony\Component\Security\Core\Security;
 
 class ForgotPasswordController extends AbstractController
 {
-    /**
-     * @Route("/api/forgot-password", name="api_forgot_password", methods={"POST"})
-     */
+    #[Route('/api/forgot-password', name: 'api_forgot_password', methods: ['POST'])]
     public function apiForgotPassword(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -52,9 +50,7 @@ class ForgotPasswordController extends AbstractController
         return new JsonResponse(['message' => 'Si un compte existe avec cette adresse, un email a été envoyé.'], Response::HTTP_OK);
     }
 
-    /**
-     * @Route("/forgot-password", name="forgot_password")
-     */
+    #[Route('/forgot-password', name: 'forgot_password')]
     public function forgotPassword(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer, Security $security): Response
     {
         // Vérifier si l'utilisateur est déjà connecté

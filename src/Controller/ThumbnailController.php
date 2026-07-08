@@ -26,9 +26,7 @@ class ThumbnailController extends AbstractController
     /** Nombre de miniatures créées par requête (avant rechargement auto). */
     private const BATCH_SIZE = 8;
 
-    /**
-     * @Route("/admin/generate-thumbnails", name="admin_generate_thumbnails")
-     */
+    #[Route('/admin/generate-thumbnails', name: 'admin_generate_thumbnails')]
     public function generate(EntityManagerInterface $em, ImageOptimizer $imageOptimizer): Response
     {
         $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');

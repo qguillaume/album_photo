@@ -29,9 +29,7 @@ class ArticleController extends AbstractController
         $this->security = $security;
     }
 
-    /**
-     * @Route("/api/article", name="api_article_create", methods={"POST"})
-     */
+    #[Route('/api/article', name: 'api_article_create', methods: ['POST'])]
     public function apiCreateArticle(Request $request): JsonResponse
     {
         // Vérifier que l'utilisateur est connecté
@@ -83,9 +81,7 @@ class ArticleController extends AbstractController
         ], Response::HTTP_CREATED);
     }
 
-    /**
-     * @Route("/articles_list", name="articles_list", methods={"GET"})
-     */
+    #[Route('/articles_list', name: 'articles_list', methods: ['GET'])]
     public function list()
     {
         // Récupérer tous les articles depuis la base de données
@@ -110,9 +106,7 @@ class ArticleController extends AbstractController
         return new JsonResponse($articlesData);
     }
 
-    /**
-     * @Route("/articles", name="articles_index", methods={"GET"})
-     */
+    #[Route('/articles', name: 'articles_index', methods: ['GET'])]
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
         // Vérifier que l'utilisateur est connecté et a le rôle requis
@@ -147,9 +141,7 @@ class ArticleController extends AbstractController
     }
 
 
-    /**
-     * @Route("/article/{id}", name="article_show", methods={"GET"})
-     */
+    #[Route('/article/{id}', name: 'article_show', methods: ['GET'])]
     public function show(int $id): Response
     {
         // Vérifier que l'utilisateur est connecté
@@ -173,9 +165,7 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/articles/new", name="article_create", methods={"GET", "POST"})
-     */
+    #[Route('/articles/new', name: 'article_create', methods: ['GET', 'POST'])]
     public function createArticle(Request $request): Response
     {
         // Vérifier que l'utilisateur est connecté
@@ -212,9 +202,7 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/article/{id}/edit", name="article_edit", methods={"GET", "POST"})
-     */
+    #[Route('/article/{id}/edit', name: 'article_edit', methods: ['GET', 'POST'])]
     public function edit(int $id, Request $request): Response
     {
         $article = $this->articleRepository->find($id);
@@ -242,9 +230,7 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/article/{id}/edit_dashboard", name="article_edit_dashboard", methods={"PUT"})
-     */
+    #[Route('/article/{id}/edit_dashboard', name: 'article_edit_dashboard', methods: ['PUT'])]
     public function editFromDashboard(Request $request, EntityManagerInterface $em, int $id): JsonResponse
     {
         $article = $em->getRepository(Article::class)->find($id);
@@ -260,9 +246,7 @@ class ArticleController extends AbstractController
         return new JsonResponse(['message' => 'Texte de article modifie avec succès']);
     }
 
-    /**
-     * @Route("/article/{id}/delete", name="article_delete", methods={"POST"})
-     */
+    #[Route('/article/{id}/delete', name: 'article_delete', methods: ['POST'])]
     public function delete(int $id): Response
     {
         $article = $this->articleRepository->find($id);

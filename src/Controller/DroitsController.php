@@ -8,9 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DroitsController extends AbstractController
 {
-    /**
-     * @Route("/droits-auteur", name="droits_auteur")
-     */
+    #[Route('/droits-auteur', name: 'droits_auteur')]
     public function index()
     {
         return $this->render('droits/index.html.twig');

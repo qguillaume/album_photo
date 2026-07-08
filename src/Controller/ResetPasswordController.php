@@ -17,9 +17,7 @@ use Symfony\Component\Security\Core\Security;
 
 class ResetPasswordController extends AbstractController
 {
-    /**
-     * @Route("/api/reset-password/{token}", name="api_reset_password", methods={"POST"})
-     */
+    #[Route('/api/reset-password/{token}', name: 'api_reset_password', methods: ['POST'])]
     public function apiResetPassword(
         string $token,
         Request $request,
@@ -61,9 +59,7 @@ class ResetPasswordController extends AbstractController
         return new JsonResponse(['message' => 'Votre mot de passe a été réinitialisé avec succès.'], 200);
     }
 
-    /**
-     * @Route("/reset-password/{token}", name="reset_password")
-     */
+    #[Route('/reset-password/{token}', name: 'reset_password')]
     public function resetPassword(string $token, Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher, Security $security): Response
     {
         // Vérifier si l'utilisateur est déjà connecté

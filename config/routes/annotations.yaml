@@ -1,5 +1,6 @@
 controllers:
     resource: ../../src/Controller/
+    # Le loader "annotation" lit aussi les attributs PHP 8 #[Route] (Symfony 5.4).
     type: annotation
 
 kernel:

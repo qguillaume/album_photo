@@ -11,9 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractController
 {
-    /**
-     * @Route("/dashboard", name="dashboard")
-     */
+    #[Route('/dashboard', name: 'dashboard')]
     public function index(AlbumRepository $albumRepository, PhotoRepository $photoRepository): Response
     {
         // Cette page est protégée, donc l'utilisateur doit être connecté en tant qu'admin uniquement !!!!!!!!

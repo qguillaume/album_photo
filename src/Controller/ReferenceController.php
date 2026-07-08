@@ -8,9 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ReferenceController extends AbstractController
 {
-    /**
-     * @Route("/reference", name="reference")
-     */
+    #[Route('/reference', name: 'reference')]
     public function index(): Response
     {
         return $this->render('reference/index.html.twig');

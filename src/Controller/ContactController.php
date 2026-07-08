@@ -13,18 +13,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ContactController extends AbstractController
 {
-    /**
-     * @Route("/contact", name="contact", methods={"GET"})
-     */
+    #[Route('/contact', name: 'contact', methods: ['GET'])]
     public function index(): Response
     {
         // Afficher le formulaire en utilisant Twig
         return $this->render('contact/index.html.twig');
     }
 
-    /**
-     * @Route("/api/contact", name="api_contact", methods={"POST"})
-     */
+    #[Route('/api/contact', name: 'api_contact', methods: ['POST'])]
     public function contact(Request $request, MailerInterface $mailer, TranslatorInterface $translator): JsonResponse
     {
         // Récupérer les données envoyées en JSON

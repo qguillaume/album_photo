@@ -27,9 +27,7 @@ class CommentController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @Route("/photo/{id}/comment", name="comment_add", methods={"POST"})
-     */
+    #[Route('/photo/{id}/comment', name: 'comment_add', methods: ['POST'])]
     public function addComment(Request $request, Photo $photo, EntityManagerInterface $em, MailerInterface $mailer): JsonResponse
     {
         // Décoder le JSON dans le corps de la requête
@@ -61,9 +59,7 @@ class CommentController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/comments_list", name="comments_list", methods={"GET"})
-     */
+    #[Route('/comments_list', name: 'comments_list', methods: ['GET'])]
     public function list()
     {
         // Récupérer tous les commentaires depuis la base de données
@@ -88,9 +84,7 @@ class CommentController extends AbstractController
         return new JsonResponse($commentairesData);
     }
 
-    /**
-     * @Route("/comment/{id}/edit_dashboard", name="comment_edit_dashboard", methods={"PUT"})
-     */
+    #[Route('/comment/{id}/edit_dashboard', name: 'comment_edit_dashboard', methods: ['PUT'])]
     public function editFromDashboard(Request $request, EntityManagerInterface $em, int $id): JsonResponse
     {
         $comment = $em->getRepository(Comment::class)->find($id);
@@ -106,9 +100,7 @@ class CommentController extends AbstractController
         return new JsonResponse(['message' => 'Commentaire modifié avec succès']);
     }
 
-    /**
-     * @Route("/comment/{id}/delete_dashboard", name="comment_delete_dashboard", methods={"DELETE"})
-     */
+    #[Route('/comment/{id}/delete_dashboard', name: 'comment_delete_dashboard', methods: ['DELETE'])]
     public function deleteFromDashboard(Request $request, EntityManagerInterface $em, int $id): JsonResponse
     {
         $comment = $em->getRepository(Comment::class)->find($id);
@@ -123,9 +115,7 @@ class CommentController extends AbstractController
         return new JsonResponse(['message' => 'Commentaire supprimé avec succès']);
     }
 
-    /**
-     * @Route("/photo/{id}/comments", name="photo_comments", methods={"GET"})
-     */
+    #[Route('/photo/{id}/comments', name: 'photo_comments', methods: ['GET'])]
     public function getCommentsForPhoto(Photo $photo)
     {
         // Récupérer tous les commentaires associés à cette photo

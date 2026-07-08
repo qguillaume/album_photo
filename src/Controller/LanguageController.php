@@ -9,9 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class LanguageController extends AbstractController
 {
-    /**
-     * @Route("/switch-language", name="switch_language")
-     */
+    #[Route('/switch-language', name: 'switch_language')]
     public function switchLanguage(Request $request): RedirectResponse
     {
         $lang = $request->get('lang'); // Récupère la langue depuis la requête

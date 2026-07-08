@@ -17,9 +17,7 @@ class TranslationController
         $this->translator = $translator;
     }
 
-    /**
-     * @Route("/translations/{locale}", name="translations", methods={"GET"})
-     */
+    #[Route('/translations/{locale}', name: 'translations', methods: ['GET'])]
     public function getTranslations(string $locale)
     {
         // On peut gérer les traductions ici

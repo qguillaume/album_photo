@@ -11,9 +11,7 @@ use App\Service\CaptchaGenerator;
 
 class CaptchaController extends AbstractController
 {
-    /**
-     * @Route("/captcha/generate", name="captcha_generate")
-     */
+    #[Route('/captcha/generate', name: 'captcha_generate')]
     public function generateCaptcha(SessionInterface $session, CaptchaGenerator $captchaGenerator)
     {
         $captchaText = $captchaGenerator->generateCaptchaText();
@@ -23,9 +21,7 @@ class CaptchaController extends AbstractController
         return $this->json(['captcha' => $captchaText]);
     }
 
-    /**
-     * @Route("/captcha/image", name="captcha_image")
-     */
+    #[Route('/captcha/image', name: 'captcha_image')]
     public function captchaImage(SessionInterface $session, CaptchaGenerator $captchaGenerator): Response
     {
         $captchaText = $session->get('captcha', '');

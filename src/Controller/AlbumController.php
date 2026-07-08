@@ -33,9 +33,7 @@ class AlbumController extends AbstractController
         $this->security = $security;
     }
 
-    /**
-     * @Route("/api/albums", name="api_get_albums", methods={"GET"})
-     */
+    #[Route('/api/albums', name: 'api_get_albums', methods: ['GET'])]
     public function getAlbums(EntityManagerInterface $em): JsonResponse
     {
         // Récupérer l'utilisateur courant
@@ -79,9 +77,7 @@ class AlbumController extends AbstractController
     }
 
     // Cette route est pour l'API (POST)
-    /**
-     * @Route("/api/create-album", name="api_create_album", methods={"POST"})
-     */
+    #[Route('/api/create-album', name: 'api_create_album', methods: ['POST'])]
     public function createAlbumApi(Request $request, EntityManagerInterface $em, MailerInterface $mailer): JsonResponse
     {
         // Vérifier si l'utilisateur est authentifié
@@ -172,9 +168,7 @@ class AlbumController extends AbstractController
     }
 
 
-    /**
-     * @Route("/album/new", name="album_new")
-     */
+    #[Route('/album/new', name: 'album_new')]
     public function new(Request $request, EntityManagerInterface $em): Response
     {
         // Vérifier si l'utilisateur a le rôle 'ROLE_USER'
@@ -250,9 +244,7 @@ class AlbumController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/albums_list", name="albums_list", methods={"GET"})
-     */
+    #[Route('/albums_list', name: 'albums_list', methods: ['GET'])]
     public function list()
     {
         // Récupérer tous les albums depuis la base de données
@@ -280,9 +272,7 @@ class AlbumController extends AbstractController
         return new JsonResponse($albumsData);
     }
 
-    /**
-     * @Route("/album/rename/{id}", name="rename_album", requirements={"id"="\d+"})
-     */
+    #[Route('/album/rename/{id}', name: 'rename_album', requirements: ['id' => '\d+'])]
     public function renameAlbum(Request $request, EntityManagerInterface $em, int $id, KernelInterface $kernel): JsonResponse
     {
         $album = $em->getRepository(Album::class)->find($id);
@@ -310,9 +300,7 @@ class AlbumController extends AbstractController
         return new JsonResponse(['message' => 'Album renommé avec succès']);
     }
 
-    /**
-     * @Route("/album/delete/{id}", name="delete_album", requirements={"id"="\d+"})
-     */
+    #[Route('/album/delete/{id}', name: 'delete_album', requirements: ['id' => '\d+'])]
     public function deleteAlbum(EntityManagerInterface $em, int $id, KernelInterface $kernel): JsonResponse
     {
         try {
@@ -381,10 +369,8 @@ class AlbumController extends AbstractController
         rmdir($dir);
     }
 
-    /**
-     * @Route("/album/{id}/visibility", name="update_album_visibility", methods={"POST"})
-     * @ParamConverter("album", class="App\Entity\Album")
-     */
+    #[Route('/album/{id}/visibility', name: 'update_album_visibility', methods: ['POST'])]
+    #[ParamConverter('album', class: Album::class)]
     public function updateVisibility(
         Album $album,
         AlbumVisibilityService $albumVisibilityService,
@@ -407,9 +393,7 @@ class AlbumController extends AbstractController
         return $this->json(['message' => 'Visibilité mise à jour avec succès !']);
     }
 
-    /**
-     * @Route("/album/{id}/approval", name="album_approval", methods={"POST"})
-     */
+    #[Route('/album/{id}/approval', name: 'album_approval', methods: ['POST'])]
     public function updateApproval(int $id, Request $request, EntityManagerInterface $em): JsonResponse
     {
         $album = $em->getRepository(Album::class)->find($id);

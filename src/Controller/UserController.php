@@ -24,9 +24,7 @@ class UserController extends AbstractController
         $this->logger = $logger;
     }
 
-    /**
-     * @Route("/api/user", name="api_user", methods={"GET"})
-     */
+    #[Route('/api/user', name: 'api_user', methods: ['GET'])]
     public function getUserInfo(): JsonResponse
     {
         $user = $this->getUser();
@@ -50,9 +48,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/users_list", name="users_list", methods={"GET"})
-     */
+    #[Route('/users_list', name: 'users_list', methods: ['GET'])]
     public function getUsers(UserRepository $userRepository)
     {
         // Récupérer toutes les users
@@ -74,9 +70,7 @@ class UserController extends AbstractController
         return new JsonResponse($usersData);
     }
 
-    /**
-     * @Route("/api/users/{id}", name="update_user_roles", methods={"PUT"})
-     */
+    #[Route('/api/users/{id}', name: 'update_user_roles', methods: ['PUT'])]
     public function updateUserRoles(int $id, Request $request, UserRepository $userRepository): JsonResponse
     {
         $user = $userRepository->find($id);
@@ -104,9 +98,7 @@ class UserController extends AbstractController
         return new JsonResponse(['error' => 'Données invalides'], 400);
     }
 
-    /**
-     * @Route("/api/users/{id}/ban", name="ban_user", methods={"PUT"})
-     */
+    #[Route('/api/users/{id}/ban', name: 'ban_user', methods: ['PUT'])]
     public function banUser(int $id, UserRepository $userRepository): JsonResponse
     {
         $user = $userRepository->find($id);
@@ -122,9 +114,7 @@ class UserController extends AbstractController
         return new JsonResponse(['message' => 'Utilisateur banni avec succès']);
     }
 
-    /**
-     * @Route("/api/users/{id}/unban", name="unban_user", methods={"PUT"})
-     */
+    #[Route('/api/users/{id}/unban', name: 'unban_user', methods: ['PUT'])]
     public function unbanUser(int $id, UserRepository $userRepository): JsonResponse
     {
         $user = $userRepository->find($id);
@@ -140,9 +130,7 @@ class UserController extends AbstractController
         return new JsonResponse(['message' => 'Utilisateur débanni avec succès']);
     }
 
-    /**
-     * @Route("/api/current_user", name="current_user", methods={"GET"})
-     */
+    #[Route('/api/current_user', name: 'current_user', methods: ['GET'])]
     public function getCurrentUser(): JsonResponse
     {
         try {
