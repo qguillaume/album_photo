@@ -25,11 +25,8 @@ yarn-error.log
 /public/uploads/albums
 
 # --- Fichiers d'environnement : contiennent des secrets, NE JAMAIS versionner ---
-/.env
-/.env.local
-/.env.dev
-/.env.test
-/.env.prod
+# Motif large : couvre .env, .env.prod, .env.prodOLD, .env.bak, etc.
+.env*
 /.env-old
 
 # --- Sauvegardes / logs locaux ---
