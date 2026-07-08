@@ -1,5 +1,8 @@
 @use "./variables" as *;
 
+/* La police principale 'Arkhip' est auto-hébergée : le @font-face est déclaré
+   inline dans base.html.twig pour être disponible avant le chargement du CSS. */
+
 /* Style global */
 *, *::before, *::after {
   box-sizing: border-box;

@@ -299,6 +299,65 @@ class AlbumController extends AbstractController
         return new JsonResponse(['message' => 'Album renommé avec succès']);
     }
 
+    #[Route('/album/{id}/cover', name: 'change_album_cover', requirements: ['id' => '\d+'], methods: ['POST'])]
+    public function changeAlbumCover(Request $request, EntityManagerInterface $em, int $id, KernelInterface $kernel): JsonResponse
+    {
+        $album = $em->getRepository(Album::class)->find($id);
+        if (!$album) {
+            return new JsonResponse(['message' => 'Album non trouvé'], 404);
+        }
+
+        $user = $this->getUser();
+
+        // Vérifie si l'utilisateur est bien le créateur de l'album ou admin
+        if ($album->getCreator() !== $user && !$this->isGranted('ROLE_ADMIN')) {
+            return new JsonResponse(['message' => 'Vous n\'êtes pas autorisé à modifier cet album.'], 403);
+        }
+
+        // Récupérer l'image envoyée dans la requête
+        $imageFile = $request->files->get('cover');
+        if (!$imageFile) {
+            return new JsonResponse(['message' => 'Aucune image fournie'], 400);
+        }
+
+        // Vérifier qu'il s'agit bien d'une image
+        if (!in_array($imageFile->guessExtension(), ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
+            return new JsonResponse(['message' => 'Format d\'image non supporté'], 400);
+        }
+
+        try {
+            $creator = $album->getCreator();
+            $albumDir = $kernel->getProjectDir() . $this->getParameter('public_directory') . '/uploads/photos/' . $creator->getId() . '/' . $album->getNomAlbum();
+            $coverDir = $albumDir . '/cover_photo';
+
+            // Créer le dossier cover_photo si non existant
+            if (!file_exists($coverDir)) {
+                mkdir($coverDir, 0777, true);
+            }
+
+            // Supprimer l'ancienne image de couverture si elle existe
+            $oldCover = $album->getImagePath();
+            if ($oldCover && file_exists($coverDir . '/' . $oldCover)) {
+                unlink($coverDir . '/' . $oldCover);
+            }
+
+            // Générer un nom unique pour la nouvelle image et déplacer le fichier
+            $newFilename = uniqid() . '.' . $imageFile->guessExtension();
+            $imageFile->move($coverDir, $newFilename);
+
+            $album->setImagePath($newFilename);
+            $em->flush();
+
+            return new JsonResponse(['message' => 'Couverture mise à jour avec succès', 'imagePath' => $newFilename]);
+        } catch (\Exception $e) {
+            if ($this->getParameter('kernel.environment') === 'dev') {
+                return new JsonResponse(['message' => 'Erreur lors du téléchargement de l\'image : ' . $e->getMessage()], 500);
+            }
+
+            return new JsonResponse(['message' => 'Une erreur est survenue lors du téléchargement de l\'image.'], 500);
+        }
+    }
+
     #[Route('/album/delete/{id}', name: 'delete_album', requirements: ['id' => '\d+'])]
     public function deleteAlbum(EntityManagerInterface $em, int $id, KernelInterface $kernel): JsonResponse
     {

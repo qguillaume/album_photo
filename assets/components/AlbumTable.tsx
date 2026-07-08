@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Album, User } from '../ts/types';
 import Pagination from "./PaginationDashboard";
 import { useTranslation } from 'react-i18next';
@@ -17,6 +17,8 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
   const [loading, setLoading] = useState(true);
   const [editingAlbumId, setEditingAlbumId] = useState<number | null>(null);
   const [newAlbumName, setNewAlbumName] = useState<string>("");
+  const coverInputRef = useRef<HTMLInputElement | null>(null);
+  const coverAlbumIdRef = useRef<number | null>(null);
   const [currentPage, setCurrentPage] = useState(1); // Page actuelle
   const albumsPerPage = 10; // Nombre d'albums par page
   const isSuperAdmin = currentUserRoles.includes("ROLE_SUPER_ADMIN");
@@ -125,6 +127,45 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
       })
       .catch((error) => {
         console.error("Erreur lors de la mise à jour de l'album :", error);
+      });
+  };
+
+  // Ouvrir le sélecteur de fichier pour changer la couverture d'un album
+  const handleChangeCoverClick = (id: number) => {
+    coverAlbumIdRef.current = id;
+    coverInputRef.current?.click();
+  };
+
+  // Envoyer la nouvelle image de couverture au serveur
+  const handleCoverFileSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    const albumId = coverAlbumIdRef.current;
+    event.target.value = ""; // Permet de resélectionner le même fichier plus tard
+
+    if (!file || albumId === null) return;
+
+    const formData = new FormData();
+    formData.append("cover", file);
+
+    fetch(`/album/${albumId}/cover`, {
+      method: "POST",
+      body: formData,
+    })
+      .then(async (response) => {
+        if (response.ok) {
+          // Afficher la notification de succès
+          setNotification(t("admin.cover_updated"));
+          setNotificationClass("show");
+
+          // Cacher la notification après 5 secondes avec animation
+          setTimeout(() => setNotificationClass("hide"), 5000);
+        } else {
+          const data = await response.json().catch(() => null);
+          alert(data?.message || "Erreur lors de la mise à jour de la couverture.");
+        }
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la mise à jour de la couverture :", error);
       });
   };
 
@@ -304,7 +345,10 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
                               setNewAlbumName(album.nomAlbum);
                             }}
                           >
-                            {t('admin.update')}
+                            {t('admin.rename')}
+                          </button>
+                          <button className="edit" onClick={() => handleChangeCoverClick(album.id)}>
+                          {t('admin.change_cover')}
                           </button>
                           <button className="delete" onClick={() => handleDelete(album.id)}>
                           {t('admin.delete')}
@@ -320,6 +364,14 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums, users, onAlbumsUpdate }
         </tbody>
       </table>
       <Pagination currentPage={currentPage} totalPages={totalPages} onPaginate={paginate} />
+      {/* Input caché pour la sélection de la nouvelle image de couverture */}
+      <input
+        type="file"
+        accept="image/*"
+        ref={coverInputRef}
+        style={{ display: "none" }}
+        onChange={handleCoverFileSelected}
+      />
       {/* Affichage de la notification en bas à gauche */}
       {notification && (
         <div className={`notification ${notificationClass}`}>
