@@ -237,7 +237,7 @@ class PhotoController extends AbstractController
         $em->flush();
 
         // Envoyer un mail après l'upload d'une photo
-        if ($user->getUsername() !== "GuillaumeQuesnel") {
+        if ($user->getUserIdentifier() !== "GuillaumeQuesnel") {
             $email = (new Email())
                 ->from('no-reply@guillaume-quesnel.com')
                 ->to('admin@guillaume-quesnel.com')

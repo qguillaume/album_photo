@@ -94,6 +94,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * Identifiant de sécurité (Symfony 5.4+). Le composant Security utilise
+     * désormais cette méthode à la place de getUsername() : la définir supprime
+     * la dépréciation. getUsername() reste le libellé d'affichage métier.
+     */
+    public function getUserIdentifier(): string
+    {
+        return $this->username;
+    }
+
     public function getPassword(): string
     {
         return $this->password;
