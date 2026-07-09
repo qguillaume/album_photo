@@ -275,7 +275,11 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
             )) || 
             (isUser && albumCreatorId === currentUserId);
 
-            // Chemin public de l'image (miniature en priorité, original en secours)
+            // Chemin public de l'image. On affiche l'ORIGINAL (et non la miniature) :
+            // le navigateur applique automatiquement l'orientation EXIF, donc
+            // l'aperçu est toujours droit — exactement la même référence que
+            // rotate() côté serveur. C'est ce qui garantit que le 1er clic de
+            // rotation fait bien 90° (et pas 180°) même sur les anciennes photos.
             const photoBase = album
               ? `/uploads/photos/${albumCreatorId}/${encodeURIComponent(album.nomAlbum)}`
               : null;
@@ -288,15 +292,10 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
                   {photoBase && (
                     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
                       <img
-                        src={`${photoBase}/thumbnails/${photo.filePath}${version}`}
+                        src={`${photoBase}/${photo.filePath}${version}`}
                         alt={photo.title}
-                        style={{ maxWidth: "70px", maxHeight: "70px", objectFit: "contain", borderRadius: "4px" }}
-                        onError={(e) => {
-                          // Pas de miniature (anciennes photos) : retomber sur l'original
-                          const img = e.currentTarget;
-                          img.onerror = null;
-                          img.src = `${photoBase}/${photo.filePath}${version}`;
-                        }}
+                        loading="lazy"
+                        style={{ maxWidth: "70px", maxHeight: "70px", objectFit: "contain", borderRadius: "4px", imageOrientation: "from-image" }}
                       />
                       {canEditOrDelete && (
                         <div style={{ display: "flex", gap: "2px" }}>
