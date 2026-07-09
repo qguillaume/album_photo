@@ -1,5 +1,12 @@
 security:
     enable_authenticator_manager: true
+
+    # Hiérarchie des rôles : un rôle supérieur hérite automatiquement des rôles inférieurs.
+    # ROLE_SUPER_ADMIN est donc aussi ROLE_ADMIN et ROLE_USER, sans avoir à les stocker en base.
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
+
     # Configuration des encoders pour les mots de passe
     password_hashers:
         App\Entity\User:

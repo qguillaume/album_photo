@@ -170,6 +170,110 @@ class PhotoController extends AbstractController
         return new JsonResponse(['message' => 'Photo created successfully!'], Response::HTTP_OK);
     }
 
+    /**
+     * Multipostage : envoi de plusieurs photos d'un coup dans un même album.
+     *
+     * Réservé au superadmin. Pour ouvrir la fonctionnalité à d'autres rôles plus tard,
+     * il suffit de remplacer 'ROLE_SUPER_ADMIN' ci-dessous par 'ROLE_ADMIN' ou 'ROLE_USER'
+     * (et de faire la même modification côté React dans PhotoForm.tsx).
+     */
+    #[Route('/api/photos/batch', name: 'create_photos_batch', methods: ['POST'])]
+    public function createPhotosBatch(Request $request, EntityManagerInterface $em, ImageOptimizer $imageOptimizer): JsonResponse
+    {
+        // Garde-fou de rôle : c'est ICI que se décide qui a le droit au multipostage.
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
+
+        $user = $this->getUser();
+
+        // Nombre maximum de photos par envoi (garde-fou anti-abus)
+        $maxFiles = 30;
+
+        $albumId = $request->get('album');
+        $files = $request->files->get('files'); // Tableau de fichiers
+
+        if (!is_array($files) || count($files) === 0) {
+            return new JsonResponse(['error' => 'Aucun fichier reçu.'], Response::HTTP_BAD_REQUEST);
+        }
+
+        if (count($files) > $maxFiles) {
+            return new JsonResponse(
+                ['error' => "Vous ne pouvez pas envoyer plus de {$maxFiles} photos à la fois."],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        $album = $em->getRepository(Album::class)->find($albumId);
+        if (!$album) {
+            return new JsonResponse(['error' => 'Album not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        // Vérifier que l'album appartient bien à l'utilisateur courant
+        if ($album->getCreator() !== $user) {
+            return new JsonResponse(
+                ['error' => "Vous ne pouvez pas ajouter des photos dans un album qui ne vous appartient pas."],
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+
+        // Préparer les répertoires (une seule fois, même album pour tout le lot)
+        $userDir = $this->getParameter('photos_directory') . '/' . $user->getId();
+        $albumDir = $userDir . '/' . $album->getNomAlbum();
+        $coverDir = $albumDir . '/cover_photo';
+
+        foreach ([$userDir, $albumDir, $coverDir] as $dir) {
+            if (!file_exists($dir)) {
+                mkdir($dir, 0755, true);
+            }
+        }
+
+        $allowedMimeTypes = ['image/jpeg', 'image/png'];
+        $created = 0;
+        $skipped = [];
+
+        foreach ($files as $file) {
+            if (!$file) {
+                continue;
+            }
+
+            // Ignorer les fichiers trop lourds ou d'un format non autorisé
+            if ($file->getSize() > 8 * 1024 * 1024 || !in_array($file->getMimeType(), $allowedMimeTypes, true)) {
+                $skipped[] = $file->getClientOriginalName();
+                continue;
+            }
+
+            // Nom unique + déplacement du fichier
+            $filename = uniqid() . '.' . $file->guessExtension();
+            $file->move($albumDir, $filename);
+
+            // Miniature (l'original n'est jamais modifié)
+            $imageOptimizer->generateThumbnail($albumDir . '/' . $filename);
+
+            // Titre : basé sur le nom du fichier d'origine (sans extension), tronqué à 30 caractères
+            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $title = mb_substr($originalName, 0, 30);
+
+            $photo = new Photo();
+            $photo->setTitle($title !== '' ? $title : 'photo');
+            $photo->setAlbum($album);
+            $photo->setFilePath($filename);
+
+            $album->addPhoto($photo);
+            $album->setPhotoCount($album->getPhotoCount() + 1);
+
+            $em->persist($photo);
+            $created++;
+        }
+
+        $em->persist($album);
+        $em->flush(); // Un seul flush pour tout le lot
+
+        return new JsonResponse([
+            'message' => "{$created} photo(s) ajoutée(s) avec succès.",
+            'created' => $created,
+            'skipped' => $skipped,
+        ], Response::HTTP_OK);
+    }
+
     #[Route('photo/upload/{albumId}', name: 'photo_upload', defaults: ['albumId' => null])]
     public function upload(Request $request, EntityManagerInterface $em, ImageOptimizer $imageOptimizer, $albumId = null): Response
     {

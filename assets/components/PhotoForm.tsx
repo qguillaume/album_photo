@@ -7,10 +7,28 @@ const PhotoForm: React.FC = () => {
   // États pour les champs du formulaire et les erreurs
   const [title, setTitle] = useState('');
   const [file, setFile] = useState<File | null>(null);
+  const [files, setFiles] = useState<File[]>([]); // Multipostage (superadmin)
   const [album, setAlbum] = useState('');
   const [albums, setAlbums] = useState<any[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
   const [flashMessages, setFlashMessages] = useState<string[]>([]);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false); // Rôle superadmin => multipostage
+
+  // Récupérer le rôle de l'utilisateur courant (même API que les autres composants)
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await fetch('/api/current_user');
+        if (response.ok) {
+          const data = await response.json();
+          setIsSuperAdmin((data.roles || []).includes('ROLE_SUPER_ADMIN'));
+        }
+      } catch (error) {
+        console.error('Error fetching current user:', error);
+      }
+    };
+    fetchCurrentUser();
+  }, []);
 
   // Charger dynamiquement les albums depuis l'API
   useEffect(() => {
@@ -35,14 +53,11 @@ const PhotoForm: React.FC = () => {
     fetchAlbums();
   }, []); // Récupérer les albums au montage du composant
 
-  // Fonction pour gérer la soumission du formulaire
+  // Soumission classique : une seule photo (comportement d'origine, tous les utilisateurs)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Réinitialiser les erreurs
     const newErrors: string[] = [];
-
-    // Validation des champs du formulaire
     if (!title) newErrors.push(t('form.photo_title_required'));
     if (title.length > 30) {
       newErrors.push(t('form.title_max_length', { limit: 30 }));
@@ -50,16 +65,13 @@ const PhotoForm: React.FC = () => {
     if (!file) newErrors.push(t('form.photo_file_required'));
     if (!album) newErrors.push(t('form.photo_album_required'));
 
-    // Si des erreurs existent, les afficher sous forme de flash et arrêter la soumission
     if (newErrors.length > 0) {
       setErrors(newErrors);
       return;
     }
 
-    // Réinitialiser les erreurs
     setErrors([]);
 
-    // Préparer les données du formulaire (multipart/form-data pour l'image)
     const formData = new FormData();
     formData.append('title', title);
     formData.append('file', file as Blob);
@@ -82,7 +94,44 @@ const PhotoForm: React.FC = () => {
     }
   };
 
-  // Fonction pour gérer le changement de fichier
+  // Soumission multipostage : plusieurs photos d'un coup (superadmin uniquement)
+  const handleBatchSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const newErrors: string[] = [];
+    if (files.length === 0) newErrors.push('Veuillez sélectionner au moins une photo.');
+    if (files.length > 30) newErrors.push('30 photos maximum par envoi.');
+    if (!album) newErrors.push(t('form.photo_album_required'));
+
+    if (newErrors.length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors([]);
+
+    const formData = new FormData();
+    formData.append('album', album);
+    files.forEach((f) => formData.append('files[]', f));
+
+    try {
+      const response = await fetch('/api/photos/batch', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || 'Batch upload failed');
+
+      setFlashMessages([data.message || 'Photos ajoutées avec succès.']);
+      setFiles([]);
+      setAlbum('');
+    } catch (error: any) {
+      setFlashMessages([error.message || t('form.photo_error_message')]);
+    }
+  };
+
+  // Fonction pour gérer le changement de fichier (mode simple)
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
@@ -91,11 +140,40 @@ const PhotoForm: React.FC = () => {
     }
   };
 
-  return (
-    <>
-      <h2>{t('publish_photo')}</h2>
+  // Fonction pour gérer le changement de fichiers (mode multipostage)
+  const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFiles(Array.from(e.target.files));
+    } else {
+      setFiles([]);
+    }
+  };
 
-      {/* Flash errors pour les erreurs de validation */}
+  // Sélecteur d'album (commun aux deux modes)
+  const albumSelect = (
+    <div className="form-group">
+      <select
+        className="form-control"
+        name="photo_form[album]"
+        value={album}
+        onChange={(e) => setAlbum(e.target.value)}
+      >
+        <option value="">{t('form.select_album')}</option>
+        {albums.length > 0 ? (
+          albums.map((albumOption: { id: string; nomAlbum: string }, index) => (
+            <option key={index} value={albumOption.id}>
+              {albumOption.nomAlbum}
+            </option>
+          ))
+        ) : (
+          <option value="">{t('form.no_albums')}</option>
+        )}
+      </select>
+    </div>
+  );
+
+  const flashBlocks = (
+    <>
       {errors.length > 0 && (
         <div className="center">
           <div className="flash-error">
@@ -108,7 +186,6 @@ const PhotoForm: React.FC = () => {
         </div>
       )}
 
-      {/* Flash success/error pour les messages globaux */}
       {flashMessages.length > 0 && (
         <div className="center">
           <div className="flash-success">
@@ -118,6 +195,56 @@ const PhotoForm: React.FC = () => {
           </div>
         </div>
       )}
+    </>
+  );
+
+  // ----- Mode multipostage (superadmin) -----
+  if (isSuperAdmin) {
+    return (
+      <>
+        <h2>Multipostage de photos</h2>
+        <p className="center">Sélectionnez plusieurs photos (30 max) à ajouter dans un même album.</p>
+
+        {flashBlocks}
+
+        <form onSubmit={handleBatchSubmit}>
+          <div className="form-group">
+            <input
+              id="photoFiles"
+              className="form-control"
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleFilesChange}
+              style={{ display: 'none' }}
+            />
+            <label htmlFor="photoFiles" className="custom-file-label">
+              {files.length > 0
+                ? `${files.length} photo(s) sélectionnée(s)`
+                : t('form.no_file_selected')}
+            </label>
+          </div>
+
+          <div className="espacement"></div>
+
+          {albumSelect}
+
+          <div className="form-group">
+            <button type="submit" className="green-button">
+              Publier les photos
+            </button>
+          </div>
+        </form>
+      </>
+    );
+  }
+
+  // ----- Mode simple (comportement d'origine, tous les autres utilisateurs) -----
+  return (
+    <>
+      <h2>{t('publish_photo')}</h2>
+
+      {flashBlocks}
 
       <form onSubmit={handleSubmit}>
         {/* Titre */}
@@ -143,37 +270,15 @@ const PhotoForm: React.FC = () => {
             onChange={handleFileChange}
             style={{ display: 'none' }}
           />
-          <label
-            htmlFor="photoFile"
-            className="custom-file-label"
-          >
+          <label htmlFor="photoFile" className="custom-file-label">
             {file ? file.name : t('form.no_file_selected')}
           </label>
         </div>
 
         <div className="espacement"></div>
-        
-        {/* Album dynamique */}
 
-        <div className="form-group">
-          <select
-            className="form-control"
-            name="photo_form[album]"
-            value={album}
-            onChange={(e) => setAlbum(e.target.value)}
-          >
-            <option value="">{t('form.select_album')}</option>
-            {albums.length > 0 ? (
-              albums.map((albumOption: { id: string; nomAlbum: string }, index) => (
-                <option key={index} value={albumOption.id}>
-                  {albumOption.nomAlbum}
-                </option>
-              ))
-            ) : (
-              <option value="">{t('form.no_albums')}</option>
-            )}
-          </select>
-        </div>
+        {/* Album dynamique */}
+        {albumSelect}
 
         {/* Bouton de soumission */}
         <div className="form-group">
