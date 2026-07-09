@@ -6,6 +6,7 @@ use App\Entity\Photo;
 use App\Service\ImageOptimizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -20,6 +21,12 @@ use Symfony\Component\Routing\Annotation\Route;
  *   - la page se RECHARGE toute seule tant qu'il reste des miniatures à créer ;
  *   - les images trop volumineuses pour la mémoire sont IGNORÉES (pas de plantage) ;
  *   - toute erreur inattendue est AFFICHÉE sur la page (pas de "500" opaque).
+ *
+ * MODE FORCE (?force=1) : régénère TOUTES les miniatures, même existantes.
+ * À utiliser une fois après la correction d'orientation EXIF, pour remplacer
+ * les anciennes miniatures générées sans correction (photos qui apparaissaient
+ * pivotées dans les grilles). Avance avec un curseur ?offset=N pour ne jamais
+ * retraiter deux fois les mêmes photos entre deux rechargements.
  */
 class ThumbnailController extends AbstractController
 {
@@ -27,7 +34,7 @@ class ThumbnailController extends AbstractController
     private const BATCH_SIZE = 8;
 
     #[Route('/admin/generate-thumbnails', name: 'admin_generate_thumbnails')]
-    public function generate(EntityManagerInterface $em, ImageOptimizer $imageOptimizer): Response
+    public function generate(Request $request, EntityManagerInterface $em, ImageOptimizer $imageOptimizer): Response
     {
         $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
 
@@ -35,12 +42,19 @@ class ThumbnailController extends AbstractController
         @ini_set('memory_limit', '512M');
         @set_time_limit(60);
 
-        $photosDirectory = $this->getParameter('photos_directory');
-        $photos = $em->getRepository(Photo::class)->findAll();
+        // Mode force : régénère TOUT (remplace les anciennes miniatures sans
+        // correction EXIF). Le curseur ?offset garantit une progression stricte.
+        $force = $request->query->getBoolean('force');
+        $offset = max(0, $request->query->getInt('offset'));
 
-        $alreadyDone = 0;   // miniatures déjà présentes
+        $photosDirectory = $this->getParameter('photos_directory');
+        // Ordre stable (id croissant) : indispensable pour que le curseur
+        // du mode force pointe toujours sur les mêmes photos entre deux requêtes.
+        $photos = $em->getRepository(Photo::class)->findBy([], ['id' => 'ASC']);
+
+        $alreadyDone = 0;   // miniatures déjà présentes (mode normal uniquement)
         $missing = 0;       // fichier original introuvable
-        $toProcess = [];    // originaux sans miniature
+        $toProcess = [];    // originaux à traiter
 
         foreach ($photos as $photo) {
             $album = $photo->getAlbum();
@@ -58,7 +72,7 @@ class ThumbnailController extends AbstractController
                 continue;
             }
 
-            if ($imageOptimizer->thumbnailExists($originalPath)) {
+            if (!$force && $imageOptimizer->thumbnailExists($originalPath)) {
                 $alreadyDone++;
                 continue;
             }
@@ -66,14 +80,28 @@ class ThumbnailController extends AbstractController
             $toProcess[] = $originalPath;
         }
 
-        $created = 0;   // miniatures créées lors de CETTE requête
+        // En mode force, on reprend là où le rechargement précédent s'est arrêté.
+        $totalToProcess = \count($toProcess);
+        if ($force) {
+            $toProcess = \array_slice($toProcess, $offset);
+        }
+
+        $created = 0;   // miniatures (re)créées lors de CETTE requête
         $skipped = 0;   // ignorées (trop volumineuses / illisibles)
         $errorMessage = null;
 
         try {
             foreach ($toProcess as $originalPath) {
-                if ($created >= self::BATCH_SIZE) {
+                if ($created + $skipped >= self::BATCH_SIZE) {
                     break; // Le reste sera traité au prochain rechargement.
+                }
+
+                if ($force) {
+                    // Supprimer l'ancienne miniature pour la régénérer proprement.
+                    $oldThumb = $imageOptimizer->thumbnailPathFor($originalPath);
+                    if (is_file($oldThumb)) {
+                        @unlink($oldThumb);
+                    }
                 }
 
                 if ($imageOptimizer->generateThumbnail($originalPath)) {
@@ -87,8 +115,16 @@ class ThumbnailController extends AbstractController
             $errorMessage = $e->getMessage();
         }
 
-        // Reste à faire = originaux sans miniature non encore créés ni ignorés cette fois.
-        $remaining = \count($toProcess) - $created - $skipped;
+        $processed = $created + $skipped;
+
+        if ($force) {
+            $remaining = $totalToProcess - $offset - $processed;
+            $nextUrl = $this->generateUrl('admin_generate_thumbnails')
+                . '?force=1&offset=' . ($offset + $processed);
+        } else {
+            $remaining = \count($toProcess) - $processed;
+            $nextUrl = $this->generateUrl('admin_generate_thumbnails');
+        }
         $finished = ($remaining <= 0);
 
         return new Response($this->renderPage(
@@ -98,7 +134,9 @@ class ThumbnailController extends AbstractController
             $missing,
             $remaining,
             $finished,
-            $errorMessage
+            $errorMessage,
+            $nextUrl,
+            $force
         ));
     }
 
@@ -109,26 +147,37 @@ class ThumbnailController extends AbstractController
         int $missing,
         int $remaining,
         bool $finished,
-        ?string $errorMessage
+        ?string $errorMessage,
+        ?string $nextUrl = null,
+        bool $force = false
     ): string {
-        // Rechargement auto tant qu'il reste du travail ET qu'il n'y a pas d'erreur.
-        $autoRefresh = (!$finished && $errorMessage === null)
-            ? '<meta http-equiv="refresh" content="1">'
-            : '';
+        $url = $nextUrl ?? $this->generateUrl('admin_generate_thumbnails');
 
-        $url = $this->generateUrl('admin_generate_thumbnails');
+        // Rechargement auto (vers l'URL de reprise) tant qu'il reste du travail
+        // ET qu'il n'y a pas d'erreur.
+        $autoRefresh = (!$finished && $errorMessage === null)
+            ? '<meta http-equiv="refresh" content="1;url=' . htmlspecialchars($url) . '">'
+            : '';
 
         if ($errorMessage !== null) {
             $status = '<p style="color:#721c24;background:#f8d7da;padding:12px;border-radius:6px">'
                 . '<strong>Erreur :</strong> ' . htmlspecialchars($errorMessage)
                 . '</p><p><a href="' . $url . '">Réessayer</a></p>';
         } elseif ($finished) {
+            $forceUrl = $this->generateUrl('admin_generate_thumbnails') . '?force=1';
             $status = '<p style="color:#155724;background:#d4edda;padding:12px;border-radius:6px">'
                 . '<strong>Terminé !</strong> Toutes les miniatures possibles ont été générées.'
                 . ($skipped > 0
                     ? ' ' . $skipped . ' image(s) trop volumineuse(s) ont été laissée(s) en pleine résolution.'
                     : '')
-                . '</p>';
+                . '</p>'
+                . ($force
+                    ? ''
+                    : '<p style="color:#856404;background:#fff3cd;padding:12px;border-radius:6px">'
+                        . 'Des photos apparaissent pivotées dans les grilles alors qu\'elles sont droites ailleurs ? '
+                        . '<a href="' . $forceUrl . '">Régénérer TOUTES les miniatures</a> '
+                        . '(applique la correction d\'orientation EXIF aux anciennes miniatures ; les originaux ne sont pas modifiés).'
+                        . '</p>');
         } else {
             $status = '<p style="color:#004085;background:#cce5ff;padding:12px;border-radius:6px">'
                 . 'Traitement en cours… la page se recharge automatiquement. '
