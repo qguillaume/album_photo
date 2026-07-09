@@ -10,6 +10,9 @@ namespace App\Service;
  * dans un sous-dossier "thumbnails/". Les photos originales sont donc préservées
  * à l'identique.
  *
+ * Seule exception : rotate(), qui réécrit l'original — mais uniquement sur
+ * demande explicite de l'utilisateur (boutons de rotation du dashboard).
+ *
  * Utilise l'extension GD (déjà présente : cf. CaptchaGenerator et le Dockerfile).
  */
 class ImageOptimizer
@@ -19,6 +22,9 @@ class ImageOptimizer
 
     /** Qualité de compression JPEG des miniatures (0-100). N'affecte QUE la miniature. */
     private const JPEG_QUALITY = 82;
+
+    /** Qualité JPEG lors d'une rotation de l'original (élevée pour limiter la perte). */
+    private const ROTATE_JPEG_QUALITY = 92;
 
     /** Sous-dossier où sont stockées les miniatures. */
     public const THUMBNAIL_DIR = 'thumbnails';
@@ -65,6 +71,10 @@ class ImageOptimizer
             return false; // Non décodable par GD : on ne touche à rien.
         }
 
+        // Applique l'orientation EXIF (photos de smartphone stockées "couchées") :
+        // GD ignore cette métadonnée, sans quoi la miniature apparaît tournée.
+        $image = $this->applyExifOrientation($image, $originalPath);
+
         $type = $this->detectType($originalPath);
         $thumbPath = $thumbDir . '/' . basename($originalPath);
         $thumb = $this->resizeDown($image, self::THUMBNAIL_MAX);
@@ -76,6 +86,148 @@ class ImageOptimizer
         imagedestroy($image);
 
         return true;
+    }
+
+    /**
+     * Fait pivoter une photo de 90, 180 ou 270 degrés (sens horaire), puis
+     * régénère sa miniature. C'est la SEULE méthode du service qui réécrit
+     * l'original (action volontaire de l'utilisateur depuis le dashboard).
+     *
+     * @param string $originalPath Chemin absolu du fichier à pivoter.
+     * @param int    $degrees      90, 180 ou 270 (sens horaire).
+     * @return bool true si la rotation a été appliquée.
+     */
+    public function rotate(string $originalPath, int $degrees): bool
+    {
+        if (!\in_array($degrees, [90, 180, 270], true) || !is_file($originalPath)) {
+            return false;
+        }
+
+        $info = @getimagesize($originalPath);
+        if ($info === false) {
+            return false;
+        }
+        [$width, $height] = $info;
+
+        if (!$this->fitsInMemory((int) $width, (int) $height)) {
+            return false; // Trop volumineuse pour la mémoire PHP : on ne tente rien.
+        }
+
+        $image = @imagecreatefromstring((string) file_get_contents($originalPath));
+        if ($image === false) {
+            return false;
+        }
+
+        // Applique d'abord l'orientation EXIF : la rotation demandée par
+        // l'utilisateur s'entend par rapport à ce qu'il VOIT à l'écran.
+        $image = $this->applyExifOrientation($image, $originalPath);
+
+        // GD tourne dans le sens anti-horaire pour un angle positif ;
+        // on inverse pour obtenir une rotation horaire "intuitive".
+        $rotated = imagerotate($image, -$degrees, 0);
+        if ($rotated === false) {
+            imagedestroy($image);
+            return false;
+        }
+        if ($rotated !== $image) {
+            imagedestroy($image);
+        }
+
+        // Réécrit l'original pivoté (la réécriture supprime l'étiquette EXIF,
+        // ce qui évite toute double rotation à l'affichage).
+        $type = $this->detectType($originalPath);
+        switch ($type) {
+            case 'png':
+                imagealphablending($rotated, false);
+                imagesavealpha($rotated, true);
+                imagepng($rotated, $originalPath, 6);
+                break;
+            case 'gif':
+                imagegif($rotated, $originalPath);
+                break;
+            case 'jpeg':
+            default:
+                imagejpeg($rotated, $originalPath, self::ROTATE_JPEG_QUALITY);
+                break;
+        }
+        imagedestroy($rotated);
+
+        // Régénère la miniature pour refléter la nouvelle orientation.
+        $thumbPath = $this->thumbnailPathFor($originalPath);
+        if (is_file($thumbPath)) {
+            @unlink($thumbPath);
+        }
+        $this->generateThumbnail($originalPath);
+
+        return true;
+    }
+
+    /**
+     * Applique l'orientation EXIF aux pixels de l'image (JPEG uniquement).
+     * Renvoie la ressource corrigée, ou la ressource d'origine si aucune
+     * correction n'est nécessaire/possible (extension exif absente, etc.).
+     *
+     * @param resource|\GdImage $image
+     * @return resource|\GdImage
+     */
+    private function applyExifOrientation($image, string $path)
+    {
+        if (!\function_exists('exif_read_data')) {
+            return $image; // Extension exif non disponible : on n'y touche pas.
+        }
+
+        $info = @getimagesize($path);
+        if ($info === false || ($info[2] ?? null) !== IMAGETYPE_JPEG) {
+            return $image; // L'orientation EXIF ne concerne que les JPEG.
+        }
+
+        $exif = @exif_read_data($path);
+        $orientation = (int) ($exif['Orientation'] ?? 1);
+        if ($orientation <= 1) {
+            return $image; // Déjà droite.
+        }
+
+        // Valeurs standard EXIF : 3 = 180°, 6 = 90° horaire, 8 = 90° anti-horaire,
+        // 2/4/5/7 = variantes avec effet miroir (rares : scans, selfies avant).
+        switch ($orientation) {
+            case 2:
+                imageflip($image, IMG_FLIP_HORIZONTAL);
+                return $image;
+            case 3:
+                $out = imagerotate($image, 180, 0);
+                break;
+            case 4:
+                imageflip($image, IMG_FLIP_VERTICAL);
+                return $image;
+            case 5:
+                $out = imagerotate($image, -90, 0);
+                if ($out !== false) {
+                    imageflip($out, IMG_FLIP_HORIZONTAL);
+                }
+                break;
+            case 6:
+                $out = imagerotate($image, -90, 0);
+                break;
+            case 7:
+                $out = imagerotate($image, 90, 0);
+                if ($out !== false) {
+                    imageflip($out, IMG_FLIP_HORIZONTAL);
+                }
+                break;
+            case 8:
+                $out = imagerotate($image, 90, 0);
+                break;
+            default:
+                return $image;
+        }
+
+        if ($out === false) {
+            return $image; // Rotation impossible : on garde l'image telle quelle.
+        }
+
+        imagedestroy($image);
+
+        return $out;
     }
 
     /**

@@ -32,6 +32,8 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
   const isUser = currentUserRoles.includes("ROLE_USER");
   const [notification, setNotification] = useState<string | null>(null); // Ajout de l'état pour la notification
   const [notificationClass, setNotificationClass] = useState<string>(""); // Ajout pour gérer les classes CSS
+  // Cache-buster par photo : forcer le navigateur à recharger l'aperçu après une rotation
+  const [imgVersions, setImgVersions] = useState<{ [id: number]: number }>({});
   const [sortConfig, setSortConfig] = useState<{ key: keyof Photo; direction: "asc" | "desc" }>({
     key: "id",
     direction: "asc",
@@ -205,6 +207,30 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
       });
   };
 
+  // Faire pivoter une photo (90, 180 ou 270 degrés, sens horaire)
+  const handleRotate = (photoId: number, degrees: number) => {
+    fetch(`/photo/${photoId}/rotate`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ degrees }),
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error("Erreur lors de la rotation.");
+        return response.json();
+      })
+      .then(() => {
+        // Recharger l'aperçu (sinon le navigateur garde l'ancienne image en cache)
+        setImgVersions((prev) => ({ ...prev, [photoId]: Date.now() }));
+        setNotification(`Photo pivotée de ${degrees}° avec succès !`);
+        setNotificationClass("show");
+        setTimeout(() => setNotificationClass("hide"), 5000);
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la rotation de la photo :", error);
+        alert("Erreur lors de la rotation de la photo.");
+      });
+  };
+
   // Calculer le nombre total de pages
   const totalPages = Math.ceil(photos.length / photosPerPage);
 
@@ -218,6 +244,7 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
             <th onClick={() => handleSort("id")}>
               ID {sortConfig.key === "id" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
+            <th>{t("admin.preview", "Aperçu")}</th>
             <th onClick={() => handleSort("title")}>
               {t("admin.photo_title")} {sortConfig.key === "title" && (sortConfig.direction === "asc" ? "↑" : "↓")}
             </th>
@@ -248,9 +275,60 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
             )) || 
             (isUser && albumCreatorId === currentUserId);
 
+            // Chemin public de l'image (miniature en priorité, original en secours)
+            const photoBase = album
+              ? `/uploads/photos/${albumCreatorId}/${encodeURIComponent(album.nomAlbum)}`
+              : null;
+            const version = imgVersions[photo.id] ? `?v=${imgVersions[photo.id]}` : "";
+
             return (
               <tr key={photo.id} className={rowClass}>
                 <td>{photo.id}</td>
+                <td>
+                  {photoBase && (
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
+                      <img
+                        src={`${photoBase}/thumbnails/${photo.filePath}${version}`}
+                        alt={photo.title}
+                        style={{ maxWidth: "70px", maxHeight: "70px", objectFit: "contain", borderRadius: "4px" }}
+                        onError={(e) => {
+                          // Pas de miniature (anciennes photos) : retomber sur l'original
+                          const img = e.currentTarget;
+                          img.onerror = null;
+                          img.src = `${photoBase}/${photo.filePath}${version}`;
+                        }}
+                      />
+                      {canEditOrDelete && (
+                        <div style={{ display: "flex", gap: "2px" }}>
+                          <button
+                            type="button"
+                            title="Pivoter de 90° vers la gauche"
+                            style={{ cursor: "pointer" }}
+                            onClick={() => handleRotate(photo.id, 270)}
+                          >
+                            ↺
+                          </button>
+                          <button
+                            type="button"
+                            title="Pivoter de 180°"
+                            style={{ cursor: "pointer" }}
+                            onClick={() => handleRotate(photo.id, 180)}
+                          >
+                            180°
+                          </button>
+                          <button
+                            type="button"
+                            title="Pivoter de 90° vers la droite"
+                            style={{ cursor: "pointer" }}
+                            onClick={() => handleRotate(photo.id, 90)}
+                          >
+                            ↻
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </td>
                 <td>
                   {editingPhotoId === photo.id ? (
                     <input

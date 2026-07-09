@@ -13,6 +13,8 @@ const PhotoForm: React.FC = () => {
   const [errors, setErrors] = useState<string[]>([]);
   const [flashMessages, setFlashMessages] = useState<string[]>([]);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false); // Rôle superadmin => multipostage
+  const [uploading, setUploading] = useState(false); // Envoi en cours (multipostage)
+  const [progress, setProgress] = useState(''); // Progression de l'envoi par lots
 
   // Récupérer le rôle de l'utilisateur courant (même API que les autres composants)
   useEffect(() => {
@@ -94,6 +96,32 @@ const PhotoForm: React.FC = () => {
     }
   };
 
+  // PHP limite chaque requête HTTP (max_file_uploads = 20 fichiers par défaut,
+  // post_max_size = 40M) : on découpe donc l'envoi en petits lots successifs
+  // qui passent sous ces limites quel que soit le serveur.
+  const CHUNK_MAX_FILES = 15;
+  const CHUNK_MAX_BYTES = 30 * 1024 * 1024; // 30 Mo par lot
+
+  const buildChunks = (list: File[]): File[][] => {
+    const chunks: File[][] = [];
+    let current: File[] = [];
+    let currentBytes = 0;
+    for (const f of list) {
+      const wouldOverflow =
+        current.length >= CHUNK_MAX_FILES ||
+        (current.length > 0 && currentBytes + f.size > CHUNK_MAX_BYTES);
+      if (wouldOverflow) {
+        chunks.push(current);
+        current = [];
+        currentBytes = 0;
+      }
+      current.push(f);
+      currentBytes += f.size;
+    }
+    if (current.length > 0) chunks.push(current);
+    return chunks;
+  };
+
   // Soumission multipostage : plusieurs photos d'un coup (superadmin uniquement)
   const handleBatchSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -109,25 +137,52 @@ const PhotoForm: React.FC = () => {
     }
 
     setErrors([]);
+    setFlashMessages([]);
+    setUploading(true);
 
-    const formData = new FormData();
-    formData.append('album', album);
-    files.forEach((f) => formData.append('files[]', f));
+    const chunks = buildChunks(files);
+    let created = 0;
+    const skipped: string[] = [];
 
     try {
-      const response = await fetch('/api/photos/batch', {
-        method: 'POST',
-        body: formData,
-      });
+      // Envoi séquentiel des lots (chaque lot respecte les limites PHP)
+      for (let i = 0; i < chunks.length; i++) {
+        if (chunks.length > 1) {
+          setProgress(`Envoi du lot ${i + 1}/${chunks.length}…`);
+        }
 
-      const data = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(data.error || 'Batch upload failed');
+        const formData = new FormData();
+        formData.append('album', album);
+        chunks[i].forEach((f) => formData.append('files[]', f));
 
-      setFlashMessages([data.message || 'Photos ajoutées avec succès.']);
+        const response = await fetch('/api/photos/batch', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.error || 'Batch upload failed');
+
+        created += data.created || 0;
+        if (Array.isArray(data.skipped)) skipped.push(...data.skipped);
+      }
+
+      const messages = [`${created} photo(s) ajoutée(s) avec succès.`];
+      if (skipped.length > 0) {
+        messages.push(`Ignorée(s) car format ou taille non conforme : ${skipped.join(', ')}`);
+      }
+      setFlashMessages(messages);
       setFiles([]);
       setAlbum('');
     } catch (error: any) {
-      setFlashMessages([error.message || t('form.photo_error_message')]);
+      const messages = [error.message || t('form.photo_error_message')];
+      if (created > 0) {
+        messages.unshift(`${created} photo(s) avaient déjà été ajoutées avant l'erreur.`);
+      }
+      setFlashMessages(messages);
+    } finally {
+      setUploading(false);
+      setProgress('');
     }
   };
 
@@ -230,8 +285,8 @@ const PhotoForm: React.FC = () => {
           {albumSelect}
 
           <div className="form-group">
-            <button type="submit" className="green-button">
-              Publier les photos
+            <button type="submit" className="green-button" disabled={uploading}>
+              {uploading ? (progress || 'Envoi en cours…') : 'Publier les photos'}
             </button>
           </div>
         </form>

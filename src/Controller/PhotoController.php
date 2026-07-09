@@ -422,6 +422,60 @@ class PhotoController extends AbstractController
         return new JsonResponse(['message' => 'Photo supprimée avec succès']);
     }
 
+    /**
+     * Fait pivoter une photo de 90, 180 ou 270 degrés (sens horaire).
+     * Accessible au propriétaire de la photo, au superadmin, et à un admin
+     * si le propriétaire est un simple utilisateur (mêmes règles que la
+     * modération du dashboard).
+     */
+    #[Route('/photo/{id}/rotate', name: 'photo_rotate', requirements: ['id' => '\d+'], methods: ['POST'])]
+    public function rotatePhoto(int $id, Request $request, EntityManagerInterface $em, ImageOptimizer $imageOptimizer): JsonResponse
+    {
+        $photo = $em->getRepository(Photo::class)->find($id);
+        if (!$photo) {
+            return new JsonResponse(['error' => 'Photo non trouvée'], Response::HTTP_NOT_FOUND);
+        }
+
+        $user = $this->getUser();
+        if (!$user) {
+            return new JsonResponse(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $album = $photo->getAlbum();
+        $owner = $album ? $album->getCreator() : null;
+        if (!$owner) {
+            return new JsonResponse(['error' => 'Photo sans album associé'], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Mêmes règles que le dashboard : propriétaire, superadmin, ou admin
+        // sur les photos d'un simple utilisateur.
+        $ownerRoles = $owner->getRoles();
+        $ownerIsPlainUser = !\in_array('ROLE_ADMIN', $ownerRoles, true) && !\in_array('ROLE_SUPER_ADMIN', $ownerRoles, true);
+        $canRotate = $owner === $user
+            || $this->isGranted('ROLE_SUPER_ADMIN')
+            || ($this->isGranted('ROLE_ADMIN') && $ownerIsPlainUser);
+
+        if (!$canRotate) {
+            return new JsonResponse(['error' => 'Accès refusé'], Response::HTTP_FORBIDDEN);
+        }
+
+        $data = json_decode($request->getContent(), true);
+        $degrees = (int) ($data['degrees'] ?? 0);
+        if (!\in_array($degrees, [90, 180, 270], true)) {
+            return new JsonResponse(['error' => 'Angle invalide : 90, 180 ou 270 attendu.'], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Reconstruire le chemin du fichier (même logique que deletePhoto)
+        $uploadDir = $this->projectDir . $this->getParameter('public_directory') . '/uploads/photos/' . $owner->getId() . '/' . $album->getNomAlbum() . '/';
+        $photoPath = $uploadDir . $photo->getFilePath();
+
+        if (!$imageOptimizer->rotate($photoPath, $degrees)) {
+            return new JsonResponse(['error' => 'Impossible de faire pivoter cette photo.'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        return new JsonResponse(['message' => "Photo pivotée de {$degrees}°."]);
+    }
+
 
     // Route pour gérer les likes
     public function like(Photo $photo, EntityManagerInterface $entityManager): JsonResponse
