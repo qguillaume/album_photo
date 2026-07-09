@@ -39,9 +39,15 @@ class AppExtension extends AbstractExtension
             . '/' . ImageOptimizer::THUMBNAIL_DIR . '/' . $file;
 
         if (is_file($diskThumb)) {
-            return $webBase . ImageOptimizer::THUMBNAIL_DIR . '/' . $file;
+            // Anti-cache : la date de modification change à chaque rotation, ce qui
+            // force le navigateur à recharger la vignette au lieu de garder l'ancienne
+            // (sinon la photo pivotée n'apparaît qu'après un Ctrl+F5).
+            return $webBase . ImageOptimizer::THUMBNAIL_DIR . '/' . $file . '?v=' . filemtime($diskThumb);
         }
 
-        return $webBase . $file; // Fallback : original
+        $diskOriginal = $this->photosDirectory . '/' . $creatorId . '/' . $albumName . '/' . $file;
+        $version = is_file($diskOriginal) ? '?v=' . filemtime($diskOriginal) : '';
+
+        return $webBase . $file . $version; // Fallback : original
     }
 }

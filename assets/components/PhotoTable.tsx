@@ -288,21 +288,20 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
             return (
               <tr key={photo.id} className={rowClass}>
                 <td>{photo.id}</td>
-                <td>
+                <td className="td-preview">
                   {photoBase && (
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
+                    <div className="photo-preview">
                       <img
                         src={`${photoBase}/${photo.filePath}${version}`}
                         alt={photo.title}
                         loading="lazy"
-                        style={{ maxWidth: "70px", maxHeight: "70px", objectFit: "contain", borderRadius: "4px", imageOrientation: "from-image" }}
+                        style={{ imageOrientation: "from-image" }}
                       />
                       {canEditOrDelete && (
-                        <div style={{ display: "flex", gap: "2px" }}>
+                        <div className="rotate-buttons">
                           <button
                             type="button"
                             title="Pivoter de 90° vers la gauche"
-                            style={{ cursor: "pointer" }}
                             onClick={() => handleRotate(photo.id, 270)}
                           >
                             ↺
@@ -310,7 +309,6 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
                           <button
                             type="button"
                             title="Pivoter de 180°"
-                            style={{ cursor: "pointer" }}
                             onClick={() => handleRotate(photo.id, 180)}
                           >
                             180°
@@ -318,7 +316,6 @@ const PhotoTable: React.FC<PhotoTableProps> = ({
                           <button
                             type="button"
                             title="Pivoter de 90° vers la droite"
-                            style={{ cursor: "pointer" }}
                             onClick={() => handleRotate(photo.id, 90)}
                           >
                             ↻
