@@ -11,7 +11,7 @@ services:
 
   # Service PHP avec FPM
   php:
-    image: php:7.4-fpm
+    image: php:8.2-fpm
     build:
       context: .
       dockerfile: Dockerfile  # Assure-toi que le Dockerfile est bien référencé ici

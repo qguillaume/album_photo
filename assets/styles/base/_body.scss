@@ -62,10 +62,12 @@ h4 {
   text-decoration: none;
 }
 
-/* Paragraphes */
+/* Paragraphes : police lisible (Montserrat) pour le corps de texte.
+   Les titres, le menu et les boutons conservent la police signature 'Arkhip'. */
 p {
-  font-size: 1.5rem;
-  line-height: 1.6;
+  font-family: 'Jost', 'Montserrat', 'Segoe UI', system-ui, sans-serif;
+  font-size: 1.4rem;
+  line-height: 1.7;
 
   a {
     color: $primary-color;
@@ -95,6 +97,6 @@ p {
   }
 
   p {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
   }
 }

@@ -1,5 +1,5 @@
 # Base image PHP avec FPM
-FROM php:7.4-fpm
+FROM php:8.2-fpm
 
 # Installer les dépendances nécessaires pour PHP et les extensions requises
 RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev \
