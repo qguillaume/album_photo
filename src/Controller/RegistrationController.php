@@ -26,12 +26,19 @@ use Symfony\Component\Security\Core\Security;
 class RegistrationController extends AbstractController
 {
     /**
-     * Nombre d'inscriptions autorisées par adresse IP et par fenêtre de temps.
-     * Assez large pour ne jamais gêner un visiteur légitime (y compris derrière
-     * une IP partagée), assez bas pour rendre la création de comptes en masse
-     * inutilisable.
+     * Inscriptions autorisées par visiteur et par fenêtre de temps.
      */
     private const REGISTRATION_MAX_ATTEMPTS = 5;
+
+    /**
+     * Plafond appliqué à l'ensemble du site. Il ne sert que de filet : sur un
+     * hébergement mutualisé, PHP peut ne voir que l'adresse du répartiteur de
+     * charge et non celle du visiteur. Dans ce cas la limite par visiteur est
+     * inapplicable, et ce plafond reste la seule protection contre un afflux
+     * automatisé — d'où une valeur très au-dessus du trafic normal du site.
+     */
+    private const REGISTRATION_GLOBAL_MAX_ATTEMPTS = 30;
+
     private const REGISTRATION_WINDOW_SECONDS = 3600;
 
     private UserPasswordHasherInterface $passwordHasher;
@@ -107,15 +114,29 @@ class RegistrationController extends AbstractController
         CacheItemPoolInterface $cache,
         LoggerInterface $logger
     ): JsonResponse {
-        $clientIp = $request->getClientIp() ?? 'inconnue';
+        [$clientIp, $identifiesVisitor] = $this->resolveClientIp($request);
 
-        $retryAfter = $this->registrationRateLimitDelay($cache, $clientIp);
+        // Filet global d'abord : il s'applique quelle que soit la qualité de
+        // l'identification du visiteur.
+        $retryAfter = $this->rateLimitDelay($cache, 'global', self::REGISTRATION_GLOBAL_MAX_ATTEMPTS);
+
+        // Limite par visiteur ensuite, uniquement si l'adresse observée
+        // distingue réellement les visiteurs les uns des autres. Sans cette
+        // condition, tous les visiteurs partageraient un même compteur et
+        // quelques inscriptions suffiraient à fermer le formulaire à tous.
+        if (0 === $retryAfter && $identifiesVisitor) {
+            $retryAfter = $this->rateLimitDelay($cache, 'ip_' . sha1($clientIp), self::REGISTRATION_MAX_ATTEMPTS);
+        }
+
         if ($retryAfter > 0) {
-            $logger->warning("Inscription refusée : limite de débit atteinte.", ['ip' => $clientIp]);
+            $logger->warning("Inscription refusée : limite de débit atteinte.", [
+                'ip' => $clientIp,
+                'identification_par_visiteur' => $identifiesVisitor,
+            ]);
 
             return $this->registrationError(
                 'rate_limited',
-                'Trop de tentatives d\'inscription depuis cette adresse. Réessayez plus tard.',
+                'Trop de tentatives d\'inscription. Réessayez plus tard.',
                 Response::HTTP_TOO_MANY_REQUESTS,
                 ['Retry-After' => (string) $retryAfter]
             );
@@ -182,32 +203,71 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * Compteur à fenêtre fixe par adresse IP, stocké dans le cache applicatif.
-     * Le projet n'embarque pas symfony/rate-limiter : ce compteur évite d'ajouter
-     * une dépendance pour un besoin ponctuel.
+     * Détermine l'adresse du visiteur, et si celle-ci le distingue vraiment des
+     * autres visiteurs.
+     *
+     * Sur un hébergement mutualisé, les requêtes traversent un répartiteur de
+     * charge : PHP reçoit alors l'adresse interne de celui-ci, identique pour
+     * tout le monde, et la véritable adresse du visiteur est placée dans
+     * l'en-tête X-Forwarded-For.
+     *
+     * @return array{0: string, 1: bool} l'adresse retenue, et si elle identifie un visiteur
+     */
+    private function resolveClientIp(Request $request): array
+    {
+        $forwarded = $request->headers->get('X-Forwarded-For');
+        if (null !== $forwarded) {
+            // L'en-tête peut lister plusieurs relais : le visiteur est en tête.
+            $candidate = trim(explode(',', $forwarded)[0]);
+            if (false !== filter_var($candidate, FILTER_VALIDATE_IP)) {
+                return [$candidate, true];
+            }
+        }
+
+        $remote = $request->getClientIp();
+        if (null === $remote) {
+            return ['inconnue', false];
+        }
+
+        // Une adresse privée sans X-Forwarded-For trahit un relais interne :
+        // elle est la même pour tous les visiteurs, donc inutilisable comme
+        // identifiant.
+        $isPublic = false !== filter_var(
+            $remote,
+            FILTER_VALIDATE_IP,
+            FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
+        );
+
+        return [$remote, $isPublic];
+    }
+
+    /**
+     * Compteur à fenêtre fixe stocké dans le cache applicatif. Le projet
+     * n'embarque pas symfony/rate-limiter : ce compteur évite d'ajouter une
+     * dépendance pour un besoin ponctuel.
      *
      * @return int 0 si la requête est autorisée, sinon le nombre de secondes à attendre
      */
-    private function registrationRateLimitDelay(CacheItemPoolInterface $cache, string $clientIp): int
+    private function rateLimitDelay(CacheItemPoolInterface $cache, string $bucket, int $maxAttempts): int
     {
-        $item = $cache->getItem('registration_attempts_' . sha1($clientIp));
+        $item = $cache->getItem('registration_attempts_' . $bucket);
         $now = time();
-        $bucket = $item->isHit() ? $item->get() : null;
+        $counter = $item->isHit() ? $item->get() : null;
 
         // Nouvelle fenêtre si aucun compteur en cours ou si le précédent est expiré.
-        if (!is_array($bucket) || ($bucket['reset'] ?? 0) <= $now) {
-            $bucket = ['count' => 0, 'reset' => $now + self::REGISTRATION_WINDOW_SECONDS];
+        if (!is_array($counter) || ($counter['reset'] ?? 0) <= $now) {
+            $counter = ['count' => 0, 'reset' => $now + self::REGISTRATION_WINDOW_SECONDS];
         }
 
-        ++$bucket['count'];
+        ++$counter['count'];
 
-        $item->set($bucket);
+        $item->set($counter);
         // L'expiration est recalculée à chaque écriture pour rester alignée sur la
         // fenêtre d'origine, sinon celle-ci glisserait à chaque tentative.
-        $item->expiresAfter($bucket['reset'] - $now);
+        $item->expiresAfter($counter['reset'] - $now);
         $cache->save($item);
 
-        return $bucket['count'] > self::REGISTRATION_MAX_ATTEMPTS ? $bucket['reset'] - $now : 0;
+        return $counter['count'] > $maxAttempts ? $counter['reset'] - $now : 0;
     }
 
     /**
