@@ -140,6 +140,9 @@
     "forget_password_error_message": "Ocurrió un error, por favor contacte al administrador",
     "photo_error_message": "Ocurrió un error, por favor contacte al administrador",
     "register_error_message": "Ocurrió un error, por favor contacte al administrador",
+    "register_error_email_taken": "Ya existe una cuenta con esta dirección de correo electrónico.",
+    "register_error_username_taken": "Este nombre de usuario ya está en uso.",
+    "register_error_rate_limited": "Demasiados intentos de registro. Vuelva a intentarlo en una hora.",
     "theme_error_message": "Ocurrió un error, por favor contacte al administrador",
 
     "reset_password_title": "Restablecer la contraseña",

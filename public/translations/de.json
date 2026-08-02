@@ -141,6 +141,9 @@
     "forget_password_error_message": "Ein Fehler ist aufgetreten, bitte kontaktieren Sie den Administrator",
     "photo_error_message": "Ein Fehler ist aufgetreten, bitte kontaktieren Sie den Administrator",
     "register_error_message": "Ein Fehler ist aufgetreten, bitte kontaktieren Sie den Administrator",
+    "register_error_email_taken": "Diese E-Mail-Adresse wird bereits von einem Konto verwendet.",
+    "register_error_username_taken": "Dieser Benutzername ist bereits vergeben.",
+    "register_error_rate_limited": "Zu viele Registrierungsversuche. Bitte versuchen Sie es in einer Stunde erneut.",
     "theme_error_message": "Ein Fehler ist aufgetreten, bitte kontaktieren Sie den Administrator",
 
     "reset_password_title": "Passwort zurücksetzen",

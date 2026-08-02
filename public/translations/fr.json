@@ -140,6 +140,9 @@
     "forget_password_error_message":"Une erreur s'est produite, contactez l'administrateur",
     "photo_error_message":"Une erreur s'est produite, contactez l'administrateur",
     "register_error_message":"Une erreur s'est produite, contactez l'administrateur",
+    "register_error_email_taken":"Un compte utilise déjà cette adresse email.",
+    "register_error_username_taken":"Ce nom d'utilisateur est déjà pris.",
+    "register_error_rate_limited":"Trop de tentatives d'inscription. Merci de réessayer dans une heure.",
     "theme_error_message":"Une erreur s'est produite, contactez l'administrateur",
 
     "reset_password_title": "Réinitialisation du mot de passe",

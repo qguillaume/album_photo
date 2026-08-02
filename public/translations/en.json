@@ -141,6 +141,9 @@
     "forget_password_error_message": "An error occurred, please contact the administrator",
     "photo_error_message": "An error occurred, please contact the administrator",
     "register_error_message": "An error occurred, please contact the administrator",
+    "register_error_email_taken": "An account already uses this email address.",
+    "register_error_username_taken": "This username is already taken.",
+    "register_error_rate_limited": "Too many sign-up attempts. Please try again in an hour.",
     "theme_error_message": "An error occurred, please contact the administrator",
 
     "reset_password_title": "Reset Password",

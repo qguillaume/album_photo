@@ -64,14 +64,28 @@ const RegisterForm: React.FC = () => {
         body: JSON.stringify(formData),
       });
 
-      if (!response.ok) throw new Error('Submission failed');
+      if (!response.ok) {
+        // Le serveur renvoie { code, message } : le code sert de clé de traduction,
+        // son message français fait office de repli pour les cas qui n'arrivent
+        // qu'en cas de contournement de la validation ci-dessus.
+        const payload = await response.json().catch(() => null);
+        const fallback = payload?.message ?? t('form.register_error_message');
+
+        setFlashMessages([]);
+        setErrors([
+          payload?.code
+            ? t(`form.register_error_${payload.code}`, { defaultValue: fallback })
+            : fallback,
+        ]);
+        return;
+      }
 
       setFlashMessages([t('form.register_success_message')]);
       setName('');
       setEmail('');
       setPassword('');
     } catch (error) {
-      setFlashMessages([t('form.register_error_message')]);
+      setErrors([t('form.register_error_message')]);
     }
   };
 
