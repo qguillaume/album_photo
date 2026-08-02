@@ -115,6 +115,32 @@ class ApiRegisterTest extends WebTestCase
     }
 
     /**
+     * Régression : en production, l'hébergeur ne transmet l'adresse du visiteur
+     * dans aucun en-tête, et l'adresse vue par PHP est celle de son répartiteur
+     * — commune à tout le site. La compter par visiteur avait bloqué un
+     * visiteur légitime dès sa première tentative. Sans en-tête de relais, seul
+     * le plafond global doit donc s'appliquer.
+     */
+    public function testWithoutForwardingHeaderOnlyTheGlobalCapApplies(): void
+    {
+        $client = $this->createClientWithFreshCounters();
+
+        for ($i = 0; $i < 20; ++$i) {
+            $this->postRegistration($client, $this->rejectedPayload());
+            $this->assertResponseStatusCodeSame(
+                400,
+                sprintf("La tentative n°%d ne doit pas être limitée : l'adresse observée ne distingue aucun visiteur.", $i + 1)
+            );
+        }
+
+        // Le plafond global, lui, reste bien en place.
+        $this->postRegistration($client, $this->rejectedPayload());
+
+        $this->assertResponseStatusCodeSame(429);
+        $this->assertSame('rate_limited', $this->responseCode($client));
+    }
+
+    /**
      * Charge utile toujours refusée sur le fond : aucun compte n'est créé et
      * aucun email n'est envoyé, seul le compteur de débit progresse.
      */

@@ -31,13 +31,16 @@ class RegistrationController extends AbstractController
     private const REGISTRATION_MAX_ATTEMPTS = 5;
 
     /**
-     * Plafond appliqué à l'ensemble du site. Il ne sert que de filet : sur un
-     * hébergement mutualisé, PHP peut ne voir que l'adresse du répartiteur de
-     * charge et non celle du visiteur. Dans ce cas la limite par visiteur est
-     * inapplicable, et ce plafond reste la seule protection contre un afflux
-     * automatisé — d'où une valeur très au-dessus du trafic normal du site.
+     * Plafond appliqué à l'ensemble du site. Sur l'hébergement mutualisé
+     * utilisé en production, PHP ne voit que l'adresse du répartiteur de charge
+     * et non celle du visiteur : la limite par visiteur y est inapplicable et
+     * ce plafond devient la seule protection contre un afflux automatisé.
+     *
+     * Valeur choisie très au-dessus du trafic réel du site (quelques
+     * inscriptions par semaine) pour ne jamais refuser un visiteur légitime,
+     * tout en coupant court à une création de comptes en série.
      */
-    private const REGISTRATION_GLOBAL_MAX_ATTEMPTS = 30;
+    private const REGISTRATION_GLOBAL_MAX_ATTEMPTS = 20;
 
     private const REGISTRATION_WINDOW_SECONDS = 3600;
 
@@ -203,42 +206,49 @@ class RegistrationController extends AbstractController
     }
 
     /**
+     * En-têtes par lesquels un relais transmet l'adresse du visiteur. Aucun
+     * n'est garanti : ils dépendent entièrement de l'hébergeur.
+     */
+    private const FORWARDED_IP_HEADERS = [
+        'X-Forwarded-For',
+        'X-Real-IP',
+        'CF-Connecting-IP',
+        'True-Client-IP',
+        'X-Client-IP',
+        'Client-IP',
+    ];
+
+    /**
      * Détermine l'adresse du visiteur, et si celle-ci le distingue vraiment des
      * autres visiteurs.
      *
-     * Sur un hébergement mutualisé, les requêtes traversent un répartiteur de
-     * charge : PHP reçoit alors l'adresse interne de celui-ci, identique pour
-     * tout le monde, et la véritable adresse du visiteur est placée dans
-     * l'en-tête X-Forwarded-For.
+     * Point vérifié en production : l'hébergement mutualisé fait transiter tout
+     * le trafic par un répartiteur de charge et ne transmet l'adresse du
+     * visiteur dans aucun en-tête. L'adresse que voit PHP est alors celle du
+     * répartiteur — publique, mais commune à tous. La compter par visiteur
+     * fermerait le formulaire à tout le monde dès quelques inscriptions.
+     *
+     * On ne considère donc une adresse comme identifiante que lorsqu'un relais
+     * l'a explicitement transmise.
      *
      * @return array{0: string, 1: bool} l'adresse retenue, et si elle identifie un visiteur
      */
     private function resolveClientIp(Request $request): array
     {
-        $forwarded = $request->headers->get('X-Forwarded-For');
-        if (null !== $forwarded) {
+        foreach (self::FORWARDED_IP_HEADERS as $header) {
+            $value = $request->headers->get($header);
+            if (null === $value) {
+                continue;
+            }
+
             // L'en-tête peut lister plusieurs relais : le visiteur est en tête.
-            $candidate = trim(explode(',', $forwarded)[0]);
+            $candidate = trim(explode(',', $value)[0]);
             if (false !== filter_var($candidate, FILTER_VALIDATE_IP)) {
                 return [$candidate, true];
             }
         }
 
-        $remote = $request->getClientIp();
-        if (null === $remote) {
-            return ['inconnue', false];
-        }
-
-        // Une adresse privée sans X-Forwarded-For trahit un relais interne :
-        // elle est la même pour tous les visiteurs, donc inutilisable comme
-        // identifiant.
-        $isPublic = false !== filter_var(
-            $remote,
-            FILTER_VALIDATE_IP,
-            FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
-        );
-
-        return [$remote, $isPublic];
+        return [$request->getClientIp() ?? 'inconnue', false];
     }
 
     /**
