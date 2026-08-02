@@ -31,16 +31,15 @@ class RegistrationController extends AbstractController
     private const REGISTRATION_MAX_ATTEMPTS = 5;
 
     /**
-     * Plafond appliqué à l'ensemble du site. Sur l'hébergement mutualisé
-     * utilisé en production, PHP ne voit que l'adresse du répartiteur de charge
-     * et non celle du visiteur : la limite par visiteur y est inapplicable et
-     * ce plafond devient la seule protection contre un afflux automatisé.
+     * Plafond appliqué à l'ensemble du site, en dernier recours : il ne protège
+     * que le cas où l'hébergeur cesserait de transmettre l'adresse des
+     * visiteurs, rendant la limite ci-dessus inopérante.
      *
-     * Valeur choisie très au-dessus du trafic réel du site (quelques
-     * inscriptions par semaine) pour ne jamais refuser un visiteur légitime,
-     * tout en coupant court à une création de comptes en série.
+     * Il est volontairement très haut. Un plafond bas serait contre-productif :
+     * comme il additionne tout le trafic, il suffirait à un bot de l'épuiser
+     * pour fermer le formulaire à l'ensemble des visiteurs.
      */
-    private const REGISTRATION_GLOBAL_MAX_ATTEMPTS = 20;
+    private const REGISTRATION_GLOBAL_MAX_ATTEMPTS = 100;
 
     private const REGISTRATION_WINDOW_SECONDS = 3600;
 

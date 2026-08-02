@@ -125,7 +125,7 @@ class ApiRegisterTest extends WebTestCase
     {
         $client = $this->createClientWithFreshCounters();
 
-        for ($i = 0; $i < 20; ++$i) {
+        for ($i = 0; $i < 100; ++$i) {
             $this->postRegistration($client, $this->rejectedPayload());
             $this->assertResponseStatusCodeSame(
                 400,
