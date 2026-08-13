@@ -171,6 +171,52 @@ class PhotoController extends AbstractController
     }
 
     /**
+     * Renvoie les limites d'upload RÉELLEMENT appliquées par le serveur.
+     *
+     * Le navigateur s'en sert pour découper l'envoi en lots qui passent à coup
+     * sûr, quelle que soit la configuration de l'hébergeur. Sans cela, une
+     * valeur codée en dur dans le JS finit toujours par diverger de la config
+     * PHP — c'est ce qui limitait silencieusement le multipostage à 20 photos.
+     */
+    #[Route('/api/upload-limits', name: 'upload_limits', methods: ['GET'])]
+    public function uploadLimits(): JsonResponse
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        return new JsonResponse([
+            'maxFileUploads' => (int) ini_get('max_file_uploads'),
+            'postMaxSize' => $this->iniBytes('post_max_size'),
+            'uploadMaxFilesize' => $this->iniBytes('upload_max_filesize'),
+        ]);
+    }
+
+    /**
+     * Convertit une directive de taille PHP ("8M", "24M", "512K") en octets.
+     * Renvoie 0 si la valeur est absente ou illimitée.
+     */
+    private function iniBytes(string $directive): int
+    {
+        $raw = trim((string) ini_get($directive));
+        if ($raw === '' || $raw === '-1') {
+            return 0;
+        }
+
+        $value = (int) $raw;
+        switch (strtolower(substr($raw, -1))) {
+            case 'g':
+                $value *= 1024;
+                // no break
+            case 'm':
+                $value *= 1024;
+                // no break
+            case 'k':
+                $value *= 1024;
+        }
+
+        return $value;
+    }
+
+    /**
      * Multipostage : envoi de plusieurs photos d'un coup dans un même album.
      *
      * Réservé au superadmin. Pour ouvrir la fonctionnalité à d'autres rôles plus tard,
@@ -200,6 +246,25 @@ class PhotoController extends AbstractController
                 ['error' => "Vous ne pouvez pas envoyer plus de {$maxFiles} photos à la fois."],
                 Response::HTTP_BAD_REQUEST
             );
+        }
+
+        // Détection de la troncature silencieuse : au-delà de max_file_uploads,
+        // PHP supprime les fichiers en trop SANS lever d'erreur. On compare donc
+        // ce qui est arrivé à ce que le navigateur dit avoir envoyé, pour
+        // transformer cette panne invisible en message explicite.
+        $expected = (int) $request->get('expected');
+        if ($expected > 0 && count($files) < $expected) {
+            $limit = (int) ini_get('max_file_uploads');
+
+            return new JsonResponse([
+                'error' => sprintf(
+                    'Le serveur n\'a reçu que %d photo(s) sur %d : la limite PHP max_file_uploads (%d) '
+                    . 'les a supprimées silencieusement. Vérifiez le fichier .user.ini de la racine web.',
+                    count($files),
+                    $expected,
+                    $limit
+                ),
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         $album = $em->getRepository(Album::class)->find($albumId);

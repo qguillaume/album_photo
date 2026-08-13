@@ -15,6 +15,12 @@ const PhotoForm: React.FC = () => {
   const [isSuperAdmin, setIsSuperAdmin] = useState(false); // Rôle superadmin => multipostage
   const [uploading, setUploading] = useState(false); // Envoi en cours (multipostage)
   const [progress, setProgress] = useState(''); // Progression de l'envoi par lots
+  // Limites d'upload du serveur. Valeurs de repli volontairement prudentes :
+  // ce sont les valeurs par défaut de PHP, valables si l'appel API échoue.
+  const [limits, setLimits] = useState({
+    maxFileUploads: 20,
+    postMaxSize: 8 * 1024 * 1024,
+  });
 
   // Récupérer le rôle de l'utilisateur courant (même API que les autres composants)
   useEffect(() => {
@@ -30,6 +36,28 @@ const PhotoForm: React.FC = () => {
       }
     };
     fetchCurrentUser();
+  }, []);
+
+  // Lire les limites d'upload réellement appliquées par le serveur
+  useEffect(() => {
+    const fetchLimits = async () => {
+      try {
+        const response = await fetch('/api/upload-limits');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.maxFileUploads > 0 && data.postMaxSize > 0) {
+            setLimits({
+              maxFileUploads: data.maxFileUploads,
+              postMaxSize: data.postMaxSize,
+            });
+          }
+        }
+      } catch (error) {
+        // On garde les valeurs de repli : l'envoi reste fonctionnel.
+        console.error('Error fetching upload limits:', error);
+      }
+    };
+    fetchLimits();
   }, []);
 
   // Charger dynamiquement les albums depuis l'API
@@ -96,20 +124,25 @@ const PhotoForm: React.FC = () => {
     }
   };
 
-  // PHP limite chaque requête HTTP (max_file_uploads = 20 fichiers par défaut,
-  // post_max_size = 40M) : on découpe donc l'envoi en petits lots successifs
-  // qui passent sous ces limites quel que soit le serveur.
-  const CHUNK_MAX_FILES = 15;
-  const CHUNK_MAX_BYTES = 30 * 1024 * 1024; // 30 Mo par lot
-
+  // PHP limite chaque requête HTTP : nombre de fichiers (max_file_uploads) et
+  // poids total (post_max_size). On découpe donc l'envoi en lots successifs qui
+  // passent sous ces limites. Les valeurs sont lues sur le serveur (voir
+  // /api/upload-limits) plutôt que codées en dur : une constante figée finit
+  // toujours par diverger de la config de l'hébergeur, et PHP jette alors les
+  // fichiers en trop SANS erreur (c'est ce qui bloquait le multipostage à 20).
   const buildChunks = (list: File[]): File[][] => {
+    // Marges de sécurité : on garde de la place pour les autres champs du
+    // formulaire et les séparateurs multipart, qui comptent dans post_max_size.
+    const maxFiles = Math.max(1, Math.min(15, limits.maxFileUploads - 2));
+    const maxBytes = Math.max(1024 * 1024, Math.floor(limits.postMaxSize * 0.8));
+
     const chunks: File[][] = [];
     let current: File[] = [];
     let currentBytes = 0;
     for (const f of list) {
       const wouldOverflow =
-        current.length >= CHUNK_MAX_FILES ||
-        (current.length > 0 && currentBytes + f.size > CHUNK_MAX_BYTES);
+        current.length >= maxFiles ||
+        (current.length > 0 && currentBytes + f.size > maxBytes);
       if (wouldOverflow) {
         chunks.push(current);
         current = [];
@@ -153,6 +186,9 @@ const PhotoForm: React.FC = () => {
 
         const formData = new FormData();
         formData.append('album', album);
+        // Nombre de fichiers envoyés : permet au serveur de détecter une
+        // troncature silencieuse de PHP au lieu de la laisser passer.
+        formData.append('expected', String(chunks[i].length));
         chunks[i].forEach((f) => formData.append('files[]', f));
 
         const response = await fetch('/api/photos/batch', {
