@@ -30,8 +30,18 @@ class AppExtension extends AbstractExtension
      */
     public function photoThumb(Photo $photo): string
     {
-        $creatorId = $photo->getAlbum()->getCreator()->getId();
-        $albumName = $photo->getAlbum()->getNomAlbum();
+        $album = $photo->getAlbum();
+        $creator = $album?->getCreator();
+
+        // Photo orpheline (album ou propriétaire manquant) : le chemin ne peut
+        // pas être reconstruit. On renvoie une chaîne vide plutôt que de laisser
+        // une erreur fatale casser toute la page de la galerie.
+        if ($album === null || $creator === null) {
+            return '';
+        }
+
+        $creatorId = $creator->getId();
+        $albumName = $album->getNomAlbum();
         $file = $photo->getFilePath();
 
         $webBase = 'uploads/photos/' . $creatorId . '/' . $albumName . '/';

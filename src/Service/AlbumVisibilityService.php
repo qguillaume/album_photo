@@ -118,7 +118,10 @@ class AlbumVisibilityService
                 }
 
                 // Le propriétaire voit ses propres photos, même non publiées.
-                if ($photo->getAlbum()->getCreator() === $user) {
+                // La garde sur $user est indispensable : sans elle, un album sans
+                // créateur rendrait la comparaison « null === null » vraie et
+                // exposerait toutes les photos à un visiteur anonyme.
+                if ($user !== null && $photo->getAlbum()?->getCreator() === $user) {
                     return true;
                 }
 

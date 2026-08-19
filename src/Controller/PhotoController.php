@@ -458,21 +458,30 @@ class PhotoController extends AbstractController
 
         // Récupérer l'album associé à la photo
         $album = $photo->getAlbum(); // Suppose qu'il y a une relation bidirectionnelle entre Photo et Album
+        $creator = $album?->getCreator();
 
-        $uploadDir = $kernel->getProjectDir() . $this->getParameter('public_directory') . '/uploads/photos/' . $photo->getAlbum()->getCreator()->getId() . '/' . $photo->getAlbum()->getNomAlbum() . '/';
-        $photoPath = $uploadDir . $photo->getFilePath();
+        // Le chemin des fichiers se reconstruit à partir de l'album et de son
+        // propriétaire : si l'un des deux manque (photo orpheline), on ne peut
+        // pas le calculer. On supprime alors uniquement l'enregistrement, sans
+        // laisser une erreur fatale interrompre la suppression.
+        if ($album !== null && $creator !== null) {
+            $uploadDir = $kernel->getProjectDir() . $this->getParameter('public_directory') . '/uploads/photos/' . $creator->getId() . '/' . $album->getNomAlbum() . '/';
+            $photoPath = $uploadDir . $photo->getFilePath();
 
-        // Vérifier si le fichier existe avant de le supprimer
-        if (file_exists($photoPath)) {
-            unlink($photoPath); // Supprimer le fichier
+            // Vérifier si le fichier existe avant de le supprimer
+            if (file_exists($photoPath)) {
+                unlink($photoPath); // Supprimer le fichier
+            } else {
+                error_log("Le fichier n'existe pas à ce chemin : " . $photoPath);
+            }
+
+            // Supprimer également la miniature associée si elle existe
+            $thumbPath = $uploadDir . ImageOptimizer::THUMBNAIL_DIR . '/' . $photo->getFilePath();
+            if (file_exists($thumbPath)) {
+                unlink($thumbPath);
+            }
         } else {
-            error_log("Le fichier n'existe pas à ce chemin : " . $photoPath);
-        }
-
-        // Supprimer également la miniature associée si elle existe
-        $thumbPath = $uploadDir . ImageOptimizer::THUMBNAIL_DIR . '/' . $photo->getFilePath();
-        if (file_exists($thumbPath)) {
-            unlink($thumbPath);
+            error_log('Photo #' . $id . ' sans album ou sans propriétaire : suppression du seul enregistrement.');
         }
 
         $em->remove($photo);

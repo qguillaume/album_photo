@@ -174,6 +174,40 @@ class AlbumVisibilityServiceTest extends TestCase
         );
     }
 
+    /**
+     * Régression : la comparaison « creator === user » valait « null === null »
+     * pour un album sans créateur consulté par un anonyme, ce qui exposait
+     * toutes les photos non approuvées.
+     */
+    public function testAnonymousSeesNothingHiddenInAlbumWithoutCreator(): void
+    {
+        $album = new Album();          // aucun créateur défini
+        $album->setIsVisible(true)->setIsApproved(true);
+        $published = $this->addPhoto($album, true, true);
+        $this->addPhoto($album, false, false);
+
+        $photos = $this->service()->getVisiblePhotosFor($album, null);
+
+        $this->assertSame(
+            [$published],
+            $photos,
+            'Un album sans créateur ne doit jamais exposer ses photos non publiées à un anonyme.'
+        );
+    }
+
+    public function testPhotoWithoutAlbumDoesNotCrashForAnonymous(): void
+    {
+        $album = $this->makeAlbum($this->makeUser(), true, true);
+        $orphan = $this->addPhoto($album, false, false);
+        $orphan->setAlbum(null);       // photo détachée de son album
+
+        $this->assertSame(
+            [],
+            $this->service()->getVisiblePhotosFor($album, null),
+            'Une photo détachée ne doit ni planter ni être exposée.'
+        );
+    }
+
     public function testSuperAdminSeesAllPhotos(): void
     {
         $album = $this->makeAlbum($this->makeUser(), true, true);

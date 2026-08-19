@@ -40,7 +40,7 @@ class Comment
      * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private User $user;
+    private ?User $user = null;
 
     /**
      * Constructeur pour initialiser la date de création.
