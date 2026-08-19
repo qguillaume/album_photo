@@ -34,7 +34,7 @@ class Comment
      * @ORM\ManyToOne(targetEntity=Photo::class, inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      */
-    private Photo $photo;
+    private ?Photo $photo = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
