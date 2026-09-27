@@ -8,8 +8,6 @@ A full-stack web application combining a personal **portfolio** with a multi-use
 
 ![Home page](docs/screenshot-home.png)
 
-> _Add your screenshot at `docs/screenshot-home.png` (a capture of the home page or the album gallery works best). A short GIF of the gallery hover effect also works — name it `docs/demo.gif` and reference it here._
-
 ---
 
 ## ✨ Features
