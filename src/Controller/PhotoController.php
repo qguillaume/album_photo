@@ -300,6 +300,26 @@ class PhotoController extends AbstractController
                 continue;
             }
 
+            // Une photo refusée par PHP lui-même (dépassement de
+            // upload_max_filesize, envoi interrompu…) arrive ICI à l'état
+            // « invalide » : son fichier temporaire n'existe pas.
+            //
+            // Ce test est indispensable AVANT toute autre lecture : getSize()
+            // renvoie alors 0 (le test de taille ci-dessous ne la rattrape donc
+            // pas) et getMimeType() lève une exception sur ce fichier fantôme,
+            // ce qui faisait échouer TOUT le lot — message « Batch upload
+            // failed » — au lieu de n'écarter que cette photo.
+            if (!$file->isValid()) {
+                $reason = match ($file->getError()) {
+                    UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE => 'trop volumineuse, limite ' . ini_get('upload_max_filesize'),
+                    UPLOAD_ERR_PARTIAL => 'envoi interrompu',
+                    UPLOAD_ERR_NO_FILE => 'fichier vide',
+                    default => 'refusée par le serveur',
+                };
+                $skipped[] = $file->getClientOriginalName() . ' (' . $reason . ')';
+                continue;
+            }
+
             // Ignorer les fichiers trop lourds ou d'un format non autorisé
             if ($file->getSize() > 8 * 1024 * 1024 || !in_array($file->getMimeType(), $allowedMimeTypes, true)) {
                 $skipped[] = $file->getClientOriginalName();
